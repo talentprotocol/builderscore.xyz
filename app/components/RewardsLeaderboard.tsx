@@ -18,19 +18,38 @@ const LEADERBOARD_DATA = [
 
 export default function RewardsLeaderboard() {
   return (
-    <div className="h-full flex flex-col mt-4">
-      <h2 className="text-sm font-semibold mb-2">Leaderboard</h2>
-      <div className="flex-auto space-y-3 overflow-y-auto h-0 pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="h-full flex flex-col mt-8">
+      <h2 className="text-sm font-semibold mb-3 ml-1">Leaderboard</h2>
+      <div
+        key={LEADERBOARD_DATA[0].id}
+        className="flex items-center justify-between bg-neutral-900 border border-neutral-800 rounded-lg py-2 px-3 pr-5 mb-3"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-full bg-neutral-800" />
+          <div>
+            <p className="text-white">{LEADERBOARD_DATA[0].username}</p>
+            <p className="text-neutral-400">
+              {LEADERBOARD_DATA[0].score.toLocaleString()}
+            </p>
+          </div>
+        </div>
+        <p className="text-white">#{LEADERBOARD_DATA[0].rank}</p>
+      </div>
+      <div className="flex-auto overflow-y-auto h-0 border border-neutral-800 bg-neutral-900 rounded-lg [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {LEADERBOARD_DATA.map((user) => (
           <div
             key={user.id}
-            className="flex items-center justify-between bg-neutral-900 rounded-lg py-2 px-3 pr-5"
+            className={`flex items-center justify-between py-2 px-3 pr-5 ${
+              user.id !== LEADERBOARD_DATA[0].id ? "border-t border-neutral-800" : ""
+            }`}
           >
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-neutral-800" />
               <div>
                 <p className="text-white">{user.username}</p>
-                <p className="text-neutral-400">{user.score.toLocaleString()}</p>
+                <p className="text-neutral-400">
+                  {user.score.toLocaleString()}
+                </p>
               </div>
             </div>
             <p className="text-white">#{user.rank}</p>
@@ -38,5 +57,5 @@ export default function RewardsLeaderboard() {
         ))}
       </div>
     </div>
-  )
+  );
 }
