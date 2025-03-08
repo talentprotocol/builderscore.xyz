@@ -13,11 +13,11 @@ export default function Navbar() {
         <h1 className="font-semibold">Builder Rewards</h1>
       </div>
 
-      <Select>
-        <SelectTrigger className="bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-xs h-6 w-36 cursor-pointer">
-          <SelectValue placeholder="Global" />
+      <Select defaultValue="0">
+        <SelectTrigger className="bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white text-xs h-6 w-32 p-2 cursor-pointer">
+          <SelectValue className="text-white" placeholder="Global" />
         </SelectTrigger>
-        <SelectContent className="border-none bg-neutral-800 text-xs">
+        <SelectContent className="text-white border-none bg-neutral-800 text-xs">
           <SelectItem
             className="text-xs bg-neutral-800 hover:bg-neutral-700 cursor-pointer"
             value="0"

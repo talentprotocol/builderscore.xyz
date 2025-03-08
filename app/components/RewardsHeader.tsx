@@ -6,7 +6,7 @@ export default function RewardsHeader() {
         <p className="text-4xl font-mono font-semibold">$45.3</p>
       </div>
 
-      <div className="flex justify-around border-t border-neutral-800 p-4">
+      <div className="flex justify-evenly border-t border-neutral-800 p-4">
         <div className="flex flex-col items-center justify-between">
           <p className="text-neutral-500 text-sm">Your Rank</p>
           <p className="text-xl font-mono font-semibold">#643</p>
