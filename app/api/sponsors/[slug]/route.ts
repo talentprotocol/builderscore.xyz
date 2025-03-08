@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
 import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
 import { Sponsor } from '@/app/types/sponsors';
 
@@ -10,14 +9,19 @@ export async function GET(
   try {
     const { slug } = params;
     
-    const response = await axios.get<Sponsor>(
+    const response = await fetch(
       `${API_BASE_URL}${ENDPOINTS.sponsors}/${slug}`,
       {
         headers: DEFAULT_HEADERS,
       }
     );
 
-    return NextResponse.json(response.data);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: Sponsor = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
     console.error(`Error fetching sponsor with slug ${params.slug}:`, error);
     return NextResponse.json(

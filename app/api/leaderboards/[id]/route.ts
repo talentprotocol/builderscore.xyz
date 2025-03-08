@@ -1,18 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
-import { SponsorsResponse } from '@/app/types/sponsors';
+import { LeaderboardEntry } from '@/app/types/leaderboards';
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
+    const { id } = params;
     const searchParams = request.nextUrl.searchParams;
-    const perPage = searchParams.get('per_page');
+    const grant_id = searchParams.get('grant_id');
 
     const queryParams = new URLSearchParams({
-      ...(perPage && { per_page: perPage }),
+      ...(grant_id && { grant_id }),
     });
 
     const response = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.sponsors}?${queryParams}`,
+      `${API_BASE_URL}${ENDPOINTS.leaderboards}/${id}?${queryParams}`,
       {
         headers: DEFAULT_HEADERS,
       }
@@ -22,12 +26,12 @@ export async function GET(request: NextRequest) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data: SponsorsResponse = await response.json();
+    const data: LeaderboardEntry = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error fetching sponsors:', error);
+    console.error(`Error fetching leaderboard entry for user ${params.id}:`, error);
     return NextResponse.json(
-      { error: 'Failed to fetch sponsors' },
+      { error: 'Failed to fetch leaderboard entry' },
       { status: 500 }
     );
   }

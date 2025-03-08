@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -10,7 +10,7 @@ import {
   DrawerPortal,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "@/app/components/ui/drawer";
 import { useState } from "react";
 
 const EARNING_STEPS = [
@@ -56,7 +56,7 @@ export default function HowToDrawer() {
             <DrawerClose asChild>
               <Button
                 size="lg"
-                className="bg-neutral-800 hover:bg-neutral-700 border border-neutral-700"
+                className="bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 cursor-pointer"
               >
                 Close
               </Button>
