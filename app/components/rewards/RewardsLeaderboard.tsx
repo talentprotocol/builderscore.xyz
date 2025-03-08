@@ -5,8 +5,10 @@ import Leaderboard from "@/app/components/Leaderboard";
 import LeaderboardRow from "@/app/components/LeaderboardRow";
 import { getLeaderboards } from "@/app/services/leaderboards";
 import { LeaderboardResponse } from "@/app/types/leaderboards";
+import { useSponsor } from "@/app/context/SponsorContext";
 
 export default function RewardsLeaderboard() {
+  const { selectedSponsorSlug } = useSponsor();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +24,8 @@ export default function RewardsLeaderboard() {
 
       const response = await getLeaderboards({
         per_page: 20,
-        page
+        page,
+        sponsor_slug: selectedSponsorSlug === "global" ? undefined : selectedSponsorSlug
       });
 
       setLeaderboardData(prevData => {
@@ -46,8 +49,10 @@ export default function RewardsLeaderboard() {
   };
 
   useEffect(() => {
+    setCurrentPage(1);
     fetchLeaderboard();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSponsorSlug]);
 
   const handleLoadMore = () => {
     if (!isLoadingMore && hasMore) {
@@ -66,6 +71,12 @@ export default function RewardsLeaderboard() {
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400" />
           </div>
+        </div>
+      )}
+
+      {error && (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-neutral-400">Error loading Leaderboard.</p>
         </div>
       )}
 
