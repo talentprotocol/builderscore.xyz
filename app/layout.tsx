@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import Navbar from "@/app/components/Navbar";
+import { SponsorProvider } from "@/app/context/SponsorContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,13 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} antialiased bg-black text-white`}>
-        <div className="flex flex-col min-h-dvh h-dvh max-w-3xl mx-auto py-2 px-1">
-          <Navbar />
-          <main className="flex flex-col h-full">{children}</main>
-        </div>
-      </body>
-    </html>
+    <SponsorProvider>
+      <html lang="en">
+        <body className={`${inter.variable} antialiased bg-black text-white`}>
+          <div className="flex flex-col min-h-dvh h-dvh max-w-3xl mx-auto py-2 px-1">
+            <Navbar />
+            <main className="flex flex-col h-full">{children}</main>
+          </div>
+        </body>
+      </html>
+    </SponsorProvider>
   );
 }
