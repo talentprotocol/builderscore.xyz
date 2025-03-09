@@ -3,19 +3,12 @@ import HowToDrawer from "@/app/components/HowToDrawer";
 
 export default function RewardsActions() {
   return (
-    <div className="grid grid-cols-3 gap-4 mt-3">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mt-3">
       <Button
         size="lg"
-        className="bg-neutral-900 hover:bg-neutral-800 border border-neutral-300"
+        className="bg-white hover:bg-neutral-300 border border-neutral-200 text-black cursor-pointer"
       >
-        Sync Data
-      </Button>
-
-      <Button
-        size="lg"
-        className="bg-neutral-900 hover:bg-neutral-800 border border-neutral-300 cursor-pointer"
-      >
-        Connect GitHub
+        View your Rewards
       </Button>
 
       <HowToDrawer />
