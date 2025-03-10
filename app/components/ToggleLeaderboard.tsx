@@ -9,12 +9,12 @@ export default function ToggleLeaderboard() {
   return (
     <div className="flex items-center gap-1">
       <Switch
-        checked={showUserLeaderboard}
+        checked={!showUserLeaderboard}
         onCheckedChange={toggleUserLeaderboard}
         className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-neutral-700 scale-75"
       />
       <label className="text-xs text-neutral-500">
-        Show My Rewards
+        Total
       </label>
     </div>
   );
