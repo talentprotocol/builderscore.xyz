@@ -23,9 +23,8 @@ export async function GET(
     const data: Grant = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error(`Error fetching grant with id ${params.id}:`, error);
     return NextResponse.json(
-      { error: 'Failed to fetch grant' },
+      { error: `Failed to fetch grant with id ${params.id}: ${error}` },
       { status: 500 }
     );
   }

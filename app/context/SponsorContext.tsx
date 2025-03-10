@@ -29,8 +29,7 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
         const response = await getSponsors();
         setSponsors(response.sponsors);
       } catch (err) {
-        setError('Failed to fetch sponsors');
-        console.error('Error fetching sponsors:', err);
+        setError(`Failed to fetch sponsors: ${err}`);
       } finally {
         setIsLoading(false);
       }

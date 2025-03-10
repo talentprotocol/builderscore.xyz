@@ -31,9 +31,8 @@ export async function GET(request: NextRequest) {
     const data: LeaderboardResponse = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error fetching leaderboards:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch leaderboards' },
+      { error: `Failed to fetch leaderboards: ${error}` },
       { status: 500 }
     );
   }

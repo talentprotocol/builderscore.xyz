@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Grant } from '@/app/types/grants';
 import { getGrants } from '@/app/services/grants';
-import { useSponsor } from './SponsorContext';
+import { useSponsor } from '@/app/context/SponsorContext';
 
 interface GrantContextType {
   selectedGrant: Grant | null;
@@ -32,8 +32,7 @@ export function GrantProvider({ children }: { children: ReactNode }) {
         setGrants(response.grants);
         setSelectedGrant(null);
       } catch (err) {
-        setError('Failed to fetch grants');
-        console.error('Error fetching grants:', err);
+        setError(`Failed to fetch grants: ${err}`);
       } finally {
         setIsLoading(false);
       }

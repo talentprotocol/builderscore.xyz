@@ -29,9 +29,8 @@ export async function GET(
     const data: LeaderboardEntry = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error(`Error fetching leaderboard entry for user ${params.id}:`, error);
     return NextResponse.json(
-      { error: 'Failed to fetch leaderboard entry' },
+      { error: `Failed to fetch leaderboard entry for user ${params.id}: ${error}` },
       { status: 500 }
     );
   }

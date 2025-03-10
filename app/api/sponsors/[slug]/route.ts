@@ -23,9 +23,8 @@ export async function GET(
     const data: Sponsor = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error(`Error fetching sponsor with slug ${params.slug}:`, error);
     return NextResponse.json(
-      { error: 'Failed to fetch sponsor' },
+      { error: `Failed to fetch sponsor with slug ${params.slug}: ${error}` },
       { status: 500 }
     );
   }

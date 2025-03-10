@@ -44,8 +44,7 @@ export default function RewardsLeaderboard() {
 
       setHasMore(response.pagination.current_page < response.pagination.last_page);
     } catch (err) {
-      setError('Failed to fetch leaderboard data');
-      console.error('Error fetching leaderboard:', err);
+      setError(`Failed to fetch leaderboard data: ${err}`);
     } finally {
       const loadingState = append ? setIsLoadingMore : setIsLoading;
       loadingState(false);
