@@ -4,6 +4,8 @@ export interface Grant {
   end_date: string;
   rewards_pool: string;
   token_ticker: string;
+  total_builders: number;
+  avg_builder_score: number;
   sponsor: {
     id: number;
     name: string;

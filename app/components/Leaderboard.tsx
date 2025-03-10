@@ -1,6 +1,6 @@
 import { LeaderboardResponse } from "@/app/types/leaderboards";
 import LeaderboardRow from "./LeaderboardRow";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 
 export default function Leaderboard({
   leaderboardData,
@@ -13,13 +13,13 @@ export default function Leaderboard({
   hasMore: boolean;
   isLoadingMore: boolean;
 }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
   const handleScroll = useCallback(() => {
-    if (!scrollRef.current || isLoadingMore || !hasMore) return;
+    if (isLoadingMore || !hasMore) return;
 
-    const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-    const isNearBottom = scrollHeight - scrollTop - clientHeight < 50;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const isNearBottom = documentHeight - (scrollTop + windowHeight) < 100;
 
     if (isNearBottom) {
       onLoadMore();
@@ -27,17 +27,13 @@ export default function Leaderboard({
   }, [isLoadingMore, hasMore, onLoadMore]);
 
   useEffect(() => {
-    const currentRef = scrollRef.current;
-    if (currentRef) {
-      currentRef.addEventListener("scroll", handleScroll);
-      return () => currentRef.removeEventListener("scroll", handleScroll);
-    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
   return (
     <div 
-      ref={scrollRef}
-      className="flex-auto overflow-y-auto h-0 border border-neutral-800 bg-neutral-900 rounded-lg [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      className="border border-neutral-800 bg-neutral-900 rounded-lg"
     >
       {leaderboardData.users.map((user, index) => (
         <LeaderboardRow 
