@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SelectSponsor from "@/app/components/SelectSponsor";
+// import SelectSponsor from "@/app/components/SelectSponsor";
 
 export default function Navbar() {
   return (
@@ -13,7 +13,8 @@ export default function Navbar() {
         />
         <h1 className="font-semibold">Builder Rewards</h1>
       </div>
-      <SelectSponsor />
+      {/* TODO: Add back when there's multiple sponsors. */}
+      {/* <SelectSponsor /> */}
     </nav>
   );
 }

@@ -14,10 +14,11 @@ import {
 import { useState } from "react";
 
 const EARNING_STEPS = [
+  "Create a Talent Protocol account and connect your Farcaster account.",
   "Connect your GitHub account and crypto wallets to start earning rewards.",
   "Achieve a Builder Score above 40 and get verified as a human.",
   "Deploy and ship software directly on-chain to earn points.",
-  "Get paid in USDC on Base network every Monday based on your contributions.",
+  "Get paid in $TALENT on Base network every Monday based on your contributions.",
 ];
 
 export default function HowToDrawer() {

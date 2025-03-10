@@ -1,15 +1,22 @@
-import { Button } from "@/app/components/ui/button";
+import Link from "next/link";
 import HowToDrawer from "@/app/components/HowToDrawer";
+import { Button } from "./ui/button";
 
 export default function RewardsActions() {
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mt-3">
-      <Button
-        size="lg"
-        className="bg-white hover:bg-neutral-300 border border-neutral-200 text-black cursor-pointer"
+    <div className="grid grid-cols-2 gap-4 mt-3 w-full">
+      <Link
+        href="https://app.talentprotocol.com"
+        target="_blank"
+        className="w-full"
       >
-        View your Rewards
-      </Button>
+        <Button
+          size="lg"
+          className="bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer w-full text-black"
+        >
+          Improve Talent Profile
+        </Button>
+      </Link>
 
       <HowToDrawer />
     </div>
