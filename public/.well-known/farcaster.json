@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "string",
+    "payload": "string",
+    "signature": "string"
+  },
+  "frame": {
+    "version": "1",
+    "name": "Builder Rewards",
+    "homeUrl": "https://www.builderscore.xyz",
+    "iconUrl": "https://www.builderscore.xyz/images/frame-image.png",
+    "imageUrl": "https://www.builderscore.xyz/images/frame-image.png",
+    "buttonTitle": "Build, Earn, Repeat.",
+    "splashImageUrl": "https://www.builderscore.xyz/images/splash.png",
+    "splashBackgroundColor": "#000000"
+  }
+}

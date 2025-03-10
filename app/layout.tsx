@@ -18,6 +18,22 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Builder Rewards",
   description: "Ship, Earn, Repeat.",
+  other: {
+    'fc:frame': JSON.stringify({
+      version: 'next',
+      imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
+      button: {
+        title: "Builder Rewards",
+        action: {
+          type: 'launch_frame',
+          name: "Ship, Earn, Repeat.",
+          url: "https://www.builderscore.xyz",
+          splashImageUrl: "https://www.builderscore.xyz/images/splash.png",
+          splashBackgroundColor: "#000000"
+        },
+      },
+    })
+  }
 };
 
 export default function RootLayout({
