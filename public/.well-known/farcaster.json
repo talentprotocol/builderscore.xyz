@@ -1,18 +1,18 @@
 {
   "accountAssociation": {
     "header": "eyJmaWQiOjIwNDQyLCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NDQ1Nzc2QzU4RDZmZkI0NWQ5YjlmNkQ2ODI0NkU5ODVFMTgzMDI2NSJ9",
-    "payload": "eyJkb21haW4iOiJidWlsZGVyc2NvcmUueHl6In0",
-    "signature": "MHgxMDFlYjBkODE3YTk2ZTgwYjkyNzE1ZDEzMTgwYWNmZGU1ZjI2MzQ2ODAxZDcwYjFmOTY1YmY3ZWM5ZTUyMGJhNmI0ZTA4N2VmNmM1MDgzODk5Y2MxYmE0NGJiYWVhMjRiNGYyYzllZGYzNzhiMGViMTM2NDJkMTE5MjQzNGI0MjFj"
+    "payload": "eyJkb21haW4iOiJ3d3cuYnVpbGRlcnNjb3JlLnh5eiJ9",
+    "signature": "MHhiYmUwOWM4ZTljYTc1Y2RiNjUwODZkZDRmMTIwM2M4YzM2NmE1ZDlhOTNkMjYzNjU3M2VkOTRmZjU3NjAzNDY0MDk5Mjk1ODQ2MDNhZjA3MjJlNmI5YmQyNGE1YjFkMDllNWVmYTE2ZGYzYmQ4NWY3MmYxMWRjYTVhZDNhMzhmZTFi"
   },
   "frame": {
-    "version": "1",
+    "version": "1.1",
     "name": "Builder Rewards",
-    "homeUrl": "https://builderscore.xyz",
-    "iconUrl": "https://builderscore.xyz/images/frame-image.png",
-    "imageUrl": "https://builderscore.xyz/images/frame-image.png",
+    "homeUrl": "https://www.builderscore.xyz",
+    "iconUrl": "https://www.builderscore.xyz/images/frame-image.png",
+    "imageUrl": "https://www.builderscore.xyz/images/frame-image.png",
     "buttonTitle": "Build, Earn, Repeat.",
-    "splashImageUrl": "https://builderscore.xyz/images/splash.png",
+    "splashImageUrl": "https://www.builderscore.xyz/images/splash.png",
     "splashBackgroundColor": "#FFFFFF",
-    "webhookUrl": "https://builderscore.xyz/api/webhook"
+    "webhookUrl": "https://www.builderscore.xyz/api/webhook"
   }
 }
