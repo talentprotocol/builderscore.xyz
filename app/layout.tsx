@@ -15,25 +15,27 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const frame = {
+  version: "next",
+  imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
+  button: {
+    title: "Ship, Earn, Repeat.",
+    action: {
+      type: "launch_frame",
+      name: "Builder Rewards",
+      url: "https://www.builderscore.xyz",
+      splashImageUrl: "https://www.builderscore.xyz/images/splash.png",
+      splashBackgroundColor: "#000000",
+    },
+  },
+};
+
 export const metadata: Metadata = {
   title: "Builder Rewards",
   description: "Ship, Earn, Repeat.",
   other: {
-    'fc:frame': JSON.stringify({
-      version: 'next',
-      imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
-      button: {
-        title: "Builder Rewards",
-        action: {
-          type: 'launch_frame',
-          name: "Ship, Earn, Repeat.",
-          url: "https://www.builderscore.xyz",
-          splashImageUrl: "https://www.builderscore.xyz/images/splash.png",
-          splashBackgroundColor: "#000000"
-        },
-      },
-    })
-  }
+    "fc:frame": JSON.stringify(frame)
+  },
 };
 
 export default function RootLayout({

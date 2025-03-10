@@ -6,7 +6,7 @@ export default function Navbar() {
     <nav className="flex justify-between items-center mb-3">
       <div className="flex items-center gap-2 ml-1">
         <Image
-          src="/talent_protocol_icon_white.svg"
+          src="images/talent_protocol_icon_white.svg"
           alt="Talent Protocol"
           width={7}
           height={7}
