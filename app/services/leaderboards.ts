@@ -27,10 +27,14 @@ export async function getLeaderboards(params?: LeaderboardParams): Promise<Leade
   return response.json();
 }
 
-export async function getLeaderboardEntry(userId: string, grantId?: string): Promise<LeaderboardEntry> {
+export async function getLeaderboardEntry(userId: string, grantId?: string, sponsorSlug?: string): Promise<LeaderboardEntry> {
   const searchParams = new URLSearchParams();
   if (grantId) {
     searchParams.append('grant_id', grantId);
+  }
+
+  if (sponsorSlug) {
+    searchParams.append('sponsor_slug', sponsorSlug);
   }
 
   const queryString = searchParams.toString();

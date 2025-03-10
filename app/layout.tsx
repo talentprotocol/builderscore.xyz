@@ -5,7 +5,8 @@ import Navbar from "@/app/components/Navbar";
 import { FarcasterProvider } from "@/app/context/FarcasterContext";
 import { SponsorProvider } from "@/app/context/SponsorContext";
 import { GrantProvider } from "@/app/context/GrantContext";
-import FarcasterRender from "@/app/components/FarcasterRender";
+import UserStatus from "@/app/components/UserStatus";
+import { UserProvider } from "@/app/context/UserContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,11 +29,13 @@ export default function RootLayout({
         <FarcasterProvider>
           <SponsorProvider>
             <GrantProvider>
-              <div className="flex flex-col min-h-dvh h-dvh max-w-3xl mx-auto py-2 px-1">
-                <FarcasterRender />
-                <Navbar />
-                <main className="flex flex-col h-full">{children}</main>
-              </div>
+              <UserProvider>
+                <div className="flex flex-col min-h-dvh h-dvh max-w-3xl mx-auto py-2 px-1">
+                  {process.env.NODE_ENV === "development" && <UserStatus />}
+                  <Navbar />
+                  <main className="flex flex-col h-full">{children}</main>
+                </div>
+              </UserProvider>
             </GrantProvider>
           </SponsorProvider>
         </FarcasterProvider>

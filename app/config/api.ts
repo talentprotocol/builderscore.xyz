@@ -5,6 +5,9 @@ export const ENDPOINTS = {
   sponsors: '/v3/builder_grants/sponsors',
   leaderboards: '/v3/builder_grants/leaderboards',
   grants: '/v3/builder_grants/grants',
+  talent: {
+    profile: '/v2/search/advanced/passport_app__passports',
+  },
 } as const;
 
 export const DEFAULT_HEADERS = {

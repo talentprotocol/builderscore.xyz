@@ -7,12 +7,14 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const searchParams = request.nextUrl.searchParams;
     const grant_id = searchParams.get('grant_id');
+    const sponsor_slug = searchParams.get('sponsor_slug');
 
     const queryParams = new URLSearchParams({
       ...(grant_id && { grant_id }),
+      ...(sponsor_slug && { sponsor_slug }),
     });
 
     const response = await fetch(
@@ -30,7 +32,7 @@ export async function GET(
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
-      { error: `Failed to fetch leaderboard entry for user ${params.id}: ${error}` },
+      { error: `Failed to fetch leaderboard entry for user: ${error}` },
       { status: 500 }
     );
   }
