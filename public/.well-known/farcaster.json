@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "string",
-    "payload": "string",
-    "signature": "string"
+    "header": "eyJmaWQiOjIwNDQyLCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NDQ1Nzc2YzU4ZDZmZmI0NWQ5YjlmNmQ2ODI0NmU5ODVlMTgzMDI2NSJ9",
+    "payload": "eyJkb21haW4iOiJidWlsZGVyc2NvcmUueHl6In0",
+    "signature": "MHgwOTlmNWU1NWViODU2NGYwYzk2ZWVlNDUyMWNmNzE3NTY5OTdlNWIyZTE5Y2U1YzM5NzJkNTYxZjAyNzRmYjEwMTQ5ZWYzNWI5NTYxY2MzOTI5NTVmOTM2ZWM4Njk2MWE1ODk4NjU2"
   },
   "frame": {
     "version": "1",
@@ -12,7 +12,7 @@
     "imageUrl": "https://www.builderscore.xyz/images/frame-image.png",
     "buttonTitle": "Build, Earn, Repeat.",
     "splashImageUrl": "https://www.builderscore.xyz/images/splash.png",
-    "splashBackgroundColor": "#000000",
+    "splashBackgroundColor": "#FFFFFF",
     "webhookUrl": "https://www.builderscore.xyz/api/webhook"
   }
 }

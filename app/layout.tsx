@@ -25,7 +25,7 @@ const frame = {
       name: "Builder Rewards",
       url: "https://www.builderscore.xyz",
       splashImageUrl: "https://www.builderscore.xyz/images/splash.png",
-      splashBackgroundColor: "#000000",
+      splashBackgroundColor: "#FFFFFF",
     },
   },
 };
