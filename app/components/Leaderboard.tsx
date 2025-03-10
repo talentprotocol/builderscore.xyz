@@ -39,7 +39,8 @@ export default function Leaderboard({
         <LeaderboardRow 
           key={`${user.id}-${user.user.id}-${index}`} 
           leaderboardData={user} 
-          first={index === 0} 
+          first={index === 0}
+          last={index === leaderboardData.users.length - 1}
         />
       ))}
       {isLoadingMore && (

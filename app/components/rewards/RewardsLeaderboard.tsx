@@ -7,6 +7,7 @@ import { getLeaderboards } from "@/app/services/leaderboards";
 import { LeaderboardResponse } from "@/app/types/leaderboards";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrant } from "@/app/context/GrantContext";
+import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import SelectGrant from "@/app/components/SelectGrant";
 
 export default function RewardsLeaderboard() {
@@ -18,6 +19,7 @@ export default function RewardsLeaderboard() {
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardResponse>();
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const { userLeaderboard } = useLeaderboard();
 
   const fetchLeaderboard = async (page: number = 1, append: boolean = false) => {
     try {
@@ -73,7 +75,7 @@ export default function RewardsLeaderboard() {
       </div>
 
       {isLoading && (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center h-96">
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400" />
           </div>
@@ -86,15 +88,18 @@ export default function RewardsLeaderboard() {
         </div>
       )}
 
-      {!isLoading && leaderboardData &&
+      {!isLoading &&
+        leaderboardData &&
         leaderboardData?.users?.length > 0 &&
         !error && (
           <>
-            <LeaderboardRow
-              leaderboardData={leaderboardData!.users[0]}
-              isHighlighted={true}
-              className="mb-2"
-            />
+            {userLeaderboard && (
+              <LeaderboardRow
+                leaderboardData={userLeaderboard}
+                isHighlighted={true}
+                className="mb-2"
+              />
+            )}
             <Leaderboard
               leaderboardData={leaderboardData!}
               onLoadMore={handleLoadMore}

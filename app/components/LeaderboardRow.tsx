@@ -8,11 +8,13 @@ export default function LeaderboardRow(
     leaderboardData,
     isHighlighted = false,
     first = false,
+    last = false,
     className = "",
   }: {
     leaderboardData: LeaderboardEntry;
     isHighlighted?: boolean;
     first?: boolean;
+    last?: boolean;
     className?: string;
   }) {
     return (
@@ -22,6 +24,8 @@ export default function LeaderboardRow(
         rel="noopener noreferrer"
         className={`flex items-center justify-between py-2 px-3 pr-5 bg-neutral-900
           ${isHighlighted && "border border-neutral-800 rounded-lg"}
+          ${first && "rounded-t-lg"}
+          ${last && "rounded-b-lg"}
           ${!first && "border-t border-neutral-800"}
           ${className}`}
       >

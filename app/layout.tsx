@@ -5,8 +5,10 @@ import Navbar from "@/app/components/Navbar";
 import { FarcasterProvider } from "@/app/context/FarcasterContext";
 import { SponsorProvider } from "@/app/context/SponsorContext";
 import { GrantProvider } from "@/app/context/GrantContext";
+import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
 import UserStatus from "@/app/components/UserStatus";
 import { UserProvider } from "@/app/context/UserContext";
+import Link from "next/link";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,11 +32,27 @@ export default function RootLayout({
           <SponsorProvider>
             <GrantProvider>
               <UserProvider>
-                <div className="flex flex-col min-h-dvh h-dvh max-w-3xl mx-auto py-2 px-1">
-                  {process.env.NODE_ENV === "development" && <UserStatus />}
-                  <Navbar />
-                  <main className="flex flex-col h-full">{children}</main>
-                </div>
+                <LeaderboardProvider>
+                  <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-2 px-1">
+                    {process.env.NODE_ENV === "development" && <UserStatus />}
+                    <Navbar />
+                    <main className="flex flex-col h-full">{children}</main>
+
+                    <div className="py-6">
+                      <p className="text-center text-neutral-500 text-sm">
+                        <Link
+                          className="underline"
+                          href="https://talentprotocol.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Talent Protocol
+                        </Link>
+                        , {new Date().getFullYear()}
+                      </p>
+                    </div>
+                  </div>
+                </LeaderboardProvider>
               </UserProvider>
             </GrantProvider>
           </SponsorProvider>
