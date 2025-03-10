@@ -4,13 +4,13 @@ import { LeaderboardEntry } from '@/app/types/leaderboards';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
     const searchParams = request.nextUrl.searchParams;
-    const grant_id = searchParams.get('grant_id');
-    const sponsor_slug = searchParams.get('sponsor_slug');
+    const grant_id = searchParams.get("grant_id");
+    const sponsor_slug = searchParams.get("sponsor_slug");
 
     const queryParams = new URLSearchParams({
       ...(grant_id && { grant_id }),

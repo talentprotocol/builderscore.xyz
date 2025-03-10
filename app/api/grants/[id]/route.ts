@@ -4,17 +4,14 @@ import { Grant } from '@/app/types/grants';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
-    
-    const response = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.grants}/${id}`,
-      {
-        headers: DEFAULT_HEADERS,
-      }
-    );
+    const { id } = await params;
+
+    const response = await fetch(`${API_BASE_URL}${ENDPOINTS.grants}/${id}`, {
+      headers: DEFAULT_HEADERS,
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -24,7 +21,7 @@ export async function GET(
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
-      { error: `Failed to fetch grant with id ${params.id}: ${error}` },
+      { error: `Failed to fetch grant: ${error}` },
       { status: 500 }
     );
   }
