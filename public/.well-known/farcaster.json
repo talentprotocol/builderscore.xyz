@@ -8,10 +8,10 @@
     "version": "0.0.1",
     "name": "Builder Rewards",
     "homeUrl": "https://www.builderscore.xyz",
-    "iconUrl": "https://www.builderscore.xyz/images/splash.png",
+    "iconUrl": "https://www.builderscore.xyz/images/icon.png",
     "imageUrl": "https://www.builderscore.xyz/images/frame-image.png",
     "buttonTitle": "Build, Earn, Repeat.",
-    "splashImageUrl": "https://www.builderscore.xyz/images/splash.png",
+    "splashImageUrl": "https://www.builderscore.xyz/images/icon.png",
     "splashBackgroundColor": "#FFFFFF",
     "webhookUrl": "https://www.builderscore.xyz/api/webhook"
   }
