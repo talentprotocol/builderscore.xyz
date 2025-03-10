@@ -29,7 +29,9 @@ export default function Demo() {
         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
         <span className="text-xs text-green-500">Farcaster Ready</span>
       </div>
-      <span className="text-sm">User FID: {context ? context.user.fid : "Not Loaded"}</span>
+      <span className="text-xs text-green-500">
+        User FID: {context ? context.user.fid : "Not Loaded"}
+      </span>
     </div>
   );
 }

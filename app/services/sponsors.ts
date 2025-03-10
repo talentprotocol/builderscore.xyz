@@ -1,6 +1,6 @@
 import { Sponsor, SponsorsResponse } from "@/app/types/sponsors";
 
-export async function getAllSponsors(perPage?: number): Promise<SponsorsResponse> {
+export async function getSponsors(perPage?: number): Promise<SponsorsResponse> {
   const params = new URLSearchParams();
   if (perPage) {
     params.append('per_page', perPage.toString());

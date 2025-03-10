@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Sponsor } from '@/app/types/sponsors';
-import { getAllSponsors } from '@/app/services/sponsors';
+import { getSponsors } from '@/app/services/sponsors';
 
 interface SponsorContextType {
   selectedSponsor: Sponsor | null;
@@ -26,7 +26,7 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await getAllSponsors();
+        const response = await getSponsors();
         setSponsors(response.sponsors);
       } catch (err) {
         setError('Failed to fetch sponsors');

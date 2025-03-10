@@ -6,9 +6,12 @@ import LeaderboardRow from "@/app/components/LeaderboardRow";
 import { getLeaderboards } from "@/app/services/leaderboards";
 import { LeaderboardResponse } from "@/app/types/leaderboards";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { useGrant } from "@/app/context/GrantContext";
+import SelectGrant from "@/app/components/SelectGrant";
 
 export default function RewardsLeaderboard() {
   const { selectedSponsorSlug } = useSponsor();
+  const { selectedGrant } = useGrant();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +28,8 @@ export default function RewardsLeaderboard() {
       const response = await getLeaderboards({
         per_page: 20,
         page,
-        sponsor_slug: selectedSponsorSlug === "global" ? undefined : selectedSponsorSlug
+        sponsor_slug: selectedSponsorSlug === "global" ? undefined : selectedSponsorSlug,
+        grant_id: selectedGrant?.id?.toString()
       });
 
       setLeaderboardData(prevData => {
@@ -52,7 +56,7 @@ export default function RewardsLeaderboard() {
     setCurrentPage(1);
     fetchLeaderboard();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsorSlug]);
+  }, [selectedSponsorSlug, selectedGrant]);
 
   const handleLoadMore = () => {
     if (!isLoadingMore && hasMore) {
@@ -64,7 +68,10 @@ export default function RewardsLeaderboard() {
 
   return (
     <div className="h-full flex flex-col mt-8">
-      <h2 className="text-sm font-semibold ml-1 mb-3">Leaderboard</h2>
+      <div className="flex items-end justify-between mb-3">
+        <h2 className="text-sm font-semibold ml-1">Leaderboard</h2>
+        <SelectGrant />
+      </div>
 
       {isLoading && (
         <div className="flex items-center justify-center h-full">
@@ -80,21 +87,23 @@ export default function RewardsLeaderboard() {
         </div>
       )}
 
-      {leaderboardData && leaderboardData?.users?.length > 0 && !error && (
-        <>
-          <LeaderboardRow
-            leaderboardData={leaderboardData!.users[0]}
-            isHighlighted={true}
-            className="mb-2"
-          />
-          <Leaderboard 
-            leaderboardData={leaderboardData!}
-            onLoadMore={handleLoadMore}
-            hasMore={hasMore}
-            isLoadingMore={isLoadingMore}
-          />
-        </>
-      )}
+      {!isLoading && leaderboardData &&
+        leaderboardData?.users?.length > 0 &&
+        !error && (
+          <>
+            <LeaderboardRow
+              leaderboardData={leaderboardData!.users[0]}
+              isHighlighted={true}
+              className="mb-2"
+            />
+            <Leaderboard
+              leaderboardData={leaderboardData!}
+              onLoadMore={handleLoadMore}
+              hasMore={hasMore}
+              isLoadingMore={isLoadingMore}
+            />
+          </>
+        )}
     </div>
   );
 }

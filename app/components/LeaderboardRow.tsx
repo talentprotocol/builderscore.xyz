@@ -38,6 +38,12 @@ export default function LeaderboardRow(
               {leaderboardData.user.passport.passport_profile.display_name}{" "}
               <span className="text-neutral-400">
                 {leaderboardData.user.passport.score}
+
+                {process.env.NODE_ENV === "development" && (
+                  <span className="ml-5 text-green-500 text-xs">
+                    ID: {leaderboardData.id}
+                  </span>
+                )}
               </span>
             </p>
             <p className="text-neutral-400">
