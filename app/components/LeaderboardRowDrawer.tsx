@@ -30,9 +30,14 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
               height={80}
               className="rounded-full object-cover h-[80px] w-[80px] mb-2"
             />
-            <p className="text-white text-lg font-bold mb-2">
-              {selectedBuilder?.user?.passport?.passport_profile
-                ?.display_name || "Talent Builder"}
+            <p className="text-white text-lg mb-2">
+              <span className="font-mono text-neutral-500 mr-2">
+                #{selectedBuilder?.leaderboard_position}
+              </span>
+              <span className="font-semibold">
+                {selectedBuilder?.user?.passport?.passport_profile
+                  ?.display_name || "Talent Builder"}
+              </span>
             </p>
 
             <div className="bg-neutral-900 rounded-lg border border-neutral-800 w-full">

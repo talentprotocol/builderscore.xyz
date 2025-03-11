@@ -62,7 +62,7 @@ export default function HowToDrawer() {
                     href={step.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white hover:text-neutral-300 transition-colors"
+                    className="text-white hover:text-neutral-500"
                   >
                     {step.text}
                   </a>
