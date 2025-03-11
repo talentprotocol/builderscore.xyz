@@ -3,9 +3,7 @@
 import { Button } from "@/app/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerPortal,
   DrawerTitle,
@@ -14,11 +12,18 @@ import {
 import { useState } from "react";
 
 const EARNING_STEPS = [
-  "Create a Talent Protocol account and connect your Farcaster account.",
-  "Connect your GitHub account and crypto wallets to start earning rewards.",
-  "Achieve a Builder Score above 40 and get verified as a human.",
-  "Deploy and ship software directly on-chain to earn points.",
-  "Get paid in $TALENT on Base network every Monday based on your contributions.",
+  {
+    text: "Connect GitHub on Talent Protocol",
+    url: "https://app.talentprotocol.com/settings/connected_accounts",
+  },
+  {
+    text: "Get your Human Checkmark",
+    url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
+  },
+  {
+    text: "Increase your Builder Score to 40+",
+    url: "https://app.talentprotocol.com/profile",
+  },
 ];
 
 export default function HowToDrawer() {
@@ -40,29 +45,31 @@ export default function HowToDrawer() {
             <DrawerTitle className="text-white">How to Earn</DrawerTitle>
           </DrawerHeader>
 
-          <div className="p-4 pt-2">
+          <div className="px-4 pb-16">
+            <p className="text-neutral-500 mb-5">
+              Talent Protocol distributes weekly rewards to builders that own
+              verified contracts on Base or contribute to public repositories on
+              Github. Follow the steps below to be eligible for Builder Rewards:
+            </p>
+            
             <ul className="list-none space-y-6 text-sm">
               {EARNING_STEPS.map((step, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <div className="shrink-0 flex items-center justify-center w-5 h-5 bg-neutral-700 rounded-full text-xs font-medium">
                     {index + 1}
                   </div>
-                  <p>{step}</p>
+                  <a 
+                    href={step.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white hover:text-neutral-300 transition-colors"
+                  >
+                    {step.text}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
-
-          <DrawerFooter className="pt-2">
-            <DrawerClose asChild>
-              <Button
-                size="lg"
-                className="bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 cursor-pointer"
-              >
-                Close
-              </Button>
-            </DrawerClose>
-          </DrawerFooter>
         </DrawerContent>
       </DrawerPortal>
     </Drawer>

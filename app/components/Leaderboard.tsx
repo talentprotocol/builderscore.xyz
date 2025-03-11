@@ -1,4 +1,4 @@
-import { LeaderboardResponse } from "@/app/types/leaderboards";
+import { LeaderboardEntry, LeaderboardResponse } from "@/app/types/leaderboards";
 import LeaderboardRow from "@/app/components/LeaderboardRow";
 import { useCallback, useEffect } from "react";
 
@@ -7,11 +7,13 @@ export default function Leaderboard({
   onLoadMore,
   hasMore,
   isLoadingMore,
+  onBuilderSelect,
 }: {
   leaderboardData: LeaderboardResponse;
   onLoadMore: () => void;
   hasMore: boolean;
   isLoadingMore: boolean;
+  onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
   const handleScroll = useCallback(() => {
     if (isLoadingMore || !hasMore) return;
@@ -32,20 +34,19 @@ export default function Leaderboard({
   }, [handleScroll]);
 
   return (
-    <div 
-      className="border border-neutral-800 bg-neutral-900 rounded-lg"
-    >
+    <div className="border border-neutral-800 bg-neutral-900 rounded-lg">
       {leaderboardData.users.map((user, index) => (
-        <LeaderboardRow 
-          key={`${user.id}-${user.user.id}-${index}`} 
-          leaderboardData={user} 
+        <LeaderboardRow
+          key={`${user.id}-${user.user.id}-${index}`}
+          leaderboardData={user}
           first={index === 0}
           last={index === leaderboardData.users.length - 1}
+          onBuilderSelect={onBuilderSelect}
         />
       ))}
       {isLoadingMore && (
         <div className="flex items-center justify-center p-4">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400" />
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-500" />
         </div>
       )}
     </div>

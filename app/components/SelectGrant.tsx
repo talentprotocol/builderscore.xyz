@@ -25,7 +25,7 @@ export default function SelectGrant() {
     if (selectedSponsorSlug === "global") {
       return (
         <div className="flex items-start gap-2">
-          <span className="text-neutral-400">{grant.sponsor.name}</span>
+          <span className="text-neutral-500">{grant.sponsor.name}</span>
           <span>{startDate} - {endDate}</span>
         </div>
       );

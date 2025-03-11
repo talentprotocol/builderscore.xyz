@@ -5,11 +5,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatNumber(num: number): string {
-  return new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(num);
+// TODO: Get the number of decimals to use from the API
+export function formatNumber(x: number, decimals: number = 0): string {
+  return x.toFixed(decimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export function formatDate(date: string): string {

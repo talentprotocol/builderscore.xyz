@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import Leaderboard from "@/app/components/Leaderboard";
 import LeaderboardRow from "@/app/components/LeaderboardRow";
 import { getLeaderboards } from "@/app/services/leaderboards";
-import { LeaderboardResponse } from "@/app/types/leaderboards";
+import { LeaderboardEntry, LeaderboardResponse } from "@/app/types/leaderboards";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import SelectGrant from "@/app/components/SelectGrant";
+import LeaderboardRowDrawer from "@/app/components/LeaderboardRowDrawer";
 
 export default function RewardsLeaderboard() {
   const { selectedSponsorSlug } = useSponsor();
@@ -20,6 +21,7 @@ export default function RewardsLeaderboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const { userLeaderboard } = useLeaderboard();
+  const [selectedBuilder, setSelectedBuilder] = useState<LeaderboardEntry | null>(null);
 
   const fetchLeaderboard = async (page: number = 1, append: boolean = false) => {
     try {
@@ -77,14 +79,14 @@ export default function RewardsLeaderboard() {
       {isLoading && (
         <div className="flex items-center justify-center h-96">
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400" />
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-500" />
           </div>
         </div>
       )}
 
       {error && (
         <div className="flex items-center justify-center h-full">
-          <p className="text-neutral-400">Error loading Leaderboard.</p>
+          <p className="text-neutral-500">Error loading Leaderboard.</p>
         </div>
       )}
 
@@ -98,6 +100,7 @@ export default function RewardsLeaderboard() {
                 leaderboardData={userLeaderboard}
                 isHighlighted={true}
                 className="mb-2"
+                onBuilderSelect={setSelectedBuilder}
               />
             )}
             <Leaderboard
@@ -105,6 +108,11 @@ export default function RewardsLeaderboard() {
               onLoadMore={handleLoadMore}
               hasMore={hasMore}
               isLoadingMore={isLoadingMore}
+              onBuilderSelect={setSelectedBuilder}
+            />
+            <LeaderboardRowDrawer
+              selectedBuilder={selectedBuilder}
+              onClose={() => setSelectedBuilder(null)}
             />
           </>
         )}
