@@ -8,7 +8,7 @@ import sdk from "@farcaster/frame-sdk";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
   user: {
-    fid: 84374982473924732,
+    fid: 856355,
     username: "simao",
     displayName: "Simão",
   },

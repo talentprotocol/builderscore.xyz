@@ -64,7 +64,7 @@ export default function RewardsHeader() {
         <div className="flex flex-col items-center gap-2 mt-2">
           {shouldShowUserLeaderboard ? (
             <div className="flex items-end gap-2 font-mono">
-              <span className="text-4x font-semibold">
+              <span className="text-4xl font-semibold">
                 {formatNumber(parseFloat(userLeaderboard.reward_amount))}
               </span>
               <span className="text-neutral-500">$TALENT</span>
