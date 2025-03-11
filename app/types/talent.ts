@@ -37,4 +37,5 @@ export type PassportCredential = {
 
 export type TalentProfileResponse = {
   passport: TalentProfile | null;
+  hasGithubCredential: boolean;
 }; 

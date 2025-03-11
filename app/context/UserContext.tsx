@@ -23,6 +23,7 @@ interface UserContextType {
   error: Error | null;
   talentProfile: TalentProfile | null;
   frameContext: FrameContext | undefined;
+  hasGithubCredential: boolean;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -30,6 +31,7 @@ const UserContext = createContext<UserContextType>({
   error: null,
   talentProfile: null,
   frameContext: undefined,
+  hasGithubCredential: false,
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
@@ -37,6 +39,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<Error | null>(null);
   const [talentProfile, setTalentProfile] = useState<TalentProfile | null>(null);
   const [frameContext, setFrameContext] = useState<FrameContext>();
+  const [hasGithubCredential, setHasGithubCredential] = useState(false);
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
   useEffect(() => {
@@ -65,10 +68,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       try {
         const response = await fetchUserByFid(frameContext.user.fid);
         setTalentProfile(response.passport || null);
+        setHasGithubCredential(response.hasGithubCredential || false);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err : new Error("Failed to fetch user data"));
         setTalentProfile(null);
+        setHasGithubCredential(false);
       } finally {
         setIsLoading(false);
       }
@@ -78,7 +83,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, [frameContext?.user?.fid]);
 
   return (
-    <UserContext.Provider value={{ isLoading, error, talentProfile, frameContext }}>
+    <UserContext.Provider value={{ isLoading, error, talentProfile, frameContext, hasGithubCredential }}>
       {children}
     </UserContext.Provider>
   );

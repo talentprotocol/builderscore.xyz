@@ -10,7 +10,8 @@ import {
 } from "@/app/components/ui/drawer";
 import { Button } from "@/app/components/ui/button";
 import { formatNumber } from "../lib/utils";
-
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
   selectedBuilder: LeaderboardEntry | null;
   onClose: () => void;
@@ -18,6 +19,11 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
       <DrawerPortal>
+        <VisuallyHidden asChild>
+          <DialogTitle>
+            {selectedBuilder?.user.passport.passport_profile.display_name || "Talent Builder"}
+          </DialogTitle>
+        </VisuallyHidden>
         <DrawerContent className="bg-neutral-900">
           {selectedBuilder && selectedBuilder.user && selectedBuilder.user.passport && (
             <>

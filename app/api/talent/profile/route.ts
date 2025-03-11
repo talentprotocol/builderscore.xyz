@@ -75,7 +75,15 @@ export async function GET(request: NextRequest) {
 
       if (farcasterCredential) {
         const matchingPassport: TalentProfile = passport;
-        return NextResponse.json({ passport: matchingPassport });
+
+        const hasGithubCredential = credentialsData.passport_credentials.some(
+          (cred: PassportCredential) => cred.type === "github"
+        );
+
+        return NextResponse.json({ 
+          passport: matchingPassport,
+          hasGithubCredential 
+        });
       }
     }
 
