@@ -1,6 +1,6 @@
 import Link from "next/link";
 import HowToDrawer from "@/app/components/HowToDrawer";
-import { Button } from "./ui/button";
+import { Button } from "@/app/components/ui/button";
 
 export default function RewardsActions() {
   return (

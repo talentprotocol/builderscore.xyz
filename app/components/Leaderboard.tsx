@@ -1,5 +1,5 @@
 import { LeaderboardResponse } from "@/app/types/leaderboards";
-import LeaderboardRow from "./LeaderboardRow";
+import LeaderboardRow from "@/app/components/LeaderboardRow";
 import { useCallback, useEffect } from "react";
 
 export default function Leaderboard({
