@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
-import { TalentProfileResponse } from '@/app/types/talent';
+import { PassportCredential, TalentProfile } from '@/app/types/talent';
 
+// TODO: Until we ensure that the search API returns the Profile for a given FID,
+// we need to fetch the credentials for each passport and match the FID.
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const fid = searchParams.get("fid");
@@ -30,7 +32,7 @@ export async function GET(request: NextRequest) {
       )
       .join("&");
 
-    const response = await fetch(
+    const profileResponse = await fetch(
       `${API_BASE_URL}${ENDPOINTS.talent.profile}?${queryString}`,
       {
         method: "GET",
@@ -38,12 +40,46 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    if (!response.ok) {
-      throw new Error(`Talent Protocol API error: ${response.statusText}`);
+    if (!profileResponse.ok) {
+      throw new Error(`Talent Protocol API error: ${profileResponse.statusText}`);
     }
 
-    const data: TalentProfileResponse = await response.json();
-    return NextResponse.json(data);
+    const profileData = await profileResponse.json();
+    
+    if (!profileData.passports?.length) {
+      return NextResponse.json({ passport: null });
+    }
+
+    for (const passport of profileData.passports) {
+      const credentialsResponse = await fetch(
+        `${API_BASE_URL}${ENDPOINTS.talent.credentials}?passport_id=${passport.passport_id}`,
+        {
+          method: "GET",
+          headers: DEFAULT_HEADERS,
+        }
+      );
+
+      if (!credentialsResponse.ok) {
+        continue;
+      }
+
+      const credentialsData = await credentialsResponse.json();
+
+      const farcasterCredential = credentialsData.passport_credentials.find(
+        (cred: PassportCredential) => {
+          if (cred.type !== "farcaster") return false;
+          const fids = cred.value.replace('FID: ', '').split(',').map(f => f.trim());
+          return fids.includes(fid);
+        }
+      );
+
+      if (farcasterCredential) {
+        const matchingPassport: TalentProfile = passport;
+        return NextResponse.json({ passport: matchingPassport });
+      }
+    }
+
+    return NextResponse.json({ passport: null });
   } catch (error) {
     return NextResponse.json(
       { error: `Failed to fetch Talent Protocol profile: ${error}` },

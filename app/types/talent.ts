@@ -26,18 +26,15 @@ export type TalentProfile = {
   verified_wallets: string[];
 };
 
+export type PassportCredential = {
+  id: number;
+  type: string;
+  value: string;
+  verified: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
 export type TalentProfileResponse = {
-  passports: TalentProfile[];
-  pagination: {
-    current_page: number;
-    last_page: number;
-    total: number;
-    total_for_page: number;
-    point_in_time_id: string | null;
-    search_after: string | null;
-  };
-  cache: {
-    cache_used: boolean;
-    cache_key: string | null;
-  };
+  passport: TalentProfile | null;
 }; 

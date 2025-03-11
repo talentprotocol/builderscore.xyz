@@ -7,6 +7,7 @@ export const ENDPOINTS = {
   grants: '/v3/builder_grants/grants',
   talent: {
     profile: '/v2/search/advanced/passport_app__passports',
+    credentials: '/v1/passport_credentials',
   },
 } as const;
 

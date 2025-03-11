@@ -64,7 +64,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
       try {
         const response = await fetchUserByFid(frameContext.user.fid);
-        setTalentProfile(response.passports[0] || null);
+        setTalentProfile(response.passport || null);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err : new Error("Failed to fetch user data"));
