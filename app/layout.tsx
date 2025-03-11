@@ -49,7 +49,7 @@ export default function RootLayout({
           <GrantProvider>
             <UserProvider>
               <LeaderboardProvider>
-                <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-2 px-1">
+                <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-2 px-4">
                   {process.env.NODE_ENV === "development" && <UserStatus />}
                   <Navbar />
                   <main className="flex flex-col h-full">{children}</main>
