@@ -2,12 +2,12 @@ export const API_BASE_URL = process.env.TALENT_PROTOCOL_API_URL;
 const API_KEY = process.env.TALENT_PROTOCOL_API_KEY;
 
 export const ENDPOINTS = {
-  sponsors: '/v3/builder_grants/sponsors',
-  leaderboards: '/v3/builder_grants/leaderboards',
-  grants: '/v3/builder_grants/grants',
+  sponsors: '/builder_grants/sponsors',
+  leaderboards: '/builder_grants/leaderboards',
+  grants: '/builder_grants/grants',
   talent: {
-    profile: '/v2/search/advanced/passport_app__passports',
-    credentials: '/v1/passport_credentials',
+    profile: '/api/v2/search/advanced/passport_app__passports',
+    credentials: '/api/v1/passport_credentials',
   },
 } as const;
 
