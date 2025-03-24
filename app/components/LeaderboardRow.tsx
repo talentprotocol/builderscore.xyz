@@ -23,7 +23,7 @@ export default function LeaderboardRow({
     <div
       onClick={() => onBuilderSelect?.(leaderboardData)}
       className={`flex items-center justify-between py-2 px-3 pr-5 bg-neutral-900 cursor-pointer
-        ${isHighlighted && "border border-primary rounded-lg"}
+        ${isHighlighted && "border border-white rounded-lg"}
         ${first && "rounded-t-lg"}
         ${last && "rounded-b-lg"}
         ${!first && "border-t border-neutral-800"}
