@@ -6,6 +6,8 @@ export interface Grant {
   token_ticker: string;
   total_builders: number;
   avg_builder_score: number;
+  track_type: "intermediate" | "final";
+  tracked: true;
   sponsor: {
     id: number;
     name: string;

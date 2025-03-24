@@ -36,6 +36,7 @@ interface User {
 export interface LeaderboardEntry {
   id: number;
   leaderboard_position: number;
+  ranking_change: number;
   reward_amount: string;
   user: User;
 }

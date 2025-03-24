@@ -4,10 +4,26 @@ import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { format } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
+import { useEffect } from "react";
 
 export default function SelectGrant() {
   const { grants, selectedGrant, setSelectedGrant, isLoading } = useGrant();
   const { selectedSponsorSlug } = useSponsor();
+
+  useEffect(() => {
+    if (!selectedGrant && !isLoading && grants.length > 0) {
+      const intermediateGrants = grants.filter(grant => grant.track_type === "intermediate");
+      
+      if (intermediateGrants.length > 0) {
+        const sortedGrants = [...intermediateGrants].sort((a, b) => 
+          new Date(a.end_date).getTime() - new Date(b.end_date).getTime()
+        );
+        
+        setSelectedGrant(sortedGrants[0]);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, grants.length]);
 
   if (isLoading) {
     return (

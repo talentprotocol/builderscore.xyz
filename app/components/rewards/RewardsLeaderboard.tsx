@@ -69,10 +69,17 @@ export default function RewardsLeaderboard() {
     }
   };
 
+  const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
+
   return (
     <div className="h-full flex flex-col mt-8">
       <div className="flex items-end justify-between mb-3">
-        <h2 className="text-sm font-semibold ml-1">Leaderboard</h2>
+        <h2 className="text-sm font-semibold ml-1">
+          Leaderboard
+          <span className="text-amber-600 ml-2 font-normal">
+            {isIntermediateGrant && "Provisional"}
+          </span>
+        </h2>
         <SelectGrant />
       </div>
 

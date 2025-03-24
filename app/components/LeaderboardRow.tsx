@@ -31,6 +31,15 @@ export default function LeaderboardRow({
         <p className="text-neutral-500 text-xs min-w-6 font-mono">
           #{leaderboardData.leaderboard_position}
         </p>
+
+        <span className={`min-w-8 text-xs ${leaderboardData.ranking_change === null ? 'text-neutral-500' : leaderboardData.ranking_change < 0 ? 'text-red-500' : 'text-green-500'}`}>
+          {leaderboardData.ranking_change !== null ? (
+            leaderboardData.ranking_change < 0 ? `↓ ${leaderboardData.ranking_change}` : `↑ ${leaderboardData.ranking_change}`
+          ) : (
+            '-'
+          )}
+        </span>
+
         <div className="flex items-center gap-4">
           <Image
             src={leaderboardData.user.profile_picture_url}
