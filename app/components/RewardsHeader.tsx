@@ -17,9 +17,7 @@ export default function RewardsHeader() {
     return acc;
   }, {} as Record<string, number>);
 
-  const avgBuildersPerGrant = grantsToUse.length ? 
-    Math.round(grantsToUse.reduce((sum, grant) => sum + grant.total_builders, 0) / grantsToUse.length) : 
-    0;
+  const totalRewardedBuilders = grantsToUse.reduce((sum, grant) => sum + grant.total_builders, 0);
 
   const { weightedScore, totalBuilders } = grantsToUse.reduce((acc, grant) => {
     return {
@@ -48,7 +46,10 @@ export default function RewardsHeader() {
     <div className="flex flex-col gap-2">
       {isIntermediateGrant && (
         <div className="bg-amber-800/60 text-amber-200 text-xs rounded-lg px-3 py-1 animate-pulse">
-          <span className="font-semibold">{getTimeRemaining(selectedGrant.end_date)}</span> to Earn Rewards - Ends {formatDate(selectedGrant.end_date)}
+          <span className="font-semibold">
+            {getTimeRemaining(selectedGrant.end_date)}
+          </span>{" "}
+          to Earn Rewards - Ends {formatDate(selectedGrant.end_date)}
         </div>
       )}
 
@@ -83,7 +84,10 @@ export default function RewardsHeader() {
             {shouldShowUserLeaderboard ? (
               <div className="flex items-end gap-2 font-mono">
                 <span className="text-4xl font-semibold">
-                  {formatNumber(parseFloat(userLeaderboard.reward_amount), TOKEN_DECIMALS[PLACEHOLDER_TOKEN])}
+                  {formatNumber(
+                    parseFloat(userLeaderboard.reward_amount),
+                    TOKEN_DECIMALS[PLACEHOLDER_TOKEN]
+                  )}
                 </span>
                 <span className="text-neutral-500">{PLACEHOLDER_TOKEN}</span>
               </div>
@@ -103,16 +107,12 @@ export default function RewardsHeader() {
         <div className="flex justify-evenly border-t border-neutral-800 p-4">
           <div className="flex flex-col items-center justify-between">
             <p className="text-neutral-500 text-sm">
-              {shouldShowUserLeaderboard
-                ? "Your Rank"
-                : selectedGrant
-                ? "Total Builders"
-                : "Avg. Builders"}
+              {shouldShowUserLeaderboard ? "Your Rank" : "Builders Rewarded"}
             </p>
             <p className="text-2xl font-mono font-semibold">
               {shouldShowUserLeaderboard
                 ? `#${userLeaderboard.leaderboard_position || "-"}`
-                : avgBuildersPerGrant}
+                : totalRewardedBuilders}
             </p>
           </div>
 
