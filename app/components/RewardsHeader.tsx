@@ -3,7 +3,7 @@
 import { useGrant } from '@/app/context/GrantContext';
 import { useLeaderboard } from '@/app/context/LeaderboardContext';
 import ToggleLeaderboard from '@/app/components/ToggleLeaderboard';
-import { formatNumber, formatDate, getTimeRemaining } from '@/app/lib/utils';
+import { formatNumber, formatDate, getTimeRemaining, TOKEN_DECIMALS } from '@/app/lib/utils';
 
 export default function RewardsHeader() {
   const { grants, selectedGrant, isLoading } = useGrant();
@@ -41,6 +41,8 @@ export default function RewardsHeader() {
   }
 
   const shouldShowUserLeaderboard = showUserLeaderboard && userLeaderboard;
+
+  const PLACEHOLDER_TOKEN = "$TALENT";
 
   return (
     <div className="flex flex-col gap-2">
@@ -81,15 +83,15 @@ export default function RewardsHeader() {
             {shouldShowUserLeaderboard ? (
               <div className="flex items-end gap-2 font-mono">
                 <span className="text-4xl font-semibold">
-                  {formatNumber(parseFloat(userLeaderboard.reward_amount))}
+                  {formatNumber(parseFloat(userLeaderboard.reward_amount), TOKEN_DECIMALS[PLACEHOLDER_TOKEN])}
                 </span>
-                <span className="text-neutral-500">$TALENT</span>
+                <span className="text-neutral-500">{PLACEHOLDER_TOKEN}</span>
               </div>
             ) : (
               Object.entries(rewardsByTicker).map(([ticker, amount]) => (
                 <div key={ticker} className="flex items-end gap-2 font-mono">
                   <span className="text-4xl font-semibold">
-                    {formatNumber(amount)}
+                    {formatNumber(amount, TOKEN_DECIMALS[ticker])}
                   </span>
                   <span className="text-neutral-500">{ticker}</span>
                 </div>

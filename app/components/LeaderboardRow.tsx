@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { LeaderboardEntry } from "@/app/types/leaderboards";
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, TOKEN_DECIMALS } from "@/app/lib/utils";
 
 export default function LeaderboardRow({
   leaderboardData,
@@ -17,6 +17,8 @@ export default function LeaderboardRow({
   className?: string;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
+  const PLACEHOLDER_TOKEN = "$TALENT";
+
   return (
     <div
       onClick={() => onBuilderSelect?.(leaderboardData)}
@@ -32,12 +34,20 @@ export default function LeaderboardRow({
           #{leaderboardData.leaderboard_position}
         </p>
 
-        <span className={`min-w-8 text-xs ${leaderboardData.ranking_change === null ? 'text-neutral-500' : leaderboardData.ranking_change < 0 ? 'text-red-500' : 'text-green-500'}`}>
-          {leaderboardData.ranking_change !== null ? (
-            leaderboardData.ranking_change < 0 ? `↓ ${leaderboardData.ranking_change}` : `↑ ${leaderboardData.ranking_change}`
-          ) : (
-            '-'
-          )}
+        <span
+          className={`min-w-8 text-xs ${
+            leaderboardData.ranking_change === null
+              ? "text-neutral-500"
+              : leaderboardData.ranking_change < 0
+              ? "text-red-500"
+              : "text-green-500"
+          }`}
+        >
+          {leaderboardData.ranking_change !== null
+            ? leaderboardData.ranking_change < 0
+              ? `↓ ${leaderboardData.ranking_change}`
+              : `↑ ${leaderboardData.ranking_change}`
+            : "-"}
         </span>
 
         <div className="flex items-center gap-4">
@@ -56,7 +66,7 @@ export default function LeaderboardRow({
           <div>
             <p className="text-white">
               {leaderboardData.user.passport.passport_profile.display_name}
-              
+
               {process.env.NODE_ENV === "development" && (
                 <span className="ml-5 text-green-500 text-xs">
                   ID: {leaderboardData.id}
@@ -68,9 +78,14 @@ export default function LeaderboardRow({
       </div>
       <p className="text-white">
         <span className="font-mono">
-          {formatNumber(parseFloat(leaderboardData.reward_amount))}
+          {formatNumber(
+            parseFloat(leaderboardData.reward_amount),
+            TOKEN_DECIMALS[PLACEHOLDER_TOKEN]
+          )}
         </span>
-        <span className="text-neutral-500 ml-2 text-xs">$TALENT</span>
+        <span className="text-neutral-500 ml-2 text-xs">
+          {PLACEHOLDER_TOKEN}
+        </span>
       </p>
     </div>
   );

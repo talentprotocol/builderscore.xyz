@@ -9,13 +9,16 @@ import {
   DrawerPortal,
 } from "@/app/components/ui/drawer";
 import { Button } from "@/app/components/ui/button";
-import { formatNumber } from "../lib/utils";
+import { formatNumber, TOKEN_DECIMALS } from "../lib/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+
 export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
   selectedBuilder: LeaderboardEntry | null;
   onClose: () => void;
 }) {
+  const PLACEHOLDER_TOKEN = "$TALENT";
+
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
       <DrawerPortal>
@@ -60,11 +63,12 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                       <p className="text-2xl font-mono">
                         <span className="font-semibold">
                           {formatNumber(
-                            parseFloat(selectedBuilder.reward_amount || "0")
+                            parseFloat(selectedBuilder.reward_amount || "0"),
+                            TOKEN_DECIMALS[PLACEHOLDER_TOKEN]
                           )}
                         </span>
                         <span className="text-neutral-500 text-sm ml-2">
-                          $TALENT
+                          {PLACEHOLDER_TOKEN}
                         </span>
                       </p>
                     </div>

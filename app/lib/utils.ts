@@ -5,9 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// TODO: Get the number of decimals to use from the API
+export const TOKEN_DECIMALS: Record<string, number> = {
+  $TALENT: 0,
+  ETH: 18,
+};
+
 export function formatNumber(x: number, decimals: number = 0): string {
-  return x.toFixed(decimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const parts = x.toFixed(decimals).split('.');
+  const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
 }
 
 export function formatDate(date: string): string {
