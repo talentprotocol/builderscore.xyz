@@ -38,6 +38,8 @@ export interface LeaderboardEntry {
   leaderboard_position: number;
   ranking_change: number;
   reward_amount: string;
+  reward_transaction_hash: string | null;
+  summary: string | null;
   user: User;
 }
 

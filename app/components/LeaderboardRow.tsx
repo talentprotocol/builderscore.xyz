@@ -60,7 +60,7 @@ export default function LeaderboardRow({
             width={isHighlighted ? 48 : 36}
             height={isHighlighted ? 48 : 36}
             className={`rounded-full object-cover h-[36px] w-[36px] ${
-              isHighlighted && "border border-primary h-[48px] w-[48px]"
+              isHighlighted && "h-[48px] w-[48px] ml-[-6px]"
             }`}
           />
           <div>

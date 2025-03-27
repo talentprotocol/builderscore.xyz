@@ -43,7 +43,7 @@ export default function RewardsHeader() {
   const PLACEHOLDER_TOKEN = "$TALENT";
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {isIntermediateGrant && (
         <div className="bg-amber-800/60 text-amber-200 text-xs rounded-lg px-3 py-1 animate-pulse">
           <span className="font-semibold">

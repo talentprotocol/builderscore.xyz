@@ -42,9 +42,9 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                     }
                     width={80}
                     height={80}
-                    className="rounded-full object-cover h-[80px] w-[80px] mb-2"
+                    className="rounded-full object-cover h-[80px] w-[80px] mb-3"
                   />
-                  <p className="text-white text-lg mb-2">
+                  <p className="text-white text-lg mb-3">
                     <span
                       className={`mr-4 ${
                         selectedBuilder.ranking_change === null
@@ -71,7 +71,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                   </p>
 
                   <div className="bg-neutral-900 rounded-lg border border-neutral-800 w-full">
-                    <div className="flex justify-around border-neutral-800 p-4">
+                    <div className="flex justify-around p-4">
                       <div className="flex flex-col items-center justify-between">
                         <p className="text-neutral-500 text-sm">
                           Builder Score
@@ -99,6 +99,17 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                       </div>
                     </div>
                   </div>
+
+                  {selectedBuilder.summary && (
+                    <div className="bg-neutral-900 rounded-lg border border-neutral-800 w-full p-4 mt-3">
+                      <div className="flex flex-col">
+                        <p className="text-neutral-500 text-sm mb-1">Summary</p>
+                        <p className="">
+                          {selectedBuilder.summary}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <DrawerFooter className="pt-0">
