@@ -26,10 +26,10 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const fetchUserLeaderboard = async () => {
-      if (frameContext?.user?.fid && talentProfile?.passport_id) {
+      if (frameContext?.user?.fid && talentProfile?.id) {
         try {
           const entry = await getLeaderboardEntry(
-            talentProfile.passport_id.toString(),
+            talentProfile.id.toString(),
             selectedGrant?.id?.toString(),
             selectedSponsor?.slug
           );
@@ -41,7 +41,7 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
     };
 
     fetchUserLeaderboard();
-  }, [frameContext?.user?.fid, selectedGrant?.id, selectedSponsor?.slug, talentProfile?.passport_id]);
+  }, [frameContext?.user?.fid, selectedGrant?.id, selectedSponsor?.slug, talentProfile?.id]);
 
   return (
     <LeaderboardContext.Provider 

@@ -24,21 +24,19 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
       <DrawerPortal>
         <VisuallyHidden asChild>
           <DialogTitle>
-            {selectedBuilder?.user.passport.passport_profile.display_name ||
-              "Talent Builder"}
+            {selectedBuilder?.profile.name ||
+              "Builder"}
           </DialogTitle>
         </VisuallyHidden>
         <DrawerContent className="bg-neutral-900">
           {selectedBuilder &&
-            selectedBuilder.user &&
-            selectedBuilder.user.passport && (
+            selectedBuilder.profile && (
               <>
                 <div className="flex flex-col items-center justify-center p-4">
                   <Image
-                    src={selectedBuilder.user.profile_picture_url || ""}
+                    src={selectedBuilder.profile.image_url?.startsWith('http') ? selectedBuilder.profile.image_url : ""}
                     alt={
-                      selectedBuilder.user.passport.passport_profile
-                        .display_name || "Talent Builder"
+                      selectedBuilder.profile.name || "Builder"
                     }
                     width={80}
                     height={80}
@@ -65,8 +63,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                       #{selectedBuilder.leaderboard_position}
                     </span>
                     <span className="font-semibold">
-                      {selectedBuilder.user.passport.passport_profile
-                        .display_name || "Talent Builder"}
+                      {selectedBuilder.profile.name || "Builder"}
                     </span>
                   </p>
 
@@ -77,7 +74,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                           Builder Score
                         </p>
                         <p className="text-2xl font-mono font-semibold">
-                          {selectedBuilder.user.passport.score}
+                          {selectedBuilder.profile.builder_score?.points || "-"}
                         </p>
                       </div>
 
@@ -115,7 +112,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                 <DrawerFooter className="pt-0">
                   <DrawerClose asChild>
                     <Link
-                      href={`https://app.talentprotocol.com/profile/${selectedBuilder.user.passport.passport_id}`}
+                      href={`https://app.talentprotocol.com/profile/${selectedBuilder.profile.id}`}
                       target="_blank"
                       className="w-full"
                     >

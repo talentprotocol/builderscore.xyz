@@ -52,9 +52,9 @@ export default function LeaderboardRow({
 
         <div className="flex items-center gap-4">
           <Image
-            src={leaderboardData.user.profile_picture_url}
+            src={leaderboardData.profile.image_url?.startsWith('http') ? leaderboardData.profile.image_url : ""}
             alt={
-              leaderboardData.user.passport.passport_profile.display_name ||
+              leaderboardData.profile.name ||
               "Talent Builder"
             }
             width={isHighlighted ? 48 : 36}
@@ -65,7 +65,7 @@ export default function LeaderboardRow({
           />
           <div>
             <p className="text-white">
-              {leaderboardData.user.passport.passport_profile.display_name}
+              {leaderboardData.profile.name}
 
               {process.env.NODE_ENV === "development" && (
                 <span className="ml-5 text-green-500 text-xs">

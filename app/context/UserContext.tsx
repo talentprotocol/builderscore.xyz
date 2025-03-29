@@ -67,7 +67,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
       try {
         const response = await fetchUserByFid(frameContext.user.fid);
-        setTalentProfile(response.passport || null);
+        setTalentProfile(response.profile || null);
         setHasGithubCredential(response.hasGithubCredential || false);
         setError(null);
       } catch (err) {

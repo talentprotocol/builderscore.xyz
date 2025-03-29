@@ -124,7 +124,7 @@ export default function RewardsHeader() {
             </p>
             <p className="text-2xl font-mono font-semibold">
               {shouldShowUserLeaderboard
-                ? `${userLeaderboard.user.passport.score}`
+                ? `${userLeaderboard.profile.builder_score?.points || "-"}`
                 : weightedAvgBuilderScore}
             </p>
           </div>

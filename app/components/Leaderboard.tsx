@@ -37,7 +37,7 @@ export default function Leaderboard({
     <div className="border border-neutral-800 bg-neutral-900 rounded-lg">
       {leaderboardData.users.map((user, index) => (
         <LeaderboardRow
-          key={`${user.id}-${user.user.id}-${index}`}
+          key={`${user.id}-${user.profile.id}-${index}`}
           leaderboardData={user}
           first={index === 0}
           last={index === leaderboardData.users.length - 1}

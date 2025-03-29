@@ -1,32 +1,29 @@
-export type TalentPassportProfile = {
-  bio: string;
-  display_name: string;
-  image_url: string;
-  location: string;
-  name: string;
-  tags: string[];
-};
+export interface TalentUser {
+  id: string;
+  name: string | null;
+  profile: TalentProfile;
+  profile_picture_url: string;
+}
 
 export type TalentProfile = {
-  activity_score: number;
-  calculating_score: boolean;
+  id: string;
+  bio: string | null;
   created_at: string;
+  display_name: string | null;
   human_checkmark: boolean;
-  identity_score: number;
-  last_calculated_at: string;
-  main_wallet: string;
-  main_wallet_changed_at: string | null;
+  image_url: string | null;
+  location: string | null;
+  name: string | null;
   onchain: boolean;
-  passport_id: number;
-  passport_profile: TalentPassportProfile;
-  score: number;
-  skills_score: number;
-  socials_calculated_at: string;
-  verified: boolean;
-  verified_wallets: string[];
+  calculating_score: boolean;
+  tags: string[];
+  builder_score: {
+    points: number;
+    last_calculated_at: string;
+  } | null;
 };
 
-export type PassportCredential = {
+export type TalentCredential = {
   id: number;
   type: string;
   value: string;
@@ -36,6 +33,24 @@ export type PassportCredential = {
 };
 
 export type TalentProfileResponse = {
-  passport: TalentProfile | null;
+  profile: TalentProfile | null;
   hasGithubCredential: boolean;
-}; 
+};
+
+export interface TalentSocial {
+  follower_count: string;
+  following_count: string;
+  location: string;
+  owner: string;
+  bio: string;
+  display_name: string;
+  image_url: string;
+  name: string;
+  owned_since: string;
+  profile_url: string;
+  source: string;
+}
+
+export interface TalentSocialsResponse {
+  socials: TalentSocial[];
+}
