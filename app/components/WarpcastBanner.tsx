@@ -11,7 +11,7 @@ export default function WarpcastBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const { isDarkMode } = useTheme();
   const { frameContext } = useUser();
-  const localStorageKey = 'builder-rewards-warpcast-banner-closed123321';
+  const localStorageKey = 'builder-rewards-warpcast-banner-closed';
 
   useEffect(() => {
     const hasClosedBanner = localStorage.getItem(localStorageKey);
