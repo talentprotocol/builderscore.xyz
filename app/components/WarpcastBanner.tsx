@@ -45,9 +45,9 @@ export default function WarpcastBanner() {
           ? "bg-neutral-900 border-neutral-800"
           : "bg-white border-neutral-200"
       }
-      border px-4 py-2 mb-4`}
+      border mb-4`}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 max-w-3xl mx-auto px-4 py-2">
         <button
           onClick={handleClose}
           className={`p-1 rounded-full ${

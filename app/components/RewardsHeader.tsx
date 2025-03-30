@@ -19,12 +19,16 @@ export default function RewardsHeader() {
     return acc;
   }, {} as Record<string, number>);
 
-  const totalRewardedBuilders = grantsToUse.reduce((sum, grant) => sum + grant.total_builders, 0);
+  const totalRewardedBuilders = grantsToUse.reduce(
+    (sum, grant) => sum + grant.rewarded_builders,
+    0
+  );
 
   const { weightedScore, totalBuilders } = grantsToUse.reduce((acc, grant) => {
     return {
-      weightedScore: acc.weightedScore + (grant.avg_builder_score * grant.total_builders),
-      totalBuilders: acc.totalBuilders + grant.total_builders
+      weightedScore:
+        acc.weightedScore + grant.avg_builder_score * grant.rewarded_builders,
+      totalBuilders: acc.totalBuilders + grant.rewarded_builders,
     };
   }, { weightedScore: 0, totalBuilders: 0 });
   
