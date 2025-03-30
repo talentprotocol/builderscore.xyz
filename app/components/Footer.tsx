@@ -13,12 +13,7 @@ export function Footer() {
           isDarkMode ? "text-neutral-500" : "text-neutral-600"
         } text-xs`}
       >
-        <ExternalLink
-          href="https://talentprotocol.com"
-        >
-          Talent Protocol
-        </ExternalLink>
-        , {new Date().getFullYear()}
+        Talent Protocol, {new Date().getFullYear()}
       </p>
 
       <ExternalLink
