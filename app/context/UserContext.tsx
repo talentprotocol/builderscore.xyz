@@ -49,6 +49,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       } else {
         setFrameContext(await sdk.context);
         sdk.actions.ready();
+        await sdk.actions.addFrame()
       }
     };
     

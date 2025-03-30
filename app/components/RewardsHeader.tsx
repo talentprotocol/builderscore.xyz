@@ -55,8 +55,8 @@ export default function RewardsHeader() {
       {isIntermediateGrant && (
         <div className={`
           ${isDarkMode
-            ? 'bg-amber-800/60 text-amber-200'
-            : 'bg-amber-100 text-amber-700'
+            ? 'border border-amber-200 text-amber-200'
+            : 'border border-amber-600 text-amber-600'
           }
           text-xs rounded-lg px-3 py-1 animate-pulse`
         }>

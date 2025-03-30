@@ -26,21 +26,35 @@ export default function LeaderboardRow({
       onClick={() => onBuilderSelect?.(leaderboardData)}
       className={`flex items-center justify-between py-2 px-3 pr-5 cursor-pointer
         ${isDarkMode ? "bg-neutral-900" : "bg-white"}
-        ${isHighlighted && `border ${isDarkMode ? "border-white" : "border-primary"} rounded-lg`}
+        ${
+          isHighlighted &&
+          `border ${
+            isDarkMode ? "border-primary" : "border-primary"
+          } rounded-lg`
+        }
         ${first && "rounded-t-lg"}
         ${last && "rounded-b-lg"}
-        ${!first && `border-t ${isDarkMode ? "border-neutral-800" : "border-neutral-200"}`}
+        ${
+          !first &&
+          `border-t ${isDarkMode ? "border-neutral-800" : "border-neutral-200"}`
+        }
         ${className}`}
     >
       <div className="flex items-center gap-4">
-        <p className={`${isDarkMode ? "text-neutral-500" : "text-neutral-600"} text-xs min-w-6 font-mono`}>
+        <p
+          className={`${
+            isDarkMode ? "text-neutral-500" : "text-neutral-600"
+          } text-xs min-w-6 font-mono`}
+        >
           #{leaderboardData.leaderboard_position}
         </p>
 
         <span
           className={`min-w-8 text-xs ${
             leaderboardData.ranking_change === null
-              ? isDarkMode ? "text-neutral-500" : "text-neutral-600"
+              ? isDarkMode
+                ? "text-neutral-500"
+                : "text-neutral-600"
               : leaderboardData.ranking_change < 0
               ? "text-red-500"
               : "text-green-500"
@@ -55,11 +69,12 @@ export default function LeaderboardRow({
 
         <div className="flex items-center gap-4">
           <Image
-            src={leaderboardData.profile.image_url?.startsWith('http') ? leaderboardData.profile.image_url : ""}
-            alt={
-              leaderboardData.profile.name ||
-              "Talent Builder"
+            src={
+              leaderboardData.profile.image_url?.startsWith("http")
+                ? leaderboardData.profile.image_url
+                : ""
             }
+            alt={leaderboardData.profile.name || "Talent Builder"}
             width={isHighlighted ? 48 : 36}
             height={isHighlighted ? 48 : 36}
             className={`rounded-full object-cover h-[36px] w-[36px] ${
@@ -86,7 +101,11 @@ export default function LeaderboardRow({
             TOKEN_DECIMALS[PLACEHOLDER_TOKEN]
           )}
         </span>
-        <span className={`${isDarkMode ? "text-neutral-500" : "text-neutral-600"} ml-2 text-xs`}>
+        <span
+          className={`${
+            isDarkMode ? "text-neutral-500" : "text-neutral-600"
+          } ml-2 text-xs`}
+        >
           {PLACEHOLDER_TOKEN}
         </span>
       </p>

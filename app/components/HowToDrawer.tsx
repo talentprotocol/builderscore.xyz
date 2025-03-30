@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/ui/button";
+import { Check } from "lucide-react";
 import {
   Drawer,
   DrawerContent,
@@ -9,27 +10,34 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/app/components/ui/drawer";
+import { useUser } from "@/app/context/UserContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useState } from "react";
 
-const EARNING_STEPS = [
-  {
-    text: "Connect GitHub on Talent Protocol",
-    url: "https://app.talentprotocol.com/settings/connected_accounts",
-  },
-  {
-    text: "Get your Human Checkmark",
-    url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
-  },
-  {
-    text: "Increase your Builder Score to 40+",
-    url: "https://app.talentprotocol.com/profile",
-  },
-];
-
 export default function HowToDrawer() {
+  const { isLoading: isUserLoading, hasGithubCredential, talentProfile } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
   const { isDarkMode } = useTheme();
+
+  const EARNING_STEPS = [
+    {
+      text: "Connect GitHub on Talent Protocol",
+      url: "https://app.talentprotocol.com/settings/connected_accounts",
+      condition: !isUserLoading && hasGithubCredential,
+    },
+    {
+      text: "Get your Human Checkmark",
+      url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
+      condition: !isUserLoading && talentProfile?.human_checkmark,
+    },
+    {
+      text: "Increase your Builder Score to 100+",
+      url: "https://app.talentprotocol.com/profile",
+      condition: !isUserLoading && talentProfile?.builder_score?.points && talentProfile?.builder_score?.points >= 100,
+    },
+  ];
+
+  const allConditionsMet = EARNING_STEPS.every((step) => step.condition);
 
   return (
     <Drawer open={openHowToEarn} onOpenChange={setOpenHowToEarn}>
@@ -43,7 +51,20 @@ export default function HowToDrawer() {
             }
           `}
         >
-          How to Earn
+          {allConditionsMet ? (
+            <div className="flex items-center gap-2">
+              <div className={`shrink-0 flex items-center justify-center w-5 h-5 rounded-full text-xs font-medium ${
+                isDarkMode
+                  ? "bg-green-500 text-white"
+                  : "bg-green-100 text-green-500"
+              }`}>
+                <Check className="w-3 h-3" />
+              </div>
+              Eligible to Earn
+            </div>
+          ) : (
+            "How to Earn"
+          )}
         </Button>
       </DrawerTrigger>
 
@@ -54,25 +75,46 @@ export default function HowToDrawer() {
           </DrawerHeader>
 
           <div className="px-4 pb-16">
-            <p className={isDarkMode ? "text-neutral-500" : "text-neutral-600 mb-5"}>
+            <p className={`mb-5 ${isDarkMode ? "text-neutral-500" : "text-neutral-600"}`}>
               Talent Protocol distributes weekly rewards to builders that own
               verified contracts on Base or contribute to public repositories on
               Github. Follow the steps below to be eligible for Builder Rewards:
             </p>
+
+            {allConditionsMet ? (
+              <p className="text-green-500 mb-6 text-sm">
+                You are eligible for Builder Rewards!
+              </p>
+            ) : (
+              <p className={`mb-6 text-sm ${isDarkMode ? "text-neutral-500" : "text-neutral-600"}`}>
+                You are not eligible for Builder Rewards yet.
+              </p>
+            )}
             
             <ul className="list-none space-y-6 text-sm">
               {EARNING_STEPS.map((step, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <div className={`shrink-0 flex items-center justify-center w-5 h-5 rounded-full text-xs font-medium ${
-                    isDarkMode ? "bg-neutral-700 text-white" : "bg-neutral-200 text-neutral-800"
+                    step.condition
+                      ? isDarkMode
+                        ? "bg-green-500 text-white"
+                        : "bg-green-100 text-green-500"
+                      : isDarkMode
+                        ? "bg-neutral-700 text-white"
+                        : "bg-neutral-200 text-neutral-800"
                   }`}>
-                    {index + 1}
+                    {step.condition ? (
+                      <Check className="w-3 h-3" />
+                    ) : (
+                      index + 1
+                    )}
                   </div>
                   <a 
                     href={step.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`
+                      underline
                       ${isDarkMode
                         ? "text-white hover:text-neutral-500"
                         : "text-neutral-800 hover:text-neutral-600"

@@ -79,11 +79,14 @@ export default function RewardsLeaderboard() {
   return (
     <div className="h-full flex flex-col mt-8">
       <div className="flex items-end justify-between mb-3">
-        <h2 className={`text-sm font-semibold ml-1 ${isDarkMode ? '' : 'text-neutral-800'}`}>
-          Leaderboard{" "}
-          <span className={`${isDarkMode ? 'text-amber-600/60' : 'text-amber-600'}`}>
-            {isIntermediateGrant && "Provisional"}
-          </span>
+        <h2 className={`
+          text-sm font-semibold ml-1
+          ${isDarkMode ?
+            `${isIntermediateGrant ? 'text-amber-200' : ''}` :
+            `${isIntermediateGrant ? 'text-amber-600' : 'text-neutral-800'}`
+          }
+        `}>
+          {isIntermediateGrant ? "Provisional" : "Leaderboard"}
         </h2>
         <SelectGrant />
       </div>
