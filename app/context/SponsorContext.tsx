@@ -16,7 +16,7 @@ interface SponsorContextType {
 const SponsorContext = createContext<SponsorContextType | undefined>(undefined);
 
 export function SponsorProvider({ children }: { children: ReactNode }) {
-  const [selectedSponsorSlug, setSelectedSponsorSlug] = useState<string>("global");
+  const [selectedSponsorSlug, setSelectedSponsorSlug] = useState<string>("");
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

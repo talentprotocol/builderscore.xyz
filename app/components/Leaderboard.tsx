@@ -1,6 +1,7 @@
 import { LeaderboardEntry, LeaderboardResponse } from "@/app/types/leaderboards";
 import LeaderboardRow from "@/app/components/LeaderboardRow";
 import { useCallback, useEffect } from "react";
+import { useTheme } from "@/app/context/ThemeContext";
 
 export default function Leaderboard({
   leaderboardData,
@@ -15,6 +16,8 @@ export default function Leaderboard({
   isLoadingMore: boolean;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
+  const { isDarkMode } = useTheme();
+  
   const handleScroll = useCallback(() => {
     if (isLoadingMore || !hasMore) return;
 
@@ -34,7 +37,13 @@ export default function Leaderboard({
   }, [handleScroll]);
 
   return (
-    <div className="border border-neutral-800 bg-neutral-900 rounded-lg">
+    <div className={`
+      border rounded-lg
+      ${isDarkMode 
+        ? "border-neutral-800 bg-neutral-900" 
+        : "border-neutral-200 bg-white"
+      }`
+    }>
       {leaderboardData.users.map((user, index) => (
         <LeaderboardRow
           key={`${user.id}-${user.profile.id}-${index}`}
@@ -46,7 +55,9 @@ export default function Leaderboard({
       ))}
       {isLoadingMore && (
         <div className="flex items-center justify-center p-4">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-500" />
+          <div className={`h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent ${
+            isDarkMode ? "text-neutral-500" : "text-neutral-400"
+          }`} />
         </div>
       )}
     </div>

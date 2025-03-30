@@ -2,12 +2,14 @@
 
 import { useGrant } from '@/app/context/GrantContext';
 import { useLeaderboard } from '@/app/context/LeaderboardContext';
+import { useTheme } from '@/app/context/ThemeContext';
 import ToggleLeaderboard from '@/app/components/ToggleLeaderboard';
 import { formatNumber, formatDate, getTimeRemaining, TOKEN_DECIMALS } from '@/app/lib/utils';
 
 export default function RewardsHeader() {
   const { grants, selectedGrant, isLoading } = useGrant();
   const { userLeaderboard, showUserLeaderboard } = useLeaderboard();
+  const { isDarkMode } = useTheme();
   const grantsToUse = selectedGrant ? [selectedGrant] : grants;
 
   const rewardsByTicker = grantsToUse.reduce((acc, grant) => {
@@ -32,7 +34,13 @@ export default function RewardsHeader() {
 
   if (isLoading) {
     return (
-      <div className="bg-neutral-900 rounded-lg border border-neutral-800 animate-pulse">
+      <div className={`
+        ${isDarkMode
+          ?'bg-neutral-900 border-neutral-800'
+          : 'bg-white border-neutral-200'
+        }
+        rounded-lg border animate-pulse
+      `}>
         <div className="h-32"></div>
       </div>
     );
@@ -45,7 +53,13 @@ export default function RewardsHeader() {
   return (
     <div className="flex flex-col gap-3">
       {isIntermediateGrant && (
-        <div className="bg-amber-800/60 text-amber-200 text-xs rounded-lg px-3 py-1 animate-pulse">
+        <div className={`
+          ${isDarkMode
+            ? 'bg-amber-800/60 text-amber-200'
+            : 'bg-amber-100 text-amber-700'
+          }
+          text-xs rounded-lg px-3 py-1 animate-pulse`
+        }>
           <span className="font-semibold">
             {getTimeRemaining(selectedGrant.end_date)}
           </span>{" "}
@@ -53,7 +67,13 @@ export default function RewardsHeader() {
         </div>
       )}
 
-      <div className="bg-neutral-900 rounded-lg border border-neutral-800">
+      <div className={`
+        ${isDarkMode
+          ? 'bg-neutral-900 border-neutral-800'
+          : 'bg-white border-neutral-200'
+        }
+        rounded-lg border`
+      }>
         <div className="flex flex-col items-center justify-between p-4 relative">
           {userLeaderboard && (
             <div className="absolute top-2 left-2">
@@ -61,7 +81,7 @@ export default function RewardsHeader() {
             </div>
           )}
 
-          <h2 className="text-neutral-500 text-sm">
+          <h2 className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'} text-sm`}>
             {process.env.NODE_ENV === "development" && userLeaderboard && (
               <span className="text-xs text-green-500 mr-4">
                 ID: {userLeaderboard.id}
@@ -89,7 +109,7 @@ export default function RewardsHeader() {
                     TOKEN_DECIMALS[PLACEHOLDER_TOKEN]
                   )}
                 </span>
-                <span className="text-neutral-500">{PLACEHOLDER_TOKEN}</span>
+                <span className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'}`}>{PLACEHOLDER_TOKEN}</span>
               </div>
             ) : (
               Object.entries(rewardsByTicker).map(([ticker, amount]) => (
@@ -97,16 +117,16 @@ export default function RewardsHeader() {
                   <span className="text-4xl font-semibold">
                     {formatNumber(amount, TOKEN_DECIMALS[ticker])}
                   </span>
-                  <span className="text-neutral-500">{ticker}</span>
+                  <span className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'}`}>{ticker}</span>
                 </div>
               ))
             )}
           </div>
         </div>
 
-        <div className="flex justify-evenly border-t border-neutral-800 p-4">
+        <div className={`flex justify-evenly border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'} p-4`}>
           <div className="flex flex-col items-center justify-between">
-            <p className="text-neutral-500 text-sm">
+            <p className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'} text-sm`}>
               {shouldShowUserLeaderboard ? "Your Rank" : "Builders Rewarded"}
             </p>
             <p className="text-2xl font-mono font-semibold">
@@ -117,7 +137,7 @@ export default function RewardsHeader() {
           </div>
 
           <div className="flex flex-col items-center justify-between">
-            <p className="text-neutral-500 text-sm">
+            <p className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'} text-sm`}>
               {shouldShowUserLeaderboard
                 ? "Builder Score"
                 : "Avg. Builder Score"}
