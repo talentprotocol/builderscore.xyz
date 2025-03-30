@@ -13,7 +13,7 @@ import {
 import { useUser } from "@/app/context/UserContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useState } from "react";
-
+import ExternalLink from "@/app/components/ExternalLink";
 export default function HowToDrawer() {
   const { isLoading: isUserLoading, hasGithubCredential, talentProfile } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
@@ -109,10 +109,8 @@ export default function HowToDrawer() {
                       index + 1
                     )}
                   </div>
-                  <a 
+                  <ExternalLink
                     href={step.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className={`
                       underline
                       ${isDarkMode
@@ -122,7 +120,7 @@ export default function HowToDrawer() {
                     `}
                   >
                     {step.text}
-                  </a>
+                  </ExternalLink>
                 </li>
               ))}
             </ul>

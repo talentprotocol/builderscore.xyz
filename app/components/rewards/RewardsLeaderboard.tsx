@@ -82,7 +82,7 @@ export default function RewardsLeaderboard() {
         <h2 className={`
           text-sm font-semibold ml-1
           ${isDarkMode ?
-            `${isIntermediateGrant ? 'text-amber-200' : ''}` :
+            `${isIntermediateGrant ? 'text-amber-600' : ''}` :
             `${isIntermediateGrant ? 'text-amber-600' : 'text-neutral-800'}`
           }
         `}>

@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useTheme } from "@/app/context/ThemeContext";
+import ExternalLink from "./ExternalLink";
 
 export function Footer() {
   const { isDarkMode } = useTheme();
@@ -13,26 +13,22 @@ export function Footer() {
           isDarkMode ? "text-neutral-500" : "text-neutral-600"
         } text-xs`}
       >
-        <Link
+        <ExternalLink
           href="https://talentprotocol.com"
-          target="_blank"
-          rel="noopener noreferrer"
         >
           Talent Protocol
-        </Link>
+        </ExternalLink>
         , {new Date().getFullYear()}
       </p>
 
-      <Link
+      <ExternalLink
         href="https://talentprotocol.notion.site/terms-and-conditions-for-builder-rewards-program"
-        target="_blank"
-        rel="noopener noreferrer"
         className={`text-center text-xs underline ${
           isDarkMode ? "text-neutral-500" : "text-neutral-600"
         }`}
       >
         Terms and Conditions
-      </Link>
+      </ExternalLink>
     </div>
   );
 }

@@ -1,9 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { LeaderboardEntry } from "@/app/types/leaderboards";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerFooter,
   DrawerPortal,
@@ -13,6 +11,7 @@ import { formatNumber, TOKEN_DECIMALS } from "../lib/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTheme } from "@/app/context/ThemeContext";
+import ExternalLink from "./ExternalLink";
 
 export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
   selectedBuilder: LeaderboardEntry | null;
@@ -20,6 +19,8 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
 }) {
   const { isDarkMode } = useTheme();
   const PLACEHOLDER_TOKEN = "$TALENT";
+
+  console.log(selectedBuilder);
 
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
@@ -120,24 +121,20 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                 </div>
 
                 <DrawerFooter className="pt-0">
-                  <DrawerClose asChild>
-                    <Link
-                      href={`https://app.talentprotocol.com/profile/${selectedBuilder.profile.id}`}
-                      target="_blank"
-                      className="w-full"
+                  <ExternalLink
+                    href={`https://app.talentprotocol.com/profile/${selectedBuilder.profile.id}`}
+                  >
+                    <Button
+                      size="lg"
+                      className={`w-full cursor-pointer border mb-3 ${
+                        isDarkMode 
+                          ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white" 
+                          : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
+                      }`}
                     >
-                      <Button
-                        size="lg"
-                        className={`w-full cursor-pointer border ${
-                          isDarkMode 
-                            ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white" 
-                            : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
-                        }`}
-                      >
-                        View Talent Profile
-                      </Button>
-                    </Link>
-                  </DrawerClose>
+                      View Talent Profile
+                    </Button>
+                  </ExternalLink>
                 </DrawerFooter>
               </>
             )}

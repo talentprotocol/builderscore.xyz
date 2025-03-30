@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/app/context/ThemeContext";
 import UserStatus from "@/app/components/UserStatus";
 import { UserProvider } from "@/app/context/UserContext";
 import { Footer } from "@/app/components/Footer";
+import WarpcastBanner from "@/app/components/WarpcastBanner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -51,6 +52,7 @@ export default function RootLayout({
             <UserProvider>
               <LeaderboardProvider>
                 <ThemeProvider>
+                  <WarpcastBanner />
                   <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-2 px-4">
                     {process.env.NODE_ENV === "development" && <UserStatus />}
                     <Navbar />
