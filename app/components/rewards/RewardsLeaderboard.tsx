@@ -13,7 +13,7 @@ import SelectGrant from "@/app/components/SelectGrant";
 import LeaderboardRowDrawer from "@/app/components/LeaderboardRowDrawer";
 
 export default function RewardsLeaderboard() {
-  const { selectedSponsorSlug } = useSponsor();
+  const { isLoading: isSponsorLoading, selectedSponsorSlug } = useSponsor();
   const { selectedGrant } = useGrant();
   const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -58,10 +58,13 @@ export default function RewardsLeaderboard() {
   };
 
   useEffect(() => {
-    setCurrentPage(1);
-    fetchLeaderboard();
+    console.log("selectedSponsorSlug", selectedSponsorSlug);
+    if (!isSponsorLoading) {
+      setCurrentPage(1);
+      fetchLeaderboard();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsorSlug, selectedGrant]);
+  }, [selectedSponsorSlug, selectedGrant, isSponsorLoading]);
 
   const handleLoadMore = () => {
     if (!isLoadingMore && hasMore) {
@@ -85,7 +88,7 @@ export default function RewardsLeaderboard() {
         <SelectGrant />
       </div>
 
-      {isLoading && (
+      {(isLoading || isSponsorLoading) && (
         <div className="flex items-center justify-center h-96">
           <div className="flex items-center gap-2">
             <div className={`h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent ${
