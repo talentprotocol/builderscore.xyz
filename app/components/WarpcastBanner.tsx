@@ -27,6 +27,7 @@ export default function WarpcastBanner() {
 
   const handleAdd = async () => {
     if (frameContext) {
+      sdk.actions.ready();
       await sdk.actions.addFrame();
     }
   };
@@ -41,10 +42,10 @@ export default function WarpcastBanner() {
       className={`
       ${
         isDarkMode
-          ? "bg-neutral-900 border-neutral-800"
-          : "bg-white border-neutral-200"
+          ? "bg-neutral-900 border-b-neutral-800"
+          : "bg-white border-b-neutral-200"
       }
-      border`}
+      border-b`}
     >
       <div className="flex items-center gap-3 max-w-3xl mx-auto px-4 py-2">
         <button
