@@ -123,7 +123,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
 
                 <DrawerFooter className="pt-0">
                   <ExternalLink
-                    href={`https://app.talentprotocol.com/profile/${selectedBuilder.profile.id}`}
+                    href={`https://app.talentprotocol.com/builderscore/${selectedBuilder.profile.id}`}
                   >
                     <Button
                       size="lg"

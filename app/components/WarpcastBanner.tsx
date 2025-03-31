@@ -32,6 +32,9 @@ export default function WarpcastBanner() {
   };
 
   if (!isVisible) return null;
+  if (frameContext?.client.added) {
+    return null;
+  }
 
   return (
     <div

@@ -18,6 +18,12 @@ export async function GET(request: NextRequest) {
       query: {
         identity: `farcaster:${fid}`,
         exactMatch: true,
+      },
+      sort: {
+        score: {
+          order: "desc",
+          scorer: "Builder Score",
+        },
       }
     };
 
@@ -37,6 +43,9 @@ export async function GET(request: NextRequest) {
         headers: DEFAULT_HEADERS,
       }
     );
+
+    console.log(`${API_BASE_URL}${ENDPOINTS.talent.profile}?${queryString}`);
+    console.log("profileResponse", profileResponse);
 
     if (!profileResponse.ok) {
       throw new Error(`Talent Protocol API error: ${profileResponse.statusText}`);
