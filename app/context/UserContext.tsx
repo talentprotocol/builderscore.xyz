@@ -46,6 +46,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const loadSDK = async () => {
       if (process.env.NODE_ENV === "development") {
         setFrameContext(DEV_FRAME_CONTEXT);
+        sdk.actions.ready();
       } else {
         setFrameContext(await sdk.context);
         sdk.actions.ready();

@@ -3,6 +3,7 @@
 import { useGrant } from '@/app/context/GrantContext';
 import { useLeaderboard } from '@/app/context/LeaderboardContext';
 import { useTheme } from '@/app/context/ThemeContext';
+import { useSponsor } from '@/app/context/SponsorContext';
 import ToggleLeaderboard from '@/app/components/ToggleLeaderboard';
 import { formatNumber, formatDate, getTimeRemaining, TOKEN_DECIMALS } from '@/app/lib/utils';
 
@@ -10,6 +11,7 @@ export default function RewardsHeader() {
   const { grants, selectedGrant, isLoading } = useGrant();
   const { userLeaderboard, showUserLeaderboard } = useLeaderboard();
   const { isDarkMode } = useTheme();
+  const { sponsorToken } = useSponsor();
   const grantsToUse = selectedGrant ? [selectedGrant] : grants;
 
   const rewardsByTicker = grantsToUse.reduce((acc, grant) => {
@@ -51,8 +53,6 @@ export default function RewardsHeader() {
   }
 
   const shouldShowUserLeaderboard = showUserLeaderboard && userLeaderboard;
-
-  const PLACEHOLDER_TOKEN = "$TALENT";
 
   return (
     <div className="flex flex-col gap-3">
@@ -110,10 +110,10 @@ export default function RewardsHeader() {
                 <span className="text-4xl font-semibold">
                   {formatNumber(
                     parseFloat(userLeaderboard.reward_amount),
-                    TOKEN_DECIMALS[PLACEHOLDER_TOKEN]
+                    TOKEN_DECIMALS[sponsorToken]
                   )}
                 </span>
-                <span className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'}`}>{PLACEHOLDER_TOKEN}</span>
+                <span className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'}`}>{sponsorToken}</span>
               </div>
             ) : (
               Object.entries(rewardsByTicker).map(([ticker, amount]) => (

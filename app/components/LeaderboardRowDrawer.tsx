@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { LeaderboardEntry } from "@/app/types/leaderboards";
 import {
@@ -11,6 +13,7 @@ import { formatNumber, TOKEN_DECIMALS } from "../lib/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTheme } from "@/app/context/ThemeContext";
+import { useSponsor } from "@/app/context/SponsorContext";
 import ExternalLink from "./ExternalLink";
 
 export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
@@ -18,9 +21,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
   onClose: () => void;
 }) {
   const { isDarkMode } = useTheme();
-  const PLACEHOLDER_TOKEN = "$TALENT";
-
-  console.log(selectedBuilder);
+  const { sponsorToken } = useSponsor();
 
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
@@ -93,11 +94,11 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                           <span className="font-semibold">
                             {formatNumber(
                               parseFloat(selectedBuilder.reward_amount || "0"),
-                              TOKEN_DECIMALS[PLACEHOLDER_TOKEN]
+                              TOKEN_DECIMALS[sponsorToken]
                             )}
                           </span>
                           <span className={`${isDarkMode ? "text-neutral-500" : "text-neutral-600"} text-sm ml-2`}>
-                            {PLACEHOLDER_TOKEN}
+                            {sponsorToken}
                           </span>
                         </p>
                       </div>

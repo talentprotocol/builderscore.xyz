@@ -27,11 +27,7 @@ export default function WarpcastBanner() {
 
   const handleAdd = async () => {
     if (frameContext) {
-      try {
-        await sdk.actions.addFrame();
-      } catch (error) {
-        console.error('Failed to add frame:', error);
-      }
+      await sdk.actions.addFrame();
     }
   };
 

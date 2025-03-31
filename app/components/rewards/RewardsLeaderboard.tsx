@@ -58,7 +58,6 @@ export default function RewardsLeaderboard() {
   };
 
   useEffect(() => {
-    console.log("selectedSponsorSlug", selectedSponsorSlug);
     if (!isSponsorLoading) {
       setCurrentPage(1);
       fetchLeaderboard();

@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { LeaderboardEntry } from "@/app/types/leaderboards";
 import { formatNumber, TOKEN_DECIMALS } from "@/app/lib/utils";
 import { useTheme } from "@/app/context/ThemeContext";
+import { useSponsor } from "@/app/context/SponsorContext";
 
 export default function LeaderboardRow({
   leaderboardData,
@@ -19,7 +22,7 @@ export default function LeaderboardRow({
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
   const { isDarkMode } = useTheme();
-  const PLACEHOLDER_TOKEN = "$TALENT";
+  const { sponsorToken } = useSponsor();
 
   return (
     <div
@@ -98,7 +101,7 @@ export default function LeaderboardRow({
         <span className="font-mono">
           {formatNumber(
             parseFloat(leaderboardData.reward_amount),
-            TOKEN_DECIMALS[PLACEHOLDER_TOKEN]
+            TOKEN_DECIMALS[sponsorToken]
           )}
         </span>
         <span
@@ -106,7 +109,7 @@ export default function LeaderboardRow({
             isDarkMode ? "text-neutral-500" : "text-neutral-600"
           } ml-2 text-xs`}
         >
-          {PLACEHOLDER_TOKEN}
+          {sponsorToken}
         </span>
       </p>
     </div>

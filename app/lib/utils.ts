@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const TOKEN_DECIMALS: Record<string, number> = {
   $TALENT: 0,
-  ETH: 18,
+  ETH: 3,
 };
 
 export function formatNumber(x: number, decimals: number = 0): string {

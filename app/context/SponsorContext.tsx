@@ -9,6 +9,7 @@ interface SponsorContextType {
   selectedSponsorSlug: string;
   setSelectedSponsorSlug: (slug: string) => void;
   sponsors: Sponsor[];
+  sponsorToken: string;
   isLoading: boolean;
   error: string | null;
 }
@@ -42,6 +43,12 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
     ? null 
     : sponsors.find(sponsor => sponsor.slug === selectedSponsorSlug) ?? null;
 
+  const sponsorToken = selectedSponsorSlug === "base" 
+    ? "ETH" 
+    : selectedSponsorSlug === "talent-protocol" 
+      ? "$TALENT" 
+      : "Tokens";
+
   return (
     <SponsorContext.Provider 
       value={{ 
@@ -49,6 +56,7 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
         selectedSponsorSlug,
         setSelectedSponsorSlug,
         sponsors,
+        sponsorToken,
         isLoading,
         error 
       }}
