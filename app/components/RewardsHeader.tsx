@@ -57,13 +57,15 @@ export default function RewardsHeader() {
   return (
     <div className="flex flex-col gap-3">
       {isIntermediateGrant && (
-        <div className={`
-          ${isDarkMode
-            ? 'border border-amber-600 text-amber-600'
-            : 'border border-amber-600 text-amber-600'
+        <div
+          className={`
+          ${
+            isDarkMode
+              ? "border border-amber-600 text-amber-600"
+              : "border border-amber-600 text-amber-600"
           }
-          text-xs rounded-lg px-3 py-1 animate-pulse`
-        }>
+          text-xs rounded-lg px-3 py-1 animate-pulse`}
+        >
           <span className="font-semibold">
             {getTimeRemaining(selectedGrant.end_date)}
           </span>{" "}
@@ -71,13 +73,15 @@ export default function RewardsHeader() {
         </div>
       )}
 
-      <div className={`
-        ${isDarkMode
-          ? 'bg-neutral-900 border-neutral-800'
-          : 'bg-white border-neutral-200'
+      <div
+        className={`
+        ${
+          isDarkMode
+            ? "bg-neutral-900 border-neutral-800"
+            : "bg-white border-neutral-200"
         }
-        rounded-lg border`
-      }>
+        rounded-lg border`}
+      >
         <div className="flex flex-col items-center justify-between p-4 relative">
           {userLeaderboard && (
             <div className="absolute top-2 left-2">
@@ -85,7 +89,11 @@ export default function RewardsHeader() {
             </div>
           )}
 
-          <h2 className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'} text-sm`}>
+          <h2
+            className={`${
+              isDarkMode ? "text-neutral-500" : "text-neutral-600"
+            } text-sm`}
+          >
             {process.env.NODE_ENV === "development" && userLeaderboard && (
               <span className="text-xs text-green-500 mr-4">
                 ID: {userLeaderboard.id}
@@ -108,29 +116,62 @@ export default function RewardsHeader() {
             {shouldShowUserLeaderboard ? (
               <div className="flex items-end gap-2 font-mono">
                 <span className="text-4xl font-semibold">
-                  {formatNumber(
-                    parseFloat(userLeaderboard.reward_amount),
-                    TOKEN_DECIMALS[sponsorToken]
-                  )}
+                  {userLeaderboard.reward_amount
+                    ? formatNumber(
+                        parseFloat(userLeaderboard.reward_amount),
+                        TOKEN_DECIMALS[sponsorToken]
+                      )
+                    : "0"}
                 </span>
-                <span className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'}`}>{sponsorToken}</span>
+                <span
+                  className={`${
+                    isDarkMode ? "text-neutral-500" : "text-neutral-600"
+                  }`}
+                >
+                  {sponsorToken}
+                </span>
               </div>
-            ) : (
+            ) : Object.entries(rewardsByTicker).length > 0 ? (
               Object.entries(rewardsByTicker).map(([ticker, amount]) => (
                 <div key={ticker} className="flex items-end gap-2 font-mono">
                   <span className="text-4xl font-semibold">
                     {formatNumber(amount, TOKEN_DECIMALS[ticker])}
                   </span>
-                  <span className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'}`}>{ticker}</span>
+                  <span
+                    className={`${
+                      isDarkMode ? "text-neutral-500" : "text-neutral-600"
+                    }`}
+                  >
+                    {ticker}
+                  </span>
                 </div>
               ))
+            ) : (
+              <div className="flex items-end gap-2 font-mono">
+                <span className="text-4xl font-semibold">0</span>
+                <span
+                  className={`${
+                    isDarkMode ? "text-neutral-500" : "text-neutral-600"
+                  }`}
+                >
+                  {sponsorToken}
+                </span>
+              </div>
             )}
           </div>
         </div>
 
-        <div className={`flex justify-evenly border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'} p-4`}>
+        <div
+          className={`flex justify-evenly border-t ${
+            isDarkMode ? "border-neutral-800" : "border-neutral-200"
+          } p-4`}
+        >
           <div className="flex flex-col items-center justify-between">
-            <p className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'} text-sm`}>
+            <p
+              className={`${
+                isDarkMode ? "text-neutral-500" : "text-neutral-600"
+              } text-sm`}
+            >
               {shouldShowUserLeaderboard ? "Your Rank" : "Builders Rewarded"}
             </p>
             <p className="text-2xl font-mono font-semibold">
@@ -141,7 +182,11 @@ export default function RewardsHeader() {
           </div>
 
           <div className="flex flex-col items-center justify-between">
-            <p className={`${isDarkMode ? 'text-neutral-500' : 'text-neutral-600'} text-sm`}>
+            <p
+              className={`${
+                isDarkMode ? "text-neutral-500" : "text-neutral-600"
+              } text-sm`}
+            >
               {shouldShowUserLeaderboard
                 ? "Builder Score"
                 : "Avg. Builder Score"}

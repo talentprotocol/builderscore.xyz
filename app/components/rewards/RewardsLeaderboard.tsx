@@ -8,6 +8,7 @@ import { LeaderboardEntry, LeaderboardResponse } from "@/app/types/leaderboards"
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
+import { useUser } from "@/app/context/UserContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import SelectGrant from "@/app/components/SelectGrant";
 import LeaderboardRowDrawer from "@/app/components/LeaderboardRowDrawer";
@@ -15,6 +16,7 @@ import LeaderboardRowDrawer from "@/app/components/LeaderboardRowDrawer";
 export default function RewardsLeaderboard() {
   const { isLoading: isSponsorLoading, selectedSponsorSlug } = useSponsor();
   const { selectedGrant } = useGrant();
+  const { talentProfile } = useUser();
   const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -24,6 +26,16 @@ export default function RewardsLeaderboard() {
   const [hasMore, setHasMore] = useState(true);
   const { userLeaderboard } = useLeaderboard();
   const [selectedBuilder, setSelectedBuilder] = useState<LeaderboardEntry | null>(null);
+
+  const defaultUserLeaderboard: LeaderboardEntry = {
+    id: 0,
+    profile: talentProfile!,
+    leaderboard_position: null,
+    ranking_change: null,
+    reward_amount: null,
+    reward_transaction_hash: null,
+    summary: null,
+  };
 
   const fetchLeaderboard = async (page: number = 1, append: boolean = false) => {
     try {
@@ -78,42 +90,35 @@ export default function RewardsLeaderboard() {
   return (
     <div className="h-full flex flex-col mt-8">
       <div className="flex items-end justify-between mb-3">
-        <h2 className={`
+        <h2
+          className={`
           text-sm font-semibold ml-1
-          ${isDarkMode ?
-            `${isIntermediateGrant ? 'text-amber-600' : ''}` :
-            `${isIntermediateGrant ? 'text-amber-600' : 'text-neutral-800'}`
+          ${
+            isDarkMode
+              ? `${isIntermediateGrant ? "text-amber-600" : ""}`
+              : `${isIntermediateGrant ? "text-amber-600" : "text-neutral-800"}`
           }
-        `}>
+        `}
+        >
           {isIntermediateGrant ? "Provisional" : "Leaderboard"}
         </h2>
         <SelectGrant />
       </div>
 
-      {(isLoading || isSponsorLoading) && (
-        <div className="flex items-center justify-center h-96">
-          <div className="flex items-center gap-2">
-            <div className={`h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent ${
-              isDarkMode ? "text-neutral-500" : "text-neutral-400"
-            }`} />
-          </div>
-        </div>
-      )}
-
-      {error && (
-        <div className="flex items-center justify-center h-full">
-          <p className={isDarkMode ? "text-neutral-500" : "text-neutral-600"}>Error loading Leaderboard.</p>
-        </div>
-      )}
-
-      {!isLoading &&
-        leaderboardData &&
+      {!isLoading && talentProfile && leaderboardData ? (
         leaderboardData?.users?.length > 0 &&
         !error && (
           <>
-            {userLeaderboard && (
+            {userLeaderboard ? (
               <LeaderboardRow
                 leaderboardData={userLeaderboard}
+                isHighlighted={true}
+                className="mb-2"
+                onBuilderSelect={setSelectedBuilder}
+              />
+            ) : (
+              <LeaderboardRow
+                leaderboardData={defaultUserLeaderboard}
                 isHighlighted={true}
                 className="mb-2"
                 onBuilderSelect={setSelectedBuilder}
@@ -131,7 +136,43 @@ export default function RewardsLeaderboard() {
               onClose={() => setSelectedBuilder(null)}
             />
           </>
-        )}
+        )
+      ) : (
+        talentProfile && (
+          <>
+            <LeaderboardRow
+              leaderboardData={defaultUserLeaderboard}
+              isHighlighted={true}
+              className="mb-2"
+              onBuilderSelect={setSelectedBuilder}
+             />
+            <LeaderboardRowDrawer
+              selectedBuilder={selectedBuilder}
+              onClose={() => setSelectedBuilder(null)}
+            />
+          </>
+        )
+      )}
+
+      {(isLoading || isSponsorLoading) && (
+        <div className="flex items-center justify-center h-96">
+          <div className="flex items-center gap-2">
+            <div
+              className={`h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent ${
+                isDarkMode ? "text-neutral-500" : "text-neutral-400"
+              }`}
+            />
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div className="flex items-center justify-center h-full text-sm mt-10 mb-6">
+          <p className={isDarkMode ? "text-neutral-500" : "text-neutral-600"}>
+            Rewards Calculation hasn&apos;t started yet.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

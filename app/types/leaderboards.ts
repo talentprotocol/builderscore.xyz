@@ -2,9 +2,9 @@ import { TalentProfile } from "@/app/types/talent";
 
 export interface LeaderboardEntry {
   id: number;
-  leaderboard_position: number;
-  ranking_change: number;
-  reward_amount: string;
+  leaderboard_position: number | null;
+  ranking_change: number | null;
+  reward_amount: string | null;
   reward_transaction_hash: string | null;
   summary: string | null;
   profile: TalentProfile;
