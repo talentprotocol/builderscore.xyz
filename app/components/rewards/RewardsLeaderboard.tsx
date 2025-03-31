@@ -27,8 +27,6 @@ export default function RewardsLeaderboard() {
   const { userLeaderboard } = useLeaderboard();
   const [selectedBuilder, setSelectedBuilder] = useState<LeaderboardEntry | null>(null);
 
-  console.log(leaderboardData);
-
   const defaultUserLeaderboard: LeaderboardEntry = {
     id: 0,
     profile: talentProfile!,
@@ -97,8 +95,8 @@ export default function RewardsLeaderboard() {
           text-sm font-semibold ml-1
           ${
             isDarkMode
-              ? `${isIntermediateGrant ? "text-amber-600" : ""}`
-              : `${isIntermediateGrant ? "text-amber-600" : "text-neutral-800"}`
+              ? `${isIntermediateGrant ? "text-primary" : ""}`
+              : `${isIntermediateGrant ? "text-primary" : "text-neutral-800"}`
           }
         `}
         >

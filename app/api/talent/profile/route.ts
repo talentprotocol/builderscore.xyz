@@ -44,9 +44,6 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    console.log(`${API_BASE_URL}${ENDPOINTS.talent.profile}?${queryString}`);
-    console.log("profileResponse", profileResponse);
-
     if (!profileResponse.ok) {
       throw new Error(`Talent Protocol API error: ${profileResponse.statusText}`);
     }
@@ -78,13 +75,24 @@ export async function GET(request: NextRequest) {
 
       if (farcasterSocial) {
         const matchingProfile: TalentProfile = profile;
+
         const hasGithubCredential = socialsData.socials.some(
           social => social.source === 'github'
+        );
+
+        const hasBasenameCredential = socialsData.socials.some(
+          social => social.source === 'basename'
+        );
+
+        const basenameSocial = socialsData.socials.find(
+          social => social.source === 'basename'
         );
 
         return NextResponse.json({
           profile: matchingProfile,
           hasGithubCredential,
+          hasBasenameCredential,
+          basename: basenameSocial?.name
         });
       }
     }

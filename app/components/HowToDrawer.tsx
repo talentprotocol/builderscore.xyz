@@ -15,15 +15,15 @@ import { useTheme } from "@/app/context/ThemeContext";
 import { useState } from "react";
 import ExternalLink from "@/app/components/ExternalLink";
 export default function HowToDrawer() {
-  const { isLoading: isUserLoading, hasGithubCredential, talentProfile, frameContext } = useUser();
+  const { isLoading: isUserLoading, hasBasenameCredential, talentProfile, frameContext, basename } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
   const { isDarkMode } = useTheme();
 
   const EARNING_STEPS = [
     {
-      text: "Connect GitHub on Talent Protocol",
-      url: "https://app.talentprotocol.com/settings/connected_accounts",
-      condition: !isUserLoading && hasGithubCredential,
+      text: `Own a Basename ${basename ? `(${basename})` : ""}`,
+      url: "https://www.base.org/names",
+      condition: !isUserLoading && hasBasenameCredential,
     },
     {
       text: "Get your Human Checkmark",
@@ -33,7 +33,10 @@ export default function HowToDrawer() {
     {
       text: "Increase your Builder Score to 100+",
       url: "https://app.talentprotocol.com/profile",
-      condition: !isUserLoading && talentProfile?.builder_score?.points && talentProfile?.builder_score?.points >= 100,
+      condition:
+        !isUserLoading &&
+        talentProfile?.builder_score?.points &&
+        talentProfile?.builder_score?.points >= 100,
     },
   ];
 
@@ -88,10 +91,9 @@ export default function HowToDrawer() {
               }`}
             >
               Talent Protocol distributes weekly rewards to builders that own
-              verified contracts on Base or contribute to public repositories on
-              Github. Follow the steps below to be eligible for Builder Rewards:
+              verified contracts on Base and contribute to public crypto
+              repositories on GitHub. Follow the steps below to be eligible:
             </p>
-
             {allConditionsMet ? (
               <p className="text-green-500 mb-6 text-sm">
                 You are eligible for Builder Rewards!
@@ -127,7 +129,6 @@ export default function HowToDrawer() {
                   <ExternalLink
                     href={step.url}
                     className={`
-                      underline
                       ${
                         isDarkMode
                           ? "text-white hover:text-neutral-500"
@@ -140,6 +141,14 @@ export default function HowToDrawer() {
                 </li>
               ))}
             </ul>
+
+            <p className={`text-sm ${isDarkMode ? "text-neutral-500" : "text-neutral-600"} mt-6`}>
+              Subject to{" "}
+              <ExternalLink href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions">
+                Terms and Conditions
+              </ExternalLink>
+              .
+            </p>
           </div>
         </DrawerContent>
       </DrawerPortal>

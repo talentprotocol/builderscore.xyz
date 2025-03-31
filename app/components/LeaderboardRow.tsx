@@ -60,16 +60,20 @@ export default function LeaderboardRow({
               ? isDarkMode
                 ? "text-neutral-500"
                 : "text-neutral-600"
-              : leaderboardData.ranking_change < 0
-              ? "text-red-500"
-              : "text-green-500"
+              : leaderboardData.ranking_change !== 0
+              ? leaderboardData.ranking_change < 0
+                ? "text-red-500"
+                : "text-green-500"
+              : "text-neutral-500"
           }`}
         >
           {leaderboardData.ranking_change !== null
-            ? leaderboardData.ranking_change < 0
-              ? `↓ ${leaderboardData.ranking_change}`
-              : `↑ ${leaderboardData.ranking_change}`
-            : "-"}
+            ? leaderboardData.ranking_change !== 0
+              ? leaderboardData.ranking_change < 0
+                ? `↓ ${leaderboardData.ranking_change}`
+                : `↑ ${leaderboardData.ranking_change}`
+              : "0"
+            : "0"}
         </span>
 
         <div className="flex items-center gap-4">

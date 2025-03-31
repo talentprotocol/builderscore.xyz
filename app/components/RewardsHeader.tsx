@@ -61,8 +61,8 @@ export default function RewardsHeader() {
           className={`
           ${
             isDarkMode
-              ? "border border-amber-600 text-amber-600"
-              : "border border-amber-600 text-amber-600"
+              ? "border border-primary text-primary"
+              : "border border-primary text-primary"
           }
           text-xs rounded-lg px-3 py-1 animate-pulse`}
         >

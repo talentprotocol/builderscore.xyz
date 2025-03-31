@@ -35,6 +35,8 @@ export type TalentCredential = {
 export type TalentProfileResponse = {
   profile: TalentProfile | null;
   hasGithubCredential: boolean;
+  hasBasenameCredential: boolean;
+  basename: string | null;
 };
 
 export interface TalentSocial {

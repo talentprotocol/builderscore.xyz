@@ -8,7 +8,7 @@ import sdk from "@farcaster/frame-sdk";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
   user: {
-    fid: 6730,
+    fid: 5743254375432854832547302,
     username: "simao",
     displayName: "Simão",
   },
@@ -24,6 +24,8 @@ interface UserContextType {
   talentProfile: TalentProfile | null;
   frameContext: FrameContext | undefined;
   hasGithubCredential: boolean;
+  hasBasenameCredential: boolean;
+  basename: string | null;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -32,6 +34,8 @@ const UserContext = createContext<UserContextType>({
   talentProfile: null,
   frameContext: undefined,
   hasGithubCredential: false,
+  hasBasenameCredential: false,
+  basename: null,
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
@@ -40,6 +44,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [talentProfile, setTalentProfile] = useState<TalentProfile | null>(null);
   const [frameContext, setFrameContext] = useState<FrameContext>();
   const [hasGithubCredential, setHasGithubCredential] = useState(false);
+  const [hasBasenameCredential, setHasBasenameCredential] = useState(false);
+  const [basename, setBasename] = useState<string | null>(null);
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
   useEffect(() => {
@@ -71,11 +77,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const response = await fetchUserByFid(frameContext.user.fid);
         setTalentProfile(response.profile || null);
         setHasGithubCredential(response.hasGithubCredential || false);
+        setHasBasenameCredential(response.hasBasenameCredential || false);
+        setBasename(response.basename || null);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err : new Error("Failed to fetch user data"));
         setTalentProfile(null);
         setHasGithubCredential(false);
+        setHasBasenameCredential(false);
+        setBasename(null);
       } finally {
         setIsLoading(false);
       }
@@ -85,7 +95,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, [frameContext?.user?.fid]);
 
   return (
-    <UserContext.Provider value={{ isLoading, error, talentProfile, frameContext, hasGithubCredential }}>
+    <UserContext.Provider value={{ isLoading, error, talentProfile, frameContext, hasGithubCredential, hasBasenameCredential, basename }}>
       {children}
     </UserContext.Provider>
   );

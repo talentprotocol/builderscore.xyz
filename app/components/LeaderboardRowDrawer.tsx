@@ -51,16 +51,20 @@ export default function LeaderboardRowDrawer({ selectedBuilder, onClose }: {
                       className={`mr-4 ${
                         selectedBuilder.ranking_change === null
                           ? isDarkMode ? "text-neutral-500" : "text-neutral-600" 
-                          : selectedBuilder.ranking_change < 0
-                          ? "text-red-500"
-                          : "text-green-500"
+                          : selectedBuilder.ranking_change !== 0
+                          ? selectedBuilder.ranking_change < 0
+                            ? "text-red-500"
+                            : "text-green-500"
+                          : "text-neutral-500"
                       }`}
                     >
                       {selectedBuilder.ranking_change !== null
-                        ? selectedBuilder.ranking_change < 0
-                          ? `↓ ${selectedBuilder.ranking_change}`
-                          : `↑ ${selectedBuilder.ranking_change}`
-                        : "-"}
+                        ? selectedBuilder.ranking_change !== 0
+                          ? selectedBuilder.ranking_change < 0
+                            ? `↓ ${selectedBuilder.ranking_change}`
+                            : `↑ ${selectedBuilder.ranking_change}`
+                          : "0"
+                        : "0"}
                     </span>
 
                     <span className={`font-mono ${isDarkMode ? "text-neutral-500" : "text-neutral-600"} mr-2`}>
