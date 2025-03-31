@@ -27,6 +27,8 @@ export default function RewardsLeaderboard() {
   const { userLeaderboard } = useLeaderboard();
   const [selectedBuilder, setSelectedBuilder] = useState<LeaderboardEntry | null>(null);
 
+  console.log(leaderboardData);
+
   const defaultUserLeaderboard: LeaderboardEntry = {
     id: 0,
     profile: talentProfile!,
@@ -105,54 +107,54 @@ export default function RewardsLeaderboard() {
         <SelectGrant />
       </div>
 
-      {!isLoading && talentProfile && leaderboardData ? (
-        leaderboardData?.users?.length > 0 &&
-        !error && (
-          <>
-            {userLeaderboard ? (
-              <LeaderboardRow
-                leaderboardData={userLeaderboard}
-                isHighlighted={true}
-                className="mb-2"
+      {!isLoading && leaderboardData
+        ? leaderboardData?.users?.length > 0 &&
+          !error && (
+            <>
+              {userLeaderboard ? (
+                <LeaderboardRow
+                  leaderboardData={userLeaderboard}
+                  isHighlighted={true}
+                  className="mb-2"
+                  onBuilderSelect={setSelectedBuilder}
+                />
+              ) : (
+                talentProfile &&(
+                  <LeaderboardRow
+                    leaderboardData={defaultUserLeaderboard}
+                    isHighlighted={true}
+                    className="mb-2"
+                    onBuilderSelect={setSelectedBuilder}
+                  />
+                )
+              )}
+              <Leaderboard
+                leaderboardData={leaderboardData!}
+                onLoadMore={handleLoadMore}
+                hasMore={hasMore}
+                isLoadingMore={isLoadingMore}
                 onBuilderSelect={setSelectedBuilder}
               />
-            ) : (
+              <LeaderboardRowDrawer
+                selectedBuilder={selectedBuilder}
+                onClose={() => setSelectedBuilder(null)}
+              />
+            </>
+          )
+        : talentProfile && (
+            <>
               <LeaderboardRow
                 leaderboardData={defaultUserLeaderboard}
                 isHighlighted={true}
                 className="mb-2"
                 onBuilderSelect={setSelectedBuilder}
               />
-            )}
-            <Leaderboard
-              leaderboardData={leaderboardData!}
-              onLoadMore={handleLoadMore}
-              hasMore={hasMore}
-              isLoadingMore={isLoadingMore}
-              onBuilderSelect={setSelectedBuilder}
-            />
-            <LeaderboardRowDrawer
-              selectedBuilder={selectedBuilder}
-              onClose={() => setSelectedBuilder(null)}
-            />
-          </>
-        )
-      ) : (
-        talentProfile && (
-          <>
-            <LeaderboardRow
-              leaderboardData={defaultUserLeaderboard}
-              isHighlighted={true}
-              className="mb-2"
-              onBuilderSelect={setSelectedBuilder}
-             />
-            <LeaderboardRowDrawer
-              selectedBuilder={selectedBuilder}
-              onClose={() => setSelectedBuilder(null)}
-            />
-          </>
-        )
-      )}
+              <LeaderboardRowDrawer
+                selectedBuilder={selectedBuilder}
+                onClose={() => setSelectedBuilder(null)}
+              />
+            </>
+          )}
 
       {(isLoading || isSponsorLoading) && (
         <div className="flex items-center justify-center h-96">

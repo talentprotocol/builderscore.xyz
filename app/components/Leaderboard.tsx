@@ -17,6 +17,8 @@ export default function Leaderboard({
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
   const { isDarkMode } = useTheme();
+
+  console.log(leaderboardData);
   
   const handleScroll = useCallback(() => {
     if (isLoadingMore || !hasMore) return;
