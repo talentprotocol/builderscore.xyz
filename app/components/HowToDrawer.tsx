@@ -31,12 +31,12 @@ export default function HowToDrawer() {
       condition: !isUserLoading && talentProfile?.human_checkmark,
     },
     {
-      text: "Increase your Builder Score to 100+",
+      text: "Increase your Builder Score to 40+",
       url: "https://app.talentprotocol.com/profile",
       condition:
         !isUserLoading &&
         talentProfile?.builder_score?.points &&
-        talentProfile?.builder_score?.points >= 100,
+        talentProfile?.builder_score?.points >= 40,
     },
   ];
 
