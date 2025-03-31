@@ -8,7 +8,7 @@ import sdk from "@farcaster/frame-sdk";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
   user: {
-    fid: 856355,
+    fid: 195255,
     username: "simao",
     displayName: "Simão",
   },
@@ -46,9 +46,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const loadSDK = async () => {
       if (process.env.NODE_ENV === "development") {
         setFrameContext(DEV_FRAME_CONTEXT);
+        sdk.actions.ready();
       } else {
         setFrameContext(await sdk.context);
         sdk.actions.ready();
+        await sdk.actions.addFrame()
       }
     };
     
@@ -67,7 +69,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
       try {
         const response = await fetchUserByFid(frameContext.user.fid);
-        setTalentProfile(response.passport || null);
+        setTalentProfile(response.profile || null);
         setHasGithubCredential(response.hasGithubCredential || false);
         setError(null);
       } catch (err) {

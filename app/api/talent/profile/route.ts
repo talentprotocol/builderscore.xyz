@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
-import { PassportCredential, TalentProfile } from '@/app/types/talent';
+import { TalentProfile, TalentSocialsResponse } from '@/app/types/talent';
 
-// TODO: Until we ensure that the search API returns the Profile for a given FID,
-// we need to fetch the credentials for each passport and match the FID.
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const fid = searchParams.get("fid");
@@ -46,48 +44,43 @@ export async function GET(request: NextRequest) {
 
     const profileData = await profileResponse.json();
     
-    if (!profileData.passports?.length) {
-      return NextResponse.json({ passport: null });
+    if (!profileData.profiles?.length) {
+      return NextResponse.json({ profile: null });
     }
 
-    for (const passport of profileData.passports) {
-      const credentialsResponse = await fetch(
-        `${API_BASE_URL}${ENDPOINTS.talent.credentials}?passport_id=${passport.passport_id}`,
+    for (const profile of profileData.profiles as TalentProfile[]) {
+      const socialsResponse = await fetch(
+        `${API_BASE_URL}${ENDPOINTS.talent.socials}?id=${profile.id}&account_source=farcaster`,
         {
           method: "GET",
           headers: DEFAULT_HEADERS,
         }
       );
 
-      if (!credentialsResponse.ok) {
+      if (!socialsResponse.ok) {
         continue;
       }
 
-      const credentialsData = await credentialsResponse.json();
-
-      const farcasterCredential = credentialsData.passport_credentials.find(
-        (cred: PassportCredential) => {
-          if (cred.type !== "farcaster") return false;
-          const fids = cred.value.replace('FID: ', '').split(',').map(f => f.trim());
-          return fids.includes(fid);
-        }
+      const socialsData: TalentSocialsResponse = await socialsResponse.json();
+      
+      const farcasterSocial = socialsData.socials.find(
+        social => social.source === 'farcaster'
       );
 
-      if (farcasterCredential) {
-        const matchingPassport: TalentProfile = passport;
-
-        const hasGithubCredential = credentialsData.passport_credentials.some(
-          (cred: PassportCredential) => cred.type === "github"
+      if (farcasterSocial) {
+        const matchingProfile: TalentProfile = profile;
+        const hasGithubCredential = socialsData.socials.some(
+          social => social.source === 'github'
         );
 
-        return NextResponse.json({ 
-          passport: matchingPassport,
-          hasGithubCredential 
+        return NextResponse.json({
+          profile: matchingProfile,
+          hasGithubCredential,
         });
       }
     }
 
-    return NextResponse.json({ passport: null });
+    return NextResponse.json({ profile: null });
   } catch (error) {
     return NextResponse.json(
       { error: `Failed to fetch Talent Protocol profile: ${error}` },

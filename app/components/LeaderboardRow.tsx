@@ -1,6 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { LeaderboardEntry } from "@/app/types/leaderboards";
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, TOKEN_DECIMALS } from "@/app/lib/utils";
+import { useTheme } from "@/app/context/ThemeContext";
+import { useSponsor } from "@/app/context/SponsorContext";
 
 export default function LeaderboardRow({
   leaderboardData,
@@ -17,37 +21,73 @@ export default function LeaderboardRow({
   className?: string;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
+  const { isDarkMode } = useTheme();
+  const { sponsorToken } = useSponsor();
+
   return (
     <div
       onClick={() => onBuilderSelect?.(leaderboardData)}
-      className={`flex items-center justify-between py-2 px-3 pr-5 bg-neutral-900 cursor-pointer
-        ${isHighlighted && "border border-primary rounded-lg"}
+      className={`flex items-center justify-between py-2 px-3 pr-5 cursor-pointer
+        ${isDarkMode ? "bg-neutral-900" : "bg-white"}
+        ${
+          isHighlighted &&
+          `border ${
+            isDarkMode ? "border-primary" : "border-primary"
+          } rounded-lg`
+        }
         ${first && "rounded-t-lg"}
         ${last && "rounded-b-lg"}
-        ${!first && "border-t border-neutral-800"}
+        ${
+          !first &&
+          `border-t ${isDarkMode ? "border-neutral-800" : "border-neutral-200"}`
+        }
         ${className}`}
     >
       <div className="flex items-center gap-4">
-        <p className="text-neutral-500 text-xs min-w-6 font-mono">
+        <p
+          className={`${
+            isDarkMode ? "text-neutral-500" : "text-neutral-600"
+          } text-xs min-w-6 font-mono`}
+        >
           #{leaderboardData.leaderboard_position}
         </p>
+
+        <span
+          className={`min-w-8 text-xs ${
+            leaderboardData.ranking_change === null
+              ? isDarkMode
+                ? "text-neutral-500"
+                : "text-neutral-600"
+              : leaderboardData.ranking_change < 0
+              ? "text-red-500"
+              : "text-green-500"
+          }`}
+        >
+          {leaderboardData.ranking_change !== null
+            ? leaderboardData.ranking_change < 0
+              ? `↓ ${leaderboardData.ranking_change}`
+              : `↑ ${leaderboardData.ranking_change}`
+            : "-"}
+        </span>
+
         <div className="flex items-center gap-4">
           <Image
-            src={leaderboardData.user.profile_picture_url}
-            alt={
-              leaderboardData.user.passport.passport_profile.display_name ||
-              "Talent Builder"
+            src={
+              leaderboardData.profile.image_url?.startsWith("http")
+                ? leaderboardData.profile.image_url
+                : ""
             }
+            alt={leaderboardData.profile.name || "Talent Builder"}
             width={isHighlighted ? 48 : 36}
             height={isHighlighted ? 48 : 36}
             className={`rounded-full object-cover h-[36px] w-[36px] ${
-              isHighlighted && "border border-primary h-[48px] w-[48px]"
+              isHighlighted && "h-[48px] w-[48px] ml-[-6px]"
             }`}
           />
           <div>
-            <p className="text-white">
-              {leaderboardData.user.passport.passport_profile.display_name}
-              
+            <p className={isDarkMode ? "text-white" : "text-neutral-800"}>
+              {leaderboardData.profile.name}
+
               {process.env.NODE_ENV === "development" && (
                 <span className="ml-5 text-green-500 text-xs">
                   ID: {leaderboardData.id}
@@ -57,11 +97,20 @@ export default function LeaderboardRow({
           </div>
         </div>
       </div>
-      <p className="text-white">
+      <p className={isDarkMode ? "text-white" : "text-neutral-800"}>
         <span className="font-mono">
-          {formatNumber(parseFloat(leaderboardData.reward_amount))}
+          {formatNumber(
+            parseFloat(leaderboardData.reward_amount),
+            TOKEN_DECIMALS[sponsorToken]
+          )}
         </span>
-        <span className="text-neutral-500 ml-2 text-xs">$TALENT</span>
+        <span
+          className={`${
+            isDarkMode ? "text-neutral-500" : "text-neutral-600"
+          } ml-2 text-xs`}
+        >
+          {sponsorToken}
+        </span>
       </p>
     </div>
   );

@@ -4,8 +4,11 @@ export interface Grant {
   end_date: string;
   rewards_pool: string;
   token_ticker: string;
+  rewarded_builders: number;
   total_builders: number;
   avg_builder_score: number;
+  track_type: "intermediate" | "final";
+  tracked: true;
   sponsor: {
     id: number;
     name: string;

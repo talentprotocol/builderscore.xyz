@@ -16,7 +16,7 @@ interface GrantContextType {
 const GrantContext = createContext<GrantContextType | undefined>(undefined);
 
 export function GrantProvider({ children }: { children: ReactNode }) {
-  const { selectedSponsorSlug } = useSponsor();
+  const { selectedSponsorSlug, isLoading: isSponsorLoading } = useSponsor();
   const [selectedGrant, setSelectedGrant] = useState<Grant | null>(null);
   const [grants, setGrants] = useState<Grant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,10 +27,13 @@ export function GrantProvider({ children }: { children: ReactNode }) {
       try {
         setIsLoading(true);
         setError(null);
-        const params = selectedSponsorSlug !== "global" ? { sponsor_slug: selectedSponsorSlug } : undefined;
-        const response = await getGrants(params);        
-        setGrants(response.grants);
-        setSelectedGrant(null);
+
+        if (!isSponsorLoading) {
+          const params = selectedSponsorSlug !== "global" ? { sponsor_slug: selectedSponsorSlug } : undefined;
+          const response = await getGrants(params);        
+          setGrants(response.grants);
+          setSelectedGrant(null);
+        }
       } catch (err) {
         setError(`Failed to fetch grants: ${err}`);
       } finally {
@@ -39,7 +42,7 @@ export function GrantProvider({ children }: { children: ReactNode }) {
     }
 
     fetchGrants();
-  }, [selectedSponsorSlug]);
+  }, [selectedSponsorSlug, isSponsorLoading]);
 
   return (
     <GrantContext.Provider 

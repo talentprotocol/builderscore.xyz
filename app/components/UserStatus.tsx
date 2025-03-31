@@ -16,7 +16,7 @@ export default function UserStatus() {
           FID: {frameContext?.user?.fid || "Not Loaded"}
         </span>
         <span className="text-xs text-green-500">
-          Talent: {talentProfile?.passport_id || "Not Loaded"}
+          Talent: {talentProfile?.id || "Not Loaded"}
         </span>
       </div>
     </div>

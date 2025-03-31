@@ -8,12 +8,14 @@ import { LeaderboardEntry, LeaderboardResponse } from "@/app/types/leaderboards"
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
+import { useTheme } from "@/app/context/ThemeContext";
 import SelectGrant from "@/app/components/SelectGrant";
 import LeaderboardRowDrawer from "@/app/components/LeaderboardRowDrawer";
 
 export default function RewardsLeaderboard() {
-  const { selectedSponsorSlug } = useSponsor();
+  const { isLoading: isSponsorLoading, selectedSponsorSlug } = useSponsor();
   const { selectedGrant } = useGrant();
+  const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -56,10 +58,12 @@ export default function RewardsLeaderboard() {
   };
 
   useEffect(() => {
-    setCurrentPage(1);
-    fetchLeaderboard();
+    if (!isSponsorLoading) {
+      setCurrentPage(1);
+      fetchLeaderboard();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsorSlug, selectedGrant]);
+  }, [selectedSponsorSlug, selectedGrant, isSponsorLoading]);
 
   const handleLoadMore = () => {
     if (!isLoadingMore && hasMore) {
@@ -69,24 +73,36 @@ export default function RewardsLeaderboard() {
     }
   };
 
+  const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
+
   return (
     <div className="h-full flex flex-col mt-8">
       <div className="flex items-end justify-between mb-3">
-        <h2 className="text-sm font-semibold ml-1">Leaderboard</h2>
+        <h2 className={`
+          text-sm font-semibold ml-1
+          ${isDarkMode ?
+            `${isIntermediateGrant ? 'text-amber-600' : ''}` :
+            `${isIntermediateGrant ? 'text-amber-600' : 'text-neutral-800'}`
+          }
+        `}>
+          {isIntermediateGrant ? "Provisional" : "Leaderboard"}
+        </h2>
         <SelectGrant />
       </div>
 
-      {isLoading && (
+      {(isLoading || isSponsorLoading) && (
         <div className="flex items-center justify-center h-96">
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-500" />
+            <div className={`h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent ${
+              isDarkMode ? "text-neutral-500" : "text-neutral-400"
+            }`} />
           </div>
         </div>
       )}
 
       {error && (
         <div className="flex items-center justify-center h-full">
-          <p className="text-neutral-500">Error loading Leaderboard.</p>
+          <p className={isDarkMode ? "text-neutral-500" : "text-neutral-600"}>Error loading Leaderboard.</p>
         </div>
       )}
 

@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import HowToDrawer from "@/app/components/HowToDrawer";
 import { Button } from "@/app/components/ui/button";
 import { useUser } from "@/app/context/UserContext";
+import ExternalLink from "./ExternalLink";
 
 export default function RewardsActions() {
   const { talentProfile, hasGithubCredential } = useUser();
@@ -11,7 +11,7 @@ export default function RewardsActions() {
   return (
     <div className="grid auto-cols-fr grid-flow-col gap-4 mt-3 w-full">
       {!hasGithubCredential && (
-        <Link
+        <ExternalLink
           href={
             talentProfile
               ? "https://app.talentprotocol.com/settings/connected_accounts"
@@ -26,7 +26,7 @@ export default function RewardsActions() {
           >
             {talentProfile ? "Connect GitHub" : "Sign Up for Talent"}
           </Button>
-        </Link>
+        </ExternalLink>
       )}
 
       <HowToDrawer />

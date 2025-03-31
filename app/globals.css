@@ -1,19 +1,20 @@
+
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
+  /* Light mode colors (default) */
+  --background: oklch(0.98 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Primary is #826AEE. */
-  --primary: oklch(0.6 0.2 280);
-  --primary-foreground: oklch(0.985 0 0);
+  /* Primary is #0052FF for Base */
+  --primary: #0052FF;
+  --primary-foreground: #0052FF;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -42,14 +43,16 @@
 }
 
 .dark {
+  /* Dark mode colors */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.6 0.2 280);
-  --primary-foreground: oklch(0.205 0 0);
+  /* Primary is #FFFFFF for Talent Protocol */
+  --primary: #FFFFFF;
+  --primary-foreground: #FFFFFF;
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
