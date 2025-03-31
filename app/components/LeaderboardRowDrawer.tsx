@@ -51,7 +51,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                 <p
                   className={`${
                     isDarkMode ? "text-white" : "text-neutral-800"
-                  } text-lg mb-3`}
+                  } text-lg mb-3 text-center`}
                 >
                   <span className="font-semibold">
                     {selectedBuilder.profile.name || "Builder"}
@@ -80,7 +80,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                       <p
                         className={`${
                           isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                        } text-sm`}
+                        } text-xs`}
                       >
                         Builder Score
                       </p>
@@ -93,7 +93,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                       <p
                         className={`${
                           isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                        } text-sm`}
+                        } text-xs`}
                       >
                         Rewards Earned
                       </p>
@@ -107,7 +107,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                         <span
                           className={`${
                             isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                          } text-sm ml-2`}
+                          } text-xs ml-2`}
                         >
                           {sponsorToken}
                         </span>
