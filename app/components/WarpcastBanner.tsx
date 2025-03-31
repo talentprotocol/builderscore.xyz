@@ -5,8 +5,7 @@ import { X } from 'lucide-react';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useUser } from '@/app/context/UserContext';
 import Image from 'next/image';
-import sdk from '@farcaster/frame-sdk';
-
+import Link from 'next/link';
 export default function WarpcastBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const { isDarkMode } = useTheme();
@@ -25,17 +24,7 @@ export default function WarpcastBanner() {
     localStorage.setItem(localStorageKey, 'true');
   };
 
-  const handleAdd = async () => {
-    if (frameContext) {
-      sdk.actions.ready();
-      await sdk.actions.addFrame();
-    }
-  };
-
-  if (!isVisible) return null;
-  if (frameContext?.client.added) {
-    return null;
-  }
+  if (!isVisible || frameContext) return null;
 
   return (
     <div
@@ -81,31 +70,17 @@ export default function WarpcastBanner() {
             Ship, Earn, Repeat.
           </p>
         </div>
-        {frameContext ? (
-          <button
-            onClick={handleAdd}
-            className={`ml-auto text-sm px-3 py-1.5 rounded-lg ${
-              isDarkMode
-                ? "bg-white hover:bg-neutral-100 text-black"
-                : "bg-black hover:bg-neutral-900 text-white"
-            }`}
-          >
-            Add
-          </button>
-        ) : (
-          <a
-            href="https://warpcast.com/talent/0x17e48a8a"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`ml-auto text-sm px-3 py-1.5 rounded-lg ${
-              isDarkMode
-                ? "bg-white hover:bg-neutral-100 text-black"
-                : "bg-black hover:bg-neutral-900 text-white"
-            }`}
-          >
-            Add
-          </a>
-        )}
+        <Link
+          href="https://warpcast.com/talent/0x17e48a8a"
+          target="_blank"
+          className={`ml-auto text-sm px-3 py-1.5 rounded-lg ${
+            isDarkMode
+              ? "bg-white hover:bg-neutral-100 text-black"
+              : "bg-black hover:bg-neutral-900 text-white"
+          }`}
+        >
+          Add
+        </Link>
       </div>
     </div>
   );
