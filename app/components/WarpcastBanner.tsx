@@ -71,7 +71,7 @@ export default function WarpcastBanner() {
           </p>
         </div>
         <Link
-          href="https://warpcast.com/talent/0x17e48a8a"
+          href="https://www.warpcast.com/~/mini-apps/launch?domain=www.builderscore.xyz"
           target="_blank"
           className={`ml-auto text-sm px-3 py-1.5 rounded-lg ${
             isDarkMode
