@@ -12,6 +12,7 @@ import { useUser } from "@/app/context/UserContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import SelectGrant from "@/app/components/SelectGrant";
 import LeaderboardRowDrawer from "@/app/components/LeaderboardRowDrawer";
+import { format } from "date-fns";
 
 export default function RewardsLeaderboard() {
   const { isLoading: isSponsorLoading, selectedSponsorSlug } = useSponsor();
@@ -117,7 +118,7 @@ export default function RewardsLeaderboard() {
                   onBuilderSelect={setSelectedBuilder}
                 />
               ) : (
-                talentProfile &&(
+                talentProfile && (
                   <LeaderboardRow
                     leaderboardData={defaultUserLeaderboard}
                     isHighlighted={true}
@@ -136,6 +137,17 @@ export default function RewardsLeaderboard() {
               <LeaderboardRowDrawer
                 selectedBuilder={selectedBuilder}
                 onClose={() => setSelectedBuilder(null)}
+                weekly={!!selectedGrant}
+                context={
+                  selectedGrant ? (
+                    format(
+                      new Date(selectedGrant?.start_date || ""),
+                      "MMM d"
+                    ) +
+                    " - " +
+                    format(new Date(selectedGrant?.end_date || ""), "MMM d, yyyy")
+                  ) : "All Time"
+                }
               />
             </>
           )

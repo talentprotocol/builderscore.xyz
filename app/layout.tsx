@@ -20,13 +20,13 @@ const frame = {
   version: "next",
   imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
   button: {
-    title: "Ship, Earn, Repeat.",
+    title: "Earn Builder Rewards",
     action: {
       type: "launch_frame",
       name: "Builder Rewards",
       url: "https://www.builderscore.xyz",
       splashImageUrl: "https://www.builderscore.xyz/images/icon.png",
-      splashBackgroundColor: "#FFFFFF",
+      splashBackgroundColor: "#0C31C0",
     },
   },
 };
@@ -34,6 +34,16 @@ const frame = {
 export const metadata: Metadata = {
   title: "Builder Rewards",
   description: "Ship, Earn, Repeat.",
+  openGraph: {
+    title: "Builder Rewards",
+    description: "Ship, Earn, Repeat.",
+    images: [
+      {
+        url: "https://www.builderscore.xyz/images/frame-image.png",
+        alt: "Builder Rewards",
+      },
+    ],
+  },
   other: {
     "fc:frame": JSON.stringify(frame)
   },

@@ -11,7 +11,7 @@ export default function RewardsHeader() {
   const { grants, selectedGrant, isLoading } = useGrant();
   const { userLeaderboard, showUserLeaderboard } = useLeaderboard();
   const { isDarkMode } = useTheme();
-  const { sponsorToken } = useSponsor();
+  const { selectedSponsorSlug, sponsorToken } = useSponsor();
   const grantsToUse = selectedGrant ? [selectedGrant] : grants;
 
   const rewardsByTicker = grantsToUse.reduce((acc, grant) => {
@@ -20,6 +20,14 @@ export default function RewardsHeader() {
     acc[ticker] = (acc[ticker] || 0) + (isNaN(amount) ? 0 : amount);
     return acc;
   }, {} as Record<string, number>);
+
+  // TODO: Update endpoint to return ongoing, tracked Rewards
+  const getDisplayAmount = (ticker: string, amount: number) => {
+    if (selectedSponsorSlug === "base") {
+      return Math.min(Math.max(amount, 2), 8);
+    }
+    return amount;
+  };
 
   const totalRewardedBuilders = grantsToUse.reduce(
     (sum, grant) => sum + grant.rewarded_builders,
@@ -135,7 +143,7 @@ export default function RewardsHeader() {
               Object.entries(rewardsByTicker).map(([ticker, amount]) => (
                 <div key={ticker} className="flex items-end gap-2 font-mono">
                   <span className="text-4xl font-semibold">
-                    {formatNumber(amount, TOKEN_DECIMALS[ticker])}
+                    {formatNumber(getDisplayAmount(ticker, amount), TOKEN_DECIMALS[ticker])}
                   </span>
                   <span
                     className={`${
@@ -148,7 +156,9 @@ export default function RewardsHeader() {
               ))
             ) : (
               <div className="flex items-end gap-2 font-mono">
-                <span className="text-4xl font-semibold">0</span>
+                <span className="text-4xl font-semibold">
+                  {selectedSponsorSlug === "base" ? "2" : "0"}
+                </span>
                 <span
                   className={`${
                     isDarkMode ? "text-neutral-500" : "text-neutral-600"
