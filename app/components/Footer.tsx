@@ -17,7 +17,7 @@ export function Footer() {
       </p>
 
       <ExternalLink
-        href="https://talentprotocol.notion.site/terms-and-conditions-for-builder-rewards-program"
+        href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions"
         className={`text-center text-xs underline ${
           isDarkMode ? "text-neutral-500" : "text-neutral-600"
         }`}
