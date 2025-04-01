@@ -4,13 +4,24 @@ import { CACHE_TAGS } from "@/app/lib/cache-utils";
 import { invalidateMultipleTags } from "@/app/lib/cache-utils";
 
 /**
- * - To invalidate grants: /api/revalidate?tag=grants
- * - To invalidate grant by ID: /api/revalidate?tag=grant-by-id
- * - To invalidate multiple tags: /api/revalidate?tags=grants,grant-by-id
- * - To invalidate all caches: /api/revalidate?all=true
+ * - To invalidate grants: /api/revalidate?tag=grants&token=YOUR_TOKEN
+ * - To invalidate grant by ID: /api/revalidate?tag=grant-by-id&token=YOUR_TOKEN
+ * - To invalidate multiple tags: /api/revalidate?tags=grants,grant-by-id&token=YOUR_TOKEN
+ * - To invalidate all caches: /api/revalidate?all=true&token=YOUR_TOKEN
  */
 export async function GET(request: NextRequest) {
   try {
+    // Validate the revalidation token
+    const token = request.nextUrl.searchParams.get("token");
+    const validToken = process.env.REVALIDATION_TOKEN;
+    
+    if (!token || token !== validToken) {
+      return NextResponse.json(
+        { error: "Invalid or missing revalidation token" },
+        { status: 401 }
+      );
+    }
+    
     const invalidateAll = request.nextUrl.searchParams.get("all") === "true";
     
     if (invalidateAll) {

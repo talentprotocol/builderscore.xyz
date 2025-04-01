@@ -1,3 +1,4 @@
+import "server-only";
 import { revalidateTag } from "next/cache";
 
 export const CACHE_TAGS = {
@@ -9,7 +10,7 @@ export const CACHE_TAGS = {
   SPONSOR_BY_SLUG: "sponsor-by-slug",
   TALENT_PROFILE: "talent-profile",
   TALENT_SOCIALS: "talent-socials",
-}; 
+};
 
 export const CACHE_60_MINUTES = 60 * 60;
 
@@ -27,10 +28,12 @@ export function invalidateAllCache() {
 
 export async function revalidateAllCache(): Promise<boolean> {
   try {
-    const response = await fetch('/api/revalidate?all=true');
+    const response = await fetch(
+      "/api/revalidate?all=true&token=" + process.env.REVALIDATION_TOKEN
+    );
     return response.ok;
   } catch (error) {
-    console.error('Failed to invalidate all caches', error);
+    console.error("Failed to invalidate all caches", error);
     return false;
   }
-} 
+}
