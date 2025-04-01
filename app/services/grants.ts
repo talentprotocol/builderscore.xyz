@@ -22,7 +22,9 @@ export async function getGrants(params?: GrantParams): Promise<GrantsResponse> {
   const queryString = searchParams.toString();
   const url = `/api/grants${queryString ? `?${queryString}` : ''}`;
   
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    cache: 'force-cache'
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch grants');
   }
@@ -32,7 +34,9 @@ export async function getGrants(params?: GrantParams): Promise<GrantsResponse> {
 
 export async function getGrant(id: number): Promise<Grant> {
   const url = `/api/grants/${id}`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    cache: 'force-cache'
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch grant');
   }

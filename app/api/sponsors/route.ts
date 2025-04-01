@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
       `${API_BASE_URL}${ENDPOINTS.sponsors}?${queryParams}`,
       {
         headers: DEFAULT_HEADERS,
+        cache: 'force-cache'
       }
     );
 

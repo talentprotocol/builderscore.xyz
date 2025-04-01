@@ -41,6 +41,7 @@ export async function GET(request: NextRequest) {
       {
         method: "GET",
         headers: DEFAULT_HEADERS,
+        cache: 'force-cache'
       }
     );
 
@@ -60,6 +61,7 @@ export async function GET(request: NextRequest) {
         {
           method: "GET",
           headers: DEFAULT_HEADERS,
+          cache: 'force-cache'
         }
       );
 

@@ -11,6 +11,7 @@ export async function GET(
 
     const response = await fetch(`${API_BASE_URL}${ENDPOINTS.grants}/${id}`, {
       headers: DEFAULT_HEADERS,
+      cache: 'force-cache'
     });
 
     if (!response.ok) {

@@ -21,6 +21,7 @@ export async function GET(
       `${API_BASE_URL}${ENDPOINTS.leaderboards}/${id}?${queryParams}`,
       {
         headers: DEFAULT_HEADERS,
+        cache: 'force-cache'
       }
     );
 

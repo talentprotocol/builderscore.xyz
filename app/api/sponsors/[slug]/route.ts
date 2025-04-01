@@ -13,6 +13,7 @@ export async function GET(
       `${API_BASE_URL}${ENDPOINTS.sponsors}/${slug}`,
       {
         headers: DEFAULT_HEADERS,
+        cache: 'force-cache'
       }
     );
 
