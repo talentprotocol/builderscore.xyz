@@ -1,6 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
 import { GrantsResponse } from '@/app/types/grants';
+import { unstable_cache } from '@/app/lib/unstable-cache';
+import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
+
+const fetchGrants = unstable_cache(
+  async (queryString: string) => {
+    const response = await fetch(
+      `${API_BASE_URL}${ENDPOINTS.grants}?${queryString}`,
+      {
+        headers: DEFAULT_HEADERS
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  },
+  [CACHE_TAGS.GRANTS],
+  { revalidate: CACHE_60_MINUTES }
+);
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,19 +40,7 @@ export async function GET(request: NextRequest) {
       ...(page && { page }),
     });
 
-    const response = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.grants}?${queryParams}`,
-      {
-        headers: DEFAULT_HEADERS,
-        cache: 'force-cache'
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data: GrantsResponse = await response.json();
+    const data: GrantsResponse = await fetchGrants(queryParams.toString());
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(

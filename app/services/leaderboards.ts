@@ -19,9 +19,7 @@ export async function getLeaderboards(params?: LeaderboardParams): Promise<Leade
   const queryString = searchParams.toString();
   const url = `/api/leaderboards${queryString ? `?${queryString}` : ''}`;
   
-  const response = await fetch(url, {
-    cache: 'force-cache'
-  });
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch leaderboards');
   }
@@ -42,9 +40,7 @@ export async function getLeaderboardEntry(userId: string, grantId?: string, spon
   const queryString = searchParams.toString();
   const url = `/api/leaderboards/${userId}${queryString ? `?${queryString}` : ''}`;
   
-  const response = await fetch(url, {
-    cache: 'force-cache'
-  });
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch leaderboard entry');
   }

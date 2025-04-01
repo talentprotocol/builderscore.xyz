@@ -1,6 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
 import { LeaderboardEntry } from '@/app/types/leaderboards';
+import { unstable_cache } from '@/app/lib/unstable-cache';
+import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
+const fetchLeaderboardById = unstable_cache(
+  async (id: string, queryString: string) => {
+    const response = await fetch(
+      `${API_BASE_URL}${ENDPOINTS.leaderboards}/${id}?${queryString}`,
+      {
+        headers: DEFAULT_HEADERS
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  },
+  [CACHE_TAGS.LEADERBOARD_BY_ID],
+  { revalidate: CACHE_60_MINUTES }
+);
 
 export async function GET(
   request: NextRequest,
@@ -17,19 +37,7 @@ export async function GET(
       ...(sponsor_slug && { sponsor_slug }),
     });
 
-    const response = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.leaderboards}/${id}?${queryParams}`,
-      {
-        headers: DEFAULT_HEADERS,
-        cache: 'force-cache'
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data: LeaderboardEntry = await response.json();
+    const data: LeaderboardEntry = await fetchLeaderboardById(id, queryParams.toString());
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(

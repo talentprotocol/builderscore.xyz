@@ -34,9 +34,7 @@ export async function getGrants(params?: GrantParams): Promise<GrantsResponse> {
 
 export async function getGrant(id: number): Promise<Grant> {
   const url = `/api/grants/${id}`;
-  const response = await fetch(url, {
-    cache: 'force-cache'
-  });
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch grant');
   }

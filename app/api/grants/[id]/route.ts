@@ -1,6 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
 import { Grant } from '@/app/types/grants';
+import { unstable_cache } from '@/app/lib/unstable-cache';
+import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
+
+const fetchGrantById = unstable_cache(
+  async (id: string) => {
+    const response = await fetch(`${API_BASE_URL}${ENDPOINTS.grants}/${id}`, {
+      headers: DEFAULT_HEADERS
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  },
+  [CACHE_TAGS.GRANT_BY_ID],
+  { revalidate: CACHE_60_MINUTES }
+);
 
 export async function GET(
   request: NextRequest,
@@ -8,17 +26,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-
-    const response = await fetch(`${API_BASE_URL}${ENDPOINTS.grants}/${id}`, {
-      headers: DEFAULT_HEADERS,
-      cache: 'force-cache'
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data: Grant = await response.json();
+    
+    const data: Grant = await fetchGrantById(id);
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
