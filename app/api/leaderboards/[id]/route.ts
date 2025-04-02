@@ -13,6 +13,10 @@ const fetchLeaderboardById = unstable_cache(
       }
     );
 
+    if (response.status === 404) {
+      throw new Error('NOT_FOUND');
+    }
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -41,8 +45,18 @@ export async function GET(
     const data: LeaderboardEntry = await fetchLeaderboardById(id, queryParams.toString());
     return NextResponse.json(data);
   } catch (error) {
+
+    if (error instanceof Error) {
+      if (error.message === 'NOT_FOUND') {
+        return NextResponse.json(
+          { error: 'Leaderboard not found' },
+          { status: 404 }
+        );
+      }
+    }
+
     return NextResponse.json(
-      { error: `Failed to fetch leaderboard entry for user: ${error}` },
+      { error: `Failed to fetch leaderboard entry: ${error}` },
       { status: 500 }
     );
   }
