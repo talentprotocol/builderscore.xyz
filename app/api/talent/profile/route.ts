@@ -4,6 +4,8 @@ import { TalentProfile, TalentSocialsResponse } from '@/app/types/talent';
 import { unstable_cache } from '@/app/lib/unstable-cache';
 import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
 
+export const dynamic = "force-dynamic";
+
 const fetchTalentProfile = unstable_cache(
   async (queryString: string) => {
     const profileResponse = await fetch(

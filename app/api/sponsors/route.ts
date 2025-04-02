@@ -4,6 +4,8 @@ import { SponsorsResponse } from '@/app/types/sponsors';
 import { unstable_cache } from '@/app/lib/unstable-cache';
 import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
 
+export const dynamic = "force-dynamic";
+
 const fetchSponsors = unstable_cache(
   async (queryString: string) => {
     const response = await fetch(
