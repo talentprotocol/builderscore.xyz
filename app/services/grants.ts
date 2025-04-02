@@ -23,8 +23,9 @@ export async function getGrants(params?: GrantParams): Promise<GrantsResponse> {
   const url = `/api/grants${queryString ? `?${queryString}` : ''}`;
   
   const response = await fetch(url, {
-    cache: 'force-cache'
+    cache: 'no-store'
   });
+
   if (!response.ok) {
     throw new Error('Failed to fetch grants');
   }

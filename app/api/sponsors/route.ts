@@ -3,6 +3,7 @@ import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
 import { SponsorsResponse } from '@/app/types/sponsors';
 import { unstable_cache } from '@/app/lib/unstable-cache';
 import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
+
 const fetchSponsors = unstable_cache(
   async (queryString: string) => {
     const response = await fetch(

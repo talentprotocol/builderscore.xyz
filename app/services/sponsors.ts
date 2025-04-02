@@ -19,7 +19,11 @@ export async function getSponsors(perPage?: number): Promise<SponsorsResponse> {
 
 export async function getSponsor(slug: string): Promise<Sponsor> {
   const url = `/api/sponsors/${slug}`;
-  const response = await fetch(url);
+
+  const response = await fetch(url, {
+    cache: 'no-store'
+  });
+  
   if (!response.ok) {
     throw new Error('Failed to fetch sponsor');
   }

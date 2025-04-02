@@ -3,6 +3,7 @@ import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
 import { TalentProfile, TalentSocialsResponse } from '@/app/types/talent';
 import { unstable_cache } from '@/app/lib/unstable-cache';
 import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
+
 const fetchTalentProfile = unstable_cache(
   async (queryString: string) => {
     const profileResponse = await fetch(

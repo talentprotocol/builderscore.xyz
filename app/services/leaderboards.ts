@@ -19,7 +19,10 @@ export async function getLeaderboards(params?: LeaderboardParams): Promise<Leade
   const queryString = searchParams.toString();
   const url = `/api/leaderboards${queryString ? `?${queryString}` : ''}`;
   
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    cache: 'no-store'
+  });
+
   if (!response.ok) {
     throw new Error('Failed to fetch leaderboards');
   }
