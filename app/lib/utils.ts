@@ -10,6 +10,11 @@ export const TOKEN_DECIMALS: Record<string, number> = {
   ETH: 3,
 };
 
+export const TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS: Record<string, number> = {
+  $TALENT: 5,
+  ETH: 2,
+};
+
 export function formatNumber(x: number, decimals: number = 0): string {
   const parts = x.toFixed(decimals).split('.');
   const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -28,13 +33,13 @@ export function getTimeRemaining(endDate: string): string {
   const now = new Date();
   const end = new Date(endDate);
   const diffMs = end.getTime() - now.getTime();
-  
+
   if (diffMs <= 0) {
     return "Ended";
   }
-  
+
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  
+
   if (diffDays > 30) {
     const diffMonths = Math.floor(diffDays / 30);
     return `${diffMonths} Month${diffMonths > 1 ? 's' : ''} Left`;

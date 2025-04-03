@@ -5,7 +5,7 @@ import { useLeaderboard } from '@/app/context/LeaderboardContext';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useSponsor } from '@/app/context/SponsorContext';
 import ToggleLeaderboard from '@/app/components/ToggleLeaderboard';
-import { formatNumber, formatDate, getTimeRemaining, TOKEN_DECIMALS } from '@/app/lib/utils';
+import { formatNumber, formatDate, getTimeRemaining, TOKEN_DECIMALS, TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from '@/app/lib/utils';
 
 export default function RewardsHeader() {
   const { grants, selectedGrant, isLoading } = useGrant();
@@ -41,7 +41,7 @@ export default function RewardsHeader() {
       totalBuilders: acc.totalBuilders + grant.rewarded_builders,
     };
   }, { weightedScore: 0, totalBuilders: 0 });
-  
+
   const weightedAvgBuilderScore = totalBuilders ? Math.round(weightedScore / totalBuilders) : 0;
 
   const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
@@ -127,7 +127,7 @@ export default function RewardsHeader() {
                   {userLeaderboard.reward_amount
                     ? formatNumber(
                         parseFloat(userLeaderboard.reward_amount),
-                        TOKEN_DECIMALS[sponsorToken]
+                        TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
                       )
                     : "0"}
                 </span>
