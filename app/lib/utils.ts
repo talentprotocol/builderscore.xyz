@@ -11,14 +11,18 @@ export const TOKEN_DECIMALS: Record<string, number> = {
 };
 
 export const TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS: Record<string, number> = {
-  $TALENT: 5,
+  $TALENT: 0,
   ETH: 2,
 };
 
 export function formatNumber(x: number, decimals: number = 0): string {
-  const parts = x.toFixed(decimals).split('.');
-  const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
+  const formattedAmount = new Intl.NumberFormat(navigator.language, {
+    style: 'decimal',
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  }).format(x);
+
+  return formattedAmount;
 }
 
 export function formatDate(date: string): string {
