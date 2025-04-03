@@ -143,7 +143,7 @@ export default function RewardsHeader() {
               Object.entries(rewardsByTicker).map(([ticker, amount]) => (
                 <div key={ticker} className="flex items-end gap-2 font-mono">
                   <span className="text-4xl font-semibold">
-                    {formatNumber(getDisplayAmount(ticker, amount), TOKEN_DECIMALS[ticker])}
+                    {formatNumber(getDisplayAmount(ticker, amount), TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker])}
                   </span>
                   <span
                     className={`${
