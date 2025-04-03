@@ -12,7 +12,7 @@ export const TOKEN_DECIMALS: Record<string, number> = {
 
 export const TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS: Record<string, number> = {
   $TALENT: 0,
-  ETH: 2,
+  ETH: 0,
 };
 
 export function formatNumber(x: number, decimals: number = 0): string {
