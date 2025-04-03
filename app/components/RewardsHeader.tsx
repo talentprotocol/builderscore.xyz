@@ -5,7 +5,7 @@ import { useLeaderboard } from '@/app/context/LeaderboardContext';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useSponsor } from '@/app/context/SponsorContext';
 import ToggleLeaderboard from '@/app/components/ToggleLeaderboard';
-import { formatNumber, formatDate, getTimeRemaining, TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from '@/app/lib/utils';
+import { formatNumber, formatDate, getTimeRemaining, TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from '@/app/lib/utils';
 
 export default function RewardsHeader() {
   const { grants, selectedGrant, isLoading } = useGrant();
@@ -127,7 +127,7 @@ export default function RewardsHeader() {
                   {userLeaderboard.reward_amount
                     ? formatNumber(
                         parseFloat(userLeaderboard.reward_amount),
-                        TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
+                        INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
                       )
                     : "0"}
                 </span>

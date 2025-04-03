@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { LeaderboardEntry } from "@/app/types/leaderboards";
-import { formatNumber, TOKEN_DECIMALS } from "@/app/lib/utils";
+import { formatNumber, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from "@/app/lib/utils";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 
@@ -109,7 +109,7 @@ export default function LeaderboardRow({
             <span className="font-mono">
               {formatNumber(
                 parseFloat(leaderboardData.reward_amount),
-                TOKEN_DECIMALS[sponsorToken]
+                INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
               )}
             </span>
             <span

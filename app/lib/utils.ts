@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const TOKEN_DECIMALS: Record<string, number> = {
+export const INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS: Record<string, number> = {
   $TALENT: 0,
   ETH: 3,
 };
