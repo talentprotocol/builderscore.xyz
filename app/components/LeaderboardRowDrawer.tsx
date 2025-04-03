@@ -9,7 +9,7 @@ import {
   DrawerPortal,
 } from "@/app/components/ui/drawer";
 import { Button } from "@/app/components/ui/button";
-import { formatNumber, TOKEN_DECIMALS } from "../lib/utils";
+import { formatNumber, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from "../lib/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTheme } from "@/app/context/ThemeContext";
@@ -101,7 +101,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                         <span className="font-semibold">
                           {formatNumber(
                             parseFloat(selectedBuilder.reward_amount || "0"),
-                            TOKEN_DECIMALS[sponsorToken]
+                            INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
                           )}
                         </span>
                         <span
@@ -201,4 +201,4 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
       </DrawerPortal>
     </Drawer>
   );
-} 
+}
