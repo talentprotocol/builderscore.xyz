@@ -6,6 +6,8 @@ import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { useState } from "react";
 import Image from "next/image";
 import { useTheme } from "@/app/context/ThemeContext";
+import { useUser } from "@/app/context/UserContext";
+
 export default function ShareableLeaderboard({
   id,
   grant_id,
@@ -16,6 +18,7 @@ export default function ShareableLeaderboard({
   sponsor_slug?: string;
 }) {
   const { isDarkMode } = useTheme();
+  const { frameContext } = useUser();
   const [open, setOpen] = useState(false);
 
   const params = new URLSearchParams({
@@ -24,13 +27,29 @@ export default function ShareableLeaderboard({
   });
 
   const url = `/api/leaderboards/${id}/shareable?${params.toString()}`;
+  const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/share/${grant_id}/${id}`;
+
+  const handleShare = async () => {
+    if (frameContext) {
+      // TODO: composeCast is not available in the SDK yet
+      // sdk.actions.ready();
+      // await sdk.actions.composeCast({
+      //   text: "Check out this Builder Rewards leaderboard!",
+      //   embeds: [shareUrl],
+      // });
+
+      setOpen(true);
+    } else {
+      setOpen(true);
+    }
+  };
 
   return (
     <>
       <Button
         size="lg"
         className="bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer w-full text-black"
-        onClick={() => setOpen(true)}
+        onClick={handleShare}
       >
         <ShareIcon />
         Share on Farcaster
@@ -47,9 +66,7 @@ export default function ShareableLeaderboard({
 
           <Button
             onClick={() => {
-              navigator.clipboard.writeText(
-                `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/share/${grant_id}/${id}`
-              );
+              navigator.clipboard.writeText(shareUrl);
               setOpen(false);
             }}
             className={`bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer w-full text-black ${

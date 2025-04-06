@@ -16,15 +16,11 @@ export async function generateMetadata(
   const imageUrl = `${process.env.BUILDER_REWARDS_URL}/api/leaderboards/${id}/shareable?grant_id=${grantId}`;
 
   return {
-    title: "Builder Rewards",
-    description: "Check out this builder's rewards on Builder Rewards",
     openGraph: {
       images: [imageUrl],
     },
     twitter: {
       card: 'summary_large_image',
-      title: "Builder Rewards",
-      description: "Check out this builder's rewards on Builder Rewards",
       images: [imageUrl],
     },
   };
