@@ -13,8 +13,8 @@ export default function Navbar() {
         <Image
           src={
             isDarkMode
-              ? "images/talent_protocol_icon_white.svg"
-              : "images/base_logo_blue.svg"
+              ? "/images/talent_protocol_icon_white.svg"
+              : "/images/base_logo_blue.svg"
           }
           alt="Talent Protocol"
           fill={false}

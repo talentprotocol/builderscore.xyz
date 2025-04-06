@@ -20,8 +20,9 @@ export default function SelectGrant() {
         const sortedGrants = [...intermediateGrants].sort((a, b) => 
           new Date(a.end_date).getTime() - new Date(b.end_date).getTime()
         );
-        
         setSelectedGrant(sortedGrants[0]);
+      } else {
+        setSelectedGrant(grants[0]);
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -16,7 +16,13 @@ export const TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS: Record<string, number> 
 };
 
 export function formatNumber(x: number, decimals: number = 0): string {
-  const formattedAmount = new Intl.NumberFormat(navigator.language, {
+  let navigatorLanguage = "en-US";
+
+  if (typeof window !== 'undefined') {
+    navigatorLanguage = navigator.language;
+  }
+
+  const formattedAmount = new Intl.NumberFormat(navigatorLanguage, {
     style: 'decimal',
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals

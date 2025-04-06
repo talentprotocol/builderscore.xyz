@@ -3,10 +3,15 @@
 import HowToDrawer from "@/app/components/HowToDrawer";
 import { Button } from "@/app/components/ui/button";
 import { useUser } from "@/app/context/UserContext";
-import ExternalLink from "./ExternalLink";
+import { useGrant } from "@/app/context/GrantContext";
+import { useLeaderboard } from "@/app/context/LeaderboardContext";
+import ExternalLink from "@/app/components/ExternalLink";
+import ShareableLeaderboard from "@/app/components/ShareableLeaderboard";
 
 export default function RewardsActions() {
   const { talentProfile, hasGithubCredential } = useUser();
+  const { selectedGrant } = useGrant();
+  const { userLeaderboard } = useLeaderboard();
 
   return (
     <div className="grid auto-cols-fr grid-flow-col gap-4 mt-3 w-full">
@@ -30,6 +35,16 @@ export default function RewardsActions() {
       )}
 
       <HowToDrawer />
+
+      {userLeaderboard &&
+        selectedGrant &&
+        ((selectedGrant.tracked && selectedGrant.track_type === "final") ||
+          !selectedGrant.tracked) && (
+          <ShareableLeaderboard
+            id={userLeaderboard.profile.id}
+            grant_id={selectedGrant.id?.toString()}
+          />
+        )}
     </div>
   );
 }
