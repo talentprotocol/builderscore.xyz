@@ -33,10 +33,10 @@ const frame = {
 
 export const metadata: Metadata = {
   title: "Builder Rewards",
-  description: "Ship, Earn, Repeat.",
+  description: "Weekly Rewards for the most impactful builders.",
   openGraph: {
     title: "Builder Rewards",
-    description: "Ship, Earn, Repeat.",
+    description: "Weekly Rewards for the most impactful builders.",
     images: [
       {
         url: "https://www.builderscore.xyz/images/frame-image.png",

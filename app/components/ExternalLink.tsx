@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
-import sdk from "@farcaster/frame-sdk";
+import { sdk } from "@farcaster/frame-sdk";
 import { useUser } from "@/app/context/UserContext";
 
 interface ExternalLinkProps {

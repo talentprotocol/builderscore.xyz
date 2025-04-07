@@ -1,8 +1,8 @@
 # Builder Rewards
 
-Ship, Earn, Repeat.
+Weekly Rewards for the most impactful builders.
 
-> Builder Grants is a real-time, automated rewards engine designed to recognize and incentivize top Builders in the Base ecosystem. By tracking onchain deployments, GitHub activity, and overall Builder impact, we ensure that the most valuable contributors are rewarded every week—no applications, no posting, just shipping.
+> Builder Rewards is a real-time, automated rewards engine designed to recognize and incentivize top Builders in the Base ecosystem. By tracking onchain deployments, GitHub activity, and overall Builder impact, we ensure that the most valuable contributors are rewarded every week—no applications, no posting, just shipping.
 
 ## Getting Started
 

@@ -7,6 +7,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useUser } from "@/app/context/UserContext";
+import { useLeaderboard } from "@/app/context/LeaderboardContext";
+import { useGrant } from "@/app/context/GrantContext";  
+import { sdk } from "@farcaster/frame-sdk";
 
 export default function ShareableLeaderboard({
   id,
@@ -19,6 +22,8 @@ export default function ShareableLeaderboard({
 }) {
   const { isDarkMode } = useTheme();
   const { frameContext } = useUser();
+  const { userLeaderboard } = useLeaderboard();
+  const { selectedGrant } = useGrant();
   const [open, setOpen] = useState(false);
 
   const params = new URLSearchParams({
@@ -26,19 +31,19 @@ export default function ShareableLeaderboard({
     ...(sponsor_slug && { sponsor_slug }),
   });
 
+  const shareSummary = `:\n\n${userLeaderboard?.summary}`;
+  const shareText = `I'm #${userLeaderboard?.leaderboard_position} on this week's ${selectedGrant?.sponsor.name} Builder Rewards and I've just earned ${userLeaderboard?.reward_amount} ${selectedGrant?.token_ticker}${userLeaderboard?.summary && userLeaderboard?.summary !== "" ? shareSummary : ""}`;
+
   const url = `/api/leaderboards/${id}/shareable?${params.toString()}`;
   const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/share/${grant_id}/${id}`;
 
   const handleShare = async () => {
     if (frameContext) {
-      // TODO: composeCast is not available in the SDK yet
-      // sdk.actions.ready();
-      // await sdk.actions.composeCast({
-      //   text: "Check out this Builder Rewards leaderboard!",
-      //   embeds: [shareUrl],
-      // });
-
-      setOpen(true);
+      sdk.actions.ready();
+      await sdk.actions.composeCast({
+        text: shareText,
+        embeds: [shareUrl],
+      });
     } else {
       setOpen(true);
     }

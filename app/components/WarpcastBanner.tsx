@@ -67,7 +67,7 @@ export default function WarpcastBanner() {
               isDarkMode ? "text-neutral-500" : "text-neutral-500"
             }`}
           >
-            Ship, Earn, Repeat.
+            Weekly Rewards for the most impactful builders.
           </p>
         </div>
         <Link

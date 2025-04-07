@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { TalentProfile } from "@/app/types/talent";
 import { fetchUserByFid } from "@/app/services/talent";
 import { FrameContext } from "@/app/types/farcaster";
-import sdk from "@farcaster/frame-sdk";
+import { sdk } from "@farcaster/frame-sdk";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
   user: {
