@@ -4,7 +4,7 @@ import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
 import { LeaderboardEntry } from '@/app/types/leaderboards';
 import { unstable_cache } from '@/app/lib/unstable-cache';
 import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
-import { formatNumber, formatDate } from "@/app/lib/utils";
+import { formatNumber, formatDateRange } from "@/app/lib/utils";
 import { Grant } from "@/app/types/grants";
 
 export const dynamic = "force-dynamic";
@@ -77,7 +77,7 @@ export async function GET(
     const ranking = leaderboardData.leaderboard_position?.toString();
     const rewards = formatNumber(parseFloat(leaderboardData.reward_amount!), 3);
     const ticker = grantData.token_ticker;
-    const dates = formatDate(grantData.end_date);
+    const dates = formatDateRange(grantData.start_date, grantData.end_date);
     const name = leaderboardData.profile.name || leaderboardData.profile.display_name || "Builder";
     const image_url = leaderboardData.profile.image_url || `${process.env.BUILDER_REWARDS_URL}/images/default_avatar.png`;
     

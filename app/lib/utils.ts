@@ -39,6 +39,36 @@ export function formatDate(date: string): string {
   });
 }
 
+export function formatDateRange(startDate: string, endDate: string): string {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  
+  const startYear = start.getFullYear();
+  const endYear = end.getFullYear();
+  
+  let formattedStartDate = "";
+  const formattedEndDate = new Date(endDate).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  
+  if (startYear !== endYear) {
+    formattedStartDate = new Date(startDate).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  } else {
+    formattedStartDate = new Date(startDate).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+    });
+  }
+  
+  return `${formattedStartDate} - ${formattedEndDate}`;
+}
+
 export function getTimeRemaining(endDate: string): string {
   const now = new Date();
   const end = new Date(endDate);
