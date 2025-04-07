@@ -96,17 +96,17 @@ export async function GET(
           <img
             src={`${process.env.BUILDER_REWARDS_URL}/images/shareable_background.png`}
             alt="Shareable Background"
-            width={1920}
+            width={1620}
             height={1080}
           />
 
-          <div tw="flex flex-col justify-between absolute top-24 left-22 w-[1270px] h-[820px] p-[50px] py-[60px]">
+          <div tw="flex flex-col justify-between absolute top-12 left-12 w-[1080px] h-[920px] p-[50px] pt-[70px] pb-[120px]">
             <div tw="flex flex-col">
               <p tw="text-[50px] text-[#C8DBFE] mb-0">{dates}</p>
               <p tw="text-[100px] font-bold text-[#C8DBFE] mt-0 ml-[-10px]" style={{ fontFamily: "DM Mono Medium" }}>{name}</p>
             </div>
 
-            <div tw="flex justify-between">
+            <div tw="flex flex-col">
               <div tw="flex relative">
                 <div tw="flex flex-col items-center justify-center w-[420px] h-[420px] overflow-hidden rounded-full border-[5px] border-[#C8DBFE]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -118,19 +118,19 @@ export async function GET(
                     #{ranking}
                   </p>
                 </div>
-              </div>
 
-              <div tw="flex flex-col items-center justify-center">
-                <p tw="text-[80px] text-[#120A36] bg-[#C8DBFE] rounded-full p-[40px]">
-                  {rewards} {ticker}
-                </p>
+                <div tw="flex flex-col items-start absolute bottom-[-50px] right-[0px]">
+                  <p tw="text-[80px] text-[#120A36] bg-[#C8DBFE] rounded-full p-[40px]">
+                    {rewards} {ticker}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       ),
       {
-        width: 1920,
+        width: 1620,
         height: 1080,
         fonts: [
           {

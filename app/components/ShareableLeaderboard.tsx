@@ -74,12 +74,12 @@ export default function ShareableLeaderboard({
         Share
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-4 pt-12 flex flex-col gap-2">
+        <DialogContent className="p-2 flex flex-col gap-2">
           <Image
             src={url}
             alt="Shareable Leaderboard"
-            width={300}
-            height={300}
+            width={1620}
+            height={1080}
             className="w-full h-full object-contain rounded-lg"
           />
 
