@@ -41,7 +41,7 @@ export default function RewardsActions() {
 
       {userLeaderboard &&
         selectedGrant &&
-        ((selectedGrant.tracked && selectedGrant.track_type === "final") ||
+        ((selectedGrant.tracked && selectedGrant.track_type === "intermediate") ||
           !selectedGrant.tracked) && (
           <ShareableLeaderboard
             id={userLeaderboard.profile.id}

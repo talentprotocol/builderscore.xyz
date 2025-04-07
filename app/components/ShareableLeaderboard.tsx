@@ -38,12 +38,23 @@ export default function ShareableLeaderboard({
     ...(sponsor_slug && { sponsor_slug }),
   });
 
-  const shareSummary = `\n\n"${userLeaderboard?.summary}"`;
+  const getSummaryForPlatform = (platform: 'farcaster' | 'twitter') => {
+    if (!userLeaderboard?.summary) return '';
+    const maxLength = platform === 'farcaster' ? 180 : 75;
+    return `\n\n"${userLeaderboard.summary.slice(0, maxLength)}${userLeaderboard.summary.length > maxLength ? '...' : ''}"`;
+  };
+
   const rewardsNumber = formatNumber(
     parseFloat(userLeaderboard?.reward_amount || "0"),
     INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[selectedGrant?.token_ticker || ""]
   );
-  const shareText = `I earned ${rewardsNumber} ${selectedGrant?.token_ticker} for ranking #${userLeaderboard?.leaderboard_position} on this week's ${selectedGrant?.sponsor.name} Builder Rewards.${userLeaderboard?.summary && userLeaderboard?.summary !== "" ? shareSummary : ""}\n\nBuild on ${selectedGrant?.sponsor.name} and be Rewarded!`;
+  
+  const baseShareText = `I earned ${rewardsNumber} ${selectedGrant?.token_ticker} for ranking #${userLeaderboard?.leaderboard_position} on this week's ${selectedGrant?.sponsor.name} Builder Rewards!`;
+  const farcasterShareText = baseShareText + (userLeaderboard?.summary && userLeaderboard?.summary !== "" ? getSummaryForPlatform('farcaster') : "");
+  const twitterShareText = baseShareText + (userLeaderboard?.summary && userLeaderboard?.summary !== "" ? getSummaryForPlatform('twitter') : "");
+  
+  const tagsTextFarcaster = `Sponsored by @base and powered by @talent`;
+  const tagsTextTwitter = `Sponsored by @base and powered by @TalentProtocol`;
 
   const url = `/api/leaderboards/${id}/shareable?${params.toString()}`;
   const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/share/${grant_id}/${id}`;
@@ -85,7 +96,7 @@ export default function ShareableLeaderboard({
 
           <ExternalLink
             href={`https://warpcast.com/~/compose?text=${encodeURIComponent(
-              shareText
+              farcasterShareText + "\n\n" + tagsTextFarcaster
             )}&embeds[]=${encodeURIComponent(shareUrl)}`}
             target="_blank"
             className="w-full"
@@ -105,7 +116,7 @@ export default function ShareableLeaderboard({
 
           <ExternalLink
             href={`https://x.com/intent/tweet?text=${encodeURIComponent(
-              shareText + "\n\n"
+              twitterShareText + "\n\n" + tagsTextTwitter + "\n\n"
             )}&url=${encodeURIComponent(shareUrl)}`}
             target="_blank"
             className="w-full"
