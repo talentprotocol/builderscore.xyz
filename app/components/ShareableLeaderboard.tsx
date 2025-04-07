@@ -32,6 +32,7 @@ export default function ShareableLeaderboard({
   const { userLeaderboard } = useLeaderboard();
   const { selectedGrant } = useGrant();
   const [open, setOpen] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
 
   const params = new URLSearchParams({
     ...(grant_id && { grant_id }),
@@ -86,13 +87,25 @@ export default function ShareableLeaderboard({
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="p-2 flex flex-col gap-2">
-          <Image
-            src={url}
-            alt="Shareable Leaderboard"
-            width={1620}
-            height={1080}
-            className="w-full h-full object-contain rounded-lg"
-          />
+          <div className="relative w-full">
+            {imageLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+                <div
+                  className={`h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent ${
+                    isDarkMode ? "text-neutral-500" : "text-neutral-400"
+                  }`}
+                />
+              </div>
+            )}
+            <Image
+              src={url}
+              alt="Shareable Leaderboard"
+              width={1620}
+              height={1080}
+              className="w-full h-full object-contain rounded-lg"
+              onLoadingComplete={() => setImageLoading(false)}
+            />
+          </div>
 
           <ExternalLink
             href={`https://warpcast.com/~/compose?text=${encodeURIComponent(
