@@ -54,8 +54,14 @@ export default function ShareableLeaderboard({
   const farcasterShareText = baseShareText + (userLeaderboard?.summary && userLeaderboard?.summary !== "" ? getSummaryForPlatform('farcaster') : "");
   const twitterShareText = baseShareText + (userLeaderboard?.summary && userLeaderboard?.summary !== "" ? getSummaryForPlatform('twitter') : "");
   
-  const tagsTextFarcaster = `Sponsored by @base and powered by @talent`;
-  const tagsTextTwitter = `Sponsored by @base and powered by @TalentProtocol`;
+  const tagsTextFarcaster =
+    selectedGrant?.sponsor.slug === "base"
+      ? `Sponsored by @base and powered by @talent`
+      : `Powered by @talent`;
+  const tagsTextTwitter =
+    selectedGrant?.sponsor.slug === "base"
+      ? `Sponsored by @base and powered by @TalentProtocol`
+      : `Powered by @TalentProtocol`;
 
   const url = `/api/leaderboards/${id}/shareable?${params.toString()}`;
   const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/share/${grant_id}/${id}`;
