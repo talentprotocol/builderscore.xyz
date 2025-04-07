@@ -12,8 +12,23 @@ export async function generateMetadata(
   { params }: Props,
 ): Promise<Metadata> {
   const { id, grantId } = await params;
-  
+
   const imageUrl = `${process.env.BUILDER_REWARDS_URL}/api/leaderboards/${id}/shareable?grant_id=${grantId}`;
+
+  const frame = {
+    version: "next",
+    imageUrl: imageUrl,
+    button: {
+      title: "Earn Builder Rewards",
+      action: {
+        type: "launch_frame",
+        name: "Builder Rewards",
+        url: "https://www.builderscore.xyz",
+        splashImageUrl: "https://www.builderscore.xyz/images/icon.png",
+        splashBackgroundColor: "#0C31C0",
+      },
+    },
+  };
 
   return {
     openGraph: {
@@ -22,6 +37,9 @@ export async function generateMetadata(
     twitter: {
       card: 'summary_large_image',
       images: [imageUrl],
+    },
+    other: {
+      "fc:frame": JSON.stringify(frame)
     },
   };
 }
