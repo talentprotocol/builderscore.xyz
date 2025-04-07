@@ -101,7 +101,9 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                         <span className="font-semibold">
                           {formatNumber(
                             parseFloat(selectedBuilder.reward_amount || "0"),
-                            INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
+                            INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+                              sponsorToken
+                            ]
                           )}
                         </span>
                         <span
@@ -118,37 +120,37 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                       <div className="flex flex-col items-center justify-between">
                         <p
                           className={`${
-                          isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                        } text-sm`}
-                      >
-                        {weekly && weekly ? "Weekly" : "All Time"} Rank
-                      </p>
-                      <p className="text-lg font-mono font-semibold">
-                        <span
-                          className={`mr-2 ${
-                            selectedBuilder.ranking_change === null
-                              ? isDarkMode
-                                ? "text-neutral-500"
-                                : "text-neutral-600"
-                              : selectedBuilder.ranking_change !== 0
-                              ? selectedBuilder.ranking_change < 0
-                                ? "text-red-500"
-                                : "text-green-500"
-                              : "text-neutral-500"
-                          }`}
+                            isDarkMode ? "text-neutral-500" : "text-neutral-600"
+                          } text-sm`}
                         >
-                          {selectedBuilder.ranking_change !== null
-                            ? selectedBuilder.ranking_change !== 0
-                              ? selectedBuilder.ranking_change < 0
-                                ? `↓ ${selectedBuilder.ranking_change}`
-                                : `↑ ${selectedBuilder.ranking_change}`
-                              : "0"
-                            : "0"}
-                        </span>
+                          {weekly && weekly ? "Weekly" : "All Time"} Rank
+                        </p>
+                        <p className="text-lg font-mono font-semibold">
+                          <span
+                            className={`mr-2 ${
+                              selectedBuilder.ranking_change === null
+                                ? isDarkMode
+                                  ? "text-neutral-500"
+                                  : "text-neutral-600"
+                                : selectedBuilder.ranking_change !== 0
+                                ? selectedBuilder.ranking_change < 0
+                                  ? "text-red-500"
+                                  : "text-green-500"
+                                : "text-neutral-500"
+                            }`}
+                          >
+                            {selectedBuilder.ranking_change !== null
+                              ? selectedBuilder.ranking_change !== 0
+                                ? selectedBuilder.ranking_change < 0
+                                  ? `↓ ${selectedBuilder.ranking_change}`
+                                  : `↑ ${selectedBuilder.ranking_change}`
+                                : "0"
+                              : "0"}
+                          </span>
 
-                        <span className={`font-mono mr-2`}>
-                          #{selectedBuilder.leaderboard_position}
-                        </span>
+                          <span className={`font-mono mr-2`}>
+                            #{selectedBuilder.leaderboard_position}
+                          </span>
                         </p>
                       </div>
                     )}
@@ -171,9 +173,11 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                       >
                         Summary
                       </p>
-                      <p className={isDarkMode ? "" : "text-neutral-800"}>
-                        {selectedBuilder.summary}
-                      </p>
+                      <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
+                        <p className={isDarkMode ? "" : "text-neutral-800"}>
+                          {selectedBuilder.summary}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 )}

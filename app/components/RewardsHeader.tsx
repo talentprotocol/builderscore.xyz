@@ -127,7 +127,9 @@ export default function RewardsHeader() {
                   {userLeaderboard.reward_amount
                     ? formatNumber(
                         parseFloat(userLeaderboard.reward_amount),
-                        INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
+                        INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+                          sponsorToken
+                        ]
                       )
                     : "0"}
                 </span>
@@ -143,7 +145,10 @@ export default function RewardsHeader() {
               Object.entries(rewardsByTicker).map(([ticker, amount]) => (
                 <div key={ticker} className="flex items-end gap-2 font-mono">
                   <span className="text-4xl font-semibold">
-                    {formatNumber(getDisplayAmount(ticker, amount), TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker])}
+                    {formatNumber(
+                      getDisplayAmount(ticker, amount),
+                      TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker]
+                    )}
                   </span>
                   <span
                     className={`${
@@ -182,7 +187,11 @@ export default function RewardsHeader() {
                 isDarkMode ? "text-neutral-500" : "text-neutral-600"
               } text-sm`}
             >
-              {shouldShowUserLeaderboard ? "Your Rank" : "Builders Rewarded"}
+              {shouldShowUserLeaderboard
+                ? "Your Rank"
+                : isIntermediateGrant
+                ? "Builders"
+                : "Builders Rewarded"}
             </p>
             <p className="text-2xl font-mono font-semibold">
               {shouldShowUserLeaderboard
