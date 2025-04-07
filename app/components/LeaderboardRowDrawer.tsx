@@ -157,7 +157,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                   </div>
                 </div>
 
-                {selectedBuilder.summary && selectedSponsorSlug === "base" && (
+                {selectedBuilder.summary || selectedSponsorSlug === "base" && (
                   <div
                     className={`rounded-lg border w-full p-4 mt-3 ${
                       isDarkMode
