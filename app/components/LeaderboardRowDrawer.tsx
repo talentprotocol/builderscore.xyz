@@ -23,7 +23,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
   onClose: () => void;
 }) {
   const { isDarkMode } = useTheme();
-  const { sponsorToken } = useSponsor();
+  const { sponsorToken, selectedSponsorSlug } = useSponsor();
 
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
@@ -157,7 +157,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                   </div>
                 </div>
 
-                {selectedBuilder.summary && (
+                {selectedBuilder.summary && selectedSponsorSlug === "base" && (
                   <div
                     className={`rounded-lg border w-full p-4 mt-3 ${
                       isDarkMode
@@ -175,7 +175,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                       </p>
                       <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
                         <p className={isDarkMode ? "" : "text-neutral-800"}>
-                          {selectedBuilder.summary}
+                          {selectedBuilder.summary || `${selectedBuilder.profile.name} earned Rewards for transactions on previously deployed verified Smart Contracts.`}
                         </p>
                       </div>
                     </div>
