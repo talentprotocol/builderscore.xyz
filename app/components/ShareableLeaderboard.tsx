@@ -71,7 +71,7 @@ export default function ShareableLeaderboard({
         onClick={handleShare}
       >
         <ShareIcon />
-        Share on Farcaster
+        Share
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="p-4 pt-12 flex flex-col gap-2">
