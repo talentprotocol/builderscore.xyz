@@ -23,7 +23,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
   onClose: () => void;
 }) {
   const { isDarkMode } = useTheme();
-  const { sponsorToken } = useSponsor();
+  const { sponsorToken, selectedSponsorSlug } = useSponsor();
 
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
@@ -181,7 +181,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                       </div>
                     </div>
                   </div>
-                )) : (
+                )) : selectedSponsorSlug === "base" && (
                   <div
                     className={`rounded-lg border w-full p-4 mt-3 ${
                       isDarkMode
