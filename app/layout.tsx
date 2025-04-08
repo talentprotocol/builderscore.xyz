@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import Navbar from "@/app/components/Navbar";
@@ -75,6 +76,7 @@ export default function RootLayout({
           </GrantProvider>
         </SponsorProvider>
       </body>
+      <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID!} />
     </html>
   );
 }
