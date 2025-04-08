@@ -23,7 +23,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
   onClose: () => void;
 }) {
   const { isDarkMode } = useTheme();
-  const { sponsorToken, selectedSponsorSlug } = useSponsor();
+  const { sponsorToken } = useSponsor();
 
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
@@ -157,7 +157,8 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                   </div>
                 </div>
 
-                {(selectedBuilder.summary || selectedSponsorSlug === "base") && (
+                {selectedBuilder.summary !== null ? (
+                  selectedBuilder.summary && (
                   <div
                     className={`rounded-lg border w-full p-4 mt-3 ${
                       isDarkMode
@@ -175,7 +176,30 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                       </p>
                       <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
                         <p className={isDarkMode ? "" : "text-neutral-800"}>
-                          {selectedBuilder.summary || `${selectedBuilder.profile.name} earned Rewards for transactions on previously deployed verified Smart Contracts.`}
+                          {selectedBuilder.summary}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )) : (
+                  <div
+                    className={`rounded-lg border w-full p-4 mt-3 ${
+                      isDarkMode
+                        ? "bg-neutral-900 border-neutral-800"
+                        : "bg-white border-neutral-200"
+                    }`}
+                  >
+                    <div className="flex flex-col">
+                      <p
+                        className={`${
+                          isDarkMode ? "text-neutral-500" : "text-neutral-600"
+                        } text-sm mb-1`}
+                      >
+                        Summary
+                      </p>
+                      <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
+                        <p className={isDarkMode ? "" : "text-neutral-800"}>
+                          {selectedBuilder.profile.name} earned Rewards for transactions on previously deployed verified Smart Contracts.
                         </p>
                       </div>
                     </div>
