@@ -13,6 +13,6 @@
     "buttonTitle": "Earn Builder Rewards",
     "splashImageUrl": "https://www.builderscore.xyz/images/icon.png",
     "splashBackgroundColor": "#0D0740",
-    "webhookUrl": "https://www.builderscore.xyz/api/webhook"
+    "webhookUrl": "https://api.neynar.com/f/app/55d7c137-31ed-4fe8-bcf4-ae48bc6b13ac/event"
   }
 }
