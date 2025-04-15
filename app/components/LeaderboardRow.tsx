@@ -103,27 +103,30 @@ export default function LeaderboardRow({
           </div>
         </div>
       </div>
-      <p className={isDarkMode ? "text-white" : "text-neutral-800"}>
-        {leaderboardData.reward_amount ? (
-          <>
-            <span className="font-mono">
-              {formatNumber(
-                parseFloat(leaderboardData.reward_amount),
-                INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
-              )}
-            </span>
-            <span
-              className={`${
-                isDarkMode ? "text-neutral-500" : "text-neutral-600"
-              } ml-2 text-xs`}
-            >
-              {sponsorToken}
-            </span>
-          </>
-        ) : (
-          <span className={`${isDarkMode ? "text-neutral-500" : "text-neutral-600"} ml-2 text-xs`}>No Rewards Earned</span>
-        )}
-      </p>
+
+      <div className={`pl-2 ${isDarkMode ? "bg-neutral-900" : "bg-white"}`}>
+        <p className={isDarkMode ? "text-white" : "text-neutral-800"}>
+          {leaderboardData.reward_amount ? (
+            <>
+              <span className="font-mono">
+                {formatNumber(
+                  parseFloat(leaderboardData.reward_amount),
+                  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
+                )}
+              </span>
+              <span
+                className={`${
+                  isDarkMode ? "text-neutral-500" : "text-neutral-600"
+                } ml-2 text-xs`}
+              >
+                {sponsorToken}
+              </span>
+            </>
+          ) : (
+            <span className={`${isDarkMode ? "text-neutral-500" : "text-neutral-600"} ml-2 text-xs`}>No Rewards Earned</span>
+          )}
+        </p>
+      </div>
     </div>
   );
 }

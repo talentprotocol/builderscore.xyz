@@ -25,7 +25,7 @@ export async function generateMetadata(
         name: "Builder Rewards",
         url: "https://www.builderscore.xyz",
         splashImageUrl: "https://www.builderscore.xyz/images/icon.png",
-        splashBackgroundColor: "#0C31C0",
+        splashBackgroundColor: "#0D0740",
       },
     },
   };
