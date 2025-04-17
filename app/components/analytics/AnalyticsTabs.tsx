@@ -1,11 +1,15 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
-import ActivationChart from "@/app/components/analytics/ActivationChart";
-import GrowthChart from "@/app/components/analytics/GrowthChart";
-import RetentionChart from "@/app/components/analytics/RetentionChart";
-import DeveloperActivityChart from "@/app/components/analytics/DeveloperActivityChart";
+import DailyActivityChart from "@/app/components/analytics/DailyActivityChart";
+import WeeklyActivityChart from "@/app/components/analytics/WeeklyActivityChart";
+import ActivityByTypeChart from "@/app/components/analytics/ActivityByTypeChart";
+import RetentionRateChart from "@/app/components/analytics/RetentionRateChart";
+import RewardsBreakdownChart from "@/app/components/analytics/RewardsBreakdownChart";
+import WinnersProfileChart from "@/app/components/analytics/WinnersProfileChart";
+import TopBuildersLeaderboard from "@/app/components/analytics/TopBuildersLeaderboard";
 import DataTable from "@/app/components/analytics/DataTable";
+import MetricsCards from "@/app/components/analytics/MetricsCards";
 import { CSVDataResult } from "@/app/services/analytics";
 import { useTheme } from "@/app/context/ThemeContext";
 
@@ -44,33 +48,52 @@ export default function AnalyticsTabs({ data }: AnalyticsTabsProps) {
         `} value="data">Raw Data</TabsTrigger>
       </TabsList>
       
-      <TabsContent value="charts" className="grid grid-cols-1 gap-3">
-        <ActivationChart data={data.activation} />
-        <GrowthChart data={data.growth} />
-        <RetentionChart data={data.retention} />
-        <DeveloperActivityChart data={data.developerActivity} />
+      <TabsContent value="charts" className="flex flex-col gap-3">
+        <MetricsCards metrics={data.metricsTotals} />
+        <DailyActivityChart data={data.dailyActivity} />
+        <WeeklyActivityChart data={data.weeklyActivity} />
+        <ActivityByTypeChart data={data.activityByType} />
+        <RetentionRateChart data={data.retention} />
+        <RewardsBreakdownChart data={data.rewardsBreakdown} />
+        <WinnersProfileChart data={data.winnersProfile} />
+        <TopBuildersLeaderboard data={data.topBuilders} />
       </TabsContent>
       
       <TabsContent value="data" className="grid grid-cols-1 gap-3">
         <DataTable 
-          data={data.activation} 
-          title="Developer Activation Rate Data" 
-          description="Percentage of eligible developers with building activity on Base"
+          data={data.dailyActivity} 
+          title="Daily Builder Activity Data" 
+          description="Daily new eligible developers, active developers, and activation rate"
         />
         <DataTable 
-          data={data.growth} 
-          title="Growth in Eligible Developers" 
-          description="Net increase in developers meeting all eligibility criteria"
+          data={data.weeklyActivity} 
+          title="Weekly Builder Activity Data" 
+          description="Weekly new eligible developers, active developers, and activation rate"
+        />
+        <DataTable 
+          data={data.activityByType} 
+          title="Builder Activity By Type Data" 
+          description="Weekly GitHub and Base Contract activity metrics"
         />
         <DataTable 
           data={data.retention} 
-          title="Developer Retention Data" 
-          description="Percentage of developers from previous week who remain active"
+          title="Builder Rewards Retention Data" 
+          description="Weekly active developers, inactive developers, and retention rate"
         />
         <DataTable 
-          data={data.developerActivity} 
-          title="Developer Activity Types" 
-          description="Number of developers with verified GitHub or Base contract activity"
+          data={data.rewardsBreakdown} 
+          title="Rewards Breakdown Data" 
+          description="Breakdown of rewards recipients by category"
+        />
+        <DataTable 
+          data={data.winnersProfile} 
+          title="Winners Profile Data" 
+          description="Distribution of winners by Builder Score level and years of experience"
+        />
+        <DataTable 
+          data={data.topBuilders} 
+          title="Top Builders Data" 
+          description="Top builders by rewards earned weekly and all-time"
         />
       </TabsContent>
     </Tabs>

@@ -1,0 +1,30 @@
+Category,Metric,Count,Percentage
+Builder Score,Level 1 (Novice),1,0.38
+Builder Score,Level 2 (Apprentice),1,0.38
+Builder Score,Level 3 (Practitioner),33,12.64
+Builder Score,Level 4 (Advanced),122,46.74
+Builder Score,Level 5 (Expert),96,36.78
+Builder Score,Level 6 (Master),8,3.07
+
+GitHub Experience,1 year,3,1.15
+GitHub Experience,2 years,19,7.28
+GitHub Experience,3 years,22,8.43
+GitHub Experience,4 years,41,15.71
+GitHub Experience,5 years,34,13.03
+GitHub Experience,6 years,21,8.05
+GitHub Experience,7 years,14,5.36
+GitHub Experience,8 years,24,9.2
+GitHub Experience,9 years,20,7.66
+GitHub Experience,10+ years,59,22.61
+GitHub Experience,No data,4,1.53
+Onchain Experience,1 year,85,32.57
+Onchain Experience,2 years,109,41.76
+Onchain Experience,3 years,0,0.0
+Onchain Experience,4 years,0,0.0
+Onchain Experience,5 years,0,0.0
+Onchain Experience,6 years,0,0.0
+Onchain Experience,7 years,0,0.0
+Onchain Experience,8 years,0,0.0
+Onchain Experience,9 years,0,0.0
+Onchain Experience,10+ years,0,0.0
+Onchain Experience,No data,67,25.67

@@ -25,29 +25,40 @@ export function parseCSV(csvData: string): CSVRow[] {
 }
 
 export function formatDate(dateString: string): string {
-  // Convert date strings like "2025-03-31 12:00:00 UTC" to "Mar 31"
+  // Convert date strings like "2025-03-31 12:00:00 UTC" or "2025-03-31" to "Mar 31"
   try {
-    // Format: "2025-03-31 12:00:00 UTC" to "2025-03-31T12:00:00Z"
-    const parts = dateString.split(' ');
-    if (parts.length >= 3) {
-      const datePart = parts[0];
-      const timePart = parts[1];
-      const isoString = `${datePart}T${timePart}Z`;
-      const date = new Date(isoString);
-      
-      // Check if date is valid
-      if (isNaN(date.getTime())) {
-        console.error("Invalid date:", dateString);
-        return "Invalid Date";
+    let date: Date;
+    
+    // Check if format is "YYYY-MM-DD"
+    if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      date = new Date(dateString);
+    } 
+    // Check if format is "YYYY-MM-DD HH:MM:SS UTC"
+    else if (dateString.includes(' ')) {
+      const parts = dateString.split(' ');
+      if (parts.length >= 2) {
+        const datePart = parts[0];
+        const timePart = parts[1];
+        const isoString = `${datePart}T${timePart}${parts.includes('UTC') ? 'Z' : ''}`;
+        date = new Date(isoString);
+      } else {
+        // Fallback
+        date = new Date(dateString);
       }
-      
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    } else {
+      // Any other format, let the Date constructor try to parse it
+      date = new Date(dateString);
     }
     
-    console.error("Unexpected date format:", dateString);
-    return dateString;
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date:", dateString);
+      return dateString; // Return the original string instead of "Invalid Date"
+    }
+    
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   } catch (error) {
     console.error("Error formatting date:", dateString, error);
-    return "Invalid Date";
+    return dateString; // Return the original string instead of "Invalid Date"
   }
 } 
