@@ -92,10 +92,10 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
   const renderCard = (card: CardData, index: number) => (
     <div key={index} className={cardClass}>
       <div className="flex justify-between items-start mb-2">
-        <div className={`text-xs ${isDarkMode ? "text-neutral-400" : "text-neutral-500"}`}>
+        <div className={`text-xs pr-10 ${isDarkMode ? "text-neutral-400" : "text-neutral-500"}`}>
           {card.title}
         </div>
-        <div className={`ml-2 ${isDarkMode ? "text-neutral-300" : "text-neutral-600"}`}>
+        <div className={`absolute right-3.5 top-4 ${isDarkMode ? "text-neutral-300" : "text-neutral-600"}`}>
           {card.icon}
         </div>
       </div>
