@@ -29,7 +29,6 @@ export interface CSVDataResult {
 }
 
 export async function getCSVData(): Promise<CSVDataResult> {
-  // Read CSV files
   const activationCSV = fs.readFileSync(
     path.join(dataDir, 'rewards_sponsor_metrics_activation_rate.csv'),
     'utf-8'
@@ -90,7 +89,6 @@ export async function getCSVData(): Promise<CSVDataResult> {
     'utf-8'
   );
   
-  // Parse the CSV data
   const activation = parseCSV(activationCSV);
   const growth = parseCSV(growthCSV);
   const retention = parseCSV(retentionCSV);
@@ -102,17 +100,14 @@ export async function getCSVData(): Promise<CSVDataResult> {
   const winnersProfile = parseCSV(winnersProfileCSV);
   const topBuilders = parseCSV(topBuildersCSV);
   
-  // Parse metrics totals manually to handle quoted headers correctly
   const parseMetricsTotals = (csvData: string): MetricsTotals => {
     const lines = csvData.trim().split('\n');
     if (lines.length < 2) {
       throw new Error("Invalid metrics data: less than 2 lines found");
     }
     
-    // Get the data line (most recent entry)
     const dataLine = lines[1];
     
-    // Handle CSV values properly (accounting for quoted values)
     const parseCSVLine = (line: string): string[] => {
       const values: string[] = [];
       let currentValue = '';
@@ -131,7 +126,6 @@ export async function getCSVData(): Promise<CSVDataResult> {
         }
       }
       
-      // Add the last value
       values.push(currentValue);
       return values;
     };
@@ -159,7 +153,6 @@ export async function getCSVData(): Promise<CSVDataResult> {
     metricsTotals = parseMetricsTotals(metricsCSV);
   } catch (error) {
     console.error("Error parsing metrics totals:", error);
-    // Provide fallback values
     metricsTotals = {
       date: new Date().toISOString(),
       eligibleDevs: 0,

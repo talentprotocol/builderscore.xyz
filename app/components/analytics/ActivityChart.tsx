@@ -14,6 +14,13 @@ interface ActivityChartProps {
 export default function ActivityChart({ dailyData, weeklyData }: ActivityChartProps) {
   const { isDarkMode } = useTheme();
 
+  // Define consistent colors using CSS variables
+  const CHART_COLORS = {
+    activationRate: "var(--chart-1)",
+    eligibleBuilders: "var(--chart-2)",
+    activeBuilders: "var(--chart-3)" 
+  };
+  
   const filteredDailyData = dailyData.filter(row => 
     Number(row["New Eligible Devs"]) > 0 || 
     Number(row["Active Devs"]) > 0
@@ -110,31 +117,28 @@ export default function ActivityChart({ dailyData, weeklyData }: ActivityChartPr
           yAxisId="right" 
           type="linear"
           dataKey="activationRate" 
-          stroke="#8884d8" 
+          stroke={CHART_COLORS.activationRate} 
           activeDot={{ r: 6 }} 
           name="Activation Rate %" 
           strokeWidth={1}
-          animationDuration={300}
           isAnimationActive={false}
         />
         <Line 
           yAxisId="left" 
           type="linear" 
           dataKey="newEligibleBuilders" 
-          stroke="#82ca9d" 
+          stroke={CHART_COLORS.eligibleBuilders} 
           name="Eligible Builders" 
           strokeWidth={1}
-          animationDuration={300}
           isAnimationActive={false}
         />
         <Line 
           yAxisId="left" 
           type="linear" 
           dataKey="activeBuilders" 
-          stroke="#ffc658" 
+          stroke={CHART_COLORS.activeBuilders} 
           name="Active Builders" 
           strokeWidth={1}
-          animationDuration={300}
           isAnimationActive={false}
         />
       </LineChart>

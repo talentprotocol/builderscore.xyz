@@ -13,7 +13,6 @@ export function parseCSV(csvData: string): CSVRow[] {
     if (currentLine.length === headers.length) {
       const obj: CSVRow = {};
       for (let j = 0; j < headers.length; j++) {
-        // Try to convert to number if possible, otherwise keep as string
         const value = currentLine[j];
         obj[headers[j]] = isNaN(Number(value)) ? value : Number(value);
       }

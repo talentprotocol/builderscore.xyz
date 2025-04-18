@@ -12,6 +12,14 @@ interface ActivityByTypeChartProps {
 export default function ActivityByTypeChart({ data }: ActivityByTypeChartProps) {
   const { isDarkMode } = useTheme();
 
+  // Define consistent colors using CSS variables
+  const CHART_COLORS = {
+    githubDevs: "var(--chart-1)",
+    githubRepos: "var(--chart-2)",
+    contractDevs: "var(--chart-3)",
+    contracts: "var(--chart-4)"
+  };
+
   const weeklyChartData = data.map(row => {
     const dateStr = row["Week Start Date (Monday)"] as string;
     return {
@@ -100,41 +108,37 @@ export default function ActivityByTypeChart({ data }: ActivityByTypeChartProps) 
                 yAxisId="left" 
                 type="linear" 
                 dataKey="githubDevs" 
-                stroke="#8884d8" 
+                stroke={CHART_COLORS.githubDevs} 
                 activeDot={{ r: 6 }} 
                 name="GitHub Developers"
                 strokeWidth={1}
-                animationDuration={300}
                 isAnimationActive={false}
               />
               <Line 
                 yAxisId="right" 
                 type="linear" 
                 dataKey="githubRepos" 
-                stroke="#82ca9d" 
+                stroke={CHART_COLORS.githubRepos} 
                 name="GitHub Repositories"
                 strokeWidth={1}
-                animationDuration={300}
                 isAnimationActive={false}
               />
               <Line 
                 yAxisId="left" 
                 type="linear" 
                 dataKey="contractDevs" 
-                stroke="#ffc658" 
+                stroke={CHART_COLORS.contractDevs} 
                 name="Contract Developers"
                 strokeWidth={1}
-                animationDuration={300}
                 isAnimationActive={false}
               />
               <Line 
                 yAxisId="right" 
                 type="linear" 
                 dataKey="totalContracts" 
-                stroke="#ff7300" 
+                stroke={CHART_COLORS.contracts} 
                 name="Base Contracts"
                 strokeWidth={1}
-                animationDuration={300}
                 isAnimationActive={false}
               />
             </LineChart>

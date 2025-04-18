@@ -4,9 +4,9 @@ import { formatDate } from "@/app/lib/utils";
 import { 
   Award, 
   UserCheck, 
-  Users, 
-  Wallet, 
-  Code
+  Users,
+  Code,
+  Activity
 } from "lucide-react";
 
 interface Metrics {
@@ -71,7 +71,7 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       title: "Builders with Active Smart Contracts",
       value: metrics.activeContractDevs?.toLocaleString() || "0",
       description: "All time",
-      icon: <Wallet className="w-4 h-4" />
+      icon: <Activity className="w-4 h-4" />
     },
     {
       title: "Builders with Deployed Smart Contracts",

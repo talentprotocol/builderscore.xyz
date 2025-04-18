@@ -8,6 +8,7 @@ export const ENDPOINTS = {
   talent: {
     profile: "/search/advanced/profiles",
     socials: "/socials",
+    lookup: "/profile",
   },
 } as const;
 

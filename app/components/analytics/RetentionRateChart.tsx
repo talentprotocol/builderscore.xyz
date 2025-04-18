@@ -12,6 +12,13 @@ interface RetentionRateChartProps {
 export default function RetentionRateChart({ data }: RetentionRateChartProps) {
   const { isDarkMode } = useTheme();
 
+  // Define consistent colors using CSS variables
+  const CHART_COLORS = {
+    activeDevs: "var(--chart-2)",
+    inactiveDevs: "var(--chart-4)",
+    retentionRate: "var(--chart-1)"
+  };
+
   const chartData = data.map(row => {
     const dateStr = row["Week Start Date"] as string;
     return {
@@ -97,29 +104,26 @@ export default function RetentionRateChart({ data }: RetentionRateChartProps) {
                 yAxisId="left" 
                 dataKey="activeDevs" 
                 stackId="a" 
-                fill="#82ca9d" 
+                fill={CHART_COLORS.activeDevs} 
                 name="Active Developers"
-                animationDuration={300}
                 isAnimationActive={false}
               />
               <Bar 
                 yAxisId="left" 
                 dataKey="inactiveDevs" 
                 stackId="a" 
-                fill="#ff8042" 
+                fill={CHART_COLORS.inactiveDevs} 
                 name="Inactive Developers"
-                animationDuration={300}
                 isAnimationActive={false}
               />
               <Line 
                 yAxisId="right" 
                 type="linear" 
                 dataKey="retentionRate" 
-                stroke="#8884d8" 
+                stroke={CHART_COLORS.retentionRate} 
                 strokeWidth={1}
                 name="Retention Rate %"
                 dot={{ r: 4 }}
-                animationDuration={300}
                 isAnimationActive={false}
               />
             </ComposedChart>
