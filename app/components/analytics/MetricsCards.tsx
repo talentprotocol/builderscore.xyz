@@ -9,7 +9,7 @@ import {
   Activity,
   HelpCircle
 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/app/components/ui/tooltip";
+import { Tooltip } from 'react-tooltip';
 
 interface Metrics {
   date: string;
@@ -106,14 +106,26 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
         {card.description}
       </div>
       
-      <Tooltip>
-        <TooltipTrigger className="absolute bottom-2 right-2 text-xs">
-          <HelpCircle className={`w-3.5 h-3.5 ${isDarkMode ? "text-neutral-500 hover:text-neutral-300" : "text-neutral-400 hover:text-neutral-600"}`} />
-        </TooltipTrigger>
-        <TooltipContent side="bottom" className={`max-w-[250px] text-xs p-2 ${isDarkMode ? "bg-neutral-700 text-white border border-neutral-700" : "bg-white text-neutral-800 border border-neutral-300"}`}>
-          {card.tooltip}
-        </TooltipContent>
-      </Tooltip>
+      <div className="absolute bottom-2 right-2 text-xs">
+        <HelpCircle 
+          className={`w-3.5 h-3.5 ${isDarkMode ? "text-neutral-500 hover:text-neutral-300" : "text-neutral-400 hover:text-neutral-600"}`}
+          data-tooltip-id={`tooltip-${index}`}
+          data-tooltip-content={card.tooltip} 
+        />
+        <Tooltip 
+          id={`tooltip-${index}`}
+          className={`text-xs z-50 max-w-52 ${isDarkMode ? "bg-neutral-800 border border-neutral-800" : "bg-white border border-neutral-300"}`}
+          noArrow={true}
+          offset={5}
+          style={{
+            backgroundColor: isDarkMode ? "#404040" : "white",
+            color: isDarkMode ? "white" : "#262626",
+            border: isDarkMode ? "1px solid #404040" : "1px solid #d4d4d4",
+            padding: "10px",
+            borderRadius: "10px"
+          }}
+        />
+      </div>
     </div>
   );
 
