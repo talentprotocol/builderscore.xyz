@@ -6,8 +6,10 @@ import {
   UserCheck, 
   Users,
   Code,
-  Activity
+  Activity,
+  HelpCircle
 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/app/components/ui/tooltip";
 
 interface Metrics {
   date: string;
@@ -26,6 +28,7 @@ interface CardData {
   title: string;
   value: string;
   description: string;
+  tooltip: string;
   icon: ReactNode;
 }
 
@@ -33,7 +36,7 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
   const { isDarkMode } = useTheme();
   const cardClass = `p-4 rounded-lg ${
     isDarkMode ? "bg-neutral-800 border border-neutral-800" : "bg-white border border-neutral-300"
-  }`;
+  } relative`;
   
   if (!metrics) {
     return (
@@ -50,18 +53,21 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       title: "Eligible Builders",
       value: metrics.eligibleDevs?.toLocaleString() || "0",
       description: "This week",
+      tooltip: "Builders who meet all three requirements: have a Basename identity, Human Checkmark verification, and Builder Score ≥ 40.",
       icon: <Users className="w-4 h-4" />,
     },
     {
       title: "Active Builders",
       value: metrics.activeDevs?.toLocaleString() || "0",
       description: "All time",
+      tooltip: "Eligible builders who have contributed to public repositories or have activity in verified contracts deployed by them on Base within the past week.",
       icon: <UserCheck className="w-4 h-4" />,
     },
     {
       title: "Rewarded Builders",
       value: metrics.rewardedDevs?.toLocaleString() || "0",
       description: "All time",
+      tooltip: "Builders who received auto-rewards based on their verified contributions and Builder Score in a given week.",
       icon: <Award className="w-4 h-4" />,
     }
   ];
@@ -71,12 +77,14 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       title: "Builders with Active Smart Contracts",
       value: metrics.activeContractDevs?.toLocaleString() || "0",
       description: "All time",
+      tooltip: "Number of smart contracts deployed to Base mainnet by the user that have at least 10 unique wallets interacting with them.",
       icon: <Activity className="w-4 h-4" />
     },
     {
       title: "Builders with Deployed Smart Contracts",
       value: metrics.deployedContractDevs?.toLocaleString() || "0",
       description: "All time",
+      tooltip: "Total number of smart contracts the user has deployed to Base mainnet, regardless of activity level.",
       icon: <Code className="w-4 h-4" />
     }
   ];
@@ -97,6 +105,15 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       <div className={`text-xs ${isDarkMode ? "text-neutral-500" : "text-neutral-400"}`}>
         {card.description}
       </div>
+      
+      <Tooltip>
+        <TooltipTrigger className="absolute bottom-2 right-2 text-xs">
+          <HelpCircle className={`w-3.5 h-3.5 ${isDarkMode ? "text-neutral-500 hover:text-neutral-300" : "text-neutral-400 hover:text-neutral-600"}`} />
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className={`max-w-[250px] text-xs p-2 ${isDarkMode ? "bg-neutral-700 text-white border border-neutral-700" : "bg-white text-neutral-800 border border-neutral-300"}`}>
+          {card.tooltip}
+        </TooltipContent>
+      </Tooltip>
     </div>
   );
 

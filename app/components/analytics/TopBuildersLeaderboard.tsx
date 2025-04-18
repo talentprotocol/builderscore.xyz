@@ -58,8 +58,8 @@ const BuildersTable = ({
         <tbody className={textColor}>
           {isLoading ? (
             <tr>
-              <td colSpan={3} className="text-center py-4">
-                Loading profiles...
+              <td colSpan={3} className="text-xs text-center py-4">
+                Loading Data...
               </td>
             </tr>
           ) : (

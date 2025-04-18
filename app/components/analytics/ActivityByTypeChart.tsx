@@ -84,11 +84,11 @@ export default function ActivityByTypeChart({ data }: ActivityByTypeChartProps) 
                     case "GitHub Developers":
                       return [value, "GitHub Developers"];
                     case "GitHub Repositories":
-                      return [value, "GitHub Repositories"];
+                      return [value, "Public Repositories"];
                     case "Contract Developers":
                       return [value, "Contract Developers"];
                     case "Base Contracts":
-                      return [value, "Base Contracts"];
+                      return [value, "Verified Contracts"];
                     default:
                       return [value, name];
                   }
@@ -119,7 +119,7 @@ export default function ActivityByTypeChart({ data }: ActivityByTypeChartProps) 
                 type="linear" 
                 dataKey="githubRepos" 
                 stroke={CHART_COLORS.githubRepos} 
-                name="GitHub Repositories"
+                name="Public Repositories"
                 strokeWidth={1}
                 isAnimationActive={false}
               />
@@ -137,7 +137,7 @@ export default function ActivityByTypeChart({ data }: ActivityByTypeChartProps) 
                 type="linear" 
                 dataKey="totalContracts" 
                 stroke={CHART_COLORS.contracts} 
-                name="Base Contracts"
+                name="Verified Contracts"
                 strokeWidth={1}
                 isAnimationActive={false}
               />

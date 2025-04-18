@@ -12,6 +12,7 @@ import MetricsCards from "@/app/components/analytics/MetricsCards";
 import { CSVDataResult } from "@/app/services/analytics";
 import { useTheme } from "@/app/context/ThemeContext";
 import ReportDrawer from "@/app/components/analytics/ReportDrawer";
+import SocialGrowthChart from "@/app/components/analytics/SocialGrowthChart";
 
 interface AnalyticsTabsProps {
   data: CSVDataResult;
@@ -65,11 +66,15 @@ export default function AnalyticsTabs({ data }: AnalyticsTabsProps) {
 
       <TabsContent value="charts" className="flex flex-col gap-3">
         <MetricsCards metrics={data.metricsTotals} />
-        <ActivityChart dailyData={data.dailyActivity} weeklyData={data.weeklyActivity} />
+        <ActivityChart
+          dailyData={data.dailyActivity}
+          weeklyData={data.weeklyActivity}
+        />
         <ActivityByTypeChart data={data.activityByType} />
         <RetentionRateChart data={data.retention} />
         <RewardsBreakdownChart data={data.rewardsBreakdown} />
         <WinnersProfileChart data={data.winnersProfile} />
+        <SocialGrowthChart />
         <TopBuildersLeaderboard data={data.topBuilders} />
       </TabsContent>
 
