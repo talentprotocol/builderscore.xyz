@@ -12,7 +12,6 @@ interface RetentionRateChartProps {
 export default function RetentionRateChart({ data }: RetentionRateChartProps) {
   const { isDarkMode } = useTheme();
 
-  // Define consistent colors using CSS variables
   const CHART_COLORS = {
     activeDevs: "var(--chart-2)",
     inactiveDevs: "var(--chart-4)",

@@ -95,11 +95,11 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
         <div className={`text-xs ${isDarkMode ? "text-neutral-400" : "text-neutral-500"}`}>
           {card.title}
         </div>
-        <div className={`${isDarkMode ? "text-neutral-300" : "text-neutral-600"}`}>
+        <div className={`ml-2 ${isDarkMode ? "text-neutral-300" : "text-neutral-600"}`}>
           {card.icon}
         </div>
       </div>
-      <div className={`text-2xl font-semibold mb-1 ${isDarkMode ? "text-white" : "text-neutral-900"}`}>
+      <div className={`text-xl sm:text-2xl font-semibold mb-1 ${isDarkMode ? "text-white" : "text-neutral-900"}`}>
         {card.value}
       </div>
       <div className={`text-xs ${isDarkMode ? "text-neutral-500" : "text-neutral-400"}`}>

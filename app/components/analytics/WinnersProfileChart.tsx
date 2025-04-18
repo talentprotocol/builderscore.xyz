@@ -15,6 +15,7 @@ import {
   Legend,
 } from "recharts";
 import { useTheme } from "@/app/context/ThemeContext";
+import { useState, useEffect } from "react";
 
 interface WinnersProfileChartProps {
   data: CSVRow[];
@@ -33,8 +34,19 @@ export default function WinnersProfileChart({
   data,
 }: WinnersProfileChartProps) {
   const { isDarkMode } = useTheme();
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  // Define consistent colors using CSS variables
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 640);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   const CHART_COLORS = {
     builderScore: [
       "var(--chart-1)",
@@ -132,7 +144,7 @@ export default function WinnersProfileChart({
             </div>
           </div>
 
-          <div className="h-[300px] flex flex-col md:flex-row items-center justify-center">
+          <div className={`flex flex-col md:flex-row items-center justify-center ${isSmallScreen ? "h-[380px]" : "h-[300px] "}`}>
             <div className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -140,7 +152,7 @@ export default function WinnersProfileChart({
                     data={builderScoreData}
                     cx="50%"
                     cy="50%"
-                    outerRadius={130}
+                    outerRadius={isSmallScreen ? 110 : 130}
                     fill="#8884d8"
                     dataKey="value"
                     isAnimationActive={false}
@@ -157,9 +169,9 @@ export default function WinnersProfileChart({
                     ))}
                   </Pie>
                   <Legend
-                    layout="vertical"
-                    verticalAlign="middle"
-                    align="right"
+                    layout={isSmallScreen ? "horizontal" : "vertical"}
+                    verticalAlign={isSmallScreen ? "bottom" : "middle"}
+                    align={isSmallScreen ? "center" : "right"}
                     formatter={(value, entry, index) => (
                       <span
                         className={

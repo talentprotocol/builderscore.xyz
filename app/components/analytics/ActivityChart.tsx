@@ -14,7 +14,6 @@ interface ActivityChartProps {
 export default function ActivityChart({ dailyData, weeklyData }: ActivityChartProps) {
   const { isDarkMode } = useTheme();
 
-  // Define consistent colors using CSS variables
   const CHART_COLORS = {
     activationRate: "var(--chart-1)",
     eligibleBuilders: "var(--chart-2)",
@@ -148,7 +147,7 @@ export default function ActivityChart({ dailyData, weeklyData }: ActivityChartPr
   return (
     <div className={cardClass}>
       <Tabs defaultValue="daily" className="w-full relative">
-        <div className="mb-4">
+        <div className="sm:mb-4">
           <div className={`font-semibold mb-1 ${textColor}`}>
             Builder Activity
           </div>
@@ -157,7 +156,7 @@ export default function ActivityChart({ dailyData, weeklyData }: ActivityChartPr
           </div>
         </div>
 
-        <TabsList className={`mb-3 absolute top-0 right-0 ${tabBgClass}`}>
+        <TabsList className={`mb-3 sm:absolute top-0 right-0 ${tabBgClass}`}>
           <TabsTrigger
             className={`text-xs cursor-pointer mr-0.5 ${tabItemClass}`}
             value="daily"

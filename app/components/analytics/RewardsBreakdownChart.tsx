@@ -13,7 +13,6 @@ interface RewardsBreakdownChartProps {
 export default function RewardsBreakdownChart({ data }: RewardsBreakdownChartProps) {
   const { isDarkMode } = useTheme();
 
-  // Define consistent colors using CSS variables
   const CHART_COLORS = {
     recipients: ["var(--chart-1)", "var(--chart-2)"],
     special: ["var(--chart-3)", "var(--chart-4)", "var(--chart-5)"]

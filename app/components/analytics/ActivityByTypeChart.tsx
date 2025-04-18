@@ -12,7 +12,6 @@ interface ActivityByTypeChartProps {
 export default function ActivityByTypeChart({ data }: ActivityByTypeChartProps) {
   const { isDarkMode } = useTheme();
 
-  // Define consistent colors using CSS variables
   const CHART_COLORS = {
     githubDevs: "var(--chart-1)",
     githubRepos: "var(--chart-2)",

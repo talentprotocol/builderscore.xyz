@@ -48,9 +48,9 @@ const BuildersTable = ({
       <table className="w-full text-sm">
         <thead>
           <tr className={tableHeaderBg}>
-            <th className="px-4 py-2 text-left font-medium w-16">Rank</th>
-            <th className="px-4 py-2 text-left font-medium w-1/2">Builder</th>
-            <th className="px-4 py-2 text-right font-medium w-1/2">
+            <th className="px-2 py-2 text-left text-xs font-medium w-12">Rank</th>
+            <th className="px-2 py-2 text-left text-xs font-medium w-24">Builder</th>
+            <th className="px-2 py-2 text-right text-xs font-medium w-1/2">
               {isWeekly ? "Weekly Rewards" : "All-Time Rewards"}
             </th>
           </tr>
@@ -68,8 +68,8 @@ const BuildersTable = ({
                 key={builder.profileId}
                 className={`${tableRowBg} border-t ${tableBorderColor}`}
               >
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">
+                <td className="px-2 py-2 text-xs w-12">{index + 1}</td>
+                <td className="px-2 py-2 text-xs w-24">
                   <div className="flex items-center">
                     {builder.profileData?.imageUrl && (
                       <div className="w-6 h-6 mr-2">
@@ -91,12 +91,10 @@ const BuildersTable = ({
                     </span>
                   </div>
                 </td>
-                <td className="px-4 py-2 text-right">
+                <td className="px-2 py-2 text-right">
                   {isWeekly
-                    ? builder.thisWeekRewardsTotal.toFixed(8)
-                    : `(${builder.allTimeRewardsCount} Reward${
-                        builder.allTimeRewardsCount === 1 ? "" : "s"
-                      }) ${builder.allTimeRewardsTotal.toFixed(8)}`}{" "}
+                    ? builder.thisWeekRewardsTotal.toFixed(3)
+                    : `(${builder.allTimeRewardsCount}x) ${builder.allTimeRewardsTotal.toFixed(3)}`}{" "}
                   ETH
                 </td>
               </tr>
@@ -189,7 +187,7 @@ export default function TopBuildersLeaderboard({ data }: TopBuildersLeaderboardP
   return (
     <div className={cardClass}>
       <Tabs defaultValue="allTime" className="w-full relative" onValueChange={(value) => setActiveTab(value as 'weekly' | 'allTime')}>
-        <div className="mb-4">
+        <div className="sm:mb-4">
           <div className={`font-semibold mb-1 ${textColor}`}>
             Top Builders Leaderboard
           </div>
@@ -201,7 +199,7 @@ export default function TopBuildersLeaderboard({ data }: TopBuildersLeaderboardP
           </div>
         </div>
 
-        <TabsList className={`mb-3 absolute top-0 right-0 ${tabBgClass}`}>
+        <TabsList className={`mb-3 sm:absolute top-0 right-0 ${tabBgClass}`}>
           <TabsTrigger
             className={`text-xs cursor-pointer mr-0.5 ${tabItemClass}`}
             value="weekly"
