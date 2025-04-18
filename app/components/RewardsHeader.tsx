@@ -51,7 +51,7 @@ export default function RewardsHeader() {
       <div className={`
         ${isDarkMode
           ?'bg-neutral-900 border-neutral-800'
-          : 'bg-white border-neutral-200'
+          : 'bg-white border-neutral-300'
         }
         rounded-lg border animate-pulse
       `}>
@@ -86,7 +86,7 @@ export default function RewardsHeader() {
         ${
           isDarkMode
             ? "bg-neutral-900 border-neutral-800"
-            : "bg-white border-neutral-200"
+            : "bg-white border-neutral-300"
         }
         rounded-lg border`}
       >
@@ -178,7 +178,7 @@ export default function RewardsHeader() {
 
         <div
           className={`flex justify-evenly border-t ${
-            isDarkMode ? "border-neutral-800" : "border-neutral-200"
+            isDarkMode ? "border-neutral-800" : "border-neutral-300"
           } p-4`}
         >
           <div className="flex flex-col items-center justify-between">

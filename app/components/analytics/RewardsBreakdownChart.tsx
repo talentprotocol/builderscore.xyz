@@ -1,13 +1,10 @@
 "use client";
 
 import { CSVRow } from "@/app/lib/csv-parser";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { 
-  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
-  Tooltip, ResponsiveContainer, Legend
+  PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 import { useTheme } from "@/app/context/ThemeContext";
-import { useState } from "react";
 
 interface RewardsBreakdownChartProps {
   data: CSVRow[];
@@ -42,7 +39,6 @@ interface CustomTooltipProps {
 
 export default function RewardsBreakdownChart({ data }: RewardsBreakdownChartProps) {
   const { isDarkMode } = useTheme();
-  const [chartType, setChartType] = useState<'pie' | 'bar'>('pie');
 
   // Get the total from the data
   const totalRow = data.find(row => row["Category"] === "Total Rewarded Users");
@@ -87,11 +83,11 @@ export default function RewardsBreakdownChart({ data }: RewardsBreakdownChartPro
     }
   ];
   
-  const cardBg = isDarkMode ? "bg-neutral-800" : "bg-white";
-  const textColor = isDarkMode ? "text-white" : "text-neutral-800";
+  const cardClass = `p-4 rounded-lg ${
+    isDarkMode ? "bg-neutral-800 border border-neutral-800" : "bg-white border border-neutral-300"
+  }`;
+  const textColor = isDarkMode ? "text-white" : "text-neutral-900";
   const descColor = isDarkMode ? "text-neutral-400" : "text-neutral-500";
-  const buttonBg = isDarkMode ? "bg-neutral-700 hover:bg-neutral-600" : "bg-neutral-200 hover:bg-neutral-300";
-  const activeBg = isDarkMode ? "bg-neutral-600" : "bg-neutral-300";
 
   // Colors for the charts
   const COLORS_RECIPIENTS = ['#8884d8', '#82ca9d'];
@@ -144,148 +140,98 @@ export default function RewardsBreakdownChart({ data }: RewardsBreakdownChartPro
   };
 
   return (
-    <Card className={`${cardBg} border-0`}>
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className={textColor}>Rewards Breakdown</CardTitle>
-          <div className="flex rounded-md overflow-hidden text-xs">
-            <button 
-              onClick={() => setChartType('pie')} 
-              className={`px-2 py-1 ${chartType === 'pie' ? activeBg : buttonBg} ${textColor}`}
-            >
-              Pie Charts
-            </button>
-            <button 
-              onClick={() => setChartType('bar')} 
-              className={`px-2 py-1 ${chartType === 'bar' ? activeBg : buttonBg} ${textColor}`}
-            >
-              Bar Chart
-            </button>
-          </div>
-        </div>
-        <CardDescription className={descColor}>
-          <div className="flex flex-col space-y-1">
-            <span>Breakdown of rewards recipients by category</span>
+    <div className={cardClass}>
+      <div className="w-full relative">
+        <div className="mb-4">
+          <div className={`font-semibold mb-1 ${textColor}`}>Rewards Breakdown</div>
+          <div className={`text-xs ${descColor}`}>
+            Breakdown of rewards recipients by category
             <div className="text-sm mt-2">
               <span>Total Rewarded Users: {totalCount.toLocaleString()}</span>
             </div>
           </div>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {chartType === 'pie' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* First pie chart: One-time vs Repeated Recipients */}
-            <div className="h-[350px]">
-              <h3 className={`${textColor} text-center text-sm font-medium mb-2`}>One-time vs. Repeated Recipients</h3>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={recipientTypeData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={true}
-                    label={renderCustomizedLabel}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {recipientTypeData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS_RECIPIENTS[index % COLORS_RECIPIENTS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend 
-                    formatter={(value, entry, index) => (
-                      <span className={isDarkMode ? "text-white" : "text-neutral-800"}>
-                        {value.replace("Builder Rewards ", "")} ({recipientTypeData[index]?.value} users)
-                      </span>
-                    )}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            
-            {/* Second pie chart: Special Categories */}
-            <div className="h-[350px]">
-              <h3 className={`${textColor} text-center text-sm font-medium mb-2`}>Special Recognition Categories</h3>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={enhancedSpecialData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={true}
-                    label={renderCustomizedLabel}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {enhancedSpecialData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS_SPECIAL[index % COLORS_SPECIAL.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend 
-                    formatter={(value, entry, index) => {
-                      const name = enhancedSpecialData[index]?.name;
-                      const count = enhancedSpecialData[index]?.value;
-                      return (
-                        <span className={isDarkMode ? "text-white" : "text-neutral-800"}>
-                          {name.includes("BR + ") ? name.replace("BR + ", "") : name} ({count} users)
-                        </span>
-                      );
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        ) : (
-          <div className="h-[400px]">
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* First pie chart: One-time vs Repeated Recipients */}
+          <div className="h-[350px]">
+            <h3 className={`${textColor} text-center text-sm font-medium mb-2`}>One-time vs. Repeated Recipients</h3>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={[...recipientTypeData, ...specialCategoriesData, {
-                  name: "No Special Recognition",
-                  value: nonSpecialCount,
-                  percentage: nonSpecialPercentage
-                }]}
-                layout="vertical"
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 150,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#444" : "#eee"} />
-                <XAxis 
-                  type="number" 
-                  tick={{ fontSize: 12 }} 
-                  stroke={isDarkMode ? "#aaa" : "#666"}
-                />
-                <YAxis 
-                  type="category" 
-                  dataKey="name" 
-                  tick={{ fontSize: 12 }} 
-                  width={150}
-                  stroke={isDarkMode ? "#aaa" : "#666"}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="value" fill="#8884d8">
+              <PieChart>
+                <Pie
+                  data={recipientTypeData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={true}
+                  label={renderCustomizedLabel}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  animationDuration={300}
+                  isAnimationActive={false}
+                >
                   {recipientTypeData.map((entry, index) => (
-                    <Cell key={`cell-r-${index}`} fill={COLORS_RECIPIENTS[index % COLORS_RECIPIENTS.length]} />
+                    <Cell key={`cell-${index}`} fill={COLORS_RECIPIENTS[index % COLORS_RECIPIENTS.length]} />
                   ))}
-                  {specialCategoriesData.map((entry, index) => (
-                    <Cell key={`cell-s-${index}`} fill={COLORS_SPECIAL[index % COLORS_SPECIAL.length]} />
-                  ))}
-                  <Cell key="cell-non-special" fill={COLORS_SPECIAL[2]} />
-                </Bar>
-              </BarChart>
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend 
+                  formatter={(value, entry, index) => (
+                    <span className={isDarkMode ? "text-white" : "text-neutral-800"}>
+                      {value.replace("Builder Rewards ", "")} ({recipientTypeData[index]?.value} users)
+                    </span>
+                  )}
+                  wrapperStyle={{ 
+                    fontSize: 11,
+                    paddingTop: 15
+                  }}
+                />
+              </PieChart>
             </ResponsiveContainer>
           </div>
-        )}
-      </CardContent>
-    </Card>
+          
+          {/* Second pie chart: Special Categories */}
+          <div className="h-[350px]">
+            <h3 className={`${textColor} text-center text-sm font-medium mb-2`}>Special Recognition Categories</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={enhancedSpecialData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={true}
+                  label={renderCustomizedLabel}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  animationDuration={300}
+                  isAnimationActive={false}
+                >
+                  {enhancedSpecialData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS_SPECIAL[index % COLORS_SPECIAL.length]} />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend 
+                  formatter={(value, entry, index) => {
+                    const name = enhancedSpecialData[index]?.name;
+                    const count = enhancedSpecialData[index]?.value;
+                    return (
+                      <span className={isDarkMode ? "text-white" : "text-neutral-800"}>
+                        {name.includes("BR + ") ? name.replace("BR + ", "") : name} ({count} users)
+                      </span>
+                    );
+                  }}
+                  wrapperStyle={{ 
+                    fontSize: 11,
+                    paddingTop: 15
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 } 

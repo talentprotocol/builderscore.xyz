@@ -3,7 +3,6 @@
 import { Button } from "@/app/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/app/components/ui/sheet";
 import { useTheme } from "@/app/context/ThemeContext";
-import { useSponsor } from "@/app/context/SponsorContext";
 import { InfoIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -14,24 +13,19 @@ interface ReportDrawerProps {
 
 export default function ReportDrawer({ report }: ReportDrawerProps) {
   const { isDarkMode } = useTheme();
-  const { selectedSponsor } = useSponsor();
 
   return (
-    <div className="flex justify-between items-center mb-3">
-      <h1 className="text-lg font-semibold ml-1">
-        {selectedSponsor?.name} Builder Rewards Analytics
-      </h1>
+    <div className="flex justify-between items-center">
       <Sheet>
         <SheetTrigger asChild>
           <Button
-            size="lg"
-            className={`bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer text-black ${
+            className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer text-xs text-black ${
               isDarkMode
                 ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
                 : ""
             }`}
           >
-            <InfoIcon className="w-4 h-4 mr-2" />
+            <InfoIcon className="w-3 h-3" />
             View Ecosystem Report
           </Button>
         </SheetTrigger>

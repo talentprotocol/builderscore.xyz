@@ -52,7 +52,7 @@ export default function TopBuildersLeaderboard({ data }: TopBuildersLeaderboardP
   const activeBg = isDarkMode ? "bg-neutral-600" : "bg-neutral-300";
   const tableHeaderBg = isDarkMode ? "bg-neutral-700" : "bg-neutral-100";
   const tableRowBg = isDarkMode ? "hover:bg-neutral-700" : "hover:bg-neutral-50";
-  const tableBorderColor = isDarkMode ? "border-neutral-700" : "border-neutral-200";
+  const tableBorderColor = isDarkMode ? "border-neutral-800" : "border-neutral-300";
 
   return (
     <Card className={`${cardBg} border-0`}>

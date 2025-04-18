@@ -41,7 +41,7 @@ export default function Leaderboard({
       border rounded-lg
       ${isDarkMode 
         ? "border-neutral-800 bg-neutral-900" 
-        : "border-neutral-200 bg-white"
+        : "border-neutral-300 bg-white"
       }`
     }>
       {leaderboardData.users.map((user, index) => (

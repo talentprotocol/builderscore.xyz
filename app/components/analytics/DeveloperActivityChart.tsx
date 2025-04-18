@@ -2,7 +2,7 @@
 
 import { CSVRow } from "@/app/lib/csv-parser";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { formatDate } from "@/app/lib/csv-parser";
+import { formatDate } from "@/app/lib/utils";
 import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart } from 'recharts';
 
 interface DeveloperActivityChartProps {

@@ -85,7 +85,7 @@ export default function ShareableLeaderboard({
     <>
       <Button
         size="lg"
-        className="bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer w-full text-black"
+        className="bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black"
         onClick={handleShare}
       >
         <ShareIcon />
@@ -122,7 +122,7 @@ export default function ShareableLeaderboard({
           >
             <Button
               size="lg"
-              className={`bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer w-full text-black ${
+              className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
                 isDarkMode
                   ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
                   : ""
@@ -142,7 +142,7 @@ export default function ShareableLeaderboard({
           >
             <Button
               size="lg"
-              className={`bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer w-full text-black ${
+              className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
                 isDarkMode
                   ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
                   : ""
@@ -158,7 +158,7 @@ export default function ShareableLeaderboard({
               navigator.clipboard.writeText(shareUrl);
               setOpen(false);
             }}
-            className={`bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer w-full text-black ${
+            className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
               isDarkMode
                 ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
                 : ""

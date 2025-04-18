@@ -51,7 +51,7 @@ export default function HowToDrawer() {
             ${
               isDarkMode
                 ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-                : "bg-white hover:bg-neutral-100 border-neutral-200 text-black"
+                : "bg-white hover:bg-neutral-100 border-neutral-300 text-black"
             }
           `}
         >

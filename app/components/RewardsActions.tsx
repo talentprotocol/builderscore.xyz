@@ -28,7 +28,7 @@ export default function RewardsActions() {
         >
           <Button
             size="lg"
-            className={`bg-white hover:bg-neutral-100 border border-neutral-200 cursor-pointer w-full text-black ${
+            className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
               isDarkMode ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white" : ""
             }`}
           >

@@ -1,8 +1,7 @@
 "use client";
 
 import { CSVRow } from "@/app/lib/csv-parser";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { formatDate } from "@/app/lib/csv-parser";
+import { formatDate } from "@/app/lib/utils";
 import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Bar, ComposedChart } from 'recharts';
 import { useTheme } from "@/app/context/ThemeContext";
 
@@ -22,49 +21,36 @@ export default function RetentionRateChart({ data }: RetentionRateChartProps) {
       retentionRate: Number(row["Retention Rate (%)"])
     };
   });
-
-  const latestData = data[data.length - 1];
   
-  const cardBg = isDarkMode ? "bg-neutral-800" : "bg-white";
-  const textColor = isDarkMode ? "text-white" : "text-neutral-800";
+  const cardClass = `p-4 rounded-lg ${
+    isDarkMode ? "bg-neutral-800 border border-neutral-800" : "bg-white border border-neutral-300"
+  }`;
+  const textColor = isDarkMode ? "text-white" : "text-neutral-900";
   const descColor = isDarkMode ? "text-neutral-400" : "text-neutral-500";
 
-  // Calculate the latest retention rate
-  const latestRetentionRate = chartData.length > 0 ? 
-    chartData[chartData.length - 1].retentionRate : 0;
-
   return (
-    <Card className={`${cardBg} border-0`}>
-      <CardHeader className="pb-2">
-        <CardTitle className={textColor}>Builder Rewards Retention</CardTitle>
-        <CardDescription className={descColor}>
-          <div className="flex flex-col space-y-1">
-            <span>Weekly active/inactive developers and retention rate</span>
-            <div className="text-sm mt-2 flex flex-wrap gap-4">
-              <span>Latest week: {latestData ? formatDate(latestData["Week Start Date"] as string) : "N/A"}</span>
-              <span>Active developers: {latestData ? Number(latestData["Total Active Devs"]).toLocaleString() : "N/A"}</span>
-              <span>Retention rate: {latestRetentionRate.toFixed(2)}%</span>
-            </div>
+    <div className={cardClass}>
+      <div className="w-full relative">
+        <div className="mb-4">
+          <div className={`font-semibold mb-1 ${textColor}`}>
+            Builder Rewards Retention
           </div>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+          <div className={`text-xs ${descColor}`}>
+            Weekly active/inactive developers and retention rate
+          </div>
+        </div>
+
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart
               data={chartData}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 10,
-                bottom: 0,
-              }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#444" : "#eee"} />
               <XAxis 
                 dataKey="date" 
                 tick={{ fontSize: 12 }} 
                 stroke={isDarkMode ? "#aaa" : "#666"}
+                dy={10}
               />
               <YAxis 
                 yAxisId="left" 
@@ -84,46 +70,62 @@ export default function RetentionRateChart({ data }: RetentionRateChartProps) {
                 contentStyle={{ 
                   backgroundColor: isDarkMode ? "#333" : "#fff",
                   color: isDarkMode ? "#fff" : "#333",
-                  border: `1px solid ${isDarkMode ? "#555" : "#ddd"}`
+                  border: `1px solid ${isDarkMode ? "#555" : "#ddd"}`,
+                  fontSize: 12
                 }}
                 formatter={(value, name) => {
-                  if (name === "retentionRate") {
+                  if (name === "Retention Rate %") {
                     return [`${typeof value === 'number' ? value.toFixed(2) : value}%`, "Retention Rate"];
-                  } else if (name === "activeDevs") {
+                  } else if (name === "Active Developers") {
                     return [value, "Active Developers"];
                   } else {
                     return [value, "Inactive Developers"];
                   }
                 }}
+                itemStyle={{
+                  paddingTop: 6,
+                  paddingBottom: 0
+                }}
               />
-              <Legend />
+              <Legend 
+                wrapperStyle={{ 
+                  fontSize: 11,
+                  paddingTop: 15
+                }}
+              />
               <Bar 
                 yAxisId="left" 
                 dataKey="activeDevs" 
                 stackId="a" 
                 fill="#82ca9d" 
-                name="Active Developers" 
+                name="Active Developers"
+                animationDuration={300}
+                isAnimationActive={false}
               />
               <Bar 
                 yAxisId="left" 
                 dataKey="inactiveDevs" 
                 stackId="a" 
                 fill="#ff8042" 
-                name="Inactive Developers" 
+                name="Inactive Developers"
+                animationDuration={300}
+                isAnimationActive={false}
               />
               <Line 
                 yAxisId="right" 
-                type="monotone" 
+                type="linear" 
                 dataKey="retentionRate" 
                 stroke="#8884d8" 
-                strokeWidth={2}
-                name="Retention Rate %" 
-                dot={{ r: 5 }}
+                strokeWidth={1}
+                name="Retention Rate %"
+                dot={{ r: 4 }}
+                animationDuration={300}
+                isAnimationActive={false}
               />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 } 

@@ -39,7 +39,7 @@ export default function LeaderboardRow({
         ${last && "rounded-b-lg"}
         ${
           !first &&
-          `border-t ${isDarkMode ? "border-neutral-800" : "border-neutral-200"}`
+          `border-t ${isDarkMode ? "border-neutral-800" : "border-neutral-300"}`
         }
         ${className}`}
     >

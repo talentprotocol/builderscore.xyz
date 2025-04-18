@@ -32,7 +32,24 @@ export function formatNumber(x: number, decimals: number = 0): string {
 }
 
 export function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString("en-US", {
+  let dateObj;
+  
+  try {
+    dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) {
+      if (date.includes("UTC")) {
+        const cleanDate = date.replace("UTC", "").trim();
+        dateObj = new Date(cleanDate);
+      }
+    }
+    if (isNaN(dateObj.getTime())) {
+      return "Invalid Date Format";
+    }
+  } catch {
+    return "Invalid Date Format";
+  }
+  
+  return dateObj.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",

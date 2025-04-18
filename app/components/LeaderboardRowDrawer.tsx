@@ -72,7 +72,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                   className={`rounded-lg border w-full ${
                     isDarkMode
                       ? "bg-neutral-900 border-neutral-800"
-                      : "bg-white border-neutral-200"
+                      : "bg-white border-neutral-300"
                   }`}
                 >
                   <div className="flex justify-around p-4">
@@ -163,7 +163,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                     className={`rounded-lg border w-full p-4 mt-3 ${
                       isDarkMode
                         ? "bg-neutral-900 border-neutral-800"
-                        : "bg-white border-neutral-200"
+                        : "bg-white border-neutral-300"
                     }`}
                   >
                     <div className="flex flex-col">
@@ -186,7 +186,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                     className={`rounded-lg border w-full p-4 mt-3 ${
                       isDarkMode
                         ? "bg-neutral-900 border-neutral-800"
-                        : "bg-white border-neutral-200"
+                        : "bg-white border-neutral-300"
                     }`}
                   >
                     <div className="flex flex-col">

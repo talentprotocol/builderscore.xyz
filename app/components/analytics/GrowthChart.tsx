@@ -2,7 +2,7 @@
 
 import { CSVRow } from "@/app/lib/csv-parser";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { formatDate } from "@/app/lib/csv-parser";
+import { formatDate } from "@/app/lib/utils";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 interface GrowthChartProps {
