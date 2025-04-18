@@ -1,30 +1,30 @@
 Category,Metric,Count,Percentage
-Builder Score,Level 1 (Novice): 0-39,1,0.38
-Builder Score,Level 2 (Apprentice): 40-79,1,0.38
-Builder Score,Level 3 (Practitioner): 80-119,32,12.03
-Builder Score,Level 4 (Advanced): 120-169,125,46.99
-Builder Score,Level 5 (Expert): 170-249,97,36.47
-Builder Score,Level 6 (Master): 250+,10,3.76
+Builder Score,Level 1 (Novice): 0-39,0,0.0
+Builder Score,Level 2 (Apprentice): 40-79,200,45.56
+Builder Score,Level 3 (Practitioner): 80-119,180,41.0
+Builder Score,Level 4 (Advanced): 120-169,5,1.14
+Builder Score,Level 5 (Expert): 170-249,36,8.2
+Builder Score,Level 6 (Master): 250+,18,4.1
 
-GitHub Experience,1 year,3,1.13
-GitHub Experience,2 years,19,7.14
-GitHub Experience,3 years,22,8.27
-GitHub Experience,4 years,41,15.41
-GitHub Experience,5 years,35,13.16
-GitHub Experience,6 years,22,8.27
-GitHub Experience,7 years,14,5.26
-GitHub Experience,8 years,25,9.4
-GitHub Experience,9 years,21,7.89
-GitHub Experience,10+ years,60,22.56
-GitHub Experience,No data,4,1.5
-Onchain Experience,1 year,66,24.81
-Onchain Experience,2 years,49,18.42
-Onchain Experience,3 years,44,16.54
-Onchain Experience,4 years,56,21.05
-Onchain Experience,5 years,24,9.02
-Onchain Experience,6 years,5,1.88
-Onchain Experience,7 years,3,1.13
-Onchain Experience,8 years,10,3.76
+GitHub Experience,1 year,1,0.23
+GitHub Experience,2 years,46,10.48
+GitHub Experience,3 years,94,21.41
+GitHub Experience,4 years,82,18.68
+GitHub Experience,5 years,40,9.11
+GitHub Experience,6 years,29,6.61
+GitHub Experience,7 years,21,4.78
+GitHub Experience,8 years,22,5.01
+GitHub Experience,9 years,13,2.96
+GitHub Experience,10+ years,67,15.26
+GitHub Experience,No data,24,5.47
+Onchain Experience,1 year,66,15.03
+Onchain Experience,2 years,72,16.4
+Onchain Experience,3 years,90,20.5
+Onchain Experience,4 years,101,23.01
+Onchain Experience,5 years,44,10.02
+Onchain Experience,6 years,14,3.19
+Onchain Experience,7 years,5,1.14
+Onchain Experience,8 years,9,2.05
 Onchain Experience,9 years,0,0.0
 Onchain Experience,10+ years,0,0.0
-Onchain Experience,No data,9,3.38
+Onchain Experience,No data,38,8.66
