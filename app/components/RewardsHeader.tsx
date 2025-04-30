@@ -134,7 +134,7 @@ export default function RewardsHeader() {
                     : "0"}
                 </span>
                 <span
-                  className={`${
+                  className={`mb-[1px] ${
                     isDarkMode ? "text-neutral-500" : "text-neutral-600"
                   }`}
                 >
@@ -151,7 +151,7 @@ export default function RewardsHeader() {
                     )}
                   </span>
                   <span
-                    className={`${
+                    className={`mb-[1px] ${
                       isDarkMode ? "text-neutral-500" : "text-neutral-600"
                     }`}
                   >
@@ -165,7 +165,7 @@ export default function RewardsHeader() {
                   {selectedSponsorSlug === "base" ? "2" : "0"}
                 </span>
                 <span
-                  className={`${
+                  className={`mb-[1px] ${
                     isDarkMode ? "text-neutral-500" : "text-neutral-600"
                   }`}
                 >
@@ -212,9 +212,11 @@ export default function RewardsHeader() {
             </p>
             <p className="text-2xl font-mono font-semibold">
               {shouldShowUserLeaderboard
-                ? `${'builder_score' in userLeaderboard.profile 
-                    ? userLeaderboard.profile.builder_score?.points || "-"
-                    : "-"}`
+                ? `${
+                    "builder_score" in userLeaderboard.profile
+                      ? userLeaderboard.profile.builder_score?.points || "-"
+                      : "-"
+                  }`
                 : weightedAvgBuilderScore}
             </p>
           </div>
