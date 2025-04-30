@@ -85,7 +85,9 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                         Builder Score
                       </p>
                       <p className="text-2xl font-mono font-semibold">
-                        {selectedBuilder.profile.builder_score?.points || "-"}
+                        {'builder_score' in selectedBuilder.profile
+                          ? selectedBuilder.profile.builder_score?.points
+                          : "-"}
                       </p>
                     </div>
 
@@ -157,54 +159,63 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                   </div>
                 </div>
 
-                {selectedBuilder.summary !== null ? (
-                  selectedBuilder.summary && (
-                  <div
-                    className={`rounded-lg border w-full p-4 mt-3 ${
-                      isDarkMode
-                        ? "bg-neutral-900 border-neutral-800"
-                        : "bg-white border-neutral-300"
-                    }`}
-                  >
-                    <div className="flex flex-col">
-                      <p
-                        className={`${
-                          isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                        } text-sm mb-1`}
+                {selectedBuilder.summary !== null
+                  ? selectedBuilder.summary && (
+                      <div
+                        className={`rounded-lg border w-full p-4 mt-3 ${
+                          isDarkMode
+                            ? "bg-neutral-900 border-neutral-800"
+                            : "bg-white border-neutral-300"
+                        }`}
                       >
-                        Summary
-                      </p>
-                      <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
-                        <p className={isDarkMode ? "" : "text-neutral-800"}>
-                          {selectedBuilder.summary}
-                        </p>
+                        <div className="flex flex-col">
+                          <p
+                            className={`${
+                              isDarkMode
+                                ? "text-neutral-500"
+                                : "text-neutral-600"
+                            } text-sm mb-1`}
+                          >
+                            Summary
+                          </p>
+                          <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
+                            <p className={isDarkMode ? "" : "text-neutral-800"}>
+                              {selectedBuilder.summary}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                )) : selectedSponsorSlug === "base" && (
-                  <div
-                    className={`rounded-lg border w-full p-4 mt-3 ${
-                      isDarkMode
-                        ? "bg-neutral-900 border-neutral-800"
-                        : "bg-white border-neutral-300"
-                    }`}
-                  >
-                    <div className="flex flex-col">
-                      <p
-                        className={`${
-                          isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                        } text-sm mb-1`}
+                    )
+                  : selectedSponsorSlug === "base" &&
+                    selectedBuilder.reward_amount &&
+                    parseFloat(selectedBuilder.reward_amount) > 0 && (
+                      <div
+                        className={`rounded-lg border w-full p-4 mt-3 ${
+                          isDarkMode
+                            ? "bg-neutral-900 border-neutral-800"
+                            : "bg-white border-neutral-300"
+                        }`}
                       >
-                        Summary
-                      </p>
-                      <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
-                        <p className={isDarkMode ? "" : "text-neutral-800"}>
-                          {selectedBuilder.profile.name} earned Rewards for transactions on previously deployed verified Smart Contracts.
-                        </p>
+                        <div className="flex flex-col">
+                          <p
+                            className={`${
+                              isDarkMode
+                                ? "text-neutral-500"
+                                : "text-neutral-600"
+                            } text-sm mb-1`}
+                          >
+                            Summary
+                          </p>
+                          <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
+                            <p className={isDarkMode ? "" : "text-neutral-800"}>
+                              {selectedBuilder.profile.name} earned Rewards for
+                              transactions on previously deployed verified Smart
+                              Contracts.
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                )}
+                    )}
               </div>
 
               <DrawerFooter className="pt-0">

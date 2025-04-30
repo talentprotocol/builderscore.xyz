@@ -8,13 +8,13 @@ export const ENDPOINTS = {
   leaderboards: "/builder_grants/leaderboards",
   grants: "/builder_grants/grants",
   talent: {
-    profile: "/search/advanced/profiles",
     socials: "/socials",
-    lookup: "/profile",
+    profile: "/profile",
+    builderScore: "/score",
   },
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",
-  }
+  },
 } as const;
 
 export const DEFAULT_HEADERS = {

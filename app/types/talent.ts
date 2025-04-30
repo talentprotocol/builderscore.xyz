@@ -23,6 +23,41 @@ export type TalentProfile = {
   } | null;
 };
 
+export type TalentBuilderScore = {
+  points: number;
+  last_calculated_at: string;
+};
+
+export type APITalentProfile = {
+  id: string;
+  account: string | null;
+  bio: string | null;
+  display_name: string | null;
+  ens: string;
+  human_checkmark: boolean;
+  image_url: string | null;
+  location: string | null;
+  name: string | null;
+  onchain_id: number;
+  onchain_since: string;
+  refreshing_socials: boolean;
+  socials_refreshed_at: string;
+  tags: string[];
+  user: {
+    admin: boolean;
+    builder_plus: boolean;
+    created_at: string;
+    email: string | null;
+    email_confirmed: boolean;
+    human_checkmark: boolean;
+    id: string;
+    main_wallet: string;
+    merged: boolean;
+    onchain_id: number;
+    rank_position: number;
+  };
+};
+
 export type TalentCredential = {
   id: number;
   type: string;
@@ -33,10 +68,11 @@ export type TalentCredential = {
 };
 
 export type TalentProfileResponse = {
-  profile: TalentProfile | null;
+  profile: APITalentProfile | null;
   hasGithubCredential: boolean;
   hasBasenameCredential: boolean;
   basename: string | null;
+  builderScore: TalentBuilderScore | null;
 };
 
 export interface TalentSocial {

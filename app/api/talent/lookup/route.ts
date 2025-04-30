@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const fetchProfileById = unstable_cache(
   async (id: string, accountSource: string) => {
     const profileResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.lookup}?id=${id}&account_source=${accountSource}`,
+      `${API_BASE_URL}${ENDPOINTS.talent.profile}?id=${id}&account_source=${accountSource}`,
       {
         method: "GET",
         headers: DEFAULT_HEADERS

@@ -1,4 +1,4 @@
-import { TalentProfileResponse, TalentProfile } from "@/app/types/talent";
+import { TalentProfileResponse, APITalentProfile } from "@/app/types/talent";
 
 export async function fetchUserByFid(fid: number): Promise<TalentProfileResponse> {
   const url = `/api/talent/profile?fid=${fid}`;
@@ -15,7 +15,7 @@ export async function fetchUserByFid(fid: number): Promise<TalentProfileResponse
 }
 
 export interface ProfileLookupResponse {
-  profile: (TalentProfile & {
+  profile: (APITalentProfile & {
     ens?: string;
     onchain_since?: string;
   }) | null;

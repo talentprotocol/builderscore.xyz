@@ -15,7 +15,7 @@ import { useTheme } from "@/app/context/ThemeContext";
 import { useState } from "react";
 import ExternalLink from "@/app/components/ExternalLink";
 export default function HowToDrawer() {
-  const { isLoading: isUserLoading, hasBasenameCredential, talentProfile, frameContext, basename } = useUser();
+  const { isLoading: isUserLoading, hasBasenameCredential, talentProfile, frameContext, basename, builderScore } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
   const { isDarkMode } = useTheme();
 
@@ -35,8 +35,8 @@ export default function HowToDrawer() {
       url: "https://app.talentprotocol.com/profile",
       condition:
         !isUserLoading &&
-        talentProfile?.builder_score?.points &&
-        talentProfile?.builder_score?.points >= 40,
+        builderScore?.points &&
+        builderScore?.points >= 40,
     },
   ];
 

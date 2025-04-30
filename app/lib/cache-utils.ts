@@ -10,6 +10,7 @@ export const CACHE_TAGS = {
   SPONSOR_BY_SLUG: "sponsor-by-slug",
   TALENT_PROFILE: "talent-profile",
   TALENT_SOCIALS: "talent-socials",
+  TALENT_BUILDER_SCORE: "talent-builder-score",
 };
 
 export const CACHE_60_MINUTES = 60 * 60;
