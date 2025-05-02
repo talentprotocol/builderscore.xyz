@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    inlineCss: true,
+    reactCompiler: true,
+    optimizePackageImports: ["react-icons", "lucide-react"],
+  },
 };
 
 export default nextConfig;
