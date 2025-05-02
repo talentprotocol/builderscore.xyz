@@ -4,10 +4,10 @@ import { useGrant } from '@/app/context/GrantContext';
 import { useLeaderboard } from '@/app/context/LeaderboardContext';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useSponsor } from '@/app/context/SponsorContext';
-import ToggleLeaderboard from '@/app/components/ToggleLeaderboard';
+import ToggleLeaderboard from '@/app/components/rewards/ToggleLeaderboard';
 import { formatNumber, formatDate, getTimeRemaining, TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from '@/app/lib/utils';
 
-export default function RewardsHeader() {
+export default function Header() {
   const { grants, selectedGrant, isLoading } = useGrant();
   const { userLeaderboard, showUserLeaderboard } = useLeaderboard();
   const { isDarkMode } = useTheme();

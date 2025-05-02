@@ -9,7 +9,7 @@ import {
 } from "@/app/components/ui/select";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useTheme } from "@/app/context/ThemeContext";
-import { Sponsor } from "../types/sponsors";
+import { Sponsor } from "@/app/types/sponsors";
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 

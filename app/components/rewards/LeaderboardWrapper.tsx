@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Leaderboard from "@/app/components/Leaderboard";
-import LeaderboardRow from "@/app/components/LeaderboardRow";
+import Leaderboard from "@/app/components/rewards/Leaderboard";
+import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import { getLeaderboards } from "@/app/services/leaderboards";
 import { LeaderboardEntry, LeaderboardResponse } from "@/app/types/leaderboards";
 import { useSponsor } from "@/app/context/SponsorContext";
@@ -10,11 +10,11 @@ import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useUser } from "@/app/context/UserContext";
 import { useTheme } from "@/app/context/ThemeContext";
-import SelectGrant from "@/app/components/SelectGrant";
-import LeaderboardRowDrawer from "@/app/components/LeaderboardRowDrawer";
+import SelectGrant from "@/app/components/rewards/SelectGrant";
+import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer";
 import { format } from "date-fns";
 
-export default function RewardsLeaderboard() {
+export default function LeaderboardWrapper() {
   const { isLoading: isSponsorLoading, selectedSponsorSlug } = useSponsor();
   const { selectedGrant } = useGrant();
   const { talentProfile } = useUser();

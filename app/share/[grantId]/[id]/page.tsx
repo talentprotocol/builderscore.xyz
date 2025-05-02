@@ -1,4 +1,4 @@
-import RewardsHome from "@/app/components/rewards/RewardsHome";
+import Home from "@/app/components/rewards/Home";
 import { Metadata } from "next";
 
 type Props = {
@@ -46,6 +46,6 @@ export async function generateMetadata(
 
 export default function SharePage() {
   return (
-    <RewardsHome />
+    <Home />
   );
 }

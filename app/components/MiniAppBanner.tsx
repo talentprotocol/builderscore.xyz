@@ -6,7 +6,8 @@ import { useTheme } from '@/app/context/ThemeContext';
 import { useUser } from '@/app/context/UserContext';
 import Image from 'next/image';
 import Link from 'next/link';
-export default function WarpcastBanner() {
+
+export default function MiniAppBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const { isDarkMode } = useTheme();
   const { frameContext } = useUser();

@@ -1,7 +1,7 @@
-import RewardsHome from "@/app/components/rewards/RewardsHome";
+import Home from "@/app/components/rewards/Home";
 
 export default function SponsorHomePage() {
   return (
-    <RewardsHome />
+    <Home />
   );
 } 

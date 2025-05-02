@@ -7,7 +7,7 @@ import { Button } from "@/app/components/ui/button";
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { useState } from "react";
 import Image from "next/image";
-import ExternalLink from "@/app/components/ExternalLink";
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useUser } from "@/app/context/UserContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
@@ -113,7 +113,7 @@ export default function ShareableLeaderboard({
             />
           </div>
 
-          <ExternalLink
+          <MiniAppExternalLink
             href={`https://warpcast.com/~/compose?text=${encodeURIComponent(
               farcasterShareText + "\n\n" + tagsTextFarcaster
             )}&embeds[]=${encodeURIComponent(shareUrl)}`}
@@ -131,9 +131,9 @@ export default function ShareableLeaderboard({
               <SiFarcaster />
               Share on Warpcast
             </Button>
-          </ExternalLink>
+          </MiniAppExternalLink>
 
-          <ExternalLink
+          <MiniAppExternalLink
             href={`https://x.com/intent/tweet?text=${encodeURIComponent(
               twitterShareText + "\n\n" + tagsTextTwitter + "\n\n"
             )}&url=${encodeURIComponent(shareUrl)}`}
@@ -151,7 +151,7 @@ export default function ShareableLeaderboard({
               <FaXTwitter />
               Share on X
             </Button>
-          </ExternalLink>
+          </MiniAppExternalLink>
 
           <Button
             onClick={() => {

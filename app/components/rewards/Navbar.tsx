@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import SelectSponsor from "@/app/components/SelectSponsor";
+import SelectSponsor from "@/app/components/rewards/SelectSponsor";
 import { useTheme } from "@/app/context/ThemeContext";
 
 export default function Navbar() {

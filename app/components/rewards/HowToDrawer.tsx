@@ -13,7 +13,8 @@ import {
 import { useUser } from "@/app/context/UserContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useState } from "react";
-import ExternalLink from "@/app/components/ExternalLink";
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
+
 export default function HowToDrawer() {
   const { isLoading: isUserLoading, hasBasenameCredential, talentProfile, frameContext, basename, builderScore } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
@@ -126,7 +127,7 @@ export default function HowToDrawer() {
                   >
                     {step.condition ? <Check className="w-3 h-3" /> : index + 1}
                   </div>
-                  <ExternalLink
+                  <MiniAppExternalLink
                     href={step.url}
                     className={`
                       ${
@@ -137,16 +138,16 @@ export default function HowToDrawer() {
                     `}
                   >
                     {step.text}
-                  </ExternalLink>
+                  </MiniAppExternalLink>
                 </li>
               ))}
             </ul>
 
             <p className={`text-sm ${isDarkMode ? "text-neutral-500" : "text-neutral-600"} mt-6`}>
               Subject to{" "}
-              <ExternalLink href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions">
+              <MiniAppExternalLink href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions">
                 Terms and Conditions
-              </ExternalLink>
+              </MiniAppExternalLink>
               .
             </p>
           </div>

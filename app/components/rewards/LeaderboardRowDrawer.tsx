@@ -9,12 +9,12 @@ import {
   DrawerPortal,
 } from "@/app/components/ui/drawer";
 import { Button } from "@/app/components/ui/button";
-import { formatNumber, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from "../lib/utils";
+import { formatNumber, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from "@/app/lib/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useSponsor } from "@/app/context/SponsorContext";
-import ExternalLink from "./ExternalLink";
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 
 export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context, onClose }: {
   selectedBuilder: LeaderboardEntry | null;
@@ -219,7 +219,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
               </div>
 
               <DrawerFooter className="pt-0">
-                <ExternalLink
+                <MiniAppExternalLink
                   href={`https://app.talentprotocol.com/builderscore/${selectedBuilder.profile.id}`}
                 >
                   <Button
@@ -232,7 +232,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                   >
                     View Talent Profile
                   </Button>
-                </ExternalLink>
+                </MiniAppExternalLink>
               </DrawerFooter>
             </>
           )}

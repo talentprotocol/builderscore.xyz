@@ -1,5 +1,5 @@
 import { LeaderboardEntry, LeaderboardResponse } from "@/app/types/leaderboards";
-import LeaderboardRow from "@/app/components/LeaderboardRow";
+import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import { useCallback, useEffect } from "react";
 import { useTheme } from "@/app/context/ThemeContext";
 

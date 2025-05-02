@@ -12,7 +12,7 @@ interface ExternalLinkProps {
   onClick?: () => void;
 }
 
-export default function ExternalLink({
+export default function MiniAppExternalLink({
   href,
   children,
   className = "",

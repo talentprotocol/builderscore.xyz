@@ -1,15 +1,15 @@
 "use client";
 
-import HowToDrawer from "@/app/components/HowToDrawer";
+import HowToDrawer from "@/app/components/rewards/HowToDrawer";
 import { Button } from "@/app/components/ui/button";
 import { useUser } from "@/app/context/UserContext";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
-import ExternalLink from "@/app/components/ExternalLink";
-import ShareableLeaderboard from "@/app/components/ShareableLeaderboard";
-import { useTheme } from "../context/ThemeContext";
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
+import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard";
+import { useTheme } from "@/app/context/ThemeContext";
 
-export default function RewardsActions() {
+export default function Actions() {
   const { talentProfile, hasGithubCredential } = useUser();
   const { selectedGrant } = useGrant();
   const { userLeaderboard } = useLeaderboard();
@@ -17,7 +17,7 @@ export default function RewardsActions() {
   return (
     <div className="grid auto-cols-fr grid-flow-col gap-4 mt-3 w-full">
       {!hasGithubCredential && (
-        <ExternalLink
+        <MiniAppExternalLink
           href={
             talentProfile
               ? "https://app.talentprotocol.com/accounts"
@@ -36,7 +36,7 @@ export default function RewardsActions() {
           >
             {talentProfile ? "Connect GitHub" : "Sign Up for Talent"}
           </Button>
-        </ExternalLink>
+        </MiniAppExternalLink>
       )}
 
       <HowToDrawer />

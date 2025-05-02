@@ -2,7 +2,7 @@
 
 import { useTheme } from "@/app/context/ThemeContext";
 import { useSponsor } from "@/app/context/SponsorContext";
-import ExternalLink from "./ExternalLink";
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 
 export function Footer() {
   const { isDarkMode } = useTheme();
@@ -26,14 +26,14 @@ export function Footer() {
         } text-xs`}
       >
         © {new Date().getFullYear()}{" "}
-        <ExternalLink
+        <MiniAppExternalLink
           href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions"
           className={`text-center text-xs underline ${
             isDarkMode ? "text-neutral-500" : "text-neutral-600"
           }`}
         >
           Terms and Conditions
-        </ExternalLink>
+        </MiniAppExternalLink>
       </p>
     </div>
   );
