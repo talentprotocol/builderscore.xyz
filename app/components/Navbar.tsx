@@ -4,7 +4,7 @@ import Image from "next/image";
 import SelectSponsor from "@/app/components/rewards/SelectSponsor";
 import { useTheme } from "@/app/context/ThemeContext";
 
-export default function Navbar() {
+export default function Navbar({ sponsored }: { sponsored?: boolean }) {
   const { isDarkMode } = useTheme();
 
   return (
@@ -26,7 +26,8 @@ export default function Navbar() {
           Builder Rewards
         </h1>
       </div>
-      <SelectSponsor />
+
+      {sponsored && <SelectSponsor />}
     </nav>
   );
 }

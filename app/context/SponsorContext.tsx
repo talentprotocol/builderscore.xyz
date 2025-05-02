@@ -9,6 +9,7 @@ import {
 } from "react";
 import { Sponsor } from "@/app/types/sponsors";
 import { getSponsors } from "@/app/services/sponsors";
+import { useTheme } from "@/app/context/ThemeContext";
 
 interface SponsorContextType {
   selectedSponsor: Sponsor | null;
@@ -23,6 +24,7 @@ interface SponsorContextType {
 const SponsorContext = createContext<SponsorContextType | undefined>(undefined);
 
 export function SponsorProvider({ children }: { children: ReactNode }) {
+  const { setIsDarkMode } = useTheme();
   const [selectedSponsorSlug, setSelectedSponsorSlug] = useState<string>("");
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +46,11 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
 
     fetchSponsors();
   }, []);
+
+  useEffect(() => {
+    setIsDarkMode(selectedSponsorSlug !== "base");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSponsorSlug]);
 
   const selectedSponsor =
     selectedSponsorSlug === "global"

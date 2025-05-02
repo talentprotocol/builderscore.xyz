@@ -5,5 +5,8 @@
   "semi": true,
   "trailingComma": "all",
   "tabWidth": 2,
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
   "plugins": ["prettier-plugin-tailwindcss"]
 }

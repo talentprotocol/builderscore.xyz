@@ -1,0 +1,64 @@
+import type { Metadata } from "next";
+import { SponsorProvider } from "@/app/context/SponsorContext";
+import { GrantProvider } from "@/app/context/GrantContext";
+import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
+import { UserProvider } from "@/app/context/UserContext";
+import { Footer } from "@/app/components/rewards/Footer";
+import Navbar from "@/app/components/Navbar";
+import UserStatus from "@/app/components/rewards/UserStatus";
+
+const frame = {
+  version: "next",
+  imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
+  button: {
+    title: "Earn Builder Rewards",
+    action: {
+      type: "launch_frame",
+      name: "Builder Rewards",
+      url: "https://www.builderscore.xyz",
+      splashImageUrl: "https://www.builderscore.xyz/images/icon.png",
+      splashBackgroundColor: "#0D0740",
+    },
+  },
+};
+
+export const metadata: Metadata = {
+  title: "Builder Rewards",
+  description: "Weekly Rewards for the most impactful builders.",
+  openGraph: {
+    title: "Builder Rewards",
+    description: "Weekly Rewards for the most impactful builders.",
+    images: [
+      {
+        url: "https://www.builderscore.xyz/images/frame-image.png",
+        alt: "Builder Rewards",
+      },
+    ],
+  },
+  other: {
+    "fc:frame": JSON.stringify(frame),
+  },
+};
+
+export default function BuilderRewardsLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <SponsorProvider>
+      <GrantProvider>
+        <UserProvider>
+          <LeaderboardProvider>
+            <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-4 px-4">
+              {process.env.NODE_ENV === "development" && <UserStatus />}
+              <Navbar sponsored />
+              <main className="flex flex-col h-full">{children}</main>
+              <Footer />
+            </div>
+          </LeaderboardProvider>
+        </UserProvider>
+      </GrantProvider>
+    </SponsorProvider>
+  );
+}
