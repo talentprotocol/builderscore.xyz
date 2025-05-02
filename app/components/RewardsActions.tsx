@@ -20,7 +20,7 @@ export default function RewardsActions() {
         <ExternalLink
           href={
             talentProfile
-              ? "https://app.talentprotocol.com/settings/connected_accounts"
+              ? "https://app.talentprotocol.com/accounts"
               : "https://app.talentprotocol.com"
           }
           target="_blank"
@@ -29,7 +29,9 @@ export default function RewardsActions() {
           <Button
             size="lg"
             className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
-              isDarkMode ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white" : ""
+              isDarkMode
+                ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
+                : ""
             }`}
           >
             {talentProfile ? "Connect GitHub" : "Sign Up for Talent"}
