@@ -1,9 +1,15 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { Grant } from '@/app/types/grants';
-import { getGrants } from '@/app/services/grants';
-import { useSponsor } from '@/app/context/SponsorContext';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { Grant } from "@/app/types/grants";
+import { getGrants } from "@/app/services/grants";
+import { useSponsor } from "@/app/context/SponsorContext";
 
 interface GrantContextType {
   selectedGrant: Grant | null;
@@ -29,8 +35,11 @@ export function GrantProvider({ children }: { children: ReactNode }) {
         setError(null);
 
         if (!isSponsorLoading) {
-          const params = selectedSponsorSlug !== "global" ? { sponsor_slug: selectedSponsorSlug } : undefined;
-          const response = await getGrants(params);        
+          const params =
+            selectedSponsorSlug !== "global"
+              ? { sponsor_slug: selectedSponsorSlug }
+              : undefined;
+          const response = await getGrants(params);
           setGrants(response.grants);
           setSelectedGrant(null);
         }
@@ -45,13 +54,13 @@ export function GrantProvider({ children }: { children: ReactNode }) {
   }, [selectedSponsorSlug, isSponsorLoading]);
 
   return (
-    <GrantContext.Provider 
-      value={{ 
+    <GrantContext.Provider
+      value={{
         selectedGrant,
         setSelectedGrant,
         grants,
         isLoading,
-        error 
+        error,
       }}
     >
       {children}
@@ -62,7 +71,7 @@ export function GrantProvider({ children }: { children: ReactNode }) {
 export function useGrant() {
   const context = useContext(GrantContext);
   if (context === undefined) {
-    throw new Error('useGrant must be used within a GrantProvider');
+    throw new Error("useGrant must be used within a GrantProvider");
   }
   return context;
-} 
+}

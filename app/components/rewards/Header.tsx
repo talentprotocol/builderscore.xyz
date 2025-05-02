@@ -1,11 +1,17 @@
 "use client";
 
-import { useGrant } from '@/app/context/GrantContext';
-import { useLeaderboard } from '@/app/context/LeaderboardContext';
-import { useTheme } from '@/app/context/ThemeContext';
-import { useSponsor } from '@/app/context/SponsorContext';
-import ToggleLeaderboard from '@/app/components/rewards/ToggleLeaderboard';
-import { formatNumber, formatDate, getTimeRemaining, TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from '@/app/lib/utils';
+import { useGrant } from "@/app/context/GrantContext";
+import { useLeaderboard } from "@/app/context/LeaderboardContext";
+import { useTheme } from "@/app/context/ThemeContext";
+import { useSponsor } from "@/app/context/SponsorContext";
+import ToggleLeaderboard from "@/app/components/rewards/ToggleLeaderboard";
+import {
+  formatNumber,
+  formatDate,
+  getTimeRemaining,
+  TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
+  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
+} from "@/app/lib/utils";
 
 export default function Header() {
   const { grants, selectedGrant, isLoading } = useGrant();
@@ -14,12 +20,15 @@ export default function Header() {
   const { selectedSponsorSlug, sponsorToken } = useSponsor();
   const grantsToUse = selectedGrant ? [selectedGrant] : grants;
 
-  const rewardsByTicker = grantsToUse.reduce((acc, grant) => {
-    const amount = parseFloat(grant.rewards_pool);
-    const ticker = grant.token_ticker || 'Tokens';
-    acc[ticker] = (acc[ticker] || 0) + (isNaN(amount) ? 0 : amount);
-    return acc;
-  }, {} as Record<string, number>);
+  const rewardsByTicker = grantsToUse.reduce(
+    (acc, grant) => {
+      const amount = parseFloat(grant.rewards_pool);
+      const ticker = grant.token_ticker || "Tokens";
+      acc[ticker] = (acc[ticker] || 0) + (isNaN(amount) ? 0 : amount);
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   // TODO: Update endpoint to return ongoing, tracked Rewards
   const getDisplayAmount = (ticker: string, amount: number) => {
@@ -31,30 +40,38 @@ export default function Header() {
 
   const totalRewardedBuilders = grantsToUse.reduce(
     (sum, grant) => sum + grant.rewarded_builders,
-    0
+    0,
   );
 
-  const { weightedScore, totalBuilders } = grantsToUse.reduce((acc, grant) => {
-    return {
-      weightedScore:
-        acc.weightedScore + grant.avg_builder_score * grant.rewarded_builders,
-      totalBuilders: acc.totalBuilders + grant.rewarded_builders,
-    };
-  }, { weightedScore: 0, totalBuilders: 0 });
+  const { weightedScore, totalBuilders } = grantsToUse.reduce(
+    (acc, grant) => {
+      return {
+        weightedScore:
+          acc.weightedScore + grant.avg_builder_score * grant.rewarded_builders,
+        totalBuilders: acc.totalBuilders + grant.rewarded_builders,
+      };
+    },
+    { weightedScore: 0, totalBuilders: 0 },
+  );
 
-  const weightedAvgBuilderScore = totalBuilders ? Math.round(weightedScore / totalBuilders) : 0;
+  const weightedAvgBuilderScore = totalBuilders
+    ? Math.round(weightedScore / totalBuilders)
+    : 0;
 
   const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
 
   if (isLoading) {
     return (
-      <div className={`
-        ${isDarkMode
-          ?'bg-neutral-900 border-neutral-800'
-          : 'bg-white border-neutral-300'
+      <div
+        className={`
+        ${
+          isDarkMode
+            ? "bg-neutral-900 border-neutral-800"
+            : "bg-white border-neutral-300"
         }
         rounded-lg border animate-pulse
-      `}>
+      `}
+      >
         <div className="h-32"></div>
       </div>
     );
@@ -111,8 +128,8 @@ export default function Header() {
             {shouldShowUserLeaderboard
               ? "Rewards Earned"
               : selectedGrant
-              ? "Rewards Pool"
-              : "Total Rewards Pool"}
+                ? "Rewards Pool"
+                : "Total Rewards Pool"}
 
             {process.env.NODE_ENV === "development" && (
               <span className="text-xs text-green-500 ml-4">
@@ -129,7 +146,7 @@ export default function Header() {
                         parseFloat(userLeaderboard.reward_amount),
                         INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
                           sponsorToken
-                        ]
+                        ],
                       )
                     : "0"}
                 </span>
@@ -147,7 +164,7 @@ export default function Header() {
                   <span className="text-4xl font-semibold">
                     {formatNumber(
                       getDisplayAmount(ticker, amount),
-                      TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker]
+                      TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker],
                     )}
                   </span>
                   <span
@@ -190,8 +207,8 @@ export default function Header() {
               {shouldShowUserLeaderboard
                 ? "Your Rank"
                 : isIntermediateGrant
-                ? "Builders"
-                : "Builders Rewarded"}
+                  ? "Builders"
+                  : "Builders Rewarded"}
             </p>
             <p className="text-2xl font-mono font-semibold">
               {shouldShowUserLeaderboard

@@ -13,19 +13,19 @@ const fetchTalentProfile = unstable_cache(
       {
         method: "GET",
         headers: DEFAULT_HEADERS,
-      }
+      },
     );
 
     if (!profileResponse.ok) {
       throw new Error(
-        `Talent Protocol API error: ${profileResponse.statusText}`
+        `Talent Protocol API error: ${profileResponse.statusText}`,
       );
     }
 
     return profileResponse.json();
   },
   [CACHE_TAGS.TALENT_PROFILE],
-  { revalidate: CACHE_60_MINUTES }
+  { revalidate: CACHE_60_MINUTES },
 );
 
 const fetchTalentSocials = unstable_cache(
@@ -35,7 +35,7 @@ const fetchTalentSocials = unstable_cache(
       {
         method: "GET",
         headers: DEFAULT_HEADERS,
-      }
+      },
     );
 
     if (!socialsResponse.ok) {
@@ -45,7 +45,7 @@ const fetchTalentSocials = unstable_cache(
     return socialsResponse.json();
   },
   [CACHE_TAGS.TALENT_SOCIALS],
-  { revalidate: CACHE_60_MINUTES }
+  { revalidate: CACHE_60_MINUTES },
 );
 
 const fetchTalentBuilderScore = unstable_cache(
@@ -55,7 +55,7 @@ const fetchTalentBuilderScore = unstable_cache(
       {
         method: "GET",
         headers: DEFAULT_HEADERS,
-      } 
+      },
     );
 
     if (!builderScoreResponse.ok) {
@@ -65,7 +65,7 @@ const fetchTalentBuilderScore = unstable_cache(
     return builderScoreResponse.json();
   },
   [CACHE_TAGS.TALENT_BUILDER_SCORE],
-  { revalidate: CACHE_60_MINUTES }
+  { revalidate: CACHE_60_MINUTES },
 );
 
 export async function GET(request: NextRequest) {
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
   if (!fid) {
     return NextResponse.json(
       { error: "FID parameter is required" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
     const [profileData, socialsData, builderScoreData] = await Promise.all([
       fetchTalentProfile(fid),
       fetchTalentSocials(fid),
-      fetchTalentBuilderScore(fid)
+      fetchTalentBuilderScore(fid),
     ]);
 
     if (!profileData.profile || !socialsData || !builderScoreData) {
@@ -91,23 +91,23 @@ export async function GET(request: NextRequest) {
     }
 
     const farcasterSocial = socialsData.socials.find(
-      (social: { source: string }) => social.source === "farcaster"
+      (social: { source: string }) => social.source === "farcaster",
     );
 
     if (farcasterSocial) {
       const matchingProfile: APITalentProfile = profileData.profile;
 
       const hasGithubCredential = socialsData.socials.some(
-        (social: { source: string }) => social.source === "github"
+        (social: { source: string }) => social.source === "github",
       );
 
       const hasBasenameCredential = socialsData.socials.some(
-        (social: { source: string }) => social.source === "basename"
+        (social: { source: string }) => social.source === "basename",
       );
 
       const basenameSocial = socialsData.socials.find(
         (social: { source: string; name: string }) =>
-          social.source === "basename"
+          social.source === "basename",
       );
 
       return NextResponse.json({
@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: `Failed to fetch Talent Protocol profile: ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

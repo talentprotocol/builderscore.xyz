@@ -2,7 +2,7 @@ export interface NotificationToken {
   object: string;
   url: string;
   token: string;
-  status: 'enabled' | 'disabled';
+  status: "enabled" | "disabled";
   fid: number;
   created_at: string;
   updated_at: string;

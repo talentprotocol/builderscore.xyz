@@ -11,7 +11,7 @@ import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useUser } from "@/app/context/UserContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
-import { useGrant } from "@/app/context/GrantContext";  
+import { useGrant } from "@/app/context/GrantContext";
 import {
   formatNumber,
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
@@ -39,21 +39,31 @@ export default function ShareableLeaderboard({
     ...(sponsor_slug && { sponsor_slug }),
   });
 
-  const getSummaryForPlatform = (platform: 'farcaster' | 'twitter') => {
-    if (!userLeaderboard?.summary) return '';
-    const maxLength = platform === 'farcaster' ? 180 : 75;
-    return `\n\n"${userLeaderboard.summary.slice(0, maxLength)}${userLeaderboard.summary.length > maxLength ? '...' : ''}"`;
+  const getSummaryForPlatform = (platform: "farcaster" | "twitter") => {
+    if (!userLeaderboard?.summary) return "";
+    const maxLength = platform === "farcaster" ? 180 : 75;
+    return `\n\n"${userLeaderboard.summary.slice(0, maxLength)}${userLeaderboard.summary.length > maxLength ? "..." : ""}"`;
   };
 
   const rewardsNumber = formatNumber(
     parseFloat(userLeaderboard?.reward_amount || "0"),
-    INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[selectedGrant?.token_ticker || ""]
+    INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+      selectedGrant?.token_ticker || ""
+    ],
   );
-  
+
   const baseShareText = `I earned ${rewardsNumber} ${selectedGrant?.token_ticker} for ranking #${userLeaderboard?.leaderboard_position} on this week's ${selectedGrant?.sponsor.name} Builder Rewards!`;
-  const farcasterShareText = baseShareText + (userLeaderboard?.summary && userLeaderboard?.summary !== "" ? getSummaryForPlatform('farcaster') : "");
-  const twitterShareText = baseShareText + (userLeaderboard?.summary && userLeaderboard?.summary !== "" ? getSummaryForPlatform('twitter') : "");
-  
+  const farcasterShareText =
+    baseShareText +
+    (userLeaderboard?.summary && userLeaderboard?.summary !== ""
+      ? getSummaryForPlatform("farcaster")
+      : "");
+  const twitterShareText =
+    baseShareText +
+    (userLeaderboard?.summary && userLeaderboard?.summary !== ""
+      ? getSummaryForPlatform("twitter")
+      : "");
+
   const tagsTextFarcaster =
     selectedGrant?.sponsor.slug === "base"
       ? `Sponsored by @base and powered by @talent`
@@ -115,7 +125,7 @@ export default function ShareableLeaderboard({
 
           <MiniAppExternalLink
             href={`https://warpcast.com/~/compose?text=${encodeURIComponent(
-              farcasterShareText + "\n\n" + tagsTextFarcaster
+              farcasterShareText + "\n\n" + tagsTextFarcaster,
             )}&embeds[]=${encodeURIComponent(shareUrl)}`}
             target="_blank"
             className="w-full"
@@ -135,7 +145,7 @@ export default function ShareableLeaderboard({
 
           <MiniAppExternalLink
             href={`https://x.com/intent/tweet?text=${encodeURIComponent(
-              twitterShareText + "\n\n" + tagsTextTwitter + "\n\n"
+              twitterShareText + "\n\n" + tagsTextTwitter + "\n\n",
             )}&url=${encodeURIComponent(shareUrl)}`}
             target="_blank"
             className="w-full"

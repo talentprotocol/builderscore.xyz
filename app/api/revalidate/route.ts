@@ -14,34 +14,34 @@ export async function GET(request: NextRequest) {
     // Validate the revalidation token
     const token = request.nextUrl.searchParams.get("token");
     const validToken = process.env.REVALIDATION_TOKEN;
-    
+
     if (!token || token !== validToken) {
       return NextResponse.json(
         { error: "Invalid or missing revalidation token" },
-        { status: 401 }
+        { status: 401 },
       );
     }
-    
+
     const invalidateAll = request.nextUrl.searchParams.get("all") === "true";
-    
+
     if (invalidateAll) {
       const allTags = Object.values(CACHE_TAGS);
       invalidateMultipleTags(allTags);
-      
+
       return NextResponse.json({
         revalidated: true,
         timestamp: Date.now(),
-        invalidated: allTags
+        invalidated: allTags,
       });
     }
-    
+
     const tag = request.nextUrl.searchParams.get("tag");
     const tags = request.nextUrl.searchParams.get("tags");
-    
+
     if (!tag && !tags) {
       return NextResponse.json(
         { error: "Missing tag, tags, or all parameter" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -50,22 +50,22 @@ export async function GET(request: NextRequest) {
       if (!tagExists) {
         return NextResponse.json(
           { error: `Invalid tag: ${tag}` },
-          { status: 400 }
+          { status: 400 },
         );
       }
-      
+
       revalidateTag(tag);
-      return NextResponse.json({ 
-        revalidated: true, 
+      return NextResponse.json({
+        revalidated: true,
         timestamp: Date.now(),
-        invalidated: [tag] 
+        invalidated: [tag],
       });
     }
-    
+
     if (tags) {
-      const tagList = tags.split(",").map(t => t.trim());
+      const tagList = tags.split(",").map((t) => t.trim());
       const invalidatedTags: string[] = [];
-      
+
       for (const t of tagList) {
         const tagExists = Object.values(CACHE_TAGS).includes(t);
         if (tagExists) {
@@ -73,11 +73,11 @@ export async function GET(request: NextRequest) {
           invalidatedTags.push(t);
         }
       }
-      
-      return NextResponse.json({ 
-        revalidated: true, 
+
+      return NextResponse.json({
+        revalidated: true,
         timestamp: Date.now(),
-        invalidated: invalidatedTags 
+        invalidated: invalidatedTags,
       });
     }
 
@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: `Failed to revalidate cache: ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

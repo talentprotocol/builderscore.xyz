@@ -35,4 +35,4 @@ export interface GrantParams {
   sponsor_slug?: string;
   per_page?: number;
   page?: number;
-} 
+}

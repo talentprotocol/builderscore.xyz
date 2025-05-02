@@ -42,9 +42,9 @@ export default function WinnersProfileChart({
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
-    return () => window.removeEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   const CHART_COLORS = {
@@ -54,12 +54,12 @@ export default function WinnersProfileChart({
       "var(--chart-3)",
       "var(--chart-4)",
       "var(--chart-5)",
-      "var(--chart-6)"
+      "var(--chart-6)",
     ],
     experience: {
       github: "var(--chart-1)",
-      onchain: "var(--chart-2)"
-    }
+      onchain: "var(--chart-2)",
+    },
   };
 
   const builderScoreData = data
@@ -78,7 +78,7 @@ export default function WinnersProfileChart({
   const githubExpData = data
     .filter(
       (row) =>
-        row["Category"] === "GitHub Experience" && row["Metric"] !== "No data"
+        row["Category"] === "GitHub Experience" && row["Metric"] !== "No data",
     )
     .map((row) => {
       const yearLabel = row["Metric"] as string;
@@ -98,7 +98,7 @@ export default function WinnersProfileChart({
       (row) =>
         row["Category"] === "Onchain Experience" &&
         row["Metric"] !== "No data" &&
-        Number(row["Count"]) > 0
+        Number(row["Count"]) > 0,
     )
     .map((row) => {
       const yearLabel = row["Metric"] as string;
@@ -113,11 +113,11 @@ export default function WinnersProfileChart({
 
   const githubNoData = data.find(
     (row) =>
-      row["Category"] === "GitHub Experience" && row["Metric"] === "No data"
+      row["Category"] === "GitHub Experience" && row["Metric"] === "No data",
   );
   const onchainNoData = data.find(
     (row) =>
-      row["Category"] === "Onchain Experience" && row["Metric"] === "No data"
+      row["Category"] === "Onchain Experience" && row["Metric"] === "No data",
   );
 
   const githubNoDataCount = githubNoData ? Number(githubNoData["Count"]) : 0;
@@ -144,7 +144,9 @@ export default function WinnersProfileChart({
             </div>
           </div>
 
-          <div className={`flex flex-col md:flex-row items-center justify-center ${isSmallScreen ? "h-[380px]" : "h-[300px] "}`}>
+          <div
+            className={`flex flex-col md:flex-row items-center justify-center ${isSmallScreen ? "h-[380px]" : "h-[300px] "}`}
+          >
             <div className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -221,7 +223,7 @@ export default function WinnersProfileChart({
                 ]
                   .reduce((result, item) => {
                     const existingItem = result.find(
-                      (r) => r.name === item.name
+                      (r) => r.name === item.name,
                     );
                     if (existingItem) {
                       existingItem.githubValue =

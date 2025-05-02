@@ -44,13 +44,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [talentProfile, setTalentProfile] = useState<APITalentProfile | null>(
-    null
+    null,
   );
   const [frameContext, setFrameContext] = useState<FrameContext>();
   const [hasGithubCredential, setHasGithubCredential] = useState(false);
   const [hasBasenameCredential, setHasBasenameCredential] = useState(false);
   const [basename, setBasename] = useState<string | null>(null);
-  const [builderScore, setBuilderScore] = useState<TalentBuilderScore | null>(null);
+  const [builderScore, setBuilderScore] = useState<TalentBuilderScore | null>(
+    null,
+  );
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
   useEffect(() => {
@@ -64,7 +66,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         await sdk.actions.addFrame();
       }
     };
-    
+
     if (!isSDKLoaded) {
       setIsSDKLoaded(true);
       loadSDK();
@@ -87,7 +89,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setBuilderScore(response.builderScore || null);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err : new Error("Failed to fetch user data"));
+        setError(
+          err instanceof Error ? err : new Error("Failed to fetch user data"),
+        );
         setTalentProfile(null);
         setHasGithubCredential(false);
         setHasBasenameCredential(false);
@@ -102,7 +106,18 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, [frameContext?.user?.fid]);
 
   return (
-    <UserContext.Provider value={{ isLoading, error, talentProfile, frameContext, hasGithubCredential, hasBasenameCredential, basename, builderScore }}>
+    <UserContext.Provider
+      value={{
+        isLoading,
+        error,
+        talentProfile,
+        frameContext,
+        hasGithubCredential,
+        hasBasenameCredential,
+        basename,
+        builderScore,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
@@ -114,4 +129,4 @@ export function useUser() {
     throw new Error("useUser must be used within a UserProvider");
   }
   return context;
-} 
+}

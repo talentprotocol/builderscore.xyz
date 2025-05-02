@@ -1,11 +1,17 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { LeaderboardEntry } from '@/app/types/leaderboards';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { LeaderboardEntry } from "@/app/types/leaderboards";
 import { getLeaderboardEntry } from "@/app/services/leaderboards";
-import { useUser } from '@/app/context/UserContext';
-import { useGrant } from '@/app/context/GrantContext';
-import { useSponsor } from '@/app/context/SponsorContext';
+import { useUser } from "@/app/context/UserContext";
+import { useGrant } from "@/app/context/GrantContext";
+import { useSponsor } from "@/app/context/SponsorContext";
 
 interface LeaderboardContextType {
   userLeaderboard: LeaderboardEntry | null;
@@ -13,16 +19,19 @@ interface LeaderboardContextType {
   toggleUserLeaderboard: () => void;
 }
 
-const LeaderboardContext = createContext<LeaderboardContextType | undefined>(undefined);
+const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
+  undefined,
+);
 
 export function LeaderboardProvider({ children }: { children: ReactNode }) {
   const { frameContext, talentProfile } = useUser();
   const { selectedGrant } = useGrant();
   const { selectedSponsor } = useSponsor();
-  const [userLeaderboard, setUserLeaderboard] = useState<LeaderboardEntry | null>(null);
+  const [userLeaderboard, setUserLeaderboard] =
+    useState<LeaderboardEntry | null>(null);
   const [showUserLeaderboard, setShowUserLeaderboard] = useState(true);
 
-  const toggleUserLeaderboard = () => setShowUserLeaderboard(prev => !prev);
+  const toggleUserLeaderboard = () => setShowUserLeaderboard((prev) => !prev);
 
   useEffect(() => {
     const fetchUserLeaderboard = async () => {
@@ -31,7 +40,7 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
           const entry = await getLeaderboardEntry(
             talentProfile.id.toString(),
             selectedGrant?.id?.toString(),
-            selectedSponsor?.slug
+            selectedSponsor?.slug,
           );
           setUserLeaderboard(entry);
         } catch {
@@ -41,14 +50,19 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
     };
 
     fetchUserLeaderboard();
-  }, [frameContext?.user?.fid, selectedGrant?.id, selectedSponsor?.slug, talentProfile?.id]);
+  }, [
+    frameContext?.user?.fid,
+    selectedGrant?.id,
+    selectedSponsor?.slug,
+    talentProfile?.id,
+  ]);
 
   return (
-    <LeaderboardContext.Provider 
-      value={{ 
+    <LeaderboardContext.Provider
+      value={{
         userLeaderboard,
         showUserLeaderboard,
-        toggleUserLeaderboard
+        toggleUserLeaderboard,
       }}
     >
       {children}
@@ -59,7 +73,7 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
 export function useLeaderboard() {
   const context = useContext(LeaderboardContext);
   if (context === undefined) {
-    throw new Error('useLeaderboard must be used within a LeaderboardProvider');
+    throw new Error("useLeaderboard must be used within a LeaderboardProvider");
   }
   return context;
-} 
+}

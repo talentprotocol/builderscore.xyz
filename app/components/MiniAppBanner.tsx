@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
-import { useTheme } from '@/app/context/ThemeContext';
-import { useUser } from '@/app/context/UserContext';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useEffect, useState } from "react";
+import { X } from "lucide-react";
+import { useTheme } from "@/app/context/ThemeContext";
+import { useUser } from "@/app/context/UserContext";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function MiniAppBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const { isDarkMode } = useTheme();
   const { frameContext } = useUser();
-  const localStorageKey = 'builder-rewards-warpcast-banner-closed';
+  const localStorageKey = "builder-rewards-warpcast-banner-closed";
 
   useEffect(() => {
     const hasClosedBanner = localStorage.getItem(localStorageKey);
@@ -22,7 +22,7 @@ export default function MiniAppBanner() {
 
   const handleClose = () => {
     setIsVisible(false);
-    localStorage.setItem(localStorageKey, 'true');
+    localStorage.setItem(localStorageKey, "true");
   };
 
   if (!isVisible || frameContext) return null;
@@ -85,4 +85,4 @@ export default function MiniAppBanner() {
       </div>
     </div>
   );
-} 
+}

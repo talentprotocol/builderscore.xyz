@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     ],
   },
   other: {
-    "fc:frame": JSON.stringify(frame)
+    "fc:frame": JSON.stringify(frame),
   },
 };
 

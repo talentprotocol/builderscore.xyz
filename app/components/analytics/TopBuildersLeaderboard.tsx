@@ -3,7 +3,12 @@
 import { CSVRow } from "@/app/lib/csv-parser";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/app/components/ui/tabs";
 import { fetchProfileById, ProfileLookupResponse } from "@/app/services/talent";
 import Image from "next/image";
 
@@ -34,22 +39,26 @@ interface BuildersTableProps {
   textColor: string;
 }
 
-const BuildersTable = ({ 
-  builders, 
-  isLoading, 
-  isWeekly, 
-  tableHeaderBg, 
-  tableRowBg, 
+const BuildersTable = ({
+  builders,
+  isLoading,
+  isWeekly,
+  tableHeaderBg,
+  tableRowBg,
   tableBorderColor,
-  textColor
+  textColor,
 }: BuildersTableProps) => {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
           <tr className={tableHeaderBg}>
-            <th className="px-2 py-2 text-left text-xs font-medium w-12">Rank</th>
-            <th className="px-2 py-2 text-left text-xs font-medium w-24">Builder</th>
+            <th className="px-2 py-2 text-left text-xs font-medium w-12">
+              Rank
+            </th>
+            <th className="px-2 py-2 text-left text-xs font-medium w-24">
+              Builder
+            </th>
             <th className="px-2 py-2 text-right text-xs font-medium w-1/2">
               {isWeekly ? "Weekly Rewards" : "All-Time Rewards"}
             </th>
@@ -106,54 +115,66 @@ const BuildersTable = ({
   );
 };
 
-export default function TopBuildersLeaderboard({ data }: TopBuildersLeaderboardProps) {
+export default function TopBuildersLeaderboard({
+  data,
+}: TopBuildersLeaderboardProps) {
   const { isDarkMode } = useTheme();
-  const [activeTab, setActiveTab] = useState<'weekly' | 'allTime'>('allTime');
+  const [activeTab, setActiveTab] = useState<"weekly" | "allTime">("allTime");
   const [buildersData, setBuildersData] = useState<BuilderData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const processData = async () => {
       setIsLoading(true);
-      
-      const processedData: BuilderData[] = data.map(row => ({
+
+      const processedData: BuilderData[] = data.map((row) => ({
         profileId: String(row["Profile UUID"]),
         shortProfileId: String(row["Profile UUID"]).substring(0, 8) + "...",
         earnedRewardsThisWeek: Number(row["Earned Rewards this"]),
         thisWeekRewardsTotal: Number(row["This Week's Rewards Total"]),
         allTimeRewardsCount: Number(row["All-time Rewards Count"]),
-        allTimeRewardsTotal: Number(row["All-time Rewards Total"])
+        allTimeRewardsTotal: Number(row["All-time Rewards Total"]),
       }));
-      
+
       try {
-        const topBuilders = [...processedData]
-          .sort((a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal)
-        
+        const topBuilders = [...processedData].sort(
+          (a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal,
+        );
+
         const fetchProfiles = async () => {
           const profilePromises = topBuilders.map(async (builder) => {
             try {
-              const profileData: ProfileLookupResponse = await fetchProfileById(builder.profileId);
+              const profileData: ProfileLookupResponse = await fetchProfileById(
+                builder.profileId,
+              );
               if (profileData.profile) {
                 return {
                   ...builder,
                   profileData: {
-                    name: profileData.profile.name || profileData.profile.display_name || builder.shortProfileId,
-                    imageUrl: profileData.profile.image_url || '/default-avatar.png',
-                  }
+                    name:
+                      profileData.profile.name ||
+                      profileData.profile.display_name ||
+                      builder.shortProfileId,
+                    imageUrl:
+                      profileData.profile.image_url || "/default-avatar.png",
+                  },
                 };
               }
               return builder;
             } catch (error) {
-              console.error(`Error fetching profile for ${builder.profileId}:`, error);
+              console.error(
+                `Error fetching profile for ${builder.profileId}:`,
+                error,
+              );
               return builder;
             }
           });
-          
+
           const updatedBuilders = await Promise.all(profilePromises);
           setBuildersData(updatedBuilders);
           setIsLoading(false);
         };
-        
+
         fetchProfiles();
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -161,41 +182,54 @@ export default function TopBuildersLeaderboard({ data }: TopBuildersLeaderboardP
         setIsLoading(false);
       }
     };
-    
+
     processData();
   }, [data]);
 
-  const weeklyBuilders = [...buildersData]
-    .sort((a, b) => b.thisWeekRewardsTotal - a.thisWeekRewardsTotal);
-    
-  const allTimeBuilders = [...buildersData]
-    .sort((a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal);
+  const weeklyBuilders = [...buildersData].sort(
+    (a, b) => b.thisWeekRewardsTotal - a.thisWeekRewardsTotal,
+  );
+
+  const allTimeBuilders = [...buildersData].sort(
+    (a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal,
+  );
 
   const cardClass = `p-4 rounded-lg ${
-    isDarkMode ? "bg-neutral-800 border border-neutral-800" : "bg-white border border-neutral-300"
+    isDarkMode
+      ? "bg-neutral-800 border border-neutral-800"
+      : "bg-white border border-neutral-300"
   }`;
   const textColor = isDarkMode ? "text-white" : "text-neutral-900";
   const descColor = isDarkMode ? "text-neutral-400" : "text-neutral-500";
-  const tabBgClass = isDarkMode ? "bg-neutral-900 text-white" : "bg-neutral-200 text-neutral-800";
+  const tabBgClass = isDarkMode
+    ? "bg-neutral-900 text-white"
+    : "bg-neutral-200 text-neutral-800";
   const tabItemClass = isDarkMode
     ? "bg-neutral-900 hover:bg-neutral-800 data-[state=active]:bg-neutral-800"
     : "bg-neutral-200 hover:bg-white data-[state=active]:bg-white text-neutral-800";
   const tableHeaderBg = isDarkMode ? "bg-neutral-700" : "bg-neutral-100";
-  const tableRowBg = isDarkMode ? "hover:bg-neutral-700" : "hover:bg-neutral-50";
-  const tableBorderColor = isDarkMode ? "border-neutral-700" : "border-neutral-200";
+  const tableRowBg = isDarkMode
+    ? "hover:bg-neutral-700"
+    : "hover:bg-neutral-50";
+  const tableBorderColor = isDarkMode
+    ? "border-neutral-700"
+    : "border-neutral-200";
 
   return (
     <div className={cardClass}>
-      <Tabs defaultValue="allTime" className="w-full relative" onValueChange={(value) => setActiveTab(value as 'weekly' | 'allTime')}>
+      <Tabs
+        defaultValue="allTime"
+        className="w-full relative"
+        onValueChange={(value) => setActiveTab(value as "weekly" | "allTime")}
+      >
         <div className="sm:mb-4">
           <div className={`font-semibold mb-1 ${textColor}`}>
             Top Builders Leaderboard
           </div>
           <div className={`text-xs ${descColor}`}>
-            {activeTab === 'weekly' 
-              ? 'Ranking of builders by rewards earned in the latest week' 
-              : 'Ranking of builders by total rewards earned all-time'
-            }
+            {activeTab === "weekly"
+              ? "Ranking of builders by rewards earned in the latest week"
+              : "Ranking of builders by total rewards earned all-time"}
           </div>
         </div>
 
@@ -215,7 +249,7 @@ export default function TopBuildersLeaderboard({ data }: TopBuildersLeaderboardP
         </TabsList>
 
         <TabsContent value="weekly" className="mt-0">
-          <BuildersTable 
+          <BuildersTable
             builders={weeklyBuilders}
             isLoading={isLoading}
             isWeekly={true}
@@ -227,7 +261,7 @@ export default function TopBuildersLeaderboard({ data }: TopBuildersLeaderboardP
         </TabsContent>
 
         <TabsContent value="allTime" className="mt-0">
-          <BuildersTable 
+          <BuildersTable
             builders={allTimeBuilders}
             isLoading={isLoading}
             isWeekly={false}
@@ -240,4 +274,4 @@ export default function TopBuildersLeaderboard({ data }: TopBuildersLeaderboardP
       </Tabs>
     </div>
   );
-} 
+}

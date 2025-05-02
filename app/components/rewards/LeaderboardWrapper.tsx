@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import Leaderboard from "@/app/components/rewards/Leaderboard";
 import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import { getLeaderboards } from "@/app/services/leaderboards";
-import { LeaderboardEntry, LeaderboardResponse } from "@/app/types/leaderboards";
+import {
+  LeaderboardEntry,
+  LeaderboardResponse,
+} from "@/app/types/leaderboards";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
@@ -26,7 +29,8 @@ export default function LeaderboardWrapper() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const { userLeaderboard } = useLeaderboard();
-  const [selectedBuilder, setSelectedBuilder] = useState<LeaderboardEntry | null>(null);
+  const [selectedBuilder, setSelectedBuilder] =
+    useState<LeaderboardEntry | null>(null);
 
   const defaultUserLeaderboard: LeaderboardEntry = {
     id: 0,
@@ -38,7 +42,10 @@ export default function LeaderboardWrapper() {
     summary: null,
   };
 
-  const fetchLeaderboard = async (page: number = 1, append: boolean = false) => {
+  const fetchLeaderboard = async (
+    page: number = 1,
+    append: boolean = false,
+  ) => {
     try {
       const loadingState = append ? setIsLoadingMore : setIsLoading;
       loadingState(true);
@@ -47,21 +54,24 @@ export default function LeaderboardWrapper() {
       const response = await getLeaderboards({
         per_page: 20,
         page,
-        sponsor_slug: selectedSponsorSlug === "global" ? undefined : selectedSponsorSlug,
-        grant_id: selectedGrant?.id?.toString()
+        sponsor_slug:
+          selectedSponsorSlug === "global" ? undefined : selectedSponsorSlug,
+        grant_id: selectedGrant?.id?.toString(),
       });
 
-      setLeaderboardData(prevData => {
+      setLeaderboardData((prevData) => {
         if (append && prevData) {
           return {
             ...response,
-            users: [...prevData.users, ...response.users]
+            users: [...prevData.users, ...response.users],
           };
         }
         return response;
       });
 
-      setHasMore(response.pagination.current_page < response.pagination.last_page);
+      setHasMore(
+        response.pagination.current_page < response.pagination.last_page,
+      );
     } catch (err) {
       setError(`Failed to fetch leaderboard data: ${err}`);
     } finally {
@@ -75,7 +85,7 @@ export default function LeaderboardWrapper() {
       setCurrentPage(1);
       fetchLeaderboard();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSponsorSlug, selectedGrant, isSponsorLoading]);
 
   const handleLoadMore = () => {
@@ -139,14 +149,17 @@ export default function LeaderboardWrapper() {
                 onClose={() => setSelectedBuilder(null)}
                 weekly={!!selectedGrant}
                 context={
-                  selectedGrant ? (
-                    format(
-                      new Date(selectedGrant?.start_date || ""),
-                      "MMM d"
-                    ) +
-                    " - " +
-                    format(new Date(selectedGrant?.end_date || ""), "MMM d, yyyy")
-                  ) : "All Time"
+                  selectedGrant
+                    ? format(
+                        new Date(selectedGrant?.start_date || ""),
+                        "MMM d",
+                      ) +
+                      " - " +
+                      format(
+                        new Date(selectedGrant?.end_date || ""),
+                        "MMM d, yyyy",
+                      )
+                    : "All Time"
                 }
               />
             </>

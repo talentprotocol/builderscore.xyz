@@ -14,14 +14,16 @@ export default function ToggleLeaderboard() {
         checked={!showUserLeaderboard}
         onCheckedChange={toggleUserLeaderboard}
         className={`data-[state=checked]:bg-green-500 scale-75 ${
-          isDarkMode 
+          isDarkMode
             ? "data-[state=unchecked]:bg-neutral-700"
             : "data-[state=unchecked]:bg-neutral-300"
         }`}
       />
-      <label className={`text-xs ${isDarkMode ? "text-neutral-500" : "text-neutral-600"}`}>
+      <label
+        className={`text-xs ${isDarkMode ? "text-neutral-500" : "text-neutral-600"}`}
+      >
         Total
       </label>
     </div>
   );
-} 
+}

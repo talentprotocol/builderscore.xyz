@@ -26,4 +26,4 @@ export interface LeaderboardParams {
   sponsor_slug?: string;
   per_page?: number;
   page?: number;
-} 
+}

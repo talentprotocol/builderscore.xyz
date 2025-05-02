@@ -4,7 +4,13 @@ import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import { format } from "date-fns";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/components/ui/select";
 import { useEffect } from "react";
 
 export default function SelectGrant() {
@@ -14,44 +20,60 @@ export default function SelectGrant() {
 
   useEffect(() => {
     if (!selectedGrant && !isLoading && grants.length > 0) {
-      const intermediateGrants = grants.filter(grant => grant.track_type === "intermediate");
-      
+      const intermediateGrants = grants.filter(
+        (grant) => grant.track_type === "intermediate",
+      );
+
       if (intermediateGrants.length > 0) {
-        const sortedGrants = [...intermediateGrants].sort((a, b) => 
-          new Date(a.end_date).getTime() - new Date(b.end_date).getTime()
+        const sortedGrants = [...intermediateGrants].sort(
+          (a, b) =>
+            new Date(a.end_date).getTime() - new Date(b.end_date).getTime(),
         );
         setSelectedGrant(sortedGrants[0]);
       } else {
         setSelectedGrant(grants[0]);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, grants.length]);
 
   if (isLoading) {
     return (
       <Select disabled value={selectedGrant?.id?.toString() || "all"}>
-        <SelectTrigger className={`
+        <SelectTrigger
+          className={`
           text-xs h-6 w-56 p-2 cursor-not-allowed
-          ${isDarkMode 
-            ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white" 
-            : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
+          ${
+            isDarkMode
+              ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
+              : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
           }
-        `}>
+        `}
+        >
           <SelectValue placeholder="Loading..." />
         </SelectTrigger>
       </Select>
     );
   }
 
-  const formatGrantOption = (grant: { sponsor: { name: string }, start_date: string, end_date: string }) => {
+  const formatGrantOption = (grant: {
+    sponsor: { name: string };
+    start_date: string;
+    end_date: string;
+  }) => {
     const startDate = format(new Date(grant.start_date), "MMM d");
     const endDate = format(new Date(grant.end_date), "MMM d, yyyy");
     if (selectedSponsorSlug === "global") {
       return (
         <div className="flex items-start gap-2">
-          <span className={isDarkMode ? "text-neutral-500" : "text-neutral-600"}>{grant.sponsor.name}</span>
-          <span>{startDate} - {endDate}</span>
+          <span
+            className={isDarkMode ? "text-neutral-500" : "text-neutral-600"}
+          >
+            {grant.sponsor.name}
+          </span>
+          <span>
+            {startDate} - {endDate}
+          </span>
         </div>
       );
     }
@@ -122,4 +144,4 @@ export default function SelectGrant() {
       </SelectContent>
     </Select>
   );
-} 
+}

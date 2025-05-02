@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import { LeaderboardEntry } from "@/app/types/leaderboards";
-import { formatNumber, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from "@/app/lib/utils";
+import {
+  formatNumber,
+  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
+} from "@/app/lib/utils";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 
@@ -61,10 +64,10 @@ export default function LeaderboardRow({
                 ? "text-neutral-500"
                 : "text-neutral-600"
               : leaderboardData.ranking_change !== 0
-              ? leaderboardData.ranking_change < 0
-                ? "text-red-500"
-                : "text-green-500"
-              : "text-neutral-500"
+                ? leaderboardData.ranking_change < 0
+                  ? "text-red-500"
+                  : "text-green-500"
+                : "text-neutral-500"
           }`}
         >
           {leaderboardData.ranking_change !== null
@@ -111,7 +114,7 @@ export default function LeaderboardRow({
               <span className="font-mono">
                 {formatNumber(
                   parseFloat(leaderboardData.reward_amount),
-                  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken]
+                  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken],
                 )}
               </span>
               <span
@@ -123,7 +126,11 @@ export default function LeaderboardRow({
               </span>
             </>
           ) : (
-            <span className={`${isDarkMode ? "text-neutral-500" : "text-neutral-600"} ml-2 text-xs`}>No Rewards Earned</span>
+            <span
+              className={`${isDarkMode ? "text-neutral-500" : "text-neutral-600"} ml-2 text-xs`}
+            >
+              No Rewards Earned
+            </span>
           )}
         </p>
       </div>

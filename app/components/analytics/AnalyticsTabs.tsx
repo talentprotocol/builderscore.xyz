@@ -1,6 +1,11 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/app/components/ui/tabs";
 import ActivityChart from "@/app/components/analytics/ActivityChart";
 import ActivityByTypeChart from "@/app/components/analytics/ActivityByTypeChart";
 import RetentionRateChart from "@/app/components/analytics/RetentionRateChart";
@@ -117,4 +122,4 @@ export default function AnalyticsTabs({ data }: AnalyticsTabsProps) {
       </TabsContent>
     </Tabs>
   );
-} 
+}

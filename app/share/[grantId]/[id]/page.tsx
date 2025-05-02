@@ -8,9 +8,7 @@ type Props = {
   }>;
 };
 
-export async function generateMetadata(
-  { params }: Props,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, grantId } = await params;
 
   const imageUrl = `${process.env.BUILDER_REWARDS_URL}/api/leaderboards/${id}/shareable?grant_id=${grantId}`;
@@ -35,17 +33,15 @@ export async function generateMetadata(
       images: [imageUrl],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       images: [imageUrl],
     },
     other: {
-      "fc:frame": JSON.stringify(frame)
+      "fc:frame": JSON.stringify(frame),
     },
   };
 }
 
 export default function SharePage() {
-  return (
-    <Home />
-  );
+  return <Home />;
 }

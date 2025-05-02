@@ -9,14 +9,22 @@ import {
   DrawerPortal,
 } from "@/app/components/ui/drawer";
 import { Button } from "@/app/components/ui/button";
-import { formatNumber, INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from "@/app/lib/utils";
+import {
+  formatNumber,
+  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
+} from "@/app/lib/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 
-export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context, onClose }: {
+export default function LeaderboardRowDrawer({
+  selectedBuilder,
+  weekly,
+  context,
+  onClose,
+}: {
   selectedBuilder: LeaderboardEntry | null;
   weekly?: boolean;
   context?: string;
@@ -85,7 +93,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                         Builder Score
                       </p>
                       <p className="text-2xl font-mono font-semibold">
-                        {'builder_score' in selectedBuilder.profile
+                        {"builder_score" in selectedBuilder.profile
                           ? selectedBuilder.profile.builder_score?.points
                           : "-"}
                       </p>
@@ -105,7 +113,7 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                             parseFloat(selectedBuilder.reward_amount || "0"),
                             INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
                               sponsorToken
-                            ]
+                            ],
                           )}
                         </span>
                         <span
@@ -135,10 +143,10 @@ export default function LeaderboardRowDrawer({ selectedBuilder, weekly, context,
                                   ? "text-neutral-500"
                                   : "text-neutral-600"
                                 : selectedBuilder.ranking_change !== 0
-                                ? selectedBuilder.ranking_change < 0
-                                  ? "text-red-500"
-                                  : "text-green-500"
-                                : "text-neutral-500"
+                                  ? selectedBuilder.ranking_change < 0
+                                    ? "text-red-500"
+                                    : "text-green-500"
+                                  : "text-neutral-500"
                             }`}
                           >
                             {selectedBuilder.ranking_change !== null

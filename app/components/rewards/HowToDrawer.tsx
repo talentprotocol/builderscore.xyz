@@ -16,7 +16,14 @@ import { useState } from "react";
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 
 export default function HowToDrawer() {
-  const { isLoading: isUserLoading, hasBasenameCredential, talentProfile, frameContext, basename, builderScore } = useUser();
+  const {
+    isLoading: isUserLoading,
+    hasBasenameCredential,
+    talentProfile,
+    frameContext,
+    basename,
+    builderScore,
+  } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
   const { isDarkMode } = useTheme();
 
@@ -35,9 +42,7 @@ export default function HowToDrawer() {
       text: "Increase your Builder Score to 40+",
       url: "https://app.talentprotocol.com/profile",
       condition:
-        !isUserLoading &&
-        builderScore?.points &&
-        builderScore?.points >= 40,
+        !isUserLoading && builderScore?.points && builderScore?.points >= 40,
     },
   ];
 
@@ -121,8 +126,8 @@ export default function HowToDrawer() {
                           ? "bg-green-500 text-white"
                           : "bg-green-100 text-green-500"
                         : isDarkMode
-                        ? "bg-neutral-700 text-white"
-                        : "bg-neutral-200 text-neutral-800"
+                          ? "bg-neutral-700 text-white"
+                          : "bg-neutral-200 text-neutral-800"
                     }`}
                   >
                     {step.condition ? <Check className="w-3 h-3" /> : index + 1}
@@ -143,7 +148,9 @@ export default function HowToDrawer() {
               ))}
             </ul>
 
-            <p className={`text-sm ${isDarkMode ? "text-neutral-500" : "text-neutral-600"} mt-6`}>
+            <p
+              className={`text-sm ${isDarkMode ? "text-neutral-500" : "text-neutral-600"} mt-6`}
+            >
               Subject to{" "}
               <MiniAppExternalLink href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions">
                 Terms and Conditions

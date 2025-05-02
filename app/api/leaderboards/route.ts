@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
-import { LeaderboardResponse } from '@/app/types/leaderboards';
-import { unstable_cache } from '@/app/lib/unstable-cache';
-import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
+import { NextRequest, NextResponse } from "next/server";
+import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from "@/app/config/api";
+import { LeaderboardResponse } from "@/app/types/leaderboards";
+import { unstable_cache } from "@/app/lib/unstable-cache";
+import { CACHE_TAGS, CACHE_60_MINUTES } from "@/app/lib/cache-utils";
 
 export const dynamic = "force-dynamic";
 
@@ -11,8 +11,8 @@ const fetchLeaderboards = unstable_cache(
     const response = await fetch(
       `${API_BASE_URL}${ENDPOINTS.leaderboards}?${queryString}`,
       {
-        headers: DEFAULT_HEADERS
-      }
+        headers: DEFAULT_HEADERS,
+      },
     );
 
     if (!response.ok) {
@@ -22,16 +22,16 @@ const fetchLeaderboards = unstable_cache(
     return response.json();
   },
   [CACHE_TAGS.LEADERBOARDS],
-  { revalidate: CACHE_60_MINUTES }
+  { revalidate: CACHE_60_MINUTES },
 );
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const grant_id = searchParams.get('grant_id');
-    const sponsor_slug = searchParams.get('sponsor_slug');
-    const per_page = searchParams.get('per_page');
-    const page = searchParams.get('page');
+    const grant_id = searchParams.get("grant_id");
+    const sponsor_slug = searchParams.get("sponsor_slug");
+    const per_page = searchParams.get("per_page");
+    const page = searchParams.get("page");
 
     const queryParams = new URLSearchParams({
       ...(grant_id && { grant_id }),
@@ -40,12 +40,14 @@ export async function GET(request: NextRequest) {
       ...(page && { page }),
     });
 
-    const data: LeaderboardResponse = await fetchLeaderboards(queryParams.toString());
+    const data: LeaderboardResponse = await fetchLeaderboards(
+      queryParams.toString(),
+    );
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
       { error: `Failed to fetch leaderboards: ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

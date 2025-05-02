@@ -6,7 +6,7 @@ import { useTheme } from "@/app/context/ThemeContext";
 
 export default function Navbar() {
   const { isDarkMode } = useTheme();
-  
+
   return (
     <nav className="flex justify-between items-center mb-3">
       <div className="flex items-center gap-2 ml-1">
@@ -20,9 +20,11 @@ export default function Navbar() {
           fill={false}
           height={15}
           width={15}
-          style={{ width: 'auto', height: '15px' }}
+          style={{ width: "auto", height: "15px" }}
         />
-        <h1 className="font-semibold text-foreground whitespace-nowrap">Builder Rewards</h1>
+        <h1 className="font-semibold text-foreground whitespace-nowrap">
+          Builder Rewards
+        </h1>
       </div>
       <SelectSponsor />
     </nav>

@@ -1,8 +1,14 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { Sponsor } from '@/app/types/sponsors';
-import { getSponsors } from '@/app/services/sponsors';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { Sponsor } from "@/app/types/sponsors";
+import { getSponsors } from "@/app/services/sponsors";
 
 interface SponsorContextType {
   selectedSponsor: Sponsor | null;
@@ -39,26 +45,29 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
     fetchSponsors();
   }, []);
 
-  const selectedSponsor = selectedSponsorSlug === "global" 
-    ? null 
-    : sponsors.find(sponsor => sponsor.slug === selectedSponsorSlug) ?? null;
+  const selectedSponsor =
+    selectedSponsorSlug === "global"
+      ? null
+      : (sponsors.find((sponsor) => sponsor.slug === selectedSponsorSlug) ??
+        null);
 
-  const sponsorToken = selectedSponsorSlug === "base" 
-    ? "ETH" 
-    : selectedSponsorSlug === "talent-protocol" 
-      ? "$TALENT" 
-      : "Tokens";
+  const sponsorToken =
+    selectedSponsorSlug === "base"
+      ? "ETH"
+      : selectedSponsorSlug === "talent-protocol"
+        ? "$TALENT"
+        : "Tokens";
 
   return (
-    <SponsorContext.Provider 
-      value={{ 
+    <SponsorContext.Provider
+      value={{
         selectedSponsor,
         selectedSponsorSlug,
         setSelectedSponsorSlug,
         sponsors,
         sponsorToken,
         isLoading,
-        error 
+        error,
       }}
     >
       {children}
@@ -69,7 +78,7 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
 export function useSponsor() {
   const context = useContext(SponsorContext);
   if (context === undefined) {
-    throw new Error('useSponsor must be used within a SponsorProvider');
+    throw new Error("useSponsor must be used within a SponsorProvider");
   }
   return context;
-} 
+}
