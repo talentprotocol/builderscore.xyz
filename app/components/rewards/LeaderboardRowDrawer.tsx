@@ -83,18 +83,24 @@ export default function LeaderboardRowDrawer({
                       <p className="text-xs text-neutral-600 dark:text-neutral-500">
                         Rewards Earned
                       </p>
-                      <p className="font-mono text-2xl">
-                        <span className="font-semibold">
-                          {formatNumber(
-                            parseFloat(selectedBuilder.reward_amount || "0"),
-                            INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
-                              sponsorTokenTicker
-                            ],
-                          )}
-                        </span>
-                        <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
-                          {sponsorTokenTicker}
-                        </span>
+                      <p className="font-mono text-2xl font-semibold">
+                        {selectedBuilder.reward_amount ? (
+                          <>
+                            <span>
+                              {formatNumber(
+                                parseFloat(selectedBuilder.reward_amount),
+                                INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+                                  sponsorTokenTicker
+                                ],
+                              )}
+                            </span>
+                            <span className="ml-2 text-xs font-normal text-neutral-600 dark:text-neutral-500">
+                              {sponsorTokenTicker}
+                            </span>
+                          </>
+                        ) : (
+                          "-"
+                        )}
                       </p>
                     </div>
 
@@ -104,8 +110,15 @@ export default function LeaderboardRowDrawer({
                           {weekly && weekly ? "Weekly" : "All Time"} Rank
                         </p>
                         <p className="font-mono text-lg font-semibold">
+                          <span className={`mr-2 font-mono`}>
+                            #
+                            {selectedBuilder.leaderboard_position
+                              ? selectedBuilder.leaderboard_position
+                              : "-"}
+                          </span>
+
                           <span
-                            className={`mr-2 ${
+                            className={`ml-2 ${
                               selectedBuilder.ranking_change === null
                                 ? "text-neutral-600 dark:text-neutral-500"
                                 : selectedBuilder.ranking_change !== 0
@@ -118,14 +131,10 @@ export default function LeaderboardRowDrawer({
                             {selectedBuilder.ranking_change !== null
                               ? selectedBuilder.ranking_change !== 0
                                 ? selectedBuilder.ranking_change < 0
-                                  ? `↓ ${selectedBuilder.ranking_change}`
-                                  : `↑ ${selectedBuilder.ranking_change}`
-                                : "0"
-                              : "0"}
-                          </span>
-
-                          <span className={`mr-2 font-mono`}>
-                            #{selectedBuilder.leaderboard_position}
+                                  ? `↓ ${Math.abs(selectedBuilder.ranking_change)}`
+                                  : `↑ ${Math.abs(selectedBuilder.ranking_change)}`
+                                : "-"
+                              : "-"}
                           </span>
                         </p>
                       </div>
