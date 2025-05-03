@@ -31,11 +31,12 @@ export default function LeaderboardRow({
       className={`flex cursor-pointer items-center justify-between bg-white px-3 py-2 pr-5 dark:bg-neutral-900 ${isHighlighted && "border-primary rounded-lg border"} ${first && "rounded-t-lg"} ${last && "rounded-b-lg"} ${!first && "border-t border-neutral-300 dark:border-neutral-800"} ${className}`}
     >
       <div className="flex items-center gap-4">
-        {leaderboardData.leaderboard_position && (
-          <p className="min-w-6 font-mono text-xs text-neutral-600 dark:text-neutral-500">
-            #{leaderboardData.leaderboard_position}
-          </p>
-        )}
+        <p className="min-w-6 font-mono text-xs text-neutral-600 dark:text-neutral-500">
+          #
+          {leaderboardData.leaderboard_position
+            ? leaderboardData.leaderboard_position
+            : "-"}
+        </p>
 
         <span
           className={`min-w-8 text-xs ${
@@ -51,10 +52,10 @@ export default function LeaderboardRow({
           {leaderboardData.ranking_change !== null
             ? leaderboardData.ranking_change !== 0
               ? leaderboardData.ranking_change < 0
-                ? `↓ ${leaderboardData.ranking_change}`
-                : `↑ ${leaderboardData.ranking_change}`
-              : "0"
-            : "0"}
+                ? `↓ ${Math.abs(leaderboardData.ranking_change)}`
+                : `↑ ${Math.abs(leaderboardData.ranking_change)}`
+              : "-"
+            : "-"}
         </span>
 
         <div className="flex items-center gap-4">
