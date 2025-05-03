@@ -82,6 +82,11 @@ export function useLoadRewards() {
   }, [selectedSponsor]);
 
   const fetchUserLeaderboard = useCallback(async () => {
+    if (!frameContext) {
+      setLoadingLeaderboard(false);
+      return;
+    }
+
     if (!loadingUser && !loadingGrants && !loadingSponsors && talentProfile) {
       setLoadingLeaderboard(true);
 

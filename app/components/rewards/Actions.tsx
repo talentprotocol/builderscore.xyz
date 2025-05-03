@@ -13,8 +13,6 @@ export default function Actions() {
   const { selectedGrant } = useGrant();
   const { isLoading, userLeaderboard } = useLeaderboard();
 
-  console.log("userLeaderboard", userLeaderboard);
-
   return (
     <div className="mt-3 grid w-full auto-cols-fr grid-flow-col gap-2 sm:gap-4">
       {loadingUser ? (
