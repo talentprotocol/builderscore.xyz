@@ -1,5 +1,5 @@
 import Home from "@/app/components/rewards/Home";
 
-export default function SponsorHomePage() {
+export default function Page() {
   return <Home />;
 }

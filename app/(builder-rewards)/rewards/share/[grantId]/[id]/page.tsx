@@ -42,6 +42,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function SharePage() {
+export default function Page() {
   return <Home />;
 }
