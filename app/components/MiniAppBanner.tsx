@@ -8,15 +8,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function MiniAppBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const { isDarkMode } = useTheme();
   const { frameContext } = useUser();
   const localStorageKey = "builder-rewards-warpcast-banner-closed";
 
   useEffect(() => {
     const hasClosedBanner = localStorage.getItem(localStorageKey);
-    if (!hasClosedBanner) {
-      setIsVisible(true);
+    if (hasClosedBanner) {
+      setIsVisible(false);
     }
   }, []);
 

@@ -18,7 +18,7 @@ import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer"
 import { format } from "date-fns";
 
 export default function LeaderboardWrapper() {
-  const { isLoading: isSponsorLoading, selectedSponsorSlug } = useSponsor();
+  const { loadingSponsors, selectedSponsor } = useSponsor();
   const { selectedGrant } = useGrant();
   const { talentProfile } = useUser();
   const { isDarkMode } = useTheme();
@@ -44,7 +44,7 @@ export default function LeaderboardWrapper() {
 
   const fetchLeaderboard = async (
     page: number = 1,
-    append: boolean = false,
+    append: boolean = false
   ) => {
     try {
       const loadingState = append ? setIsLoadingMore : setIsLoading;
@@ -55,7 +55,9 @@ export default function LeaderboardWrapper() {
         per_page: 20,
         page,
         sponsor_slug:
-          selectedSponsorSlug === "global" ? undefined : selectedSponsorSlug,
+          selectedSponsor?.slug === "global"
+            ? undefined
+            : selectedSponsor?.slug,
         grant_id: selectedGrant?.id?.toString(),
       });
 
@@ -70,7 +72,7 @@ export default function LeaderboardWrapper() {
       });
 
       setHasMore(
-        response.pagination.current_page < response.pagination.last_page,
+        response.pagination.current_page < response.pagination.last_page
       );
     } catch (err) {
       setError(`Failed to fetch leaderboard data: ${err}`);
@@ -81,12 +83,12 @@ export default function LeaderboardWrapper() {
   };
 
   useEffect(() => {
-    if (!isSponsorLoading) {
+    if (!loadingSponsors) {
       setCurrentPage(1);
       fetchLeaderboard();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsorSlug, selectedGrant, isSponsorLoading]);
+  }, [selectedSponsor, selectedGrant, loadingSponsors]);
 
   const handleLoadMore = () => {
     if (!isLoadingMore && hasMore) {
@@ -152,12 +154,12 @@ export default function LeaderboardWrapper() {
                   selectedGrant
                     ? format(
                         new Date(selectedGrant?.start_date || ""),
-                        "MMM d",
+                        "MMM d"
                       ) +
                       " - " +
                       format(
                         new Date(selectedGrant?.end_date || ""),
-                        "MMM d, yyyy",
+                        "MMM d, yyyy"
                       )
                     : "All Time"
                 }
@@ -179,7 +181,7 @@ export default function LeaderboardWrapper() {
             </>
           )}
 
-      {(isLoading || isSponsorLoading) && (
+      {(isLoading || loadingSponsors) && (
         <div className="flex items-center justify-center h-96">
           <div className="flex items-center gap-2">
             <div

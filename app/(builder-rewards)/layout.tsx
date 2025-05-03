@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { SponsorProvider } from "@/app/context/SponsorContext";
 import { GrantProvider } from "@/app/context/GrantContext";
 import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
-import { UserProvider } from "@/app/context/UserContext";
 import { Footer } from "@/app/components/rewards/Footer";
 import Navbar from "@/app/components/Navbar";
 import UserStatus from "@/app/components/rewards/UserStatus";
@@ -48,16 +47,14 @@ export default function BuilderRewardsLayout({
   return (
     <SponsorProvider>
       <GrantProvider>
-        <UserProvider>
-          <LeaderboardProvider>
-            <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-4 px-4">
-              {process.env.NODE_ENV === "development" && <UserStatus />}
-              <Navbar sponsored />
-              <main className="flex flex-col h-full">{children}</main>
-              <Footer />
-            </div>
-          </LeaderboardProvider>
-        </UserProvider>
+        <LeaderboardProvider>
+          <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-4 px-4">
+            {process.env.NODE_ENV === "development" && <UserStatus />}
+            <Navbar sponsored />
+            <main className="flex flex-col h-full">{children}</main>
+            <Footer />
+          </div>
+        </LeaderboardProvider>
       </GrantProvider>
     </SponsorProvider>
   );

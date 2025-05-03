@@ -138,36 +138,28 @@ export default function TopBuildersLeaderboard({
 
       try {
         const topBuilders = [...processedData].sort(
-          (a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal,
+          (a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal
         );
 
         const fetchProfiles = async () => {
           const profilePromises = topBuilders.map(async (builder) => {
-            try {
-              const profileData: ProfileLookupResponse = await fetchProfileById(
-                builder.profileId,
-              );
-              if (profileData.profile) {
-                return {
-                  ...builder,
-                  profileData: {
-                    name:
-                      profileData.profile.name ||
-                      profileData.profile.display_name ||
-                      builder.shortProfileId,
-                    imageUrl:
-                      profileData.profile.image_url || "/default-avatar.png",
-                  },
-                };
-              }
-              return builder;
-            } catch (error) {
-              console.error(
-                `Error fetching profile for ${builder.profileId}:`,
-                error,
-              );
-              return builder;
+            const profileData: ProfileLookupResponse = await fetchProfileById(
+              builder.profileId
+            );
+            if (profileData.profile) {
+              return {
+                ...builder,
+                profileData: {
+                  name:
+                    profileData.profile.name ||
+                    profileData.profile.display_name ||
+                    builder.shortProfileId,
+                  imageUrl:
+                    profileData.profile.image_url || "/default-avatar.png",
+                },
+              };
             }
+            return builder;
           });
 
           const updatedBuilders = await Promise.all(profilePromises);
@@ -176,8 +168,7 @@ export default function TopBuildersLeaderboard({
         };
 
         fetchProfiles();
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
+      } catch {
         setBuildersData(processedData);
         setIsLoading(false);
       }
@@ -187,11 +178,11 @@ export default function TopBuildersLeaderboard({
   }, [data]);
 
   const weeklyBuilders = [...buildersData].sort(
-    (a, b) => b.thisWeekRewardsTotal - a.thisWeekRewardsTotal,
+    (a, b) => b.thisWeekRewardsTotal - a.thisWeekRewardsTotal
   );
 
   const allTimeBuilders = [...buildersData].sort(
-    (a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal,
+    (a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal
   );
 
   const cardClass = `p-4 rounded-lg ${

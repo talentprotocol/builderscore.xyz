@@ -52,7 +52,7 @@ export async function GET() {
 
     formattedData.sort(
       (a: GoogleAnalyticsActiveUserData, b: GoogleAnalyticsActiveUserData) =>
-        a.date.localeCompare(b.date),
+        a.date.localeCompare(b.date)
     );
 
     const apiResponse: GoogleAnalyticsApiResponse = {
@@ -62,8 +62,6 @@ export async function GET() {
 
     return NextResponse.json(apiResponse);
   } catch (error) {
-    console.error("Error fetching Google Analytics data:", error);
-
     const errorResponse: GoogleAnalyticsApiResponse = {
       success: false,
       data: [],

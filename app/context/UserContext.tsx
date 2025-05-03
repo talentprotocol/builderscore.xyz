@@ -44,14 +44,14 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [talentProfile, setTalentProfile] = useState<APITalentProfile | null>(
-    null,
+    null
   );
   const [frameContext, setFrameContext] = useState<FrameContext>();
   const [hasGithubCredential, setHasGithubCredential] = useState(false);
   const [hasBasenameCredential, setHasBasenameCredential] = useState(false);
   const [basename, setBasename] = useState<string | null>(null);
   const [builderScore, setBuilderScore] = useState<TalentBuilderScore | null>(
-    null,
+    null
   );
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
@@ -90,7 +90,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setError(null);
       } catch (err) {
         setError(
-          err instanceof Error ? err : new Error("Failed to fetch user data"),
+          err instanceof Error ? err : new Error("Failed to fetch user data")
         );
         setTalentProfile(null);
         setHasGithubCredential(false);

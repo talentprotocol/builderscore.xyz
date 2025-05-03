@@ -14,10 +14,10 @@ import {
 } from "@/app/lib/utils";
 
 export default function Header() {
-  const { grants, selectedGrant, isLoading } = useGrant();
+  const { grants, selectedGrant } = useGrant();
   const { userLeaderboard, showUserLeaderboard } = useLeaderboard();
   const { isDarkMode } = useTheme();
-  const { selectedSponsorSlug, sponsorToken } = useSponsor();
+  const { selectedSponsor, sponsorTokenTicker } = useSponsor();
   const grantsToUse = selectedGrant ? [selectedGrant] : grants;
 
   const rewardsByTicker = grantsToUse.reduce(
@@ -27,12 +27,12 @@ export default function Header() {
       acc[ticker] = (acc[ticker] || 0) + (isNaN(amount) ? 0 : amount);
       return acc;
     },
-    {} as Record<string, number>,
+    {} as Record<string, number>
   );
 
   // TODO: Update endpoint to return ongoing, tracked Rewards
   const getDisplayAmount = (ticker: string, amount: number) => {
-    if (selectedSponsorSlug === "base") {
+    if (selectedSponsor?.slug === "base") {
       return Math.min(Math.max(amount, 2), 8);
     }
     return amount;
@@ -40,7 +40,7 @@ export default function Header() {
 
   const totalRewardedBuilders = grantsToUse.reduce(
     (sum, grant) => sum + grant.rewarded_builders,
-    0,
+    0
   );
 
   const { weightedScore, totalBuilders } = grantsToUse.reduce(
@@ -51,7 +51,7 @@ export default function Header() {
         totalBuilders: acc.totalBuilders + grant.rewarded_builders,
       };
     },
-    { weightedScore: 0, totalBuilders: 0 },
+    { weightedScore: 0, totalBuilders: 0 }
   );
 
   const weightedAvgBuilderScore = totalBuilders
@@ -59,23 +59,6 @@ export default function Header() {
     : 0;
 
   const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
-
-  if (isLoading) {
-    return (
-      <div
-        className={`
-        ${
-          isDarkMode
-            ? "bg-neutral-900 border-neutral-800"
-            : "bg-white border-neutral-300"
-        }
-        rounded-lg border animate-pulse
-      `}
-      >
-        <div className="h-32"></div>
-      </div>
-    );
-  }
 
   const shouldShowUserLeaderboard = showUserLeaderboard && userLeaderboard;
 
@@ -89,7 +72,7 @@ export default function Header() {
               ? "border border-primary text-primary"
               : "border border-primary text-primary"
           }
-          text-xs rounded-lg px-3 py-1 animate-pulse`}
+          text-xs rounded-lg px-3 py-1`}
         >
           <span className="font-semibold">
             {getTimeRemaining(selectedGrant.end_date)}
@@ -145,8 +128,8 @@ export default function Header() {
                     ? formatNumber(
                         parseFloat(userLeaderboard.reward_amount),
                         INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
-                          sponsorToken
-                        ],
+                          sponsorTokenTicker
+                        ]
                       )
                     : "0"}
                 </span>
@@ -155,7 +138,7 @@ export default function Header() {
                     isDarkMode ? "text-neutral-500" : "text-neutral-600"
                   }`}
                 >
-                  {sponsorToken}
+                  {sponsorTokenTicker}
                 </span>
               </div>
             ) : Object.entries(rewardsByTicker).length > 0 ? (
@@ -164,7 +147,7 @@ export default function Header() {
                   <span className="text-4xl font-semibold">
                     {formatNumber(
                       getDisplayAmount(ticker, amount),
-                      TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker],
+                      TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker]
                     )}
                   </span>
                   <span
@@ -179,14 +162,14 @@ export default function Header() {
             ) : (
               <div className="flex items-end gap-2 font-mono">
                 <span className="text-4xl font-semibold">
-                  {selectedSponsorSlug === "base" ? "2" : "0"}
+                  {selectedSponsor?.slug === "base" ? "2" : "0"}
                 </span>
                 <span
                   className={`mb-[1px] ${
                     isDarkMode ? "text-neutral-500" : "text-neutral-600"
                   }`}
                 >
-                  {sponsorToken}
+                  {sponsorTokenTicker}
                 </span>
               </div>
             )}

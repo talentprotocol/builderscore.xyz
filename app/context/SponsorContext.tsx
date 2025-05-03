@@ -8,73 +8,65 @@ import {
   useEffect,
 } from "react";
 import { Sponsor } from "@/app/types/sponsors";
-import { getSponsors } from "@/app/services/sponsors";
 import { useTheme } from "@/app/context/ThemeContext";
 
 interface SponsorContextType {
-  selectedSponsor: Sponsor | null;
-  selectedSponsorSlug: string;
-  setSelectedSponsorSlug: (slug: string) => void;
+  loadingSponsors: boolean;
+  setLoadingSponsors: (loadingSponsors: boolean) => void;
   sponsors: Sponsor[];
-  sponsorToken: string;
-  isLoading: boolean;
-  error: string | null;
+  setSponsors: (sponsors: Sponsor[]) => void;
+  selectedSponsor: Sponsor | null;
+  setSelectedSponsor: (sponsor: Sponsor | null) => void;
+  setSelectedSponsorFromSlug: (sponsorSlug: string) => void;
+  sponsorTokenTicker: string;
 }
 
 const SponsorContext = createContext<SponsorContextType | undefined>(undefined);
 
 export function SponsorProvider({ children }: { children: ReactNode }) {
   const { setIsDarkMode } = useTheme();
-  const [selectedSponsorSlug, setSelectedSponsorSlug] = useState<string>("");
+  const [loadingSponsors, setLoadingSponsors] = useState(true);
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
+  const [sponsorTokenTicker, setSponsorTokenTicker] = useState<string>("");
 
   useEffect(() => {
-    async function fetchSponsors() {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const response = await getSponsors();
-        setSponsors(response.sponsors);
-      } catch (err) {
-        setError(`Failed to fetch sponsors: ${err}`);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchSponsors();
-  }, []);
-
-  useEffect(() => {
-    setIsDarkMode(selectedSponsorSlug !== "base");
+    setIsDarkMode(selectedSponsor?.slug !== "base");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsorSlug]);
+  }, [selectedSponsor]);
 
-  const selectedSponsor =
-    selectedSponsorSlug === "global"
-      ? null
-      : (sponsors.find((sponsor) => sponsor.slug === selectedSponsorSlug) ??
-        null);
+  const setSelectedSponsorFromSlug = (sponsorSlug: string) => {
+    setSelectedSponsor(
+      sponsors.find((sponsor) => sponsor.slug === sponsorSlug) || null
+    );
+  };
 
-  const sponsorToken =
-    selectedSponsorSlug === "base"
-      ? "ETH"
-      : selectedSponsorSlug === "talent-protocol"
-        ? "$TALENT"
-        : "Tokens";
+  useEffect(() => {
+    let ticker;
+    switch (selectedSponsor?.slug) {
+      case "base":
+        ticker = "ETH";
+        break;
+      case "talent-protocol":
+        ticker = "$TALENT";
+        break;
+      default:
+        ticker = "Tokens";
+    }
+    setSponsorTokenTicker(ticker);
+  }, [selectedSponsor]);
 
   return (
     <SponsorContext.Provider
       value={{
-        selectedSponsor,
-        selectedSponsorSlug,
-        setSelectedSponsorSlug,
+        loadingSponsors,
+        setLoadingSponsors,
         sponsors,
-        sponsorToken,
-        isLoading,
-        error,
+        setSponsors,
+        selectedSponsor,
+        setSelectedSponsor,
+        setSelectedSponsorFromSlug,
+        sponsorTokenTicker,
       }}
     >
       {children}

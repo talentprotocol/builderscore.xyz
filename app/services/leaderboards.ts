@@ -5,8 +5,8 @@ import {
 } from "@/app/types/leaderboards";
 
 export async function getLeaderboards(
-  params?: LeaderboardParams,
-): Promise<LeaderboardResponse> {
+  params?: LeaderboardParams
+): Promise<LeaderboardResponse | null> {
   const searchParams = new URLSearchParams();
 
   if (params?.grant_id) {
@@ -29,6 +29,10 @@ export async function getLeaderboards(
     cache: "no-store",
   });
 
+  if (response.status === 404) {
+    return null;
+  }
+
   if (!response.ok) {
     throw new Error("Failed to fetch leaderboards");
   }
@@ -39,8 +43,8 @@ export async function getLeaderboards(
 export async function getLeaderboardEntry(
   userId: string,
   grantId?: string,
-  sponsorSlug?: string,
-): Promise<LeaderboardEntry> {
+  sponsorSlug?: string
+): Promise<LeaderboardEntry | null> {
   const searchParams = new URLSearchParams();
   if (grantId) {
     searchParams.append("grant_id", grantId);
@@ -54,6 +58,11 @@ export async function getLeaderboardEntry(
   const url = `/api/leaderboards/${userId}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url);
+
+  if (response.status === 404) {
+    return null;
+  }
+
   if (!response.ok) {
     throw new Error("Failed to fetch leaderboard entry");
   }

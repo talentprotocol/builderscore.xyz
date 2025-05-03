@@ -11,33 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
-import { useEffect } from "react";
 
 export default function SelectGrant() {
-  const { grants, selectedGrant, setSelectedGrant, isLoading } = useGrant();
-  const { selectedSponsorSlug } = useSponsor();
+  const { grants, selectedGrant, setSelectedGrant, loadingGrants } = useGrant();
+  const { selectedSponsor } = useSponsor();
   const { isDarkMode } = useTheme();
 
-  useEffect(() => {
-    if (!selectedGrant && !isLoading && grants.length > 0) {
-      const intermediateGrants = grants.filter(
-        (grant) => grant.track_type === "intermediate",
-      );
-
-      if (intermediateGrants.length > 0) {
-        const sortedGrants = [...intermediateGrants].sort(
-          (a, b) =>
-            new Date(a.end_date).getTime() - new Date(b.end_date).getTime(),
-        );
-        setSelectedGrant(sortedGrants[0]);
-      } else {
-        setSelectedGrant(grants[0]);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, grants.length]);
-
-  if (isLoading) {
+  if (loadingGrants) {
     return (
       <Select disabled value={selectedGrant?.id?.toString() || "all"}>
         <SelectTrigger
@@ -63,7 +43,7 @@ export default function SelectGrant() {
   }) => {
     const startDate = format(new Date(grant.start_date), "MMM d");
     const endDate = format(new Date(grant.end_date), "MMM d, yyyy");
-    if (selectedSponsorSlug === "global") {
+    if (selectedSponsor?.slug === "global") {
       return (
         <div className="flex items-start gap-2">
           <span

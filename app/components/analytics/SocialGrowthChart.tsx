@@ -38,7 +38,7 @@ export default function SocialGrowthChart() {
 
   const combinedData: CombinedChartData[] = cumulativeData.map((item) => {
     const matchingGAData = analyticsData.find(
-      (gaItem) => gaItem.date === item.date,
+      (gaItem) => gaItem.date === item.date
     );
     return {
       ...item,
@@ -60,12 +60,12 @@ export default function SocialGrowthChart() {
             next: {
               revalidate: 86400,
             },
-          },
+          }
         );
 
         if (!warpcastResponse.ok) {
           throw new Error(
-            `Failed to fetch Warpcast data: ${warpcastResponse.status} ${warpcastResponse.statusText}`,
+            `Failed to fetch Warpcast data: ${warpcastResponse.status} ${warpcastResponse.statusText}`
           );
         }
 
@@ -74,7 +74,7 @@ export default function SocialGrowthChart() {
 
         if (!warpcastResult.success) {
           throw new Error(
-            warpcastResult.error || "Failed to fetch Warpcast data",
+            warpcastResult.error || "Failed to fetch Warpcast data"
           );
         }
 
@@ -86,7 +86,7 @@ export default function SocialGrowthChart() {
 
         if (!gaResponse.ok) {
           throw new Error(
-            `Failed to fetch Google Analytics data: ${gaResponse.status} ${gaResponse.statusText}`,
+            `Failed to fetch Google Analytics data: ${gaResponse.status} ${gaResponse.statusText}`
           );
         }
 
@@ -95,16 +95,15 @@ export default function SocialGrowthChart() {
 
         if (!gaResult.success) {
           throw new Error(
-            gaResult.error || "Failed to fetch Google Analytics data",
+            gaResult.error || "Failed to fetch Google Analytics data"
           );
         }
 
         setCumulativeData(warpcastResult.cumulativeData || []);
         setAnalyticsData(gaResult.data || []);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setError(
-          error instanceof Error ? error.message : "An unknown error occurred",
+          error instanceof Error ? error.message : "An unknown error occurred"
         );
       } finally {
         setLoading(false);

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { ThemeProvider } from "@/app/context/ThemeContext";
 import MiniAppBanner from "@/app/components/MiniAppBanner";
+import { UserProvider } from "@/app/context/UserContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,8 +24,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider>
-          <MiniAppBanner />
-          {children}
+          <UserProvider>
+            <MiniAppBanner />
+            {children}
+          </UserProvider>
         </ThemeProvider>
       </body>
       <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID!} />

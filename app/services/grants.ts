@@ -1,6 +1,8 @@
 import { Grant, GrantParams, GrantsResponse } from "@/app/types/grants";
 
-export async function getGrants(params?: GrantParams): Promise<GrantsResponse> {
+export async function getGrants(
+  params?: GrantParams
+): Promise<GrantsResponse | null> {
   const searchParams = new URLSearchParams();
 
   if (params?.end_date_after) {
@@ -26,6 +28,10 @@ export async function getGrants(params?: GrantParams): Promise<GrantsResponse> {
     cache: "no-store",
   });
 
+  if (response.status === 404) {
+    return null;
+  }
+
   if (!response.ok) {
     throw new Error("Failed to fetch grants");
   }
@@ -33,9 +39,14 @@ export async function getGrants(params?: GrantParams): Promise<GrantsResponse> {
   return response.json();
 }
 
-export async function getGrant(id: number): Promise<Grant> {
+export async function getGrant(id: number): Promise<Grant | null> {
   const url = `/api/grants/${id}`;
   const response = await fetch(url);
+
+  if (response.status === 404) {
+    return null;
+  }
+
   if (!response.ok) {
     throw new Error("Failed to fetch grant");
   }

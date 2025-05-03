@@ -10,15 +10,16 @@ import {
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import { Sponsor } from "@/app/types/sponsors";
-import { useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useHistoryListener } from "@/app/hooks/useHistoryListener";
 
 export default function SelectSponsor() {
-  const { selectedSponsorSlug, setSelectedSponsorSlug, sponsors, isLoading } =
-    useSponsor();
+  const {
+    sponsors,
+    loadingSponsors,
+    selectedSponsor,
+    setSelectedSponsorFromSlug,
+  } = useSponsor();
   const { isDarkMode } = useTheme();
-  const params = useParams();
-  const router = useRouter();
 
   const sponsorsList = [
     // {
@@ -29,26 +30,23 @@ export default function SelectSponsor() {
     ...sponsors,
   ];
 
-  const DEFAULT_SPONSOR_SLUG = "base";
-
-  useEffect(() => {
-    const urlSponsor = params.sponsor as string;
-    if (urlSponsor) {
-      setSelectedSponsorSlug(urlSponsor);
-    } else {
-      setSelectedSponsorSlug(DEFAULT_SPONSOR_SLUG);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.sponsor]);
-
   const handleSponsorChange = (newSponsor: string) => {
-    setSelectedSponsorSlug(newSponsor);
-    router.push(`/${newSponsor}`);
+    setSelectedSponsorFromSlug(newSponsor);
+    window.history.pushState(null, "", `/${newSponsor}`);
   };
 
-  if (isLoading) {
+  useHistoryListener((url) => {
+    const pathSegments = url.split("/");
+    const sponsorSlug = pathSegments[1] || "";
+
+    if (sponsorSlug && sponsorSlug !== selectedSponsor?.slug) {
+      setSelectedSponsorFromSlug(sponsorSlug);
+    }
+  });
+
+  if (loadingSponsors) {
     return (
-      <Select disabled value={selectedSponsorSlug}>
+      <Select disabled>
         <SelectTrigger
           className={`
             bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white text-xs h-6 w-36 p-2 cursor-not-allowed
@@ -66,7 +64,7 @@ export default function SelectSponsor() {
   }
 
   return (
-    <Select value={selectedSponsorSlug} onValueChange={handleSponsorChange}>
+    <Select value={selectedSponsor?.slug} onValueChange={handleSponsorChange}>
       <SelectTrigger
         className={`
           text-xs h-6 w-36 p-2 cursor-pointer

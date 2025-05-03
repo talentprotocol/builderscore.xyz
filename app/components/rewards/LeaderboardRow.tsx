@@ -25,7 +25,7 @@ export default function LeaderboardRow({
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
   const { isDarkMode } = useTheme();
-  const { sponsorToken } = useSponsor();
+  const { sponsorTokenTicker } = useSponsor();
 
   return (
     <div
@@ -114,7 +114,9 @@ export default function LeaderboardRow({
               <span className="font-mono">
                 {formatNumber(
                   parseFloat(leaderboardData.reward_amount),
-                  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorToken],
+                  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+                    sponsorTokenTicker
+                  ]
                 )}
               </span>
               <span
@@ -122,7 +124,7 @@ export default function LeaderboardRow({
                   isDarkMode ? "text-neutral-500" : "text-neutral-600"
                 } ml-2 text-xs`}
               >
-                {sponsorToken}
+                {sponsorTokenTicker}
               </span>
             </>
           ) : (

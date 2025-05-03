@@ -12,7 +12,7 @@ const fetchSponsors = unstable_cache(
       `${API_BASE_URL}${ENDPOINTS.sponsors}?${queryString}`,
       {
         headers: DEFAULT_HEADERS,
-      },
+      }
     );
 
     if (!response.ok) {
@@ -22,7 +22,7 @@ const fetchSponsors = unstable_cache(
     return response.json();
   },
   [CACHE_TAGS.SPONSORS],
-  { revalidate: CACHE_60_MINUTES },
+  { revalidate: CACHE_60_MINUTES }
 );
 
 export async function GET(request: NextRequest) {
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: `Failed to fetch sponsors: ${error}` },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

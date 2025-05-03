@@ -6,7 +6,7 @@ import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 
 export function Footer() {
   const { isDarkMode } = useTheme();
-  const { selectedSponsorSlug, selectedSponsor } = useSponsor();
+  const { selectedSponsor } = useSponsor();
 
   return (
     <div className="py-6 flex flex-col gap-0 justify-center">
@@ -15,7 +15,7 @@ export function Footer() {
           isDarkMode ? "text-neutral-500" : "text-neutral-600"
         } text-xs`}
       >
-        {selectedSponsorSlug !== "talent-protocol" &&
+        {selectedSponsor?.slug !== "talent-protocol" &&
           `Sponsored by ${selectedSponsor?.name} and`}{" "}
         Powered by Talent Protocol
       </p>

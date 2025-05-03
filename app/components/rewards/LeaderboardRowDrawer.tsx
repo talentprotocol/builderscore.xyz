@@ -31,7 +31,7 @@ export default function LeaderboardRowDrawer({
   onClose: () => void;
 }) {
   const { isDarkMode } = useTheme();
-  const { sponsorToken, selectedSponsorSlug } = useSponsor();
+  const { sponsorTokenTicker, selectedSponsor } = useSponsor();
 
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
@@ -112,8 +112,8 @@ export default function LeaderboardRowDrawer({
                           {formatNumber(
                             parseFloat(selectedBuilder.reward_amount || "0"),
                             INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
-                              sponsorToken
-                            ],
+                              sponsorTokenTicker
+                            ]
                           )}
                         </span>
                         <span
@@ -121,7 +121,7 @@ export default function LeaderboardRowDrawer({
                             isDarkMode ? "text-neutral-500" : "text-neutral-600"
                           } text-xs ml-2`}
                         >
-                          {sponsorToken}
+                          {sponsorTokenTicker}
                         </span>
                       </p>
                     </div>
@@ -194,7 +194,7 @@ export default function LeaderboardRowDrawer({
                         </div>
                       </div>
                     )
-                  : selectedSponsorSlug === "base" &&
+                  : selectedSponsor?.slug === "base" &&
                     selectedBuilder.reward_amount &&
                     parseFloat(selectedBuilder.reward_amount) > 0 && (
                       <div
