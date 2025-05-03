@@ -7,4 +7,4 @@ export interface GoogleAnalyticsApiResponse {
   success: boolean;
   data: GoogleAnalyticsActiveUserData[];
   error?: string;
-} 
+}

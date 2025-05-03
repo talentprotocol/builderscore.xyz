@@ -1,8 +1,14 @@
 "use client";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/app/components/ui/table";
 import { CSVRow } from "@/app/lib/csv-parser";
-import { useTheme } from "@/app/context/ThemeContext";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/ui/table";
 
 interface DataTableProps {
   data: CSVRow[];
@@ -10,33 +16,31 @@ interface DataTableProps {
   description: string;
 }
 
-export default function DataTable({ data, title, description }: DataTableProps) {
-  const { isDarkMode } = useTheme();
+export default function DataTable({
+  data,
+  title,
+  description,
+}: DataTableProps) {
   const headers = data.length > 0 ? Object.keys(data[0]) : [];
-  
-  const cardClass = `rounded-lg ${
-    isDarkMode ? "bg-neutral-800 border border-neutral-800" : "bg-white border border-neutral-300"
-  }`;
-  
-  const titleClass = `text-lg font-semibold mb-1 ${isDarkMode ? "text-white" : "text-neutral-900"}`;
-  const descriptionClass = `text-sm mb-4 ${isDarkMode ? "text-neutral-400" : "text-neutral-500"}`;
-  
+
   return (
-    <div className={`${cardClass} col-span-4`}>
+    <div className="col-span-4 rounded-lg border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-neutral-800">
       <div className="p-4">
-        <div className={titleClass}>{title}</div>
-        <div className={descriptionClass}>{description}</div>
-        
+        <div className="mb-1 text-lg font-semibold text-neutral-900 dark:text-white">
+          {title}
+        </div>
+        <div className="mb-4 text-sm text-neutral-500 dark:text-neutral-400">
+          {description}
+        </div>
+
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className={isDarkMode ? "border-neutral-700" : "border-neutral-200"}>
+              <TableRow className="border-neutral-200 dark:border-neutral-700">
                 {headers.map((header, index) => (
-                  <TableHead 
-                    key={index} 
-                    className={`whitespace-nowrap ${
-                      isDarkMode ? "text-neutral-300" : "text-neutral-600"
-                    }`}
+                  <TableHead
+                    key={index}
+                    className="whitespace-nowrap text-neutral-600 dark:text-neutral-300"
                   >
                     {header}
                   </TableHead>
@@ -46,14 +50,14 @@ export default function DataTable({ data, title, description }: DataTableProps) 
             <TableBody>
               {data.length > 0 ? (
                 data.map((row, rowIndex) => (
-                  <TableRow 
+                  <TableRow
                     key={rowIndex}
-                    className={isDarkMode ? "border-neutral-700" : "border-neutral-200"}
+                    className="border-neutral-200 dark:border-neutral-700"
                   >
                     {headers.map((header, colIndex) => (
-                      <TableCell 
+                      <TableCell
                         key={colIndex}
-                        className={isDarkMode ? "text-neutral-200" : "text-neutral-700"}
+                        className="text-neutral-700 dark:text-neutral-200"
                       >
                         {typeof row[header] === "number" &&
                         (header.toLowerCase().includes("percentage") ||
@@ -66,11 +70,9 @@ export default function DataTable({ data, title, description }: DataTableProps) 
                 ))
               ) : (
                 <TableRow>
-                  <TableCell 
-                    colSpan={headers.length} 
-                    className={`text-center py-4 ${
-                      isDarkMode ? "text-neutral-400" : "text-neutral-500"
-                    }`}
+                  <TableCell
+                    colSpan={headers.length}
+                    className="py-4 text-center text-neutral-500 dark:text-neutral-400"
                   >
                     No data available
                   </TableCell>
@@ -82,4 +84,4 @@ export default function DataTable({ data, title, description }: DataTableProps) 
       </div>
     </div>
   );
-} 
+}

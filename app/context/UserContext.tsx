@@ -1,14 +1,14 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { APITalentProfile, TalentBuilderScore } from "@/app/types/talent";
 import { fetchUserByFid } from "@/app/services/talent";
 import { FrameContext } from "@/app/types/farcaster";
+import { APITalentProfile, TalentBuilderScore } from "@/app/types/talent";
 import { sdk } from "@farcaster/frame-sdk";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
   user: {
-    fid: 856355,
+    fid: 235510,
     username: "simao",
     displayName: "Simão",
   },
@@ -19,38 +19,38 @@ const DEV_FRAME_CONTEXT: FrameContext = {
 };
 
 interface UserContextType {
-  isLoading: boolean;
-  error: Error | null;
+  loadingUser: boolean;
+
   talentProfile: APITalentProfile | null;
   frameContext: FrameContext | undefined;
-  hasGithubCredential: boolean;
-  hasBasenameCredential: boolean;
+
+  github: boolean;
   basename: string | null;
   builderScore: TalentBuilderScore | null;
 }
 
 const UserContext = createContext<UserContextType>({
-  isLoading: true,
-  error: null,
+  loadingUser: true,
+
   talentProfile: null,
   frameContext: undefined,
-  hasGithubCredential: false,
-  hasBasenameCredential: false,
+
+  github: false,
   basename: null,
   builderScore: null,
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [loadingUser, setLoadingUser] = useState(true);
   const [talentProfile, setTalentProfile] = useState<APITalentProfile | null>(
-    null
+    null,
   );
   const [frameContext, setFrameContext] = useState<FrameContext>();
-  const [hasGithubCredential, setHasGithubCredential] = useState(false);
-  const [hasBasenameCredential, setHasBasenameCredential] = useState(false);
+  const [github, setGithub] = useState(false);
   const [basename, setBasename] = useState<string | null>(null);
-  const [builderScore, setBuilderScore] = useState<TalentBuilderScore | null>(null);
+  const [builderScore, setBuilderScore] = useState<TalentBuilderScore | null>(
+    null,
+  );
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
   useEffect(() => {
@@ -64,45 +64,54 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         await sdk.actions.addFrame();
       }
     };
-    
+
     if (!isSDKLoaded) {
-      setIsSDKLoaded(true);
       loadSDK();
+      setIsSDKLoaded(true);
     }
   }, [isSDKLoaded]);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (!frameContext?.user?.fid) {
-        setIsLoading(false);
-        return;
-      }
+    if (!isSDKLoaded) {
+      return;
+    }
 
+    if (!frameContext) {
+      setLoadingUser(false);
+      return;
+    }
+
+    const fetchUserData = async () => {
       try {
         const response = await fetchUserByFid(frameContext.user.fid);
         setTalentProfile(response.profile as APITalentProfile | null);
-        setHasGithubCredential(response.hasGithubCredential || false);
-        setHasBasenameCredential(response.hasBasenameCredential || false);
+        setGithub(response.github || false);
         setBasename(response.basename || null);
         setBuilderScore(response.builderScore || null);
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error("Failed to fetch user data"));
+      } catch {
         setTalentProfile(null);
-        setHasGithubCredential(false);
-        setHasBasenameCredential(false);
+        setGithub(false);
         setBasename(null);
         setBuilderScore(null);
       } finally {
-        setIsLoading(false);
+        setLoadingUser(false);
       }
     };
 
     fetchUserData();
-  }, [frameContext?.user?.fid]);
+  }, [frameContext, isSDKLoaded]);
 
   return (
-    <UserContext.Provider value={{ isLoading, error, talentProfile, frameContext, hasGithubCredential, hasBasenameCredential, basename, builderScore }}>
+    <UserContext.Provider
+      value={{
+        loadingUser,
+        talentProfile,
+        frameContext,
+        github,
+        basename,
+        builderScore,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
@@ -114,4 +123,4 @@ export function useUser() {
     throw new Error("useUser must be used within a UserProvider");
   }
   return context;
-} 
+}

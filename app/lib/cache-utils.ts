@@ -1,5 +1,5 @@
-import "server-only";
 import { revalidateTag } from "next/cache";
+import "server-only";
 
 export const CACHE_TAGS = {
   GRANTS: "grants",
@@ -30,11 +30,10 @@ export function invalidateAllCache() {
 export async function revalidateAllCache(): Promise<boolean> {
   try {
     const response = await fetch(
-      "/api/revalidate?all=true&token=" + process.env.REVALIDATION_TOKEN
+      "/api/revalidate?all=true&token=" + process.env.REVALIDATION_TOKEN,
     );
     return response.ok;
-  } catch (error) {
-    console.error("Failed to invalidate all caches", error);
+  } catch {
     return false;
   }
 }

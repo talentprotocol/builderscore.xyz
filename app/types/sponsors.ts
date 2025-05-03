@@ -11,4 +11,4 @@ export interface SponsorsResponse {
   total_count: number;
   page: number;
   per_page: number;
-} 
+}

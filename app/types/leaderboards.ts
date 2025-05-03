@@ -1,4 +1,4 @@
-import { TalentProfile, APITalentProfile } from "@/app/types/talent";
+import { APITalentProfile, TalentProfile } from "@/app/types/talent";
 
 export interface LeaderboardEntry {
   id: number;
@@ -26,4 +26,4 @@ export interface LeaderboardParams {
   sponsor_slug?: string;
   per_page?: number;
   page?: number;
-} 
+}

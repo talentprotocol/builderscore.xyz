@@ -69,8 +69,7 @@ export type TalentCredential = {
 
 export type TalentProfileResponse = {
   profile: APITalentProfile | null;
-  hasGithubCredential: boolean;
-  hasBasenameCredential: boolean;
+  github: boolean;
   basename: string | null;
   builderScore: TalentBuilderScore | null;
 };

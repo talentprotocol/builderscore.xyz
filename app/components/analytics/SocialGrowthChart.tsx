@@ -1,10 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useTheme } from "@/app/context/ThemeContext";
-import { CumulativeNotificationData, NotificationTokensApiResponse } from "@/app/types/neynar";
-import { GoogleAnalyticsActiveUserData, GoogleAnalyticsApiResponse } from "@/app/types/googleAnalytics";
+import {
+  GoogleAnalyticsActiveUserData,
+  GoogleAnalyticsApiResponse,
+} from "@/app/types/googleAnalytics";
+import {
+  CumulativeNotificationData,
+  NotificationTokensApiResponse,
+} from "@/app/types/neynar";
+import { useEffect, useState } from "react";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface CombinedChartData extends CumulativeNotificationData {
   activeUsers: number;
@@ -14,14 +29,20 @@ export default function SocialGrowthChart() {
   const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [cumulativeData, setCumulativeData] = useState<CumulativeNotificationData[]>([]);
-  const [analyticsData, setAnalyticsData] = useState<GoogleAnalyticsActiveUserData[]>([]);
-  
-  const combinedData: CombinedChartData[] = cumulativeData.map(item => {
-    const matchingGAData = analyticsData.find(gaItem => gaItem.date === item.date);
+  const [cumulativeData, setCumulativeData] = useState<
+    CumulativeNotificationData[]
+  >([]);
+  const [analyticsData, setAnalyticsData] = useState<
+    GoogleAnalyticsActiveUserData[]
+  >([]);
+
+  const combinedData: CombinedChartData[] = cumulativeData.map((item) => {
+    const matchingGAData = analyticsData.find(
+      (gaItem) => gaItem.date === item.date,
+    );
     return {
       ...item,
-      activeUsers: matchingGAData?.activeUsers || 0
+      activeUsers: matchingGAData?.activeUsers || 0,
     };
   });
 
@@ -32,93 +53,98 @@ export default function SocialGrowthChart() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+
         const warpcastResponse = await fetch(
-          '/api/neynar/notification_tokens',
+          "/api/neynar/notification_tokens",
           {
             next: {
-              revalidate: 86400
-            }
-          }
+              revalidate: 86400,
+            },
+          },
         );
-        
+
         if (!warpcastResponse.ok) {
-          throw new Error(`Failed to fetch Warpcast data: ${warpcastResponse.status} ${warpcastResponse.statusText}`);
+          throw new Error(
+            `Failed to fetch Warpcast data: ${warpcastResponse.status} ${warpcastResponse.statusText}`,
+          );
         }
-        
-        const warpcastResult = await warpcastResponse.json() as NotificationTokensApiResponse;
-        
+
+        const warpcastResult =
+          (await warpcastResponse.json()) as NotificationTokensApiResponse;
+
         if (!warpcastResult.success) {
-          throw new Error(warpcastResult.error || 'Failed to fetch Warpcast data');
+          throw new Error(
+            warpcastResult.error || "Failed to fetch Warpcast data",
+          );
         }
-        
-        const gaResponse = await fetch(
-          '/api/analytics/active_users',
-          {
-            next: {
-              revalidate: 86400
-            }
-          }
-        );
-        
+
+        const gaResponse = await fetch("/api/analytics/active_users", {
+          next: {
+            revalidate: 86400,
+          },
+        });
+
         if (!gaResponse.ok) {
-          throw new Error(`Failed to fetch Google Analytics data: ${gaResponse.status} ${gaResponse.statusText}`);
+          throw new Error(
+            `Failed to fetch Google Analytics data: ${gaResponse.status} ${gaResponse.statusText}`,
+          );
         }
-        
-        const gaResult = await gaResponse.json() as GoogleAnalyticsApiResponse;
-        
+
+        const gaResult =
+          (await gaResponse.json()) as GoogleAnalyticsApiResponse;
+
         if (!gaResult.success) {
-          throw new Error(gaResult.error || 'Failed to fetch Google Analytics data');
+          throw new Error(
+            gaResult.error || "Failed to fetch Google Analytics data",
+          );
         }
-        
+
         setCumulativeData(warpcastResult.cumulativeData || []);
         setAnalyticsData(gaResult.data || []);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setError(error instanceof Error ? error.message : 'An unknown error occurred');
+        setError(
+          error instanceof Error ? error.message : "An unknown error occurred",
+        );
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, []);
-
-  const cardClass = `p-4 rounded-lg ${
-    isDarkMode ? "bg-neutral-800 border border-neutral-800" : "bg-white border border-neutral-300"
-  }`;
-  const textColor = isDarkMode ? "text-white" : "text-neutral-900";
-  const descColor = isDarkMode ? "text-neutral-400" : "text-neutral-500";
 
   const renderChart = (data: CombinedChartData[]) => (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#444" : "#eee"} />
-        <XAxis 
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke={isDarkMode ? "#444" : "#eee"}
+        />
+        <XAxis
           dataKey="date"
-          tick={{ fontSize: 12 }} 
+          tick={{ fontSize: 12 }}
           stroke={isDarkMode ? "#aaa" : "#666"}
           dy={10}
         />
-        <YAxis 
-          domain={[0, 'auto']} 
-          tick={{ fontSize: 12 }} 
+        <YAxis
+          domain={[0, "auto"]}
+          tick={{ fontSize: 12 }}
           stroke={isDarkMode ? "#aaa" : "#666"}
           yAxisId="left"
         />
-        <YAxis 
-          domain={[0, 'auto']} 
-          tick={{ fontSize: 12 }} 
+        <YAxis
+          domain={[0, "auto"]}
+          tick={{ fontSize: 12 }}
           stroke={isDarkMode ? "#aaa" : "#666"}
           orientation="right"
           yAxisId="right"
         />
         <Tooltip
-          contentStyle={{ 
+          contentStyle={{
             backgroundColor: isDarkMode ? "#333" : "#fff",
             color: isDarkMode ? "#fff" : "#333",
             border: `1px solid ${isDarkMode ? "#555" : "#ddd"}`,
-            fontSize: 12
+            fontSize: 12,
           }}
           formatter={(value, name) => {
             if (name === "Warpcast Mini App Added") {
@@ -131,31 +157,31 @@ export default function SocialGrowthChart() {
           }}
           itemStyle={{
             paddingTop: 6,
-            paddingBottom: 0
+            paddingBottom: 0,
           }}
         />
-        <Legend 
-          wrapperStyle={{ 
+        <Legend
+          wrapperStyle={{
             fontSize: 11,
-            paddingTop: 15
+            paddingTop: 15,
           }}
         />
-        <Line 
+        <Line
           type="linear"
-          dataKey="cumulativeEnabled" 
-          stroke={CHART_COLOR_1} 
-          activeDot={{ r: 6 }} 
-          name="Warpcast Mini App Added" 
+          dataKey="cumulativeEnabled"
+          stroke={CHART_COLOR_1}
+          activeDot={{ r: 6 }}
+          name="Warpcast Mini App Added"
           strokeWidth={1}
           isAnimationActive={false}
           yAxisId="left"
         />
-        <Line 
+        <Line
           type="linear"
-          dataKey="activeUsers" 
-          stroke={CHART_COLOR_2} 
-          activeDot={{ r: 6 }} 
-          name="builderscore.xyz DAU" 
+          dataKey="activeUsers"
+          stroke={CHART_COLOR_2}
+          activeDot={{ r: 6 }}
+          name="builderscore.xyz DAU"
           strokeWidth={1}
           isAnimationActive={false}
           yAxisId="right"
@@ -166,11 +192,11 @@ export default function SocialGrowthChart() {
 
   if (loading) {
     return (
-      <div className={cardClass}>
-        <div className={`font-semibold ${textColor}`}>
+      <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="font-semibold text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
-        <div className={`text-xs ${textColor} py-4 flex justify-center`}>
+        <div className="flex justify-center py-4 text-xs text-neutral-900 dark:text-white">
           Loading Data...
         </div>
       </div>
@@ -179,11 +205,11 @@ export default function SocialGrowthChart() {
 
   if (error) {
     return (
-      <div className={cardClass}>
-        <div className={`font-semibold ${textColor}`}>
+      <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="font-semibold text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
-        <div className={`text-xs ${descColor} mt-4 flex justify-center text-red-500`}>
+        <div className="mt-4 flex justify-center text-xs text-red-500">
           Error: {error}
         </div>
       </div>
@@ -192,11 +218,11 @@ export default function SocialGrowthChart() {
 
   if (cumulativeData.length === 0 && analyticsData.length === 0) {
     return (
-      <div className={cardClass}>
-        <div className={`font-semibold ${textColor}`}>
+      <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="font-semibold text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
-        <div className={`text-xs ${descColor} mt-4 flex justify-center`}>
+        <div className="mt-4 flex justify-center text-xs text-neutral-500 dark:text-neutral-400">
           No growth or usage data available
         </div>
       </div>
@@ -204,17 +230,17 @@ export default function SocialGrowthChart() {
   }
 
   return (
-    <div className={cardClass}>
+    <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
       <div className="mb-4">
-        <div className={`font-semibold mb-1 ${textColor}`}>
+        <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
-        <div className={`text-xs ${descColor}`}>
+        <div className="text-xs text-neutral-500 dark:text-neutral-400">
           Warpcast Mini App adoption and builderscore.xyz Daily Active Users
         </div>
       </div>
-      
+
       <div className="h-[300px]">{renderChart(combinedData)}</div>
     </div>
   );
-} 
+}

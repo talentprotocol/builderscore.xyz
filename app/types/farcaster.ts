@@ -19,4 +19,4 @@ export type FrameContext = {
       bottom: number;
     };
   };
-}; 
+};

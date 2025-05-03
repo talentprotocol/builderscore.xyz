@@ -1,15 +1,16 @@
 "use client";
 
-import Image from "next/image";
-import SelectSponsor from "@/app/components/SelectSponsor";
+import SelectSponsor from "@/app/components/rewards/SelectSponsor";
 import { useTheme } from "@/app/context/ThemeContext";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function Navbar() {
+export default function Navbar({ sponsored }: { sponsored?: boolean }) {
   const { isDarkMode } = useTheme();
-  
+
   return (
-    <nav className="flex justify-between items-center mb-3">
-      <div className="flex items-center gap-2 ml-1">
+    <nav className="mb-3 flex items-center justify-between">
+      <Link href="/" className="ml-1 flex items-center gap-2">
         <Image
           src={
             isDarkMode
@@ -20,11 +21,14 @@ export default function Navbar() {
           fill={false}
           height={15}
           width={15}
-          style={{ width: 'auto', height: '15px' }}
+          style={{ width: "auto", height: "15px" }}
         />
-        <h1 className="font-semibold text-foreground whitespace-nowrap">Builder Rewards</h1>
-      </div>
-      <SelectSponsor />
+        <h1 className="text-foreground font-semibold whitespace-nowrap">
+          Builder Rewards
+        </h1>
+      </Link>
+
+      {sponsored && <SelectSponsor />}
     </nav>
   );
 }

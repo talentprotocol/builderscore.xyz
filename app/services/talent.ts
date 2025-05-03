@@ -1,10 +1,12 @@
-import { TalentProfileResponse, APITalentProfile } from "@/app/types/talent";
+import { APITalentProfile, TalentProfileResponse } from "@/app/types/talent";
 
-export async function fetchUserByFid(fid: number): Promise<TalentProfileResponse> {
+export async function fetchUserByFid(
+  fid: number,
+): Promise<TalentProfileResponse> {
   const url = `/api/talent/profile?fid=${fid}`;
-  
+
   const response = await fetch(url, {
-    cache: 'no-store'
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -15,20 +17,22 @@ export async function fetchUserByFid(fid: number): Promise<TalentProfileResponse
 }
 
 export interface ProfileLookupResponse {
-  profile: (APITalentProfile & {
-    ens?: string;
-    onchain_since?: string;
-  }) | null;
+  profile:
+    | (APITalentProfile & {
+        ens?: string;
+        onchain_since?: string;
+      })
+    | null;
 }
 
 export async function fetchProfileById(
-  id: string, 
-  accountSource: 'farcaster' | 'github' | 'wallet' = 'wallet'
+  id: string,
+  accountSource: "farcaster" | "github" | "wallet" = "wallet",
 ): Promise<ProfileLookupResponse> {
   const url = `/api/talent/lookup?id=${encodeURIComponent(id)}&account_source=${accountSource}`;
-  
+
   const response = await fetch(url, {
-    cache: 'no-store'
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -39,9 +43,9 @@ export async function fetchProfileById(
 }
 
 export async function fetchProfilesByIds(
-  ids: string[], 
-  accountSource: 'farcaster' | 'github' | 'wallet' = 'wallet'
+  ids: string[],
+  accountSource: "farcaster" | "github" | "wallet" = "wallet",
 ): Promise<ProfileLookupResponse[]> {
-  const promises = ids.map(id => fetchProfileById(id, accountSource));
+  const promises = ids.map((id) => fetchProfileById(id, accountSource));
   return Promise.all(promises);
-} 
+}

@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from '@/app/config/api';
-import { SponsorsResponse } from '@/app/types/sponsors';
-import { unstable_cache } from '@/app/lib/unstable-cache';
-import { CACHE_TAGS, CACHE_60_MINUTES } from '@/app/lib/cache-utils';
+import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
+import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
+import { unstable_cache } from "@/app/lib/unstable-cache";
+import { SponsorsResponse } from "@/app/types/sponsors";
+import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -11,8 +11,8 @@ const fetchSponsors = unstable_cache(
     const response = await fetch(
       `${API_BASE_URL}${ENDPOINTS.sponsors}?${queryString}`,
       {
-        headers: DEFAULT_HEADERS
-      }
+        headers: DEFAULT_HEADERS,
+      },
     );
 
     if (!response.ok) {
@@ -22,13 +22,13 @@ const fetchSponsors = unstable_cache(
     return response.json();
   },
   [CACHE_TAGS.SPONSORS],
-  { revalidate: CACHE_60_MINUTES }
+  { revalidate: CACHE_60_MINUTES },
 );
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const perPage = searchParams.get('per_page');
+    const perPage = searchParams.get("per_page");
 
     const queryParams = new URLSearchParams({
       ...(perPage && { per_page: perPage }),
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: `Failed to fetch sponsors: ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

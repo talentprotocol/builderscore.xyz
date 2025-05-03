@@ -18,11 +18,11 @@ export const ENDPOINTS = {
 } as const;
 
 export const DEFAULT_HEADERS = {
-  'Content-Type': 'application/json',
-  'X-API-KEY': API_KEY!,
+  "Content-Type": "application/json",
+  "X-API-KEY": API_KEY!,
 } as const;
 
 export const NEYNAR_HEADERS = {
-  'Content-Type': 'application/json',
-  'x-api-key': NEYNAR_API_KEY!,
-} as const; 
+  "Content-Type": "application/json",
+  "x-api-key": NEYNAR_API_KEY!,
+} as const;

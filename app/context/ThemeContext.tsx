@@ -1,35 +1,64 @@
 "use client";
 
-import React, { createContext, useContext, useEffect } from "react";
-import { useSponsor } from "@/app/context/SponsorContext";
+import React, { createContext, useContext, useEffect, useState } from "react";
+
+declare global {
+  interface Window {
+    __THEME_PREFERENCE?: string;
+  }
+}
 
 interface ThemeContextType {
   isDarkMode: boolean;
+  setIsDarkMode: (isDarkMode: boolean) => void;
+  isThemeLoaded: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { selectedSponsorSlug } = useSponsor();
-
-  const isDarkMode = selectedSponsorSlug !== "base";
-  
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+const themeScript = `
+  (function() {
+    try {
+      const storedTheme = localStorage.getItem('theme');
+      window.__THEME_PREFERENCE = storedTheme || 'dark';
+    } catch (e) {
+      window.__THEME_PREFERENCE = 'dark';
     }
-  }, [isDarkMode]);
+  })()
+`;
 
-  const value = {
-    isDarkMode
-  };
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isThemeLoaded, setIsThemeLoaded] = useState(false);
+
+  useEffect(() => {
+    const preference = window.__THEME_PREFERENCE || "dark";
+    setIsDarkMode(preference === "dark");
+    setIsThemeLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isThemeLoaded) {
+      document.documentElement.classList.toggle("dark", isDarkMode);
+      try {
+        localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+      } catch {}
+    }
+  }, [isDarkMode, isThemeLoaded]);
 
   return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
+    <>
+      <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      <ThemeContext.Provider
+        value={{
+          isDarkMode,
+          setIsDarkMode,
+          isThemeLoaded,
+        }}
+      >
+        {children}
+      </ThemeContext.Provider>
+    </>
   );
 }
 
@@ -39,4 +68,4 @@ export function useTheme() {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
-} 
+}
