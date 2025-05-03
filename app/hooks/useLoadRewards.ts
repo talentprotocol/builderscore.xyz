@@ -1,16 +1,19 @@
 "use client";
 
 import { useGrant } from "@/app/context/GrantContext";
+import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { useUser } from "@/app/context/UserContext";
 import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
 import { getGrants } from "@/app/services/grants";
+import { getLeaderboardEntry } from "@/app/services/leaderboards";
 import { getSponsors } from "@/app/services/sponsors";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
 export function useLoadRewards() {
   const params = useParams();
-
+  const { loadingUser, frameContext, talentProfile } = useUser();
   const {
     sponsors,
     setSponsors,
@@ -20,7 +23,8 @@ export function useLoadRewards() {
     selectedSponsor,
   } = useSponsor();
 
-  const { setGrants, setLoadingGrants } = useGrant();
+  const { selectedGrant, setGrants, setLoadingGrants } = useGrant();
+  const { setLoadingLeaderboard, setUserLeaderboard } = useLeaderboard();
 
   const fetchSponsors = useCallback(async () => {
     setLoadingSponsors(true);
@@ -46,6 +50,25 @@ export function useLoadRewards() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSponsor]);
 
+  const fetchUserLeaderboard = useCallback(async () => {
+    setLoadingLeaderboard(true);
+    if (!loadingUser && talentProfile) {
+      try {
+        const entry = await getLeaderboardEntry(
+          talentProfile.id.toString(),
+          selectedGrant?.id?.toString(),
+          selectedSponsor?.slug,
+        );
+        setUserLeaderboard(entry);
+      } catch {
+        setUserLeaderboard(null);
+      } finally {
+        setLoadingLeaderboard(false);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [frameContext, selectedGrant, selectedSponsor, talentProfile]);
+
   useEffect(() => {
     if (sponsors.length > 0) {
       const sponsorSlug = params.sponsor as string | undefined;
@@ -63,4 +86,9 @@ export function useLoadRewards() {
     fetchGrants();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSponsor]);
+
+  useEffect(() => {
+    fetchUserLeaderboard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [frameContext, selectedGrant, selectedSponsor, talentProfile]);
 }

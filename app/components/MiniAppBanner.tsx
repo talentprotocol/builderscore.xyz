@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function MiniAppBanner() {
   const [isVisible, setIsVisible] = useState(true);
-  const { frameContext } = useUser();
+  const { loadingUser, frameContext } = useUser();
   const localStorageKey = "builder-rewards-warpcast-banner-closed";
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function MiniAppBanner() {
     localStorage.setItem(localStorageKey, "true");
   };
 
-  if (!isVisible || frameContext) return null;
+  if (!isVisible || frameContext || loadingUser) return null;
 
   return (
     <div className="border-b border-b-neutral-200 bg-white dark:border-b-neutral-800 dark:bg-neutral-900">

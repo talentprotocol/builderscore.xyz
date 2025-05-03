@@ -24,16 +24,18 @@ interface SponsorContextType {
 const SponsorContext = createContext<SponsorContextType | undefined>(undefined);
 
 export function SponsorProvider({ children }: { children: ReactNode }) {
-  const { setIsDarkMode } = useTheme();
+  const { setIsDarkMode, isThemeLoaded } = useTheme();
   const [loadingSponsors, setLoadingSponsors] = useState(true);
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
   const [sponsorTokenTicker, setSponsorTokenTicker] = useState<string>("");
 
   useEffect(() => {
-    setIsDarkMode(selectedSponsor?.slug !== "base");
+    if (isThemeLoaded && selectedSponsor) {
+      setIsDarkMode(selectedSponsor.slug !== "base");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsor]);
+  }, [selectedSponsor, isThemeLoaded]);
 
   const setSelectedSponsorFromSlug = (sponsorSlug: string) => {
     setSelectedSponsor(

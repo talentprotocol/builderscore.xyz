@@ -101,10 +101,6 @@ export async function GET(request: NextRequest) {
         (social: { source: string }) => social.source === "github",
       );
 
-      const hasBasenameCredential = socialsData.socials.some(
-        (social: { source: string }) => social.source === "basename",
-      );
-
       const basenameSocial = socialsData.socials.find(
         (social: { source: string; name: string }) =>
           social.source === "basename",
@@ -112,8 +108,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         profile: matchingProfile,
-        hasGithubCredential,
-        hasBasenameCredential,
+        github: hasGithubCredential,
         basename: basenameSocial?.name,
         builderScore: builderScoreData?.score,
       });

@@ -37,7 +37,8 @@ export default function SelectSponsor() {
   };
 
   useHistoryListener((url) => {
-    const pathSegments = url.split("/");
+    const pathname = url.startsWith("http") ? new URL(url).pathname : url;
+    const pathSegments = pathname.split("/");
     const sponsorSlug = pathSegments[1] || "";
 
     if (sponsorSlug && sponsorSlug !== selectedSponsor?.slug) {

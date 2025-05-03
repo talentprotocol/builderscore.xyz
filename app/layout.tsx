@@ -1,4 +1,5 @@
 import MiniAppBanner from "@/app/components/MiniAppBanner";
+import { SponsorProvider } from "@/app/context/SponsorContext";
 import { ThemeProvider } from "@/app/context/ThemeContext";
 import { UserProvider } from "@/app/context/UserContext";
 import "@/app/globals.css";
@@ -25,8 +26,10 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider>
           <UserProvider>
-            <MiniAppBanner />
-            {children}
+            <SponsorProvider>
+              <MiniAppBanner />
+              {children}
+            </SponsorProvider>
           </UserProvider>
         </ThemeProvider>
       </body>

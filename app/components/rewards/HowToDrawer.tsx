@@ -15,32 +15,26 @@ import { Check } from "lucide-react";
 import { useState } from "react";
 
 export default function HowToDrawer() {
-  const {
-    isLoading: isUserLoading,
-    hasBasenameCredential,
-    talentProfile,
-    frameContext,
-    basename,
-    builderScore,
-  } = useUser();
+  const { loadingUser, talentProfile, frameContext, basename, builderScore } =
+    useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
 
   const EARNING_STEPS = [
     {
       text: `Own a Basename ${basename ? `(${basename})` : ""}`,
       url: "https://www.base.org/names",
-      condition: !isUserLoading && hasBasenameCredential,
+      condition: !loadingUser && basename,
     },
     {
       text: "Get your Human Checkmark",
       url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
-      condition: !isUserLoading && talentProfile?.human_checkmark,
+      condition: !loadingUser && talentProfile?.human_checkmark,
     },
     {
       text: "Increase your Builder Score to 40+",
       url: "https://app.talentprotocol.com/profile",
       condition:
-        !isUserLoading && builderScore?.points && builderScore?.points >= 40,
+        !loadingUser && builderScore?.points && builderScore?.points >= 40,
     },
   ];
 

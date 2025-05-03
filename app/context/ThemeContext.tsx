@@ -5,30 +5,57 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 interface ThemeContextType {
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
+  isThemeLoaded: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const themeScript = `
+  (function() {
+    try {
+      const storedTheme = localStorage.getItem('theme');
+      const isDark = storedTheme === 'light' ? false : true;
+      document.documentElement.classList.toggle('dark', isDark);
+    } catch (e) {}
+  })()
+`;
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isThemeLoaded, setIsThemeLoaded] = useState(false);
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setIsDarkMode(storedTheme === "dark");
     } else {
-      document.documentElement.classList.remove("dark");
+      setIsDarkMode(true);
     }
-  }, [isDarkMode]);
+    setIsThemeLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isThemeLoaded) {
+      document.documentElement.classList.toggle("dark", isDarkMode);
+      try {
+        localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+      } catch {}
+    }
+  }, [isDarkMode, isThemeLoaded]);
 
   return (
-    <ThemeContext.Provider
-      value={{
-        isDarkMode,
-        setIsDarkMode,
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
+    <>
+      <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      <ThemeContext.Provider
+        value={{
+          isDarkMode,
+          setIsDarkMode,
+          isThemeLoaded,
+        }}
+      >
+        {children}
+      </ThemeContext.Provider>
+    </>
   );
 }
 

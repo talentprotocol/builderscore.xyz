@@ -9,7 +9,8 @@ export function Footer() {
   return (
     <div className="flex flex-col justify-center gap-0 py-6">
       <p className="text-center text-xs text-neutral-600 dark:text-neutral-500">
-        {selectedSponsor?.slug !== "talent-protocol" &&
+        {selectedSponsor &&
+          selectedSponsor?.slug !== "talent-protocol" &&
           `Sponsored by ${selectedSponsor?.name} and`}{" "}
         Powered by Talent Protocol
       </p>
