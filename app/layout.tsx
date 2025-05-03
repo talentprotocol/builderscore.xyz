@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { Inter } from "next/font/google";
-import "@/app/globals.css";
-import { ThemeProvider } from "@/app/context/ThemeContext";
 import MiniAppBanner from "@/app/components/MiniAppBanner";
+import { ThemeProvider } from "@/app/context/ThemeContext";
 import { UserProvider } from "@/app/context/UserContext";
+import "@/app/globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 
 const inter = Inter({
   variable: "--font-inter",

@@ -1,25 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
 import { useTheme } from "@/app/context/ThemeContext";
-import {
-  CumulativeNotificationData,
-  NotificationTokensApiResponse,
-} from "@/app/types/neynar";
 import {
   GoogleAnalyticsActiveUserData,
   GoogleAnalyticsApiResponse,
 } from "@/app/types/googleAnalytics";
+import {
+  CumulativeNotificationData,
+  NotificationTokensApiResponse,
+} from "@/app/types/neynar";
+import { useEffect, useState } from "react";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface CombinedChartData extends CumulativeNotificationData {
   activeUsers: number;
@@ -38,7 +38,7 @@ export default function SocialGrowthChart() {
 
   const combinedData: CombinedChartData[] = cumulativeData.map((item) => {
     const matchingGAData = analyticsData.find(
-      (gaItem) => gaItem.date === item.date
+      (gaItem) => gaItem.date === item.date,
     );
     return {
       ...item,
@@ -60,12 +60,12 @@ export default function SocialGrowthChart() {
             next: {
               revalidate: 86400,
             },
-          }
+          },
         );
 
         if (!warpcastResponse.ok) {
           throw new Error(
-            `Failed to fetch Warpcast data: ${warpcastResponse.status} ${warpcastResponse.statusText}`
+            `Failed to fetch Warpcast data: ${warpcastResponse.status} ${warpcastResponse.statusText}`,
           );
         }
 
@@ -74,7 +74,7 @@ export default function SocialGrowthChart() {
 
         if (!warpcastResult.success) {
           throw new Error(
-            warpcastResult.error || "Failed to fetch Warpcast data"
+            warpcastResult.error || "Failed to fetch Warpcast data",
           );
         }
 
@@ -86,7 +86,7 @@ export default function SocialGrowthChart() {
 
         if (!gaResponse.ok) {
           throw new Error(
-            `Failed to fetch Google Analytics data: ${gaResponse.status} ${gaResponse.statusText}`
+            `Failed to fetch Google Analytics data: ${gaResponse.status} ${gaResponse.statusText}`,
           );
         }
 
@@ -95,7 +95,7 @@ export default function SocialGrowthChart() {
 
         if (!gaResult.success) {
           throw new Error(
-            gaResult.error || "Failed to fetch Google Analytics data"
+            gaResult.error || "Failed to fetch Google Analytics data",
           );
         }
 
@@ -103,7 +103,7 @@ export default function SocialGrowthChart() {
         setAnalyticsData(gaResult.data || []);
       } catch (error) {
         setError(
-          error instanceof Error ? error.message : "An unknown error occurred"
+          error instanceof Error ? error.message : "An unknown error occurred",
         );
       } finally {
         setLoading(false);
@@ -112,14 +112,6 @@ export default function SocialGrowthChart() {
 
     fetchData();
   }, []);
-
-  const cardClass = `p-4 rounded-lg ${
-    isDarkMode
-      ? "bg-neutral-800 border border-neutral-800"
-      : "bg-white border border-neutral-300"
-  }`;
-  const textColor = isDarkMode ? "text-white" : "text-neutral-900";
-  const descColor = isDarkMode ? "text-neutral-400" : "text-neutral-500";
 
   const renderChart = (data: CombinedChartData[]) => (
     <ResponsiveContainer width="100%" height="100%">
@@ -200,9 +192,11 @@ export default function SocialGrowthChart() {
 
   if (loading) {
     return (
-      <div className={cardClass}>
-        <div className={`font-semibold ${textColor}`}>App Growth & Usage</div>
-        <div className={`text-xs ${textColor} py-4 flex justify-center`}>
+      <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="font-semibold text-neutral-900 dark:text-white">
+          App Growth & Usage
+        </div>
+        <div className="flex justify-center py-4 text-xs text-neutral-900 dark:text-white">
           Loading Data...
         </div>
       </div>
@@ -211,11 +205,11 @@ export default function SocialGrowthChart() {
 
   if (error) {
     return (
-      <div className={cardClass}>
-        <div className={`font-semibold ${textColor}`}>App Growth & Usage</div>
-        <div
-          className={`text-xs ${descColor} mt-4 flex justify-center text-red-500`}
-        >
+      <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="font-semibold text-neutral-900 dark:text-white">
+          App Growth & Usage
+        </div>
+        <div className="mt-4 flex justify-center text-xs text-red-500">
           Error: {error}
         </div>
       </div>
@@ -224,9 +218,11 @@ export default function SocialGrowthChart() {
 
   if (cumulativeData.length === 0 && analyticsData.length === 0) {
     return (
-      <div className={cardClass}>
-        <div className={`font-semibold ${textColor}`}>App Growth & Usage</div>
-        <div className={`text-xs ${descColor} mt-4 flex justify-center`}>
+      <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="font-semibold text-neutral-900 dark:text-white">
+          App Growth & Usage
+        </div>
+        <div className="mt-4 flex justify-center text-xs text-neutral-500 dark:text-neutral-400">
           No growth or usage data available
         </div>
       </div>
@@ -234,12 +230,12 @@ export default function SocialGrowthChart() {
   }
 
   return (
-    <div className={cardClass}>
+    <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
       <div className="mb-4">
-        <div className={`font-semibold mb-1 ${textColor}`}>
+        <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
-        <div className={`text-xs ${descColor}`}>
+        <div className="text-xs text-neutral-500 dark:text-neutral-400">
           Warpcast Mini App adoption and builderscore.xyz Daily Active Users
         </div>
       </div>

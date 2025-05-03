@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
-import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import {
-  GoogleAnalyticsApiResponse,
   GoogleAnalyticsActiveUserData,
+  GoogleAnalyticsApiResponse,
 } from "@/app/types/googleAnalytics";
+import { BetaAnalyticsDataClient } from "@google-analytics/data";
+import { NextResponse } from "next/server";
 
 const PROPERTY_ID = process.env.GA_PROPERTY_ID;
 
@@ -52,7 +52,7 @@ export async function GET() {
 
     formattedData.sort(
       (a: GoogleAnalyticsActiveUserData, b: GoogleAnalyticsActiveUserData) =>
-        a.date.localeCompare(b.date)
+        a.date.localeCompare(b.date),
     );
 
     const apiResponse: GoogleAnalyticsApiResponse = {

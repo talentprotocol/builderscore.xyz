@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
-import Link from "next/link";
-import { sdk } from "@farcaster/frame-sdk";
 import { useUser } from "@/app/context/UserContext";
+import { sdk } from "@farcaster/frame-sdk";
+import Link from "next/link";
+import { ReactNode } from "react";
 
 interface ExternalLinkProps {
   href: string;

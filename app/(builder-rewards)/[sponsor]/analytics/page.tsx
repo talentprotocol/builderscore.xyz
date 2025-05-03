@@ -1,5 +1,5 @@
-import { getCSVData } from "@/app/services/analytics";
 import Analytics from "@/app/components/analytics/Analytics";
+import { getCSVData } from "@/app/services/analytics";
 
 export default async function AnalyticsPage() {
   const data = await getCSVData();

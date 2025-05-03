@@ -10,9 +10,9 @@ export default function BuilderIndexLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-4 px-4">
+    <div className="mx-auto flex min-h-dvh max-w-3xl flex-col px-4 py-4">
       <Navbar />
-      <main className="flex flex-col h-full">{children}</main>
+      <main className="flex h-full flex-col">{children}</main>
     </div>
   );
 }

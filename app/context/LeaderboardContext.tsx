@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
 import { LeaderboardEntry } from "@/app/types/leaderboards";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 interface LeaderboardContextType {
   userLeaderboard: LeaderboardEntry | null;
@@ -11,7 +11,7 @@ interface LeaderboardContextType {
 }
 
 const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function LeaderboardProvider({ children }: { children: ReactNode }) {

@@ -5,7 +5,7 @@ import {
 } from "@/app/types/leaderboards";
 
 export async function getLeaderboards(
-  params?: LeaderboardParams
+  params?: LeaderboardParams,
 ): Promise<LeaderboardResponse | null> {
   const searchParams = new URLSearchParams();
 
@@ -43,7 +43,7 @@ export async function getLeaderboards(
 export async function getLeaderboardEntry(
   userId: string,
   grantId?: string,
-  sponsorSlug?: string
+  sponsorSlug?: string,
 ): Promise<LeaderboardEntry | null> {
   const searchParams = new URLSearchParams();
   if (grantId) {

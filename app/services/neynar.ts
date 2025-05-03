@@ -4,15 +4,15 @@ import {
   NEYNAR_HEADERS,
 } from "@/app/config/api";
 import {
-  NotificationToken,
-  NotificationTokensResponse,
-  NotificationTokenData,
   CumulativeNotificationData,
+  NotificationToken,
+  NotificationTokenData,
   NotificationTokensParams,
+  NotificationTokensResponse,
 } from "@/app/types/neynar";
 
 export async function fetchNotificationTokens(
-  params: NotificationTokensParams = {}
+  params: NotificationTokensParams = {},
 ): Promise<NotificationTokensResponse> {
   try {
     const { limit = 100, fids, cursor } = params;
@@ -33,7 +33,7 @@ export async function fetchNotificationTokens(
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch notification tokens: ${response.status} ${response.statusText}`
+        `Failed to fetch notification tokens: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -45,7 +45,7 @@ export async function fetchNotificationTokens(
 }
 
 export function processNotificationTokensData(
-  tokens: NotificationToken[]
+  tokens: NotificationToken[],
 ): NotificationTokenData[] {
   const dateMap = new Map<
     string,
@@ -54,7 +54,7 @@ export function processNotificationTokensData(
 
   const sortedTokens = [...tokens].sort(
     (a, b) =>
-      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
   );
 
   sortedTokens.forEach((token) => {
@@ -84,12 +84,12 @@ export function processNotificationTokensData(
 }
 
 export function calculateCumulativeData(
-  data: NotificationTokenData[]
+  data: NotificationTokenData[],
 ): CumulativeNotificationData[] {
   let cumulativeSum = 0;
 
   const sortedData = [...data].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
 
   return sortedData.map((item) => {

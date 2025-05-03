@@ -1,24 +1,23 @@
 "use client";
 
+import ActivityByTypeChart from "@/app/components/analytics/ActivityByTypeChart";
+import ActivityChart from "@/app/components/analytics/ActivityChart";
+import DataTable from "@/app/components/analytics/DataTable";
+import MetricsCards from "@/app/components/analytics/MetricsCards";
+import ReportDrawer from "@/app/components/analytics/ReportDrawer";
+import RetentionRateChart from "@/app/components/analytics/RetentionRateChart";
+import RewardsBreakdownChart from "@/app/components/analytics/RewardsBreakdownChart";
+import SocialGrowthChart from "@/app/components/analytics/SocialGrowthChart";
+import TopBuildersLeaderboard from "@/app/components/analytics/TopBuildersLeaderboard";
+import WinnersProfileChart from "@/app/components/analytics/WinnersProfileChart";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/app/components/ui/tabs";
-import ActivityChart from "@/app/components/analytics/ActivityChart";
-import ActivityByTypeChart from "@/app/components/analytics/ActivityByTypeChart";
-import RetentionRateChart from "@/app/components/analytics/RetentionRateChart";
-import RewardsBreakdownChart from "@/app/components/analytics/RewardsBreakdownChart";
-import WinnersProfileChart from "@/app/components/analytics/WinnersProfileChart";
-import TopBuildersLeaderboard from "@/app/components/analytics/TopBuildersLeaderboard";
-import DataTable from "@/app/components/analytics/DataTable";
-import MetricsCards from "@/app/components/analytics/MetricsCards";
-import { CSVDataResult } from "@/app/services/analytics";
-import { useTheme } from "@/app/context/ThemeContext";
-import ReportDrawer from "@/app/components/analytics/ReportDrawer";
-import SocialGrowthChart from "@/app/components/analytics/SocialGrowthChart";
 import { useLoadRewards } from "@/app/hooks/useLoadRewards";
+import { CSVDataResult } from "@/app/services/analytics";
 
 interface AnalyticsProps {
   data: CSVDataResult;
@@ -26,43 +25,20 @@ interface AnalyticsProps {
 
 export default function Analytics({ data }: AnalyticsProps) {
   useLoadRewards();
-  const { isDarkMode } = useTheme();
 
   return (
     <div className="container mx-auto py-3">
-      <Tabs defaultValue="charts" className="w-full">
-        <div className="flex justify-between items-center mb-3">
-          <TabsList
-            className={`
-          ${
-            isDarkMode
-              ? "bg-neutral-900 text-white"
-              : "bg-neutral-200 text-neutral-800"
-          }
-        `}
-          >
+      <Tabs defaultValue="charts" className="relative w-full">
+        <div className="mb-3 flex items-center justify-between">
+          <TabsList className="bg-neutral-200 text-neutral-800 dark:bg-neutral-900 dark:text-white">
             <TabsTrigger
-              className={`
-          text-xs cursor-pointer mr-0.5
-          ${
-            isDarkMode
-              ? "bg-neutral-900 hover:bg-neutral-800 data-[state=active]:bg-neutral-800"
-              : "bg-neutral-200 hover:bg-white data-[state=active]:bg-white text-neutral-800"
-          }
-        `}
+              className="mr-0.5 cursor-pointer bg-neutral-200 text-xs text-neutral-800 hover:bg-white data-[state=active]:bg-white dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:data-[state=active]:bg-neutral-800"
               value="charts"
             >
               Charts
             </TabsTrigger>
             <TabsTrigger
-              className={`
-          text-xs cursor-pointer
-          ${
-            isDarkMode
-              ? "bg-neutral-900 hover:bg-neutral-800 data-[state=active]:bg-neutral-800"
-              : "bg-neutral-200 hover:bg-white data-[state=active]:bg-white text-neutral-800"
-          }
-        `}
+              className="cursor-pointer bg-neutral-200 text-xs text-neutral-800 hover:bg-white data-[state=active]:bg-white dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:data-[state=active]:bg-neutral-800"
               value="data"
             >
               Raw Data

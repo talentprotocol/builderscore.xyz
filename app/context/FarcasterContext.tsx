@@ -1,10 +1,10 @@
 "use client";
 
-import { createConfig, http, WagmiProvider } from "wagmi";
-import { base } from "wagmi/chains";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { frameConnector } from "@/app/lib/connector";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
+import { WagmiProvider, createConfig, http } from "wagmi";
+import { base } from "wagmi/chains";
 
 export const config = createConfig({
   chains: [base],

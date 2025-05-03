@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/app/lib/cache-utils";
 import { invalidateMultipleTags } from "@/app/lib/cache-utils";
+import { revalidateTag } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
 /**
  * - To invalidate grants: /api/revalidate?tag=grants&token=YOUR_TOKEN

@@ -1,21 +1,21 @@
 "use client";
 
-import { CopyIcon, ShareIcon } from "lucide-react";
-import { SiFarcaster } from "react-icons/si";
-import { FaXTwitter } from "react-icons/fa6";
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import { Button } from "@/app/components/ui/button";
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
-import { useState } from "react";
-import Image from "next/image";
-import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
-import { useTheme } from "@/app/context/ThemeContext";
-import { useUser } from "@/app/context/UserContext";
-import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useGrant } from "@/app/context/GrantContext";
+import { useLeaderboard } from "@/app/context/LeaderboardContext";
+import { useUser } from "@/app/context/UserContext";
 import {
-  formatNumber,
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
+  formatNumber,
 } from "@/app/lib/utils";
+import { CopyIcon, ShareIcon } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { FaXTwitter } from "react-icons/fa6";
+import { SiFarcaster } from "react-icons/si";
+
 // import { sdk } from "@farcaster/frame-sdk";
 
 export default function ShareableLeaderboard({
@@ -27,7 +27,6 @@ export default function ShareableLeaderboard({
   grant_id?: string;
   sponsor_slug?: string;
 }) {
-  const { isDarkMode } = useTheme();
   const { frameContext } = useUser();
   const { userLeaderboard } = useLeaderboard();
   const { selectedGrant } = useGrant();
@@ -95,22 +94,18 @@ export default function ShareableLeaderboard({
     <>
       <Button
         size="lg"
-        className="bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black"
+        className="w-full cursor-pointer border border-neutral-300 bg-white text-black hover:bg-neutral-100 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
         onClick={handleShare}
       >
         <ShareIcon />
         Share
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-2 flex flex-col gap-2">
+        <DialogContent className="flex flex-col gap-2 p-2">
           <div className="relative w-full">
             {imageLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg">
-                <div
-                  className={`h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent ${
-                    isDarkMode ? "text-neutral-500" : "text-neutral-400"
-                  }`}
-                />
+              <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-800">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
               </div>
             )}
             <Image
@@ -118,7 +113,7 @@ export default function ShareableLeaderboard({
               alt="Shareable Leaderboard"
               width={1620}
               height={1080}
-              className="w-full h-full object-contain rounded-lg"
+              className="h-full w-full rounded-lg object-contain"
               onLoadingComplete={() => setImageLoading(false)}
             />
           </div>
@@ -132,11 +127,7 @@ export default function ShareableLeaderboard({
           >
             <Button
               size="lg"
-              className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
-                isDarkMode
-                  ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-                  : ""
-              }`}
+              className="w-full cursor-pointer border border-neutral-300 bg-white text-black hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
             >
               <SiFarcaster />
               Share on Warpcast
@@ -152,11 +143,7 @@ export default function ShareableLeaderboard({
           >
             <Button
               size="lg"
-              className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
-                isDarkMode
-                  ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-                  : ""
-              }`}
+              className="w-full cursor-pointer border border-neutral-300 bg-white text-black hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
             >
               <FaXTwitter />
               Share on X
@@ -168,11 +155,7 @@ export default function ShareableLeaderboard({
               navigator.clipboard.writeText(shareUrl);
               setOpen(false);
             }}
-            className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
-              isDarkMode
-                ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-                : ""
-            }`}
+            className="w-full cursor-pointer border border-neutral-300 bg-white text-black hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
           >
             <CopyIcon />
             Copy Image

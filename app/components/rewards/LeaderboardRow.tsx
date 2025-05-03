@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import { LeaderboardEntry } from "@/app/types/leaderboards";
-import {
-  formatNumber,
-  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
-} from "@/app/lib/utils";
-import { useTheme } from "@/app/context/ThemeContext";
 import { useSponsor } from "@/app/context/SponsorContext";
+import {
+  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
+  formatNumber,
+} from "@/app/lib/utils";
+import { LeaderboardEntry } from "@/app/types/leaderboards";
+import Image from "next/image";
 
 export default function LeaderboardRow({
   leaderboardData,
@@ -24,35 +23,16 @@ export default function LeaderboardRow({
   className?: string;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
-  const { isDarkMode } = useTheme();
   const { sponsorTokenTicker } = useSponsor();
 
   return (
     <div
       onClick={() => onBuilderSelect?.(leaderboardData)}
-      className={`flex items-center justify-between py-2 px-3 pr-5 cursor-pointer
-        ${isDarkMode ? "bg-neutral-900" : "bg-white"}
-        ${
-          isHighlighted &&
-          `border ${
-            isDarkMode ? "border-primary" : "border-primary"
-          } rounded-lg`
-        }
-        ${first && "rounded-t-lg"}
-        ${last && "rounded-b-lg"}
-        ${
-          !first &&
-          `border-t ${isDarkMode ? "border-neutral-800" : "border-neutral-300"}`
-        }
-        ${className}`}
+      className={`flex cursor-pointer items-center justify-between bg-white px-3 py-2 pr-5 dark:bg-neutral-900 ${isHighlighted && "border-primary rounded-lg border"} ${first && "rounded-t-lg"} ${last && "rounded-b-lg"} ${!first && "border-t border-neutral-300 dark:border-neutral-800"} ${className}`}
     >
       <div className="flex items-center gap-4">
         {leaderboardData.leaderboard_position && (
-          <p
-            className={`${
-              isDarkMode ? "text-neutral-500" : "text-neutral-600"
-            } text-xs min-w-6 font-mono`}
-          >
+          <p className="min-w-6 font-mono text-xs text-neutral-600 dark:text-neutral-500">
             #{leaderboardData.leaderboard_position}
           </p>
         )}
@@ -60,9 +40,7 @@ export default function LeaderboardRow({
         <span
           className={`min-w-8 text-xs ${
             leaderboardData.ranking_change === null
-              ? isDarkMode
-                ? "text-neutral-500"
-                : "text-neutral-600"
+              ? "text-neutral-600 dark:text-neutral-500"
               : leaderboardData.ranking_change !== 0
                 ? leaderboardData.ranking_change < 0
                   ? "text-red-500"
@@ -89,16 +67,16 @@ export default function LeaderboardRow({
             alt={leaderboardData.profile.name || "Talent Builder"}
             width={isHighlighted ? 48 : 36}
             height={isHighlighted ? 48 : 36}
-            className={`rounded-full object-cover h-[36px] w-[36px] ${
-              isHighlighted && "h-[48px] w-[48px] ml-[-6px]"
+            className={`h-[36px] w-[36px] rounded-full object-cover ${
+              isHighlighted && "ml-[-6px] h-[48px] w-[48px]"
             }`}
           />
           <div>
-            <p className={isDarkMode ? "text-white" : "text-neutral-800"}>
+            <p className="text-neutral-800 dark:text-white">
               {leaderboardData.profile.name}
 
               {process.env.NODE_ENV === "development" && (
-                <span className="ml-5 text-green-500 text-xs">
+                <span className="ml-5 text-xs text-green-500">
                   ID: {leaderboardData.id}
                 </span>
               )}
@@ -107,8 +85,8 @@ export default function LeaderboardRow({
         </div>
       </div>
 
-      <div className={`pl-2 ${isDarkMode ? "bg-neutral-900" : "bg-white"}`}>
-        <p className={isDarkMode ? "text-white" : "text-neutral-800"}>
+      <div className="bg-white pl-2 dark:bg-neutral-900">
+        <p className="text-neutral-800 dark:text-white">
           {leaderboardData.reward_amount ? (
             <>
               <span className="font-mono">
@@ -116,21 +94,15 @@ export default function LeaderboardRow({
                   parseFloat(leaderboardData.reward_amount),
                   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
                     sponsorTokenTicker
-                  ]
+                  ],
                 )}
               </span>
-              <span
-                className={`${
-                  isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                } ml-2 text-xs`}
-              >
+              <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
                 {sponsorTokenTicker}
               </span>
             </>
           ) : (
-            <span
-              className={`${isDarkMode ? "text-neutral-500" : "text-neutral-600"} ml-2 text-xs`}
-            >
+            <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
               No Rewards Earned
             </span>
           )}

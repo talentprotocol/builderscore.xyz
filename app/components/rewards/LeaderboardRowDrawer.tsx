@@ -1,23 +1,22 @@
 "use client";
 
-import Image from "next/image";
-import { LeaderboardEntry } from "@/app/types/leaderboards";
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
+import { Button } from "@/app/components/ui/button";
 import {
   Drawer,
   DrawerContent,
   DrawerFooter,
   DrawerPortal,
 } from "@/app/components/ui/drawer";
-import { Button } from "@/app/components/ui/button";
+import { useSponsor } from "@/app/context/SponsorContext";
 import {
-  formatNumber,
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
+  formatNumber,
 } from "@/app/lib/utils";
+import { LeaderboardEntry } from "@/app/types/leaderboards";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useTheme } from "@/app/context/ThemeContext";
-import { useSponsor } from "@/app/context/SponsorContext";
-import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
+import Image from "next/image";
 
 export default function LeaderboardRowDrawer({
   selectedBuilder,
@@ -30,7 +29,6 @@ export default function LeaderboardRowDrawer({
   context?: string;
   onClose: () => void;
 }) {
-  const { isDarkMode } = useTheme();
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
 
   return (
@@ -41,7 +39,7 @@ export default function LeaderboardRowDrawer({
             {selectedBuilder?.profile.name || "Builder"}
           </DialogTitle>
         </VisuallyHidden>
-        <DrawerContent className={isDarkMode ? "bg-neutral-900" : "bg-white"}>
+        <DrawerContent className="bg-white dark:bg-neutral-900">
           {selectedBuilder && selectedBuilder.profile && (
             <>
               <div className="flex flex-col items-center justify-center p-4">
@@ -54,45 +52,27 @@ export default function LeaderboardRowDrawer({
                   alt={selectedBuilder.profile.name || "Builder"}
                   width={80}
                   height={80}
-                  className="rounded-full object-cover h-[80px] w-[80px] mb-3"
+                  className="mb-3 h-[80px] w-[80px] rounded-full object-cover"
                 />
-                <p
-                  className={`${
-                    isDarkMode ? "text-white" : "text-neutral-800"
-                  } text-lg mb-3 text-center`}
-                >
+                <p className="mb-3 text-center text-lg text-neutral-800 dark:text-white">
                   <span className="font-semibold">
                     {selectedBuilder.profile.name || "Builder"}
                   </span>
 
                   <br />
 
-                  <span
-                    className={`${
-                      isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                    } text-sm`}
-                  >
+                  <span className="text-sm text-neutral-600 dark:text-neutral-500">
                     {context}
                   </span>
                 </p>
 
-                <div
-                  className={`rounded-lg border w-full ${
-                    isDarkMode
-                      ? "bg-neutral-900 border-neutral-800"
-                      : "bg-white border-neutral-300"
-                  }`}
-                >
+                <div className="w-full rounded-lg border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-neutral-900">
                   <div className="flex justify-around p-4">
                     <div className="flex flex-col items-center justify-between">
-                      <p
-                        className={`${
-                          isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                        } text-xs`}
-                      >
+                      <p className="text-xs text-neutral-600 dark:text-neutral-500">
                         Builder Score
                       </p>
-                      <p className="text-2xl font-mono font-semibold">
+                      <p className="font-mono text-2xl font-semibold">
                         {"builder_score" in selectedBuilder.profile
                           ? selectedBuilder.profile.builder_score?.points
                           : "-"}
@@ -100,27 +80,19 @@ export default function LeaderboardRowDrawer({
                     </div>
 
                     <div className="flex flex-col items-center justify-between">
-                      <p
-                        className={`${
-                          isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                        } text-xs`}
-                      >
+                      <p className="text-xs text-neutral-600 dark:text-neutral-500">
                         Rewards Earned
                       </p>
-                      <p className="text-2xl font-mono">
+                      <p className="font-mono text-2xl">
                         <span className="font-semibold">
                           {formatNumber(
                             parseFloat(selectedBuilder.reward_amount || "0"),
                             INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
                               sponsorTokenTicker
-                            ]
+                            ],
                           )}
                         </span>
-                        <span
-                          className={`${
-                            isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                          } text-xs ml-2`}
-                        >
+                        <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
                           {sponsorTokenTicker}
                         </span>
                       </p>
@@ -128,20 +100,14 @@ export default function LeaderboardRowDrawer({
 
                     {context && (
                       <div className="flex flex-col items-center justify-between">
-                        <p
-                          className={`${
-                            isDarkMode ? "text-neutral-500" : "text-neutral-600"
-                          } text-sm`}
-                        >
+                        <p className="text-sm text-neutral-600 dark:text-neutral-500">
                           {weekly && weekly ? "Weekly" : "All Time"} Rank
                         </p>
-                        <p className="text-lg font-mono font-semibold">
+                        <p className="font-mono text-lg font-semibold">
                           <span
                             className={`mr-2 ${
                               selectedBuilder.ranking_change === null
-                                ? isDarkMode
-                                  ? "text-neutral-500"
-                                  : "text-neutral-600"
+                                ? "text-neutral-600 dark:text-neutral-500"
                                 : selectedBuilder.ranking_change !== 0
                                   ? selectedBuilder.ranking_change < 0
                                     ? "text-red-500"
@@ -158,7 +124,7 @@ export default function LeaderboardRowDrawer({
                               : "0"}
                           </span>
 
-                          <span className={`font-mono mr-2`}>
+                          <span className={`mr-2 font-mono`}>
                             #{selectedBuilder.leaderboard_position}
                           </span>
                         </p>
@@ -169,25 +135,13 @@ export default function LeaderboardRowDrawer({
 
                 {selectedBuilder.summary !== null
                   ? selectedBuilder.summary && (
-                      <div
-                        className={`rounded-lg border w-full p-4 mt-3 ${
-                          isDarkMode
-                            ? "bg-neutral-900 border-neutral-800"
-                            : "bg-white border-neutral-300"
-                        }`}
-                      >
+                      <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
                         <div className="flex flex-col">
-                          <p
-                            className={`${
-                              isDarkMode
-                                ? "text-neutral-500"
-                                : "text-neutral-600"
-                            } text-sm mb-1`}
-                          >
+                          <p className="mb-1 text-sm text-neutral-600 dark:text-neutral-500">
                             Summary
                           </p>
-                          <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
-                            <p className={isDarkMode ? "" : "text-neutral-800"}>
+                          <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">
+                            <p className="text-neutral-800 dark:text-white">
                               {selectedBuilder.summary}
                             </p>
                           </div>
@@ -197,25 +151,13 @@ export default function LeaderboardRowDrawer({
                   : selectedSponsor?.slug === "base" &&
                     selectedBuilder.reward_amount &&
                     parseFloat(selectedBuilder.reward_amount) > 0 && (
-                      <div
-                        className={`rounded-lg border w-full p-4 mt-3 ${
-                          isDarkMode
-                            ? "bg-neutral-900 border-neutral-800"
-                            : "bg-white border-neutral-300"
-                        }`}
-                      >
+                      <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
                         <div className="flex flex-col">
-                          <p
-                            className={`${
-                              isDarkMode
-                                ? "text-neutral-500"
-                                : "text-neutral-600"
-                            } text-sm mb-1`}
-                          >
+                          <p className="mb-1 text-sm text-neutral-600 dark:text-neutral-500">
                             Summary
                           </p>
-                          <div className="flex flex-col max-h-32 overflow-auto scrollbar-hide">
-                            <p className={isDarkMode ? "" : "text-neutral-800"}>
+                          <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">
+                            <p className="text-neutral-800 dark:text-white">
                               {selectedBuilder.profile.name} earned Rewards for
                               transactions on previously deployed verified Smart
                               Contracts.
@@ -232,11 +174,7 @@ export default function LeaderboardRowDrawer({
                 >
                   <Button
                     size="lg"
-                    className={`w-full cursor-pointer border mb-3 ${
-                      isDarkMode
-                        ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-                        : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
-                    }`}
+                    className="mb-3 w-full cursor-pointer border border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
                   >
                     View Talent Profile
                   </Button>

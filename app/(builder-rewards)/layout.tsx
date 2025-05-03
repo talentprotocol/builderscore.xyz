@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import { SponsorProvider } from "@/app/context/SponsorContext";
+import Navbar from "@/app/components/Navbar";
+import { Footer } from "@/app/components/rewards/Footer";
+import UserStatus from "@/app/components/rewards/UserStatus";
 import { GrantProvider } from "@/app/context/GrantContext";
 import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
-import { Footer } from "@/app/components/rewards/Footer";
-import Navbar from "@/app/components/Navbar";
-import UserStatus from "@/app/components/rewards/UserStatus";
+import { SponsorProvider } from "@/app/context/SponsorContext";
+import type { Metadata } from "next";
 
 const frame = {
   version: "next",
@@ -48,10 +48,10 @@ export default function BuilderRewardsLayout({
     <SponsorProvider>
       <GrantProvider>
         <LeaderboardProvider>
-          <div className="flex flex-col min-h-dvh max-w-3xl mx-auto py-4 px-4">
+          <div className="mx-auto flex min-h-dvh max-w-3xl flex-col px-4 py-4">
             {process.env.NODE_ENV === "development" && <UserStatus />}
             <Navbar sponsored />
-            <main className="flex flex-col h-full">{children}</main>
+            <main className="flex h-full flex-col">{children}</main>
             <Footer />
           </div>
         </LeaderboardProvider>

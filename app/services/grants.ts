@@ -1,7 +1,7 @@
 import { Grant, GrantParams, GrantsResponse } from "@/app/types/grants";
 
 export async function getGrants(
-  params?: GrantParams
+  params?: GrantParams,
 ): Promise<GrantsResponse | null> {
   const searchParams = new URLSearchParams();
 

@@ -8,9 +8,8 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useTheme } from "@/app/context/ThemeContext";
-import { Sponsor } from "@/app/types/sponsors";
 import { useHistoryListener } from "@/app/hooks/useHistoryListener";
+import { Sponsor } from "@/app/types/sponsors";
 
 export default function SelectSponsor() {
   const {
@@ -19,7 +18,6 @@ export default function SelectSponsor() {
     selectedSponsor,
     setSelectedSponsorFromSlug,
   } = useSponsor();
-  const { isDarkMode } = useTheme();
 
   const sponsorsList = [
     // {
@@ -32,7 +30,10 @@ export default function SelectSponsor() {
 
   const handleSponsorChange = (newSponsor: string) => {
     setSelectedSponsorFromSlug(newSponsor);
-    window.history.pushState(null, "", `/${newSponsor}`);
+    const currentPath = window.location.pathname;
+    const pathSegments = currentPath.split("/");
+    pathSegments[1] = newSponsor;
+    window.history.pushState(null, "", pathSegments.join("/"));
   };
 
   useHistoryListener((url) => {
@@ -47,17 +48,8 @@ export default function SelectSponsor() {
   if (loadingSponsors) {
     return (
       <Select disabled>
-        <SelectTrigger
-          className={`
-            bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white text-xs h-6 w-36 p-2 cursor-not-allowed
-            ${
-              isDarkMode
-                ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-                : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
-            }
-          `}
-        >
-          <SelectValue className="text-white" placeholder="Loading..." />
+        <SelectTrigger className="h-6 w-36 cursor-not-allowed border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+          <SelectValue className="dark:text-white" placeholder="Loading..." />
         </SelectTrigger>
       </Select>
     );
@@ -65,39 +57,14 @@ export default function SelectSponsor() {
 
   return (
     <Select value={selectedSponsor?.slug} onValueChange={handleSponsorChange}>
-      <SelectTrigger
-        className={`
-          text-xs h-6 w-36 p-2 cursor-pointer
-          ${
-            isDarkMode
-              ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-              : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
-          }
-        `}
-      >
-        <SelectValue className="text-white" placeholder="Select Sponsor" />
+      <SelectTrigger className="h-6 w-36 cursor-pointer border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+        <SelectValue className="dark:text-white" placeholder="Select Sponsor" />
       </SelectTrigger>
-      <SelectContent
-        className={`
-          text-xs border-none
-          ${
-            isDarkMode
-              ? "bg-neutral-800 text-white"
-              : "bg-white text-neutral-800"
-          }
-        `}
-      >
+      <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
         {sponsorsList.map((sponsor: Sponsor) => (
           <SelectItem
             key={sponsor.id}
-            className={`
-              text-xs cursor-pointer 
-              ${
-                isDarkMode
-                  ? "bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700"
-                  : "bg-white hover:bg-neutral-100 focus:bg-neutral-100"
-              }
-            `}
+            className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
             value={sponsor.slug}
           >
             {sponsor.name}

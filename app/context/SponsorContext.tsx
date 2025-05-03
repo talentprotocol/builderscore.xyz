@@ -1,14 +1,14 @@
 "use client";
 
+import { useTheme } from "@/app/context/ThemeContext";
+import { Sponsor } from "@/app/types/sponsors";
 import {
+  ReactNode,
   createContext,
   useContext,
-  useState,
-  ReactNode,
   useEffect,
+  useState,
 } from "react";
-import { Sponsor } from "@/app/types/sponsors";
-import { useTheme } from "@/app/context/ThemeContext";
 
 interface SponsorContextType {
   loadingSponsors: boolean;
@@ -37,7 +37,7 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
 
   const setSelectedSponsorFromSlug = (sponsorSlug: string) => {
     setSelectedSponsor(
-      sponsors.find((sponsor) => sponsor.slug === sponsorSlug) || null
+      sponsors.find((sponsor) => sponsor.slug === sponsorSlug) || null,
     );
   };
 

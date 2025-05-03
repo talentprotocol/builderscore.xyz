@@ -1,14 +1,14 @@
 "use client";
 
+import { useSponsor } from "@/app/context/SponsorContext";
+import { Grant } from "@/app/types/grants";
 import {
+  ReactNode,
   createContext,
   useContext,
-  useState,
-  ReactNode,
   useEffect,
+  useState,
 } from "react";
-import { Grant } from "@/app/types/grants";
-import { useSponsor } from "@/app/context/SponsorContext";
 
 interface GrantContextType {
   loadingGrants: boolean;

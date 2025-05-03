@@ -1,4 +1,4 @@
-import { TalentProfile, APITalentProfile } from "@/app/types/talent";
+import { APITalentProfile, TalentProfile } from "@/app/types/talent";
 
 export interface LeaderboardEntry {
   id: number;

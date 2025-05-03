@@ -1,24 +1,24 @@
 "use client";
 
-import { CSVRow } from "@/app/lib/csv-parser";
-import { formatDate } from "@/app/lib/utils";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
-import { useTheme } from "@/app/context/ThemeContext";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/app/components/ui/tabs";
+import { useTheme } from "@/app/context/ThemeContext";
+import { CSVRow } from "@/app/lib/csv-parser";
+import { formatDate } from "@/app/lib/utils";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface ActivityChartProps {
   dailyData: CSVRow[];
@@ -61,20 +61,6 @@ export default function ActivityChart({
       activationRate: Number(row["Activation Rate (%)"]),
     };
   });
-
-  const cardClass = `p-4 rounded-lg ${
-    isDarkMode
-      ? "bg-neutral-800 border border-neutral-800"
-      : "bg-white border border-neutral-300"
-  }`;
-  const textColor = isDarkMode ? "text-white" : "text-neutral-900";
-  const descColor = isDarkMode ? "text-neutral-400" : "text-neutral-500";
-  const tabBgClass = isDarkMode
-    ? "bg-neutral-900 text-white"
-    : "bg-neutral-200 text-neutral-800";
-  const tabItemClass = isDarkMode
-    ? "bg-neutral-900 hover:bg-neutral-800 data-[state=active]:bg-neutral-800"
-    : "bg-neutral-200 hover:bg-white data-[state=active]:bg-white text-neutral-800";
 
   const renderChart = (data: typeof dailyChartData) => (
     <ResponsiveContainer width="100%" height="100%">
@@ -172,26 +158,26 @@ export default function ActivityChart({
   );
 
   return (
-    <div className={cardClass}>
-      <Tabs defaultValue="daily" className="w-full relative">
+    <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border dark:border-neutral-800 dark:bg-neutral-800">
+      <Tabs defaultValue="daily" className="relative w-full">
         <div className="sm:mb-4">
-          <div className={`font-semibold mb-1 ${textColor}`}>
+          <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
             Builder Activity
           </div>
-          <div className={`text-xs ${descColor}`}>
+          <div className="text-xs text-neutral-500 dark:text-neutral-400">
             New eligible Builders, active Builders, and activation rate
           </div>
         </div>
 
-        <TabsList className={`mb-3 sm:absolute top-0 right-0 ${tabBgClass}`}>
+        <TabsList className="top-0 right-0 mb-3 bg-neutral-200 text-neutral-800 sm:absolute dark:bg-neutral-900 dark:text-white">
           <TabsTrigger
-            className={`text-xs cursor-pointer mr-0.5 ${tabItemClass}`}
+            className="mr-0.5 cursor-pointer bg-neutral-200 text-xs text-neutral-800 hover:bg-white data-[state=active]:bg-white dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:data-[state=active]:bg-neutral-800"
             value="daily"
           >
             Daily
           </TabsTrigger>
           <TabsTrigger
-            className={`text-xs cursor-pointer ${tabItemClass}`}
+            className="mr-0.5 cursor-pointer bg-neutral-200 text-xs text-neutral-800 hover:bg-white data-[state=active]:bg-white dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:data-[state=active]:bg-neutral-800"
             value="weekly"
           >
             Weekly

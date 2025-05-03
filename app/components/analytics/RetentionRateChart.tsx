@@ -1,19 +1,19 @@
 "use client";
 
+import { useTheme } from "@/app/context/ThemeContext";
 import { CSVRow } from "@/app/lib/csv-parser";
 import { formatDate } from "@/app/lib/utils";
 import {
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Legend,
   Line,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-  Bar,
-  ComposedChart,
 } from "recharts";
-import { useTheme } from "@/app/context/ThemeContext";
 
 interface RetentionRateChartProps {
   data: CSVRow[];
@@ -38,22 +38,14 @@ export default function RetentionRateChart({ data }: RetentionRateChartProps) {
     };
   });
 
-  const cardClass = `p-4 rounded-lg ${
-    isDarkMode
-      ? "bg-neutral-800 border border-neutral-800"
-      : "bg-white border border-neutral-300"
-  }`;
-  const textColor = isDarkMode ? "text-white" : "text-neutral-900";
-  const descColor = isDarkMode ? "text-neutral-400" : "text-neutral-500";
-
   return (
-    <div className={cardClass}>
-      <div className="w-full relative">
+    <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+      <div className="relative w-full">
         <div className="mb-4">
-          <div className={`font-semibold mb-1 ${textColor}`}>
+          <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
             Builder Rewards Retention
           </div>
-          <div className={`text-xs ${descColor}`}>
+          <div className="text-xs text-neutral-500 dark:text-neutral-400">
             Weekly active/inactive developers and retention rate
           </div>
         </div>

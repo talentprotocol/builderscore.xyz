@@ -1,21 +1,21 @@
 "use client";
 
+import { useTheme } from "@/app/context/ThemeContext";
 import { CSVRow } from "@/app/lib/csv-parser";
+import { useEffect, useState } from "react";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
 } from "recharts";
-import { useTheme } from "@/app/context/ThemeContext";
-import { useState, useEffect } from "react";
 
 interface WinnersProfileChartProps {
   data: CSVRow[];
@@ -123,31 +123,23 @@ export default function WinnersProfileChart({
   const githubNoDataCount = githubNoData ? Number(githubNoData["Count"]) : 0;
   const onchainNoDataCount = onchainNoData ? Number(onchainNoData["Count"]) : 0;
 
-  const cardClass = `p-4 rounded-lg ${
-    isDarkMode
-      ? "bg-neutral-800 border border-neutral-800"
-      : "bg-white border border-neutral-300"
-  }`;
-  const textColor = isDarkMode ? "text-white" : "text-neutral-900";
-  const descColor = isDarkMode ? "text-neutral-400" : "text-neutral-500";
-
   return (
     <div className="flex flex-col gap-3">
-      <div className={cardClass}>
-        <div className="w-full relative">
+      <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="relative w-full">
           <div className="mb-4">
-            <div className={`font-semibold mb-1 ${textColor}`}>
+            <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
               Winners Profile: Builder Score
             </div>
-            <div className={`text-xs ${descColor}`}>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400">
               Distribution of winners by builder score level
             </div>
           </div>
 
           <div
-            className={`flex flex-col md:flex-row items-center justify-center ${isSmallScreen ? "h-[380px]" : "h-[300px] "}`}
+            className={`flex flex-col items-center justify-center md:flex-row ${isSmallScreen ? "h-[380px]" : "h-[300px]"}`}
           >
-            <div className="w-full h-full">
+            <div className="h-full w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -175,11 +167,7 @@ export default function WinnersProfileChart({
                     verticalAlign={isSmallScreen ? "bottom" : "middle"}
                     align={isSmallScreen ? "center" : "right"}
                     formatter={(value, entry, index) => (
-                      <span
-                        className={
-                          isDarkMode ? "text-white" : "text-neutral-800"
-                        }
-                      >
+                      <span className="text-neutral-800 dark:text-white">
                         {value} ({builderScoreData[index]?.value})
                       </span>
                     )}
@@ -194,13 +182,13 @@ export default function WinnersProfileChart({
         </div>
       </div>
 
-      <div className={cardClass}>
-        <div className="w-full relative">
+      <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="relative w-full">
           <div className="mb-4">
-            <div className={`font-semibold mb-1 ${textColor}`}>
+            <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
               Winners Profile: Years of Experience
             </div>
-            <div className={`text-xs ${descColor}`}>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400">
               Distribution of winners by years of experience (GitHub vs.
               Onchain)
             </div>

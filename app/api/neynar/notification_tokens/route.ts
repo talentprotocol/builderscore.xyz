@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
 import {
+  calculateCumulativeData,
   fetchNotificationTokens,
   processNotificationTokensData,
-  calculateCumulativeData,
 } from "@/app/services/neynar";
 import {
+  NotificationToken,
   NotificationTokensApiResponse,
   NotificationTokensParams,
-  NotificationToken,
 } from "@/app/types/neynar";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,

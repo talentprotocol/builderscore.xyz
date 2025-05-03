@@ -1,21 +1,19 @@
 "use client";
 
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import HowToDrawer from "@/app/components/rewards/HowToDrawer";
+import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard";
 import { Button } from "@/app/components/ui/button";
-import { useUser } from "@/app/context/UserContext";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
-import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
-import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard";
-import { useTheme } from "@/app/context/ThemeContext";
+import { useUser } from "@/app/context/UserContext";
 
 export default function Actions() {
   const { talentProfile, hasGithubCredential } = useUser();
   const { selectedGrant } = useGrant();
   const { userLeaderboard } = useLeaderboard();
-  const { isDarkMode } = useTheme();
   return (
-    <div className="grid auto-cols-fr grid-flow-col gap-4 mt-3 w-full">
+    <div className="mt-3 grid w-full auto-cols-fr grid-flow-col gap-4">
       {!hasGithubCredential && (
         <MiniAppExternalLink
           href={
@@ -28,11 +26,7 @@ export default function Actions() {
         >
           <Button
             size="lg"
-            className={`bg-white hover:bg-neutral-100 border border-neutral-300 cursor-pointer w-full text-black ${
-              isDarkMode
-                ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-                : ""
-            }`}
+            className="w-full cursor-pointer border border-neutral-300 bg-white text-black hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
           >
             {talentProfile ? "Connect GitHub" : "Sign Up for Talent"}
           </Button>

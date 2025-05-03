@@ -1,14 +1,14 @@
 import { useTheme } from "@/app/context/ThemeContext";
-import { ReactNode } from "react";
 import { formatDate } from "@/app/lib/utils";
 import {
+  Activity,
   Award,
+  Code,
+  HelpCircle,
   UserCheck,
   Users,
-  Code,
-  Activity,
-  HelpCircle,
 } from "lucide-react";
+import { ReactNode } from "react";
 import { Tooltip } from "react-tooltip";
 
 interface Metrics {
@@ -34,18 +34,11 @@ interface CardData {
 
 export default function MetricsCards({ metrics }: MetricsCardsProps) {
   const { isDarkMode } = useTheme();
-  const cardClass = `p-4 rounded-lg ${
-    isDarkMode
-      ? "bg-neutral-800 border border-neutral-800"
-      : "bg-white border border-neutral-300"
-  } relative`;
 
   if (!metrics) {
     return (
-      <div className={`${cardClass} mb-6`}>
-        <div
-          className={`text-center py-3 ${isDarkMode ? "text-neutral-400" : "text-neutral-500"}`}
-        >
+      <div className="relative mb-6 rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
+        <div className="py-3 text-center text-neutral-500 dark:text-neutral-400">
           Metrics data is currently unavailable
         </div>
       </div>
@@ -59,7 +52,7 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       description: "This week",
       tooltip:
         "Builders who meet all three requirements: have a Basename identity, Human Checkmark verification, and Builder Score ≥ 40.",
-      icon: <Users className="w-4 h-4" />,
+      icon: <Users className="h-4 w-4" />,
     },
     {
       title: "Active Builders",
@@ -67,7 +60,7 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       description: "All time",
       tooltip:
         "Eligible builders who have contributed to public repositories or have activity in verified contracts deployed by them on Base within the past week.",
-      icon: <UserCheck className="w-4 h-4" />,
+      icon: <UserCheck className="h-4 w-4" />,
     },
     {
       title: "Rewarded Builders",
@@ -75,7 +68,7 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       description: "All time",
       tooltip:
         "Builders who received auto-rewards based on their verified contributions and Builder Score in a given week.",
-      icon: <Award className="w-4 h-4" />,
+      icon: <Award className="h-4 w-4" />,
     },
   ];
 
@@ -86,7 +79,7 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       description: "All time",
       tooltip:
         "Number of smart contracts deployed to Base mainnet by the user that have at least 10 unique wallets interacting with them.",
-      icon: <Activity className="w-4 h-4" />,
+      icon: <Activity className="h-4 w-4" />,
     },
     {
       title: "Builders with Deployed Smart Contracts",
@@ -94,44 +87,39 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       description: "All time",
       tooltip:
         "Total number of smart contracts the user has deployed to Base mainnet, regardless of activity level.",
-      icon: <Code className="w-4 h-4" />,
+      icon: <Code className="h-4 w-4" />,
     },
   ];
 
   const renderCard = (card: CardData, index: number) => (
-    <div key={index} className={cardClass}>
-      <div className="flex justify-between items-start mb-2">
-        <div
-          className={`text-xs pr-10 ${isDarkMode ? "text-neutral-400" : "text-neutral-500"}`}
-        >
+    <div
+      key={index}
+      className="relative rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800"
+    >
+      <div className="mb-2 flex items-start justify-between">
+        <div className="pr-10 text-xs text-neutral-500 dark:text-neutral-400">
           {card.title}
         </div>
-        <div
-          className={`absolute right-3.5 top-4 ${isDarkMode ? "text-neutral-300" : "text-neutral-600"}`}
-        >
+        <div className="absolute top-4 right-3.5 text-neutral-600 dark:text-neutral-300">
           {card.icon}
         </div>
       </div>
-      <div
-        className={`text-xl sm:text-2xl font-semibold mb-1 ${isDarkMode ? "text-white" : "text-neutral-900"}`}
-      >
+      <div className="mb-1 text-xl font-semibold text-neutral-900 sm:text-2xl dark:text-white">
         {card.value}
       </div>
-      <div
-        className={`text-xs ${isDarkMode ? "text-neutral-500" : "text-neutral-400"}`}
-      >
+      <div className="text-xs text-neutral-400 dark:text-neutral-500">
         {card.description}
       </div>
 
-      <div className="absolute bottom-2 right-2 text-xs">
+      <div className="absolute right-2 bottom-2 text-xs">
         <HelpCircle
-          className={`w-3.5 h-3.5 ${isDarkMode ? "text-neutral-500 hover:text-neutral-300" : "text-neutral-400 hover:text-neutral-600"}`}
+          className="h-3.5 w-3.5 text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300"
           data-tooltip-id={`tooltip-${index}`}
           data-tooltip-content={card.tooltip}
         />
         <Tooltip
           id={`tooltip-${index}`}
-          className={`text-xs z-50 max-w-52 ${isDarkMode ? "bg-neutral-800 border border-neutral-800" : "bg-white border border-neutral-300"}`}
+          className="z-50 max-w-52 rounded-lg border border-neutral-300 bg-white p-2.5 text-xs text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800 dark:text-white"
           noArrow={true}
           offset={5}
           style={{
@@ -148,16 +136,14 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
-        <div
-          className={`text-xs ml-1 ${isDarkMode ? "text-neutral-400" : "text-neutral-500"}`}
-        >
+      <div className="mb-3 flex items-center justify-between">
+        <div className="ml-1 text-xs text-neutral-500 dark:text-neutral-400">
           Last updated:{" "}
           {metrics.date ? formatDate(metrics.date) : "Date unavailable"}
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 mb-3">
+      <div className="mb-3 grid grid-cols-3 gap-3">
         {firstRowCards.map(renderCard)}
       </div>
 

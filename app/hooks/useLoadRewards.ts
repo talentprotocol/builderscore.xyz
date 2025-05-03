@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
-import { useParams } from "next/navigation";
-import { useSponsor } from "@/app/context/SponsorContext";
-import { getSponsors } from "@/app/services/sponsors";
-import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
 import { useGrant } from "@/app/context/GrantContext";
+import { useSponsor } from "@/app/context/SponsorContext";
+import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
 import { getGrants } from "@/app/services/grants";
+import { getSponsors } from "@/app/services/sponsors";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect } from "react";
 
 export function useLoadRewards() {
   const params = useParams();

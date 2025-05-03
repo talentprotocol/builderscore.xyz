@@ -1,9 +1,5 @@
 "use client";
 
-import { useGrant } from "@/app/context/GrantContext";
-import { useSponsor } from "@/app/context/SponsorContext";
-import { useTheme } from "@/app/context/ThemeContext";
-import { format } from "date-fns";
 import {
   Select,
   SelectContent,
@@ -11,25 +7,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
+import { useGrant } from "@/app/context/GrantContext";
+import { useSponsor } from "@/app/context/SponsorContext";
+import { format } from "date-fns";
 
 export default function SelectGrant() {
   const { grants, selectedGrant, setSelectedGrant, loadingGrants } = useGrant();
   const { selectedSponsor } = useSponsor();
-  const { isDarkMode } = useTheme();
 
   if (loadingGrants) {
     return (
       <Select disabled value={selectedGrant?.id?.toString() || "all"}>
-        <SelectTrigger
-          className={`
-          text-xs h-6 w-56 p-2 cursor-not-allowed
-          ${
-            isDarkMode
-              ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-              : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
-          }
-        `}
-        >
+        <SelectTrigger className="h-6 w-56 cursor-not-allowed border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
           <SelectValue placeholder="Loading..." />
         </SelectTrigger>
       </Select>
@@ -46,9 +35,7 @@ export default function SelectGrant() {
     if (selectedSponsor?.slug === "global") {
       return (
         <div className="flex items-start gap-2">
-          <span
-            className={isDarkMode ? "text-neutral-500" : "text-neutral-600"}
-          >
+          <span className="text-neutral-600 dark:text-neutral-500">
             {grant.sponsor.name}
           </span>
           <span>
@@ -72,35 +59,12 @@ export default function SelectGrant() {
         setSelectedGrant(grant);
       }}
     >
-      <SelectTrigger
-        className={`
-        text-xs h-6 w-56 p-2 cursor-pointer
-        ${
-          isDarkMode
-            ? "bg-neutral-900 hover:bg-neutral-800 border-neutral-300 text-white"
-            : "bg-white hover:bg-neutral-100 border-neutral-300 text-neutral-800"
-        }
-      `}
-      >
+      <SelectTrigger className="h-6 w-56 cursor-pointer border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
         <SelectValue placeholder="Select Grant" />
       </SelectTrigger>
-      <SelectContent
-        className={`
-        text-xs border-none
-        ${
-          isDarkMode ? "bg-neutral-800 text-white" : "bg-white text-neutral-800"
-        }
-      `}
-      >
+      <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
         <SelectItem
-          className={`
-            text-xs cursor-pointer 
-            ${
-              isDarkMode
-                ? "bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700"
-                : "bg-white hover:bg-neutral-100 focus:bg-neutral-100"
-            }
-          `}
+          className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
           value="all"
         >
           All Time
@@ -108,14 +72,7 @@ export default function SelectGrant() {
         {grants.map((grant) => (
           <SelectItem
             key={grant.id}
-            className={`
-              text-xs cursor-pointer 
-              ${
-                isDarkMode
-                  ? "bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700"
-                  : "bg-white hover:bg-neutral-100 focus:bg-neutral-100"
-              }
-            `}
+            className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
             value={grant.id.toString()}
           >
             {formatGrantOption(grant)}

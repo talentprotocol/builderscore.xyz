@@ -1,4 +1,4 @@
-import { TalentProfileResponse, APITalentProfile } from "@/app/types/talent";
+import { APITalentProfile, TalentProfileResponse } from "@/app/types/talent";
 
 export async function fetchUserByFid(
   fid: number,

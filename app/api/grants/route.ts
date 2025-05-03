@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { API_BASE_URL, ENDPOINTS, DEFAULT_HEADERS } from "@/app/config/api";
-import { GrantsResponse } from "@/app/types/grants";
+import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
+import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
-import { CACHE_TAGS, CACHE_60_MINUTES } from "@/app/lib/cache-utils";
+import { GrantsResponse } from "@/app/types/grants";
+import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 

@@ -1,7 +1,7 @@
 import { Sponsor, SponsorsResponse } from "@/app/types/sponsors";
 
 export async function getSponsors(
-  perPage?: number
+  perPage?: number,
 ): Promise<SponsorsResponse | null> {
   const params = new URLSearchParams();
   if (perPage) {

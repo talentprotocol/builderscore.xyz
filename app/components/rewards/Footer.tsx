@@ -1,36 +1,24 @@
 "use client";
 
-import { useTheme } from "@/app/context/ThemeContext";
-import { useSponsor } from "@/app/context/SponsorContext";
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
+import { useSponsor } from "@/app/context/SponsorContext";
 
 export function Footer() {
-  const { isDarkMode } = useTheme();
   const { selectedSponsor } = useSponsor();
 
   return (
-    <div className="py-6 flex flex-col gap-0 justify-center">
-      <p
-        className={`text-center ${
-          isDarkMode ? "text-neutral-500" : "text-neutral-600"
-        } text-xs`}
-      >
+    <div className="flex flex-col justify-center gap-0 py-6">
+      <p className="text-center text-xs text-neutral-600 dark:text-neutral-500">
         {selectedSponsor?.slug !== "talent-protocol" &&
           `Sponsored by ${selectedSponsor?.name} and`}{" "}
         Powered by Talent Protocol
       </p>
 
-      <p
-        className={`text-center ${
-          isDarkMode ? "text-neutral-500" : "text-neutral-600"
-        } text-xs`}
-      >
+      <p className="text-center text-xs text-neutral-600 dark:text-neutral-500">
         © {new Date().getFullYear()}{" "}
         <MiniAppExternalLink
           href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions"
-          className={`text-center text-xs underline ${
-            isDarkMode ? "text-neutral-500" : "text-neutral-600"
-          }`}
+          className="text-center text-xs text-neutral-600 underline dark:text-neutral-500"
         >
           Terms and Conditions
         </MiniAppExternalLink>
