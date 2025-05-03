@@ -11,10 +11,12 @@ import { useUser } from "@/app/context/UserContext";
 export default function Actions() {
   const { loadingUser, talentProfile, github } = useUser();
   const { selectedGrant } = useGrant();
-  const { userLeaderboard } = useLeaderboard();
+  const { isLoading, userLeaderboard } = useLeaderboard();
+
+  console.log("userLeaderboard", userLeaderboard);
 
   return (
-    <div className="mt-3 grid w-full auto-cols-fr grid-flow-col gap-4">
+    <div className="mt-3 grid w-full auto-cols-fr grid-flow-col gap-2 sm:gap-4">
       {loadingUser ? (
         <Button
           size="lg"
@@ -36,16 +38,24 @@ export default function Actions() {
             >
               <Button
                 size="lg"
-                className="w-full cursor-pointer border border-neutral-300 bg-white text-black hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+                className="w-full cursor-pointer border border-neutral-300 bg-white text-xs text-black hover:bg-neutral-100 sm:text-sm dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
               >
-                {talentProfile ? "Connect GitHub" : "Sign Up for Talent"}
+                <span className="hidden sm:block">
+                  {talentProfile ? "Connect GitHub" : "Sign Up for Talent"}
+                </span>
+                <span className="block sm:hidden">
+                  {talentProfile ? "GitHub" : "Talent Protocol"}
+                </span>
               </Button>
             </MiniAppExternalLink>
           )}
 
           <HowToDrawer />
 
-          {userLeaderboard &&
+          {!isLoading &&
+            userLeaderboard &&
+            // userLeaderboard.reward_amount &&
+            // parseFloat(userLeaderboard.reward_amount) > 0 &&
             selectedGrant &&
             ((selectedGrant.tracked && selectedGrant.track_type === "final") ||
               !selectedGrant.tracked) && (

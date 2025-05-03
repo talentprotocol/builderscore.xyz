@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <Header />
       <Actions />
-      {/* <LeaderboardWrapper /> */}
+      <LeaderboardWrapper />
     </>
   );
 }

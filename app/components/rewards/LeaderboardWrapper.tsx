@@ -8,25 +8,23 @@ import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
-import { getLeaderboards } from "@/app/services/leaderboards";
-import {
-  LeaderboardEntry,
-  LeaderboardResponse,
-} from "@/app/types/leaderboards";
+import { LeaderboardEntry } from "@/app/types/leaderboards";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function LeaderboardWrapper() {
-  const { loadingSponsors, selectedSponsor } = useSponsor();
+  const { loadingSponsors } = useSponsor();
   const { selectedGrant } = useGrant();
   const { talentProfile } = useUser();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardResponse>();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const { userLeaderboard } = useLeaderboard();
+  const {
+    isLoading,
+    isLoadingMore,
+    error,
+    leaderboardData,
+    hasMore,
+    userLeaderboard,
+    handleLoadMore,
+  } = useLeaderboard();
   const [selectedBuilder, setSelectedBuilder] =
     useState<LeaderboardEntry | null>(null);
 
@@ -38,64 +36,6 @@ export default function LeaderboardWrapper() {
     reward_amount: null,
     reward_transaction_hash: null,
     summary: null,
-  };
-
-  const fetchLeaderboard = async (
-    page: number = 1,
-    append: boolean = false,
-  ) => {
-    try {
-      const loadingState = append ? setIsLoadingMore : setIsLoading;
-      loadingState(true);
-      setError(null);
-
-      const response = await getLeaderboards({
-        per_page: 20,
-        page,
-        sponsor_slug:
-          selectedSponsor?.slug === "global"
-            ? undefined
-            : selectedSponsor?.slug,
-        grant_id: selectedGrant?.id?.toString(),
-      });
-
-      if (response) {
-        setLeaderboardData((prevData) => {
-          if (append && prevData) {
-            return {
-              ...response,
-              users: [...prevData.users, ...response.users],
-            };
-          }
-          return response;
-        });
-
-        setHasMore(
-          response.pagination.current_page < response.pagination.last_page,
-        );
-      }
-    } catch (err) {
-      setError(`Failed to fetch leaderboard data: ${err}`);
-    } finally {
-      const loadingState = append ? setIsLoadingMore : setIsLoading;
-      loadingState(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!loadingSponsors) {
-      setCurrentPage(1);
-      fetchLeaderboard();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsor, selectedGrant, loadingSponsors]);
-
-  const handleLoadMore = () => {
-    if (!isLoadingMore && hasMore) {
-      const nextPage = currentPage + 1;
-      setCurrentPage(nextPage);
-      fetchLeaderboard(nextPage, true);
-    }
   };
 
   const isIntermediateGrant = selectedGrant?.track_type === "intermediate";

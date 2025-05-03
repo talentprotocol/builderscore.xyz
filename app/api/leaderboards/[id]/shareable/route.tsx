@@ -129,16 +129,12 @@ export async function GET(
               <div tw="flex relative">
                 <div tw="flex flex-col items-center justify-center w-[420px] h-[420px] overflow-hidden rounded-full border-[5px] border-[#C8DBFE]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={image_url}
-                    alt="Image URL"
-                    tw="h-full object-cover"
-                  />
+                  <img src={image_url} alt="Image URL" tw="h-full" />
                 </div>
 
                 <div tw="flex flex-col items-center justify-center absolute top-[-30px] left-[-30px] bg-[#C8DBFE] rounded-full p-[20px]">
                   <p
-                    tw="text-[50px] font-bold text-[#120A36] text-center align-middle"
+                    tw="text-[50px] font-bold text-[#120A36] text-center"
                     style={{ fontFamily: "DM Mono Medium" }}
                   >
                     #{ranking}

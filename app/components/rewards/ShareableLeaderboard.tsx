@@ -94,7 +94,7 @@ export default function ShareableLeaderboard({
     <>
       <Button
         size="lg"
-        className="w-full cursor-pointer border border-neutral-300 bg-white text-black hover:bg-neutral-100 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+        className="w-full cursor-pointer border border-neutral-300 bg-white text-xs text-black hover:bg-neutral-100 sm:text-sm dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
         onClick={handleShare}
       >
         <ShareIcon />

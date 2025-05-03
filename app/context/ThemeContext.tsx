@@ -2,6 +2,12 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+declare global {
+  interface Window {
+    __THEME_PREFERENCE?: string;
+  }
+}
+
 interface ThemeContextType {
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
@@ -14,9 +20,10 @@ const themeScript = `
   (function() {
     try {
       const storedTheme = localStorage.getItem('theme');
-      const isDark = storedTheme === 'light' ? false : true;
-      document.documentElement.classList.toggle('dark', isDark);
-    } catch (e) {}
+      window.__THEME_PREFERENCE = storedTheme || 'dark';
+    } catch (e) {
+      window.__THEME_PREFERENCE = 'dark';
+    }
   })()
 `;
 
@@ -25,12 +32,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isThemeLoaded, setIsThemeLoaded] = useState(false);
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) {
-      setIsDarkMode(storedTheme === "dark");
-    } else {
-      setIsDarkMode(true);
-    }
+    const preference = window.__THEME_PREFERENCE || "dark";
+    setIsDarkMode(preference === "dark");
     setIsThemeLoaded(true);
   }, []);
 

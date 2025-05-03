@@ -8,7 +8,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
   user: {
-    fid: 856355,
+    fid: 374478,
     username: "simao",
     displayName: "Simão",
   },
@@ -83,15 +83,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     const fetchUserData = async () => {
       try {
-        console.log("fetching talent profile data");
         const response = await fetchUserByFid(frameContext.user.fid);
         setTalentProfile(response.profile as APITalentProfile | null);
         setGithub(response.github || false);
         setBasename(response.basename || null);
         setBuilderScore(response.builderScore || null);
-        console.log("finished fetching talent profile data");
       } catch {
-        console.log("error fetching talent profile data");
         setTalentProfile(null);
         setGithub(false);
         setBasename(null);

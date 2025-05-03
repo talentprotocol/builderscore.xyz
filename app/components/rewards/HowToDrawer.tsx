@@ -45,14 +45,15 @@ export default function HowToDrawer() {
       <DrawerTrigger asChild>
         <Button
           size="lg"
-          className="cursor-pointer border border-neutral-300 bg-white text-black hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+          className="cursor-pointer border border-neutral-300 bg-white text-xs text-black hover:bg-neutral-100 sm:text-sm dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
         >
           {allConditionsMet ? (
             <div className="flex items-center gap-2">
               <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-xs font-medium text-green-500 dark:bg-green-500 dark:text-white">
                 <Check className="h-3 w-3" />
               </div>
-              Eligible to Earn
+              <span className="hidden sm:block">Eligible to Earn</span>
+              <span className="block sm:hidden">Eligible</span>
             </div>
           ) : (
             "How to Earn"
