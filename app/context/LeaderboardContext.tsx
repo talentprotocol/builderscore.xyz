@@ -24,11 +24,11 @@ interface LeaderboardContextType {
   setUserLeaderboard: (leaderboard: LeaderboardEntry | null) => void;
   showUserLeaderboard: boolean;
   toggleUserLeaderboard: () => void;
-  leaderboardData: LeaderboardResponse | undefined;
+  leaderboardData: LeaderboardResponse | null;
   setLeaderboardData: (
     data:
       | LeaderboardResponse
-      | ((prevData: LeaderboardResponse | undefined) => LeaderboardResponse),
+      | ((prevData: LeaderboardResponse | null) => LeaderboardResponse),
   ) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;

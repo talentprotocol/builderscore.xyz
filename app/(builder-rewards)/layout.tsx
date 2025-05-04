@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Navbar from "@/app/components/Navbar";
 import { Footer } from "@/app/components/rewards/Footer";
 import RewardsStatus from "@/app/components/rewards/RewardsStatus";
@@ -7,6 +8,9 @@ import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
 import { baseMetadata, celoMetadata } from "@/app/lib/constants";
 import { Metadata } from "next";
 import { headers } from "next/headers";
+=======
+import type { Metadata } from "next";
+>>>>>>> f308ef6 (Improves layouts for SSR.)
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
   const subdomain = headersAsObject["x-current-subdomain"];
 
+<<<<<<< HEAD
   let metadata;
 
   switch (subdomain) {
@@ -37,11 +42,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return metadata;
 }
 
+=======
+>>>>>>> f308ef6 (Improves layouts for SSR.)
 export default async function BuilderRewardsLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+<<<<<<< HEAD
   return (
     <GrantProvider>
       <LeaderboardProvider>
@@ -59,4 +67,7 @@ export default async function BuilderRewardsLayout({
       </LeaderboardProvider>
     </GrantProvider>
   );
+=======
+  return <>{children}</>;
+>>>>>>> f308ef6 (Improves layouts for SSR.)
 }
