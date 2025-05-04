@@ -2,9 +2,10 @@
 
 import { useUser } from "@/app/context/UserContext";
 import { X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
+import FarcasterLogo from "./logos/FarcasterLogo";
 
 export default function MiniAppBanner() {
   const [isVisible, setIsVisible] = useState(true);
@@ -35,12 +36,7 @@ export default function MiniAppBanner() {
         >
           <X className="h-4 w-4" />
         </button>
-        <Image
-          src="/images/farcaster_logo_purple.svg"
-          alt="Warpcast"
-          width={36}
-          height={36}
-        />
+        <FarcasterLogo height={36} width={36} color="#855DCD" />
         <div>
           <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
             Add Builder Rewards App

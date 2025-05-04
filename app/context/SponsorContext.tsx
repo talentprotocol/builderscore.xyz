@@ -1,6 +1,7 @@
 "use client";
 
-import { useTheme } from "@/app/context/ThemeContext";
+import { SPONSORS } from "@/app/lib/constants";
+import { getSponsorThemeClassName, getSponsorTicker } from "@/app/lib/theme";
 import { Sponsor } from "@/app/types/sponsors";
 import {
   ReactNode,
@@ -24,18 +25,10 @@ interface SponsorContextType {
 const SponsorContext = createContext<SponsorContextType | undefined>(undefined);
 
 export function SponsorProvider({ children }: { children: ReactNode }) {
-  const { setIsDarkMode, isThemeLoaded } = useTheme();
   const [loadingSponsors, setLoadingSponsors] = useState(true);
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
   const [sponsorTokenTicker, setSponsorTokenTicker] = useState<string>("");
-
-  useEffect(() => {
-    if (isThemeLoaded && selectedSponsor) {
-      setIsDarkMode(selectedSponsor.slug !== "base");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsor, isThemeLoaded]);
 
   const setSelectedSponsorFromSlug = (sponsorSlug: string) => {
     setSelectedSponsor(
@@ -44,18 +37,19 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    let ticker;
-    switch (selectedSponsor?.slug) {
-      case "base":
-        ticker = "ETH";
-        break;
-      case "talent-protocol":
-        ticker = "$TALENT";
-        break;
-      default:
-        ticker = "Tokens";
+    if (selectedSponsor) {
+      const ticker = getSponsorTicker(selectedSponsor?.slug);
+      setSponsorTokenTicker(ticker);
+
+      for (const sponsor of Object.keys(SPONSORS)) {
+        document.documentElement.classList.remove(
+          SPONSORS[sponsor as keyof typeof SPONSORS].themeClassName,
+        );
+      }
+
+      const themeClassName = getSponsorThemeClassName(selectedSponsor.slug);
+      document.documentElement.classList.add(themeClassName);
     }
-    setSponsorTokenTicker(ticker);
   }, [selectedSponsor]);
 
   return (

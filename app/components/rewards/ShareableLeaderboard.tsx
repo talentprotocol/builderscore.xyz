@@ -73,7 +73,7 @@ export default function ShareableLeaderboard({
       : `Powered by @TalentProtocol`;
 
   const url = `/api/leaderboards/${id}/shareable?${params.toString()}`;
-  const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/rewards/share/${grant_id}/${id}`;
+  const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/${sponsor_slug}/share/${grant_id}/${id}`;
 
   const handleShare = async () => {
     if (frameContext) {

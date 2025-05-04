@@ -31,11 +31,11 @@ interface LeaderboardContextType {
   setUserLeaderboard: (leaderboard: LeaderboardEntry | null) => void;
   showUserLeaderboard: boolean;
   toggleUserLeaderboard: () => void;
-  leaderboardData: LeaderboardResponse | undefined;
+  leaderboardData: LeaderboardResponse | null;
   setLeaderboardData: (
     data:
       | LeaderboardResponse
-      | ((prevData: LeaderboardResponse | undefined) => LeaderboardResponse),
+      | ((prevData: LeaderboardResponse | null) => LeaderboardResponse),
   ) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
@@ -60,7 +60,8 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
   const [userLeaderboard, setUserLeaderboard] =
     useState<LeaderboardEntry | null>(null);
   const [showUserLeaderboard, setShowUserLeaderboard] = useState(true);
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardResponse>();
+  const [leaderboardData, setLeaderboardData] =
+    useState<LeaderboardResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,7 +73,7 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (selectedGrant) {
       setUserLeaderboard(null);
-      setLeaderboardData(undefined);
+      setLeaderboardData(null);
     }
   }, [selectedGrant]);
 

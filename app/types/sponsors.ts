@@ -1,3 +1,15 @@
+import { LogoProps } from "@/app/types/svg";
+import { ComponentType } from "react";
+
+export interface SponsorInfo {
+  slug: string;
+  name: string;
+  themeClassName: string;
+  ticker: string;
+  logo: ComponentType<LogoProps>;
+  color: string;
+}
+
 export interface Sponsor {
   id: number;
   name: string;
