@@ -31,15 +31,13 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
   const [sponsorTokenTicker, setSponsorTokenTicker] = useState<string>("");
 
   useEffect(() => {
-    if (isThemeLoaded && selectedSponsor) {
-      setIsDarkMode(selectedSponsor.slug === "talent-protocol");
+    if (selectedSponsor) {
       document.documentElement.setAttribute(
         "data-sponsor",
         selectedSponsor.slug,
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsor, isThemeLoaded]);
+  }, [selectedSponsor]);
 
   const setSelectedSponsorFromSlug = (sponsorSlug: string) => {
     setSelectedSponsor(

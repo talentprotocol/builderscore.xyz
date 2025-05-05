@@ -15,7 +15,7 @@ export default function IndexLayout({
   return (
     <MainLayout themeClassName="dark">
       <MiniAppBanner />
-      <div className="mx-auto flex min-h-dvh max-w-3xl flex-col px-4 py-4">
+      <div className="mx-auto flex min-h-dvh flex-col px-4 py-4">
         <Navbar title={metadata.title as string} />
         <main className="flex h-full flex-col">{children}</main>
       </div>

@@ -24,7 +24,7 @@ export default async function RewardsLayout({
       <SponsorProvider>
         <GrantProvider>
           <LeaderboardProvider>
-            <MiniAppBanner />
+            <MiniAppBanner className="max-w-3xl" />
             <div className="mx-auto flex min-h-dvh max-w-3xl flex-col px-4 py-4">
               {process.env.NODE_ENV === "development" && (
                 <>

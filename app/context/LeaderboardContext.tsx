@@ -53,7 +53,8 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
   const [userLeaderboard, setUserLeaderboard] =
     useState<LeaderboardEntry | null>(null);
   const [showUserLeaderboard, setShowUserLeaderboard] = useState(true);
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardResponse>();
+  const [leaderboardData, setLeaderboardData] =
+    useState<LeaderboardResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
