@@ -1,12 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  rewrites: async () => [
-    {
-      source: "/index/:path*",
-      destination: "/index-dashboard/:path*",
-    },
-  ],
   images: {
     remotePatterns: [
       {
