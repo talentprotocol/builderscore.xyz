@@ -3,9 +3,6 @@ import MiniAppBanner from "@/app/components/MiniAppBanner";
 import Navbar from "@/app/components/Navbar";
 import { Metadata } from "next";
 
-// We use index-dashboard as NextJS doesn't support /index as a valid path
-// /index-dashboard is rewritten to /index in next.config.ts
-
 export const metadata: Metadata = {
   title: "Builder Index",
 };
