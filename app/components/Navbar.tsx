@@ -11,16 +11,16 @@ export default function Navbar({
   sponsor?: string;
   title: string;
 }) {
-  const currentSponsor = sponsor
-    ? SPONSORS[sponsor]
+  const currentSponsor = SPONSORS[sponsor as keyof typeof SPONSORS]
+    ? SPONSORS[sponsor as keyof typeof SPONSORS]
     : SPONSORS["talent-protocol"];
 
-  const Logo = currentSponsor.logo;
+  const Logo = currentSponsor?.logo;
 
   return (
     <nav className="mb-3 flex items-center justify-between">
       <Link href="/" className="ml-1 flex items-center gap-2">
-        <Logo height={15} color={currentSponsor.color} />
+        <Logo height={15} color={currentSponsor?.color} />
         <h1 className="text-foreground font-semibold whitespace-nowrap">
           {title}
         </h1>
