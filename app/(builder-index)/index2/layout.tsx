@@ -4,7 +4,7 @@ import Navbar from "@/app/components/Navbar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Builder Index 2",
+  title: "Builder Index",
 };
 
 export default function BuilderIndexLayout({
