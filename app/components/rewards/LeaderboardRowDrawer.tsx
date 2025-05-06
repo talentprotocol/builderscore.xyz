@@ -13,7 +13,7 @@ import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatNumber,
 } from "@/app/lib/utils";
-import { LeaderboardEntry } from "@/app/types/leaderboards";
+import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Image from "next/image";

@@ -3,7 +3,7 @@
 import {
   LeaderboardEntry,
   LeaderboardResponse,
-} from "@/app/types/leaderboards";
+} from "@/app/types/rewards/leaderboards";
 import { ReactNode, createContext, useContext, useState } from "react";
 
 type ImplementableFetchLeaderboard = ((

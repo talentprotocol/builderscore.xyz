@@ -1,8 +1,8 @@
 "use client";
 
 import { fetchUserByFid } from "@/app/services/talent";
-import { FrameContext } from "@/app/types/farcaster";
-import { APITalentProfile, TalentBuilderScore } from "@/app/types/talent";
+import { FrameContext } from "@/app/types/rewards/farcaster";
+import { TalentBuilderScore, TalentProfileApi } from "@/app/types/talent";
 import { sdk } from "@farcaster/frame-sdk";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -21,7 +21,7 @@ const DEV_FRAME_CONTEXT: FrameContext = {
 interface UserContextType {
   loadingUser: boolean;
 
-  talentProfile: APITalentProfile | null;
+  talentProfile: TalentProfileApi | null;
   frameContext: FrameContext | undefined;
 
   github: boolean;
@@ -46,7 +46,7 @@ const UserContext = createContext<UserContextType>({
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [loadingUser, setLoadingUser] = useState(true);
-  const [talentProfile, setTalentProfile] = useState<APITalentProfile | null>(
+  const [talentProfile, setTalentProfile] = useState<TalentProfileApi | null>(
     null,
   );
   const [frameContext, setFrameContext] = useState<FrameContext>();
@@ -90,7 +90,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const fetchUserData = async () => {
       try {
         const response = await fetchUserByFid(frameContext.user.fid);
-        setTalentProfile(response.profile as APITalentProfile | null);
+        setTalentProfile(response.profile as TalentProfileApi | null);
         setGithub(response.github || false);
         setBasename(response.basename || null);
         setBuilderScore(response.builderScore || null);

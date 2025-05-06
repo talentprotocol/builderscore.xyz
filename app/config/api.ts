@@ -12,9 +12,14 @@ export const ENDPOINTS = {
     socials: "/socials",
     profile: "/profile",
     builderScore: "/score",
+<<<<<<< HEAD
     accounts: "/accounts",
     credentials: "/credentials",
     credentialsDatapoints: "/data_points",
+=======
+    searchProfiles: "/search/advanced/profiles",
+    statsDaily: "/stats/daily",
+>>>>>>> 80ed666 (Restructure files.)
   },
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",

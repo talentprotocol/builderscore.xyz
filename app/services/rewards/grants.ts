@@ -1,4 +1,4 @@
-import { Grant, GrantParams, GrantsResponse } from "@/app/types/grants";
+import { Grant, GrantParams, GrantsResponse } from "@/app/types/rewards/grants";
 
 export async function getGrants(
   params?: GrantParams,

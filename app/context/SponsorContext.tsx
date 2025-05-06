@@ -2,7 +2,7 @@
 
 import { SPONSORS } from "@/app/lib/constants";
 import { getSponsorThemeClassName, getSponsorTicker } from "@/app/lib/theme";
-import { Sponsor } from "@/app/types/sponsors";
+import { Sponsor } from "@/app/types/rewards/sponsors";
 import {
   ReactNode,
   createContext,

@@ -4,11 +4,11 @@ import { useTheme } from "@/app/context/ThemeContext";
 import {
   GoogleAnalyticsActiveUserData,
   GoogleAnalyticsApiResponse,
-} from "@/app/types/googleAnalytics";
+} from "@/app/types/rewards/googleAnalytics";
 import {
   CumulativeNotificationData,
   NotificationTokensApiResponse,
-} from "@/app/types/neynar";
+} from "@/app/types/rewards/neynar";
 import { useEffect, useState } from "react";
 import {
   CartesianGrid,

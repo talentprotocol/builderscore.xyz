@@ -1,7 +1,6 @@
+import { CSVRow, parseCSV } from "@/app/lib/csv-parser";
 import fs from "fs";
 import path from "path";
-
-import { CSVRow, parseCSV } from "../lib/csv-parser";
 
 const dataDir = path.join(process.cwd(), "app/data/base");
 

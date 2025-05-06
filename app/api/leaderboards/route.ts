@@ -1,7 +1,7 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
-import { LeaderboardResponse } from "@/app/types/leaderboards";
+import { LeaderboardResponse } from "@/app/types/rewards/leaderboards";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";

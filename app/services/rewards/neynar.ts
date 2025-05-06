@@ -9,7 +9,7 @@ import {
   NotificationTokenData,
   NotificationTokensParams,
   NotificationTokensResponse,
-} from "@/app/types/neynar";
+} from "@/app/types/rewards/neynar";
 
 export async function fetchNotificationTokens(
   params: NotificationTokensParams = {},

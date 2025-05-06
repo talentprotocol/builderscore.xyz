@@ -2,7 +2,7 @@ import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import {
   LeaderboardEntry,
   LeaderboardResponse,
-} from "@/app/types/leaderboards";
+} from "@/app/types/rewards/leaderboards";
 import { useCallback, useEffect } from "react";
 
 export default function Leaderboard({

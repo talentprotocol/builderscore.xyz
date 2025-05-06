@@ -1,4 +1,4 @@
-import { APITalentProfile, TalentProfileResponse } from "@/app/types/talent";
+import { TalentProfileApi, TalentProfileResponse } from "@/app/types/talent";
 
 export async function fetchUserByFid(
   fid: number,
@@ -18,7 +18,7 @@ export async function fetchUserByFid(
 
 export interface ProfileLookupResponse {
   profile:
-    | (APITalentProfile & {
+    | (TalentProfileApi & {
         ens?: string;
         onchain_since?: string;
       })
