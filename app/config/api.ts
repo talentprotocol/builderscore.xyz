@@ -11,6 +11,8 @@ export const ENDPOINTS = {
     socials: "/socials",
     profile: "/profile",
     builderScore: "/score",
+    searchProfiles: "/search/advanced/profiles",
+    statsDaily: "/stats/daily",
   },
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",

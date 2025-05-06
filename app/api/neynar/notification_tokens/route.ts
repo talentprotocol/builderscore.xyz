@@ -2,12 +2,12 @@ import {
   calculateCumulativeData,
   fetchNotificationTokens,
   processNotificationTokensData,
-} from "@/app/services/neynar";
+} from "@/app/services/rewards/neynar";
 import {
   NotificationToken,
   NotificationTokensApiResponse,
   NotificationTokensParams,
-} from "@/app/types/neynar";
+} from "@/app/types/rewards/neynar";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

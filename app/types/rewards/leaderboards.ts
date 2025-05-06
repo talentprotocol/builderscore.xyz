@@ -1,4 +1,4 @@
-import { APITalentProfile, TalentProfile } from "@/app/types/talent";
+import { TalentProfile, TalentProfileApi } from "@/app/types/talent";
 
 export interface LeaderboardEntry {
   id: number;
@@ -7,7 +7,7 @@ export interface LeaderboardEntry {
   reward_amount: string | null;
   reward_transaction_hash: string | null;
   summary: string | null;
-  profile: TalentProfile | APITalentProfile;
+  profile: TalentProfile | TalentProfileApi;
 }
 
 export interface LeaderboardPagination {

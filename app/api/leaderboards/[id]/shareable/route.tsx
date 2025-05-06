@@ -2,8 +2,8 @@ import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
 import { formatDateRange, formatNumber } from "@/app/lib/utils";
-import { Grant } from "@/app/types/grants";
-import { LeaderboardEntry } from "@/app/types/leaderboards";
+import { Grant } from "@/app/types/rewards/grants";
+import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { ImageResponse } from "@vercel/og";
 import { NextRequest, NextResponse } from "next/server";
 

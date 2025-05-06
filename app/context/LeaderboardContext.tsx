@@ -4,7 +4,7 @@ import { useGrant } from "@/app/context/GrantContext";
 import {
   LeaderboardEntry,
   LeaderboardResponse,
-} from "@/app/types/leaderboards";
+} from "@/app/types/rewards/leaderboards";
 import {
   ReactNode,
   createContext,

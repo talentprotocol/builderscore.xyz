@@ -1,7 +1,7 @@
 "use client";
 
 import { useSponsor } from "@/app/context/SponsorContext";
-import { Grant } from "@/app/types/grants";
+import { Grant } from "@/app/types/rewards/grants";
 import {
   ReactNode,
   createContext,

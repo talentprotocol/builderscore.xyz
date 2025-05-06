@@ -1,7 +1,7 @@
 import {
   GoogleAnalyticsActiveUserData,
   GoogleAnalyticsApiResponse,
-} from "@/app/types/googleAnalytics";
+} from "@/app/types/rewards/googleAnalytics";
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import { NextResponse } from "next/server";
 

@@ -1,4 +1,4 @@
-import { Sponsor, SponsorsResponse } from "@/app/types/sponsors";
+import { Sponsor, SponsorsResponse } from "@/app/types/rewards/sponsors";
 
 export async function getSponsors(
   perPage?: number,

@@ -1,6 +1,6 @@
 import BaseLogo from "@/app/components/logos/BaseLogo";
 import TalentProtocolLogo from "@/app/components/logos/TalentProtocolLogo";
-import { SponsorInfo } from "@/app/types/sponsors";
+import { SponsorInfo } from "@/app/types/rewards/sponsors";
 
 export const SPONSORS: Record<string, SponsorInfo> = {
   base: {

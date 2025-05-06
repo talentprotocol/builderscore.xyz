@@ -1,7 +1,7 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
-import { APITalentProfile, TalentSocialsResponse } from "@/app/types/talent";
+import { TalentProfileApi, TalentSocialsResponse } from "@/app/types/talent";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
     );
 
     if (farcasterSocial) {
-      const matchingProfile: APITalentProfile = profileData.profile;
+      const matchingProfile: TalentProfileApi = profileData.profile;
 
       const hasGithubCredential = socialsData.socials.some(
         (social: { source: string }) => social.source === "github",

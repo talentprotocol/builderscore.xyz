@@ -8,7 +8,7 @@ import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
-import { LeaderboardEntry } from "@/app/types/leaderboards";
+import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { format } from "date-fns";
 import { useState } from "react";
 

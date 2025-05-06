@@ -5,12 +5,12 @@ import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
 import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
-import { getGrants } from "@/app/services/grants";
+import { getGrants } from "@/app/services/rewards/grants";
 import {
   getLeaderboardEntry,
   getLeaderboards,
-} from "@/app/services/leaderboards";
-import { getSponsors } from "@/app/services/sponsors";
+} from "@/app/services/rewards/leaderboards";
+import { getSponsors } from "@/app/services/rewards/sponsors";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 

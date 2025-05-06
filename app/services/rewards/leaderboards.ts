@@ -2,7 +2,7 @@ import {
   LeaderboardEntry,
   LeaderboardParams,
   LeaderboardResponse,
-} from "@/app/types/leaderboards";
+} from "@/app/types/rewards/leaderboards";
 
 export async function getLeaderboards(
   params?: LeaderboardParams,

@@ -9,7 +9,7 @@ import {
 } from "@/app/components/ui/select";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useHistoryListener } from "@/app/hooks/useHistoryListener";
-import { Sponsor } from "@/app/types/sponsors";
+import { Sponsor } from "@/app/types/rewards/sponsors";
 
 export default function SelectSponsor() {
   const {
