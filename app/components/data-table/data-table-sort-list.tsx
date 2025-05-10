@@ -83,6 +83,8 @@ export function DataTableSortList<TData>({
     };
   }, [sorting, table]);
 
+  console.log(sorting);
+
   const onSortAdd = React.useCallback(() => {
     const firstColumn = columns[0];
     if (!firstColumn) return;

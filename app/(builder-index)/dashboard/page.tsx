@@ -1,28 +1,37 @@
 import { ProfilesTable } from "@/app/components/index/ProfilesTable";
 import { getValidFilters } from "@/app/lib/data-table/data-table";
 import { filterColumns } from "@/app/lib/data-table/filter-columns";
+import { transformSortingForApi } from "@/app/lib/data-table/parsers";
 import { searchParamsCache } from "@/app/lib/data-table/validations";
 import { searchProfiles } from "@/app/services/index/search";
+import type { SearchParams } from "@/app/types/index";
 import { Suspense } from "react";
 
 interface PageProps {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<SearchParams>;
 }
 
-export default async function Page({ searchParams }: PageProps) {
-  const search = searchParamsCache.parse(searchParams);
+export default async function Page(props: PageProps) {
+  const urlSearchParams = await props.searchParams;
+  const search = searchParamsCache.parse(urlSearchParams);
+
   const validFilters = getValidFilters(search.filters);
-  const query = filterColumns({
+  const queryFilters = filterColumns({
     filters: validFilters,
     joinOperator: search.joinOperator,
   });
 
-  const initialData = await searchProfiles({
+  const searchParams = {
     page: search.page,
     per_page: search.perPage,
-    query,
-    sort: search.sort,
-  });
+    sort: transformSortingForApi(search.sort),
+    query: {
+      ...search.filters,
+      ...queryFilters,
+    },
+  };
+
+  const initialData = await searchProfiles(searchParams);
 
   return (
     <div className="w-full">

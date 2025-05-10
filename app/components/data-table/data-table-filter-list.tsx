@@ -465,7 +465,7 @@ function DataTableFilterItem<TData>({
                     <CommandItem
                       key={column.id}
                       value={column.id}
-                      onSelect={(value: Extract<keyof TData, string>) => {
+                      onSelect={(value: string) => {
                         onFilterUpdate(filter.filterId, {
                           id: value as Extract<keyof TData, string>,
                           variant: column.columnDef.meta?.variant ?? "text",

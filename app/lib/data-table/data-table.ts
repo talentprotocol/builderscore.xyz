@@ -62,8 +62,10 @@ export function getDefaultFilterOperator(filterVariant: FilterVariant) {
 }
 
 export function getValidFilters<TData>(
-  filters: ExtendedColumnFilter<TData>[],
+  filters?: ExtendedColumnFilter<TData>[],
 ): ExtendedColumnFilter<TData>[] {
+  if (!filters) return [];
+
   return filters.filter(
     (filter) =>
       filter.operator === "isEmpty" ||

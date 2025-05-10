@@ -47,6 +47,29 @@ export const getSortingStateParser = <TData>(
   });
 };
 
+export const transformSortingForApi = <TData>(
+  sorting: ExtendedColumnSort<TData>[],
+) => {
+  if (!sorting.length) return {};
+
+  const result: Record<string, { order: string; scorer?: string }> = {};
+
+  sorting.forEach((sortItem) => {
+    if (sortItem.id === "builder_score") {
+      result.score = {
+        order: sortItem.desc ? "desc" : "asc",
+        scorer: "Builder Score",
+      };
+    } else {
+      result[sortItem.id] = {
+        order: sortItem.desc ? "desc" : "asc",
+      };
+    }
+  });
+
+  return result;
+};
+
 const filterItemSchema = z.object({
   id: z.string(),
   value: z.union([z.string(), z.array(z.string())]),

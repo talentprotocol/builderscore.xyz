@@ -4,53 +4,27 @@ import { DataTable } from "@/app/components/data-table/data-table";
 import { DataTableAdvancedToolbar } from "@/app/components/data-table/data-table-advanced-toolbar";
 import { DataTableFilterList } from "@/app/components/data-table/data-table-filter-list";
 import { DataTableSortList } from "@/app/components/data-table/data-table-sort-list";
+import { ProfilesTableActionBar } from "@/app/components/index/ProfilesTableActionBar";
+import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
+import { ViewProfileSheet } from "@/app/components/index/ViewProfileSheet";
 import { useDataTable } from "@/app/hooks/useDataTable";
+import type { DataTableRowAction } from "@/app/types/data-table";
 import type { SearchDataResponse } from "@/app/types/index/search";
 import type { TalentProfileSearchApi } from "@/app/types/talent";
-import type { Row } from "@tanstack/react-table";
-import { useMemo } from "react";
+import * as React from "react";
+import { useMemo, useState } from "react";
 
 interface ProfilesTableProps {
   initialData: SearchDataResponse;
 }
 
 export function ProfilesTable({ initialData }: ProfilesTableProps) {
+  const [rowAction, setRowAction] =
+    useState<DataTableRowAction<TalentProfileSearchApi> | null>(null);
+
   const columns = useMemo(
-    () => [
-      {
-        accessorKey: "name",
-        header: "Name",
-        enableHiding: true,
-      },
-      {
-        accessorKey: "display_name",
-        header: "Display Name",
-        enableHiding: true,
-      },
-      {
-        accessorKey: "location",
-        header: "Location",
-        enableHiding: true,
-      },
-      {
-        accessorKey: "builder_score",
-        header: "Builder Score",
-        enableHiding: true,
-        cell: ({ row }: { row: Row<TalentProfileSearchApi> }) =>
-          row.original.builder_score?.points ?? "N/A",
-      },
-      {
-        accessorKey: "human_checkmark",
-        header: "Human Checkmark",
-        enableHiding: true,
-      },
-      {
-        accessorKey: "tags",
-        header: "Tags",
-        enableHiding: true,
-      },
-    ],
-    [],
+    () => getProfilesTableColumns({ setRowAction }),
+    [setRowAction],
   );
 
   const { table, shallow, debounceMs, throttleMs } = useDataTable({
@@ -69,17 +43,26 @@ export function ProfilesTable({ initialData }: ProfilesTableProps) {
 
   return (
     <>
-      <DataTable table={table}>
+      <DataTable
+        table={table}
+        actionBar={<ProfilesTableActionBar table={table} />}
+      >
         <DataTableAdvancedToolbar table={table}>
-          <DataTableSortList table={table} />
+          <DataTableSortList table={table} align="start" />
           <DataTableFilterList
             table={table}
             shallow={shallow}
             debounceMs={debounceMs}
             throttleMs={throttleMs}
+            align="start"
           />
         </DataTableAdvancedToolbar>
       </DataTable>
+      <ViewProfileSheet
+        open={rowAction?.variant === "view"}
+        onOpenChange={() => setRowAction(null)}
+        profile={rowAction?.row.original ?? null}
+      />
     </>
   );
 }
