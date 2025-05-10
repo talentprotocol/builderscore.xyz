@@ -1,13 +1,15 @@
 import { TalentProfileSearchApi } from "@/app/types/talent";
 
+export type CredentialType = {
+  name: string;
+  dataIssuer: string;
+  category?: string;
+  valueRange?: { min: number; max: number };
+  pointsRange?: { min: number; max?: number };
+};
+
 export type SearchQuery = {
-  credentials?: {
-    name: string;
-    dataIssuer: string;
-    category?: string;
-    valueRange?: { min: number; max: number };
-    pointsRange?: { min: number; max?: number };
-  }[];
+  credentials?: CredentialType[];
   humanCheckmark?: boolean | null;
   score?: {
     min: number;
@@ -31,7 +33,7 @@ export interface SearchData {
   sort: {
     [key in SearchSortByOptions]?: {
       order: SearchSortOrder;
-      scorer?: "Builder Score";
+      scorer?: string;
     };
   };
   page: number;
