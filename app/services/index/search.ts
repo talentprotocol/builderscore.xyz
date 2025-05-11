@@ -7,8 +7,6 @@ export const searchProfiles = unstable_cache(
   async function (
     queryParams: Partial<SearchData> = {},
   ): Promise<SearchDataResponse> {
-    console.log("queryParams", queryParams);
-
     const searchData: SearchData = {
       query: queryParams.query || {},
       sort: queryParams.sort || {

@@ -4,9 +4,7 @@ import { DataTable } from "@/app/components/data-table/data-table";
 import { DataTableAdvancedToolbar } from "@/app/components/data-table/data-table-advanced-toolbar";
 import { DataTableFilterList } from "@/app/components/data-table/data-table-filter-list";
 import { DataTableSortList } from "@/app/components/data-table/data-table-sort-list";
-import { ProfilesTableActionBar } from "@/app/components/index/ProfilesTableActionBar";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
-import { ViewProfileSheet } from "@/app/components/index/ViewProfileSheet";
 import { useDataTable } from "@/app/hooks/useDataTable";
 import type { DataTableRowAction } from "@/app/types/data-table";
 import type { SearchDataResponse } from "@/app/types/index/search";
@@ -19,7 +17,7 @@ interface ProfilesTableProps {
 }
 
 export function ProfilesTable({ initialData }: ProfilesTableProps) {
-  const [rowAction, setRowAction] =
+  const [, setRowAction] =
     useState<DataTableRowAction<TalentProfileSearchApi> | null>(null);
 
   const columns = useMemo(
@@ -43,10 +41,7 @@ export function ProfilesTable({ initialData }: ProfilesTableProps) {
 
   return (
     <>
-      <DataTable
-        table={table}
-        actionBar={<ProfilesTableActionBar table={table} />}
-      >
+      <DataTable table={table}>
         <DataTableAdvancedToolbar table={table}>
           <DataTableSortList table={table} align="start" />
           <DataTableFilterList
@@ -58,11 +53,6 @@ export function ProfilesTable({ initialData }: ProfilesTableProps) {
           />
         </DataTableAdvancedToolbar>
       </DataTable>
-      <ViewProfileSheet
-        open={rowAction?.variant === "view"}
-        onOpenChange={() => setRowAction(null)}
-        profile={rowAction?.row.original ?? null}
-      />
     </>
   );
 }
