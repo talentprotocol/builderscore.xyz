@@ -18,7 +18,7 @@ export default async function Page(props: PageProps) {
   const validFilters = getValidFilters(search.filters);
   const queryFilters = filterColumns({
     filters: validFilters,
-    joinOperator: search.joinOperator,
+    // joinOperator: search.joinOperator,
   });
 
   const searchParams = {
