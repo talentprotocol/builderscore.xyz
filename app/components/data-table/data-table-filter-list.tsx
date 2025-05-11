@@ -76,6 +76,7 @@ const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 const OPEN_MENU_SHORTCUT = "f";
 const REMOVE_FILTER_SHORTCUTS = ["backspace", "delete"];
+const MAX_FILTERS: number = -1;
 
 interface DataTableFilterListProps<TData>
   extends React.ComponentProps<typeof PopoverContent> {
@@ -127,7 +128,8 @@ export function DataTableFilterList<TData>({
   const onFilterAdd = React.useCallback(() => {
     const column = columns[0];
 
-    if (!column) return;
+    if (!column || (MAX_FILTERS !== -1 && filters.length >= MAX_FILTERS))
+      return;
 
     debouncedSetFilters([
       ...filters,
@@ -296,8 +298,12 @@ export function DataTableFilterList<TData>({
               className="rounded"
               ref={addButtonRef}
               onClick={onFilterAdd}
+              disabled={MAX_FILTERS !== -1 && filters.length >= MAX_FILTERS}
             >
               Add filter
+              {MAX_FILTERS !== -1 && filters.length >= MAX_FILTERS && (
+                <span className="ml-1 text-xs">(Max {MAX_FILTERS})</span>
+              )}
             </Button>
             {filters.length > 0 ? (
               <Button
@@ -722,19 +728,75 @@ function onFilterInputRender<TData>({
             />
             <FacetedList>
               <FacetedEmpty>No options found.</FacetedEmpty>
-              <FacetedGroup>
-                {columnMeta?.options?.map((option) => (
-                  <FacetedItem key={option.value} value={option.value}>
-                    {option.icon && <option.icon />}
-                    <span>{option.label}</span>
-                    {option.count && (
-                      <span className="ml-auto font-mono text-xs">
-                        {option.count}
-                      </span>
-                    )}
-                  </FacetedItem>
-                ))}
-              </FacetedGroup>
+              {columnMeta?.options ? (
+                Object.entries(
+                  columnMeta.options.reduce(
+                    (groups, option) => {
+                      if (option.group) {
+                        return {
+                          ...groups,
+                          [option.group]: [
+                            ...(groups[option.group] || []),
+                            option,
+                          ],
+                        };
+                      }
+                      return {
+                        ...groups,
+                        ungrouped: [...(groups.ungrouped || []), option],
+                      };
+                    },
+                    { ungrouped: [] } as Record<
+                      string,
+                      typeof columnMeta.options
+                    >,
+                  ),
+                ).map(([groupName, options]) =>
+                  groupName === "ungrouped" ? (
+                    <FacetedGroup key={groupName}>
+                      {options.map((option) => (
+                        <FacetedItem key={option.value} value={option.value}>
+                          {option.icon && <option.icon />}
+                          <span>{option.label}</span>
+                          {option.count && (
+                            <span className="ml-auto font-mono text-xs">
+                              {option.count}
+                            </span>
+                          )}
+                        </FacetedItem>
+                      ))}
+                    </FacetedGroup>
+                  ) : (
+                    <FacetedGroup key={groupName} heading={groupName}>
+                      {options.map((option) => (
+                        <FacetedItem key={option.value} value={option.value}>
+                          {option.icon && <option.icon />}
+                          <span>{option.label}</span>
+                          {option.count && (
+                            <span className="ml-auto font-mono text-xs">
+                              {option.count}
+                            </span>
+                          )}
+                        </FacetedItem>
+                      ))}
+                    </FacetedGroup>
+                  ),
+                )
+              ) : (
+                <FacetedGroup>
+                  {columnMeta?.options?.map((option) => (
+                    <FacetedItem key={option.value} value={option.value}>
+                      {option.icon && <option.icon />}
+                      <span>{option.label}</span>
+                      {option.count && (
+                        <span className="ml-auto font-mono text-xs">
+                          {option.count}
+                        </span>
+                      )}
+                    </FacetedItem>
+                  ))}
+                </FacetedGroup>
+              )}
             </FacetedList>
           </FacetedContent>
         </Faceted>

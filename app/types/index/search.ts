@@ -5,7 +5,6 @@ export type CredentialType = {
   dataIssuer: string;
   category?: string;
   valueRange?: { min: number; max: number };
-  pointsRange?: { min: number; max?: number };
 };
 
 export type SearchQuery = {

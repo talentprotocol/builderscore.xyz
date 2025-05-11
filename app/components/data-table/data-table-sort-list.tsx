@@ -42,6 +42,7 @@ import * as React from "react";
 
 const OPEN_MENU_SHORTCUT = "s";
 const REMOVE_SORT_SHORTCUTS = ["backspace", "delete"];
+const MAX_SORTS: number = 1; // TODO: Increase when the API supports it
 
 interface DataTableSortListProps<TData>
   extends React.ComponentProps<typeof PopoverContent> {
@@ -85,13 +86,14 @@ export function DataTableSortList<TData>({
 
   const onSortAdd = React.useCallback(() => {
     const firstColumn = columns[0];
-    if (!firstColumn) return;
+    if (!firstColumn || (MAX_SORTS !== -1 && sorting.length >= MAX_SORTS))
+      return;
 
     onSortingChange((prevSorting) => [
       ...prevSorting,
       { id: firstColumn.id, desc: false },
     ]);
-  }, [columns, onSortingChange]);
+  }, [columns, onSortingChange, sorting.length]);
 
   const onSortUpdate = React.useCallback(
     (sortId: string, updates: Partial<ColumnSort>) => {
@@ -234,9 +236,15 @@ export function DataTableSortList<TData>({
               className="rounded"
               ref={addButtonRef}
               onClick={onSortAdd}
-              disabled={columns.length === 0}
+              disabled={
+                columns.length === 0 ||
+                (MAX_SORTS !== -1 && sorting.length >= MAX_SORTS)
+              }
             >
               Add sort
+              {MAX_SORTS !== -1 && sorting.length >= MAX_SORTS && (
+                <span className="ml-1 text-xs">(Max {MAX_SORTS})</span>
+              )}
             </Button>
             {sorting.length > 0 && (
               <Button

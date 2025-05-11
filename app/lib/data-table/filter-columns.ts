@@ -1,24 +1,18 @@
 import type {
   ExtendedColumnFilter,
-  JoinOperator,
+  // JoinOperator,
 } from "@/app/types/data-table";
 import { CredentialType, SearchQuery } from "@/app/types/index/search";
 
-/**
- * Converts data table filters to a SearchQuery object for API requests
- */
 export function filterColumns<T extends Record<string, unknown>>({
   filters,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  joinOperator,
+  // joinOperator,
 }: {
   filters: ExtendedColumnFilter<T>[];
-  joinOperator: JoinOperator;
+  // joinOperator: JoinOperator;
 }): SearchQuery {
-  // Initialize an empty query object
   const query: Partial<SearchQuery> = {};
 
-  // Process each filter
   filters.forEach((filter) => {
     const fieldId = filter.id as string;
 
@@ -147,7 +141,6 @@ export function filterColumns<T extends Record<string, unknown>>({
         break;
 
       case "credentials":
-        // Only handle credentials if they are properly formatted
         if (Array.isArray(filter.value)) {
           const validCredentials: CredentialType[] = [];
 
@@ -173,10 +166,6 @@ export function filterColumns<T extends Record<string, unknown>>({
   return query as SearchQuery;
 }
 
-/**
- * Helper function maintained for compatibility with existing code
- * In the API context, this doesn't do column lookup but helps maintain the same interface
- */
 export function getColumn<T extends Record<string, unknown>>(
   _table: T,
   columnKey: keyof T,

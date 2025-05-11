@@ -1,14 +1,32 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
-import { SearchData, SearchDataResponse } from "@/app/types/index/search";
+import {
+  CredentialType,
+  SearchData,
+  SearchDataResponse,
+} from "@/app/types/index/search";
+
+interface CredentialFilter {
+  id: string;
+  value: string[];
+  variant: string;
+  operator: string;
+  filterId: string;
+}
+
+interface TransformedQuery {
+  credentials: CredentialType[];
+}
 
 export const searchProfiles = unstable_cache(
   async function (
     queryParams: Partial<SearchData> = {},
   ): Promise<SearchDataResponse> {
+    const transformedQuery = transformCredentialsQuery(queryParams.query || {});
+
     const searchData: SearchData = {
-      query: queryParams.query || {},
+      query: transformedQuery,
       sort: queryParams.sort || {
         score: {
           order: "desc",
@@ -31,6 +49,8 @@ export const searchProfiles = unstable_cache(
     if (queryParams.keep_alive_minutes) {
       searchData.keep_alive_minutes = queryParams.keep_alive_minutes;
     }
+
+    console.log("searchData", searchData);
 
     const encodedParams = Object.entries(searchData)
       .map(([key, value]) => {
@@ -60,3 +80,44 @@ export const searchProfiles = unstable_cache(
   [CACHE_TAGS.SEARCH],
   { revalidate: CACHE_60_MINUTES },
 );
+
+function transformCredentialsQuery(
+  query: Record<string, unknown>,
+): TransformedQuery | Record<string, unknown> {
+  if (!query || typeof query !== "object") {
+    return query;
+  }
+
+  const credentialsFilter = Object.values(query).find(
+    (filter): filter is CredentialFilter =>
+      filter !== null &&
+      typeof filter === "object" &&
+      "id" in filter &&
+      filter.id === "credentials" &&
+      "value" in filter,
+  );
+
+  if (!credentialsFilter) {
+    return query;
+  }
+
+  const credentialValues = credentialsFilter.value || [];
+  const credentials = credentialValues
+    .map((credentialStr: string) => {
+      try {
+        const credential = JSON.parse(credentialStr);
+        return {
+          dataIssuer: credential.dataIssuer,
+          name: credential.dataPoint,
+        };
+      } catch (error) {
+        console.error("Error parsing credential:", credentialStr, error);
+        return null;
+      }
+    })
+    .filter(Boolean) as CredentialType[];
+
+  return {
+    credentials,
+  };
+}

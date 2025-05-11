@@ -1,27 +1,37 @@
 "use client";
 
-import { Button } from "@/app/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu";
-import type { DataTableRowAction } from "@/app/types/data-table";
+import { Checkbox } from "@/app/components/ui/checkbox";
+import { CREDENTIALS } from "@/app/lib/constants";
 import type { TalentProfileSearchApi } from "@/app/types/talent";
 import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 
-interface GetProfilesTableColumnsOptions {
-  setRowAction: React.Dispatch<
-    React.SetStateAction<DataTableRowAction<TalentProfileSearchApi> | null>
-  >;
-}
-
-export function getProfilesTableColumns({
-  setRowAction,
-}: GetProfilesTableColumnsOptions): ColumnDef<TalentProfileSearchApi>[] {
+export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
   return [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="translate-y-0.5"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="translate-y-0.5"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+      size: 40,
+    },
     {
       id: "name",
       accessorKey: "name",
@@ -60,24 +70,24 @@ export function getProfilesTableColumns({
       enableHiding: true,
     },
     {
-      id: "actions",
-      cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => setRowAction({ variant: "view", row })}
-            >
-              View Profile
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
+      id: "credentials",
+      header: "Credentials",
+      enableHiding: true,
+      enableColumnFilter: true,
+      meta: {
+        placeholder: "Filter by credentials",
+        variant: "multiSelect",
+        options: CREDENTIALS.flatMap((credential) =>
+          credential.dataPoints.map((dataPoint) => ({
+            label: `${dataPoint}`,
+            value: JSON.stringify({
+              dataPoint,
+              dataIssuer: credential.dataIssuer,
+            }),
+            group: credential.dataIssuer,
+          })),
+        ),
+      },
     },
   ];
 }
