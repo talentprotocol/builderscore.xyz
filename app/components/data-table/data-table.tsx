@@ -30,13 +30,14 @@ export function DataTable<TData>({
       {...props}
     >
       {children}
-      <div className="overflow-hidden rounded-md border">
+      <div className="card-style overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead
+                    className="h-9 text-xs font-medium"
                     key={header.id}
                     colSpan={header.colSpan}
                     style={{
@@ -60,6 +61,7 @@ export function DataTable<TData>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="h-9 text-xs"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -80,7 +82,7 @@ export function DataTable<TData>({
               <TableRow>
                 <TableCell
                   colSpan={table.getAllColumns().length}
-                  className="h-24 text-center"
+                  className="h-24 text-center text-xs"
                 >
                   No results.
                 </TableCell>
@@ -90,7 +92,12 @@ export function DataTable<TData>({
         </Table>
       </div>
       <div className="flex flex-col gap-2.5">
-        <DataTablePagination table={table} />
+        <DataTablePagination
+          table={table}
+          hasSelectColumn={table
+            .getAllColumns()
+            .some((column) => column.id === "select")}
+        />
         {actionBar &&
           table.getFilteredSelectedRowModel().rows.length > 0 &&
           actionBar}

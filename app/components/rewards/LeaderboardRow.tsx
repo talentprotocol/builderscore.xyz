@@ -31,7 +31,7 @@ export default function LeaderboardRow({
       className={`flex cursor-pointer items-center justify-between bg-white px-3 py-2 pr-5 dark:bg-neutral-900 ${isHighlighted && "border-primary rounded-lg border"} ${first && "rounded-t-lg"} ${last && "rounded-b-lg"} ${!first && "border-t border-neutral-300 dark:border-neutral-800"} ${className}`}
     >
       <div className="flex items-center gap-4">
-        <p className="min-w-6 font-mono text-xs text-neutral-600 dark:text-neutral-500">
+        <p className="secondary-text-style min-w-6 font-mono text-xs">
           #
           {leaderboardData.leaderboard_position
             ? leaderboardData.leaderboard_position
@@ -41,7 +41,7 @@ export default function LeaderboardRow({
         <span
           className={`min-w-8 text-xs ${
             leaderboardData.ranking_change === null
-              ? "text-neutral-600 dark:text-neutral-500"
+              ? "secondary-text-style"
               : leaderboardData.ranking_change !== 0
                 ? leaderboardData.ranking_change < 0
                   ? "text-red-500"
@@ -98,12 +98,12 @@ export default function LeaderboardRow({
                   ],
                 )}
               </span>
-              <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
+              <span className="secondary-text-style ml-2 text-xs">
                 {sponsorTokenTicker}
               </span>
             </>
           ) : (
-            <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
+            <span className="secondary-text-style ml-2 text-xs">
               No Rewards Earned
             </span>
           )}

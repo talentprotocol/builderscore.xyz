@@ -13,9 +13,7 @@ export default function ToggleLeaderboard() {
         onCheckedChange={toggleUserLeaderboard}
         className="scale-75 data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-neutral-300 dark:data-[state=unchecked]:bg-neutral-700"
       />
-      <label className="text-xs text-neutral-600 dark:text-neutral-500">
-        Total
-      </label>
+      <label className="secondary-text-style text-xs">Total</label>
     </div>
   );
 }

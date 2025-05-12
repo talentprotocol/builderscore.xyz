@@ -235,7 +235,12 @@ export function DataTableFilterList<TData>({
     >
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" onKeyDown={onTriggerKeyDown}>
+          <Button
+            className="button-style text-xs"
+            variant="outline"
+            size="sm"
+            onKeyDown={onTriggerKeyDown}
+          >
             <ListFilter />
             Filter
             {filters.length > 0 && (
@@ -251,17 +256,17 @@ export function DataTableFilterList<TData>({
         <PopoverContent
           aria-describedby={descriptionId}
           aria-labelledby={labelId}
-          className="flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3.5 p-4 sm:min-w-[380px]"
+          className="border-style flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3 p-3 sm:min-w-[380px]"
           {...props}
         >
           <div className="flex flex-col gap-1">
-            <h4 id={labelId} className="leading-none font-medium">
+            <h4 id={labelId} className="text-xs leading-none font-medium">
               {filters.length > 0 ? "Filters" : "No filters applied"}
             </h4>
             <p
               id={descriptionId}
               className={cn(
-                "text-muted-foreground text-sm",
+                "secondary-text-style text-xs",
                 filters.length > 0 && "sr-only",
               )}
             >
@@ -274,7 +279,7 @@ export function DataTableFilterList<TData>({
             <SortableContent asChild>
               <div
                 role="list"
-                className="flex max-h-[300px] flex-col gap-2 overflow-y-auto p-1"
+                className="flex max-h-[300px] flex-col gap-2 overflow-y-auto"
               >
                 {filters.map((filter, index) => (
                   <DataTableFilterItem<TData>
@@ -295,12 +300,12 @@ export function DataTableFilterList<TData>({
           <div className="flex w-full items-center gap-2">
             <Button
               size="sm"
-              className="rounded"
+              className="button-style text-xs"
               ref={addButtonRef}
               onClick={onFilterAdd}
               disabled={MAX_FILTERS !== -1 && filters.length >= MAX_FILTERS}
             >
-              Add filter
+              Add Filter
               {MAX_FILTERS !== -1 && filters.length >= MAX_FILTERS && (
                 <span className="ml-1 text-xs">(Max {MAX_FILTERS})</span>
               )}
@@ -309,10 +314,10 @@ export function DataTableFilterList<TData>({
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded"
+                className="button-style text-xs"
                 onClick={onFiltersReset}
               >
-                Reset filters
+                Reset Filters
               </Button>
             ) : null}
           </div>
@@ -408,9 +413,9 @@ function DataTableFilterItem<TData>({
         className="flex items-center gap-2"
         onKeyDown={onItemKeyDown}
       >
-        <div className="min-w-[72px] text-center">
+        <div>
           {index === 0 ? (
-            <span className="text-muted-foreground text-sm">Where</span>
+            <span className="secondary-text-style text-xs">Where</span>
           ) : index === 1 ? (
             <Select
               value={joinOperator}

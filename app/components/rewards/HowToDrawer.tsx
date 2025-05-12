@@ -45,7 +45,7 @@ export default function HowToDrawer() {
       <DrawerTrigger asChild>
         <Button
           size="lg"
-          className="cursor-pointer border border-neutral-300 bg-white text-xs text-black hover:bg-neutral-100 sm:text-sm dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+          className="button-style cursor-pointer text-xs sm:text-sm"
         >
           {allConditionsMet ? (
             <div className="flex items-center gap-2">
@@ -70,7 +70,7 @@ export default function HowToDrawer() {
           </DrawerHeader>
 
           <div className="px-4 pb-16">
-            <p className="mb-5 text-neutral-600 dark:text-neutral-500">
+            <p className="secondary-text-style mb-5">
               Talent Protocol distributes weekly rewards to builders that own
               verified contracts on Base and contribute to public crypto
               repositories on GitHub. Follow the steps below to be eligible:
@@ -81,7 +81,7 @@ export default function HowToDrawer() {
               </p>
             ) : (
               frameContext && (
-                <p className="mb-6 text-sm text-neutral-600 dark:text-neutral-500">
+                <p className="secondary-text-style mb-6 text-sm">
                   You are not eligible for Builder Rewards yet.
                 </p>
               )
@@ -109,7 +109,7 @@ export default function HowToDrawer() {
               ))}
             </ul>
 
-            <p className="mt-6 text-sm text-neutral-600 dark:text-neutral-500">
+            <p className="secondary-text-style mt-6 text-sm">
               Subject to{" "}
               <MiniAppExternalLink href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions">
                 Terms and Conditions

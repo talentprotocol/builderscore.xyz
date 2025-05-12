@@ -61,15 +61,15 @@ export default function LeaderboardRowDrawer({
 
                   <br />
 
-                  <span className="text-sm text-neutral-600 dark:text-neutral-500">
+                  <span className="secondary-text-style text-sm">
                     {context}
                   </span>
                 </p>
 
-                <div className="w-full rounded-lg border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+                <div className="card-style w-full">
                   <div className="flex justify-around p-4">
                     <div className="flex flex-col items-center justify-between">
-                      <p className="text-xs text-neutral-600 dark:text-neutral-500">
+                      <p className="secondary-text-style text-xs">
                         Builder Score
                       </p>
                       <p className="font-mono text-2xl font-semibold">
@@ -80,7 +80,7 @@ export default function LeaderboardRowDrawer({
                     </div>
 
                     <div className="flex flex-col items-center justify-between">
-                      <p className="text-xs text-neutral-600 dark:text-neutral-500">
+                      <p className="secondary-text-style text-xs">
                         Rewards Earned
                       </p>
                       <p className="font-mono text-2xl font-semibold">
@@ -94,7 +94,7 @@ export default function LeaderboardRowDrawer({
                                 ],
                               )}
                             </span>
-                            <span className="ml-2 text-xs font-normal text-neutral-600 dark:text-neutral-500">
+                            <span className="secondary-text-style ml-2 text-xs font-normal">
                               {sponsorTokenTicker}
                             </span>
                           </>
@@ -106,7 +106,7 @@ export default function LeaderboardRowDrawer({
 
                     {context && (
                       <div className="flex flex-col items-center justify-between">
-                        <p className="text-sm text-neutral-600 dark:text-neutral-500">
+                        <p className="secondary-text-style text-sm">
                           {weekly && weekly ? "Weekly" : "All Time"} Rank
                         </p>
                         <p className="font-mono text-lg font-semibold">
@@ -120,7 +120,7 @@ export default function LeaderboardRowDrawer({
                           <span
                             className={`ml-2 ${
                               selectedBuilder.ranking_change === null
-                                ? "text-neutral-600 dark:text-neutral-500"
+                                ? "secondary-text-style"
                                 : selectedBuilder.ranking_change !== 0
                                   ? selectedBuilder.ranking_change < 0
                                     ? "text-red-500"
@@ -146,7 +146,7 @@ export default function LeaderboardRowDrawer({
                   ? selectedBuilder.summary && (
                       <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
                         <div className="flex flex-col">
-                          <p className="mb-1 text-sm text-neutral-600 dark:text-neutral-500">
+                          <p className="secondary-text-style mb-1 text-sm">
                             Summary
                           </p>
                           <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">
@@ -162,7 +162,7 @@ export default function LeaderboardRowDrawer({
                     parseFloat(selectedBuilder.reward_amount) > 0 && (
                       <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
                         <div className="flex flex-col">
-                          <p className="mb-1 text-sm text-neutral-600 dark:text-neutral-500">
+                          <p className="secondary-text-style mb-1 text-sm">
                             Summary
                           </p>
                           <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">

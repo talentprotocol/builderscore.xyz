@@ -124,7 +124,7 @@ export default function LeaderboardWrapper() {
 
       {error && (
         <div className="mt-10 mb-6 flex h-full items-center justify-center text-sm">
-          <p className="text-neutral-600 dark:text-neutral-500">
+          <p className="secondary-text-style">
             Rewards Calculation hasn&apos;t started yet.
           </p>
         </div>
