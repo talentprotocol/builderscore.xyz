@@ -7,7 +7,7 @@ import {
   statsParamsCache,
 } from "@/app/lib/data-table/validations";
 import { searchProfiles } from "@/app/services/index/search";
-import { fetchDailyStats } from "@/app/services/stats";
+import { fetchDailyStats } from "@/app/services/index/stats";
 import type { SearchParams } from "@/app/types/index";
 import { Suspense } from "react";
 
@@ -38,7 +38,10 @@ export default async function Page(props: PageProps) {
 
   const initialData = await searchProfiles(searchParams);
 
-  const dailyStats = await fetchDailyStats(stats);
+  const dailyStats = await fetchDailyStats({
+    chartDatapoints: stats.chartDatapoints,
+    dateRange: stats.chartDateRange,
+  });
 
   return (
     <div className="w-full">

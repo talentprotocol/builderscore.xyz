@@ -1,5 +1,6 @@
 import {
   getChartDatapointsStateParser,
+  getChartDateRangeStateParser,
   getFiltersStateParser,
   getSortingStateParser,
 } from "@/app/lib/data-table/parsers";
@@ -31,6 +32,10 @@ export const searchParamsCache = createSearchParamsCache({
 
 export const statsParamsCache = createSearchParamsCache({
   chartDatapoints: getChartDatapointsStateParser().withDefault([]),
+  chartDateRange: getChartDateRangeStateParser().withDefault({
+    from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    to: new Date().toISOString(),
+  }),
 });
 
 export type GetProfilesSchema = Awaited<
