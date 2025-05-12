@@ -26,7 +26,12 @@ export const DEFAULT_SPONSOR_SLUG = SPONSORS.base.slug;
 export const CHART_DATAPOINTS = [
   {
     dataIssuer: "Base",
-    dataPoints: ["Contracts Deployed (Mainnet)", "Primary Basename"],
+    dataPoints: [
+      "base_basename",
+      "base_contracts_deployed_mainnet",
+      "base_active_smart_contracts",
+      "base_transactions_outgoing",
+    ],
   },
 ];
 

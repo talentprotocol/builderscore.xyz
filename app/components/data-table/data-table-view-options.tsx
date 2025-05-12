@@ -45,7 +45,7 @@ export function DataTableViewOptions<TData>({
           role="combobox"
           variant="outline"
           size="sm"
-          className="button-style ml-auto hidden h-8 text-xs lg:flex"
+          className="button-style ml-auto h-8 text-xs"
         >
           <Settings2 />
           View

@@ -6,16 +6,19 @@ import { DataTableFilterList } from "@/app/components/data-table/data-table-filt
 import { DataTableSortList } from "@/app/components/data-table/data-table-sort-list";
 import { DataTableWrapper } from "@/app/components/data-table/data-table-wrapper";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
+import { useChartData } from "@/app/hooks/useChartData";
 import { useDataTable } from "@/app/hooks/useDataTable";
 import type { SearchDataResponse } from "@/app/types/index/search";
+import type { StatsDataPoint } from "@/app/types/stats";
 import * as React from "react";
 import { useMemo } from "react";
 
 interface ProfilesTableProps {
   initialData: SearchDataResponse;
+  dailyStats: Record<string, StatsDataPoint[]>;
 }
 
-export function ProfilesTable({ initialData }: ProfilesTableProps) {
+export function ProfilesTable({ initialData, dailyStats }: ProfilesTableProps) {
   const columns = useMemo(() => getProfilesTableColumns(), []);
 
   const { table, shallow, debounceMs, throttleMs } = useDataTable({
@@ -30,6 +33,11 @@ export function ProfilesTable({ initialData }: ProfilesTableProps) {
     getRowId: (originalRow) => originalRow.id,
     shallow: false,
     clearOnDefault: true,
+  });
+
+  const chartData = useChartData({
+    initialData: dailyStats,
+    datapoints: [],
   });
 
   const toolbar = (
@@ -50,5 +58,11 @@ export function ProfilesTable({ initialData }: ProfilesTableProps) {
     </DataTableAdvancedToolbar>
   );
 
-  return <DataTableWrapper table={table} toolbar={toolbar} />;
+  return (
+    <DataTableWrapper
+      table={table}
+      chartData={chartData.chartData}
+      toolbar={toolbar}
+    />
+  );
 }

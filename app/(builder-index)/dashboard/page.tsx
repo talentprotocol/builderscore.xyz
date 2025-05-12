@@ -2,8 +2,12 @@ import { ProfilesTable } from "@/app/components/index/ProfilesTable";
 import { getValidFilters } from "@/app/lib/data-table/data-table";
 import { filterColumns } from "@/app/lib/data-table/filter-columns";
 import { transformSortingForApi } from "@/app/lib/data-table/parsers";
-import { searchParamsCache } from "@/app/lib/data-table/validations";
+import {
+  searchParamsCache,
+  statsParamsCache,
+} from "@/app/lib/data-table/validations";
 import { searchProfiles } from "@/app/services/index/search";
+import { fetchDailyStats } from "@/app/services/stats";
 import type { SearchParams } from "@/app/types/index";
 import { Suspense } from "react";
 
@@ -14,6 +18,7 @@ interface PageProps {
 export default async function Page(props: PageProps) {
   const urlSearchParams = await props.searchParams;
   const search = searchParamsCache.parse(urlSearchParams);
+  const stats = statsParamsCache.parse(urlSearchParams);
 
   const validFilters = getValidFilters(search.filters);
   const queryFilters = filterColumns({
@@ -33,14 +38,16 @@ export default async function Page(props: PageProps) {
 
   const initialData = await searchProfiles(searchParams);
 
+  const dailyStats = await fetchDailyStats(stats);
+
   return (
     <div className="w-full">
       <Suspense
         fallback={
-          <div className="w-full p-8 text-center">Loading profiles data...</div>
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
         }
       >
-        <ProfilesTable initialData={initialData} />
+        <ProfilesTable initialData={initialData} dailyStats={dailyStats} />
       </Suspense>
     </div>
   );

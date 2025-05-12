@@ -12,6 +12,7 @@ export const CACHE_TAGS = {
   TALENT_SOCIALS: "talent-socials",
   TALENT_BUILDER_SCORE: "talent-builder-score",
   SEARCH: "search",
+  STATS_DAILY: "stats-daily",
 };
 
 export const CACHE_60_MINUTES = 60 * 60;
