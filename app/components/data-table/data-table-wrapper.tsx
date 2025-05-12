@@ -2,18 +2,15 @@
 
 import { DataTable } from "@/app/components/data-table/data-table";
 import { DataTableChart } from "@/app/components/data-table/data-table-chart";
-import {
-  CHART_DATAPOINTS_KEY,
-  VIEW_MODE_KEY,
-  chartDatapointsParser,
-  viewModeParser,
-} from "@/app/lib/data-table/parsers";
+import { VIEW_MODE_KEY, viewModeParser } from "@/app/lib/data-table/parsers";
+import { StatsDataPoint } from "@/app/types/stats";
 import { type Table as TanstackTable } from "@tanstack/react-table";
 import { useQueryState } from "nuqs";
 import * as React from "react";
 
 interface DataTableWrapperProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
+  chartData: Record<string, StatsDataPoint[]>;
   toolbar?: React.ReactNode;
   actionBar?: React.ReactNode;
   className?: string;
@@ -21,6 +18,7 @@ interface DataTableWrapperProps<TData> extends React.ComponentProps<"div"> {
 
 export function DataTableWrapper<TData>({
   table,
+  chartData,
   toolbar,
   actionBar,
   className,
@@ -31,15 +29,10 @@ export function DataTableWrapper<TData>({
     viewModeParser.withDefault("table"),
   );
 
-  const [selectedDatapoints] = useQueryState(
-    CHART_DATAPOINTS_KEY,
-    chartDatapointsParser.withDefault([]),
-  );
-
   const renderContent = () => {
     switch (viewMode) {
       case "chart":
-        return <DataTableChart datapoints={selectedDatapoints} />;
+        return <DataTableChart chartData={chartData} />;
 
       case "table":
       default:

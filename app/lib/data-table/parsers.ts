@@ -138,3 +138,33 @@ export const getFiltersStateParser = <TData>(
       ),
   });
 };
+
+const dataPointSchema = z.object({
+  id: z.string(),
+  dataIssuer: z.string(),
+  dataPoint: z.string(),
+  dateRange: z.object({
+    from: z.string(),
+    to: z.string(),
+  }),
+});
+
+export type DataPointSchema = z.infer<typeof dataPointSchema>;
+
+export const getChartDatapointsStateParser = () => {
+  return createParser({
+    parse: (value) => {
+      try {
+        const parsed = JSON.parse(value);
+        const result = z.array(dataPointSchema).safeParse(parsed);
+
+        if (!result.success) return null;
+
+        return result.data as DataPointSchema[];
+      } catch {
+        return null;
+      }
+    },
+    serialize: (value) => JSON.stringify(value),
+  });
+};

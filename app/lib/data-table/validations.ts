@@ -1,4 +1,5 @@
 import {
+  getChartDatapointsStateParser,
   getFiltersStateParser,
   getSortingStateParser,
 } from "@/app/lib/data-table/parsers";
@@ -26,6 +27,10 @@ export const searchParamsCache = createSearchParamsCache({
   // Advanced filter
   filters: getFiltersStateParser().withDefault([]),
   joinOperator: parseAsStringEnum(["and", "or"]).withDefault("and"),
+});
+
+export const statsParamsCache = createSearchParamsCache({
+  chartDatapoints: getChartDatapointsStateParser().withDefault([]),
 });
 
 export type GetProfilesSchema = Awaited<

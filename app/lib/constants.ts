@@ -131,7 +131,12 @@ export const SPONSORS: Record<string, SponsorInfo> = {
 export const CHART_DATAPOINTS = [
   {
     dataIssuer: "Base",
-    dataPoints: ["Contracts Deployed (Mainnet)", "Primary Basename"],
+    dataPoints: [
+      "base_basename",
+      "base_contracts_deployed_mainnet",
+      "base_active_smart_contracts",
+      "base_transactions_outgoing",
+    ],
   },
 ];
 

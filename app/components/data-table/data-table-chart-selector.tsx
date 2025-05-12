@@ -166,7 +166,7 @@ export function DataTableChartSelector({
         <PopoverContent
           aria-labelledby={labelId}
           aria-describedby={descriptionId}
-          className="border-style flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3 p-3 sm:min-w-[420px]"
+          className="border-style flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3 p-3"
           {...props}
         >
           <div className="flex flex-col gap-1">
@@ -177,12 +177,11 @@ export function DataTableChartSelector({
             </h4>
             {selectedDatapoints.length === 0 && (
               <p id={descriptionId} className="secondary-text-style text-xs">
-                Add data points to visualize
+                Add data points to visualize.
               </p>
             )}
           </div>
 
-          {/* Show selected data points */}
           {selectedDatapoints.length > 0 && (
             <SortableContent asChild>
               <div
@@ -202,7 +201,6 @@ export function DataTableChartSelector({
             </SortableContent>
           )}
 
-          {/* Action buttons */}
           <div className="flex items-center justify-between gap-2">
             <Button
               ref={addButtonRef}
@@ -312,15 +310,31 @@ function DataTableChartItem({
     }
 
     if (datapoint.dateRange.from && datapoint.dateRange.to) {
-      return `${formatDate(datapoint.dateRange.from.toISOString())} - ${formatDate(datapoint.dateRange.to.toISOString())}`;
+      const fromDate =
+        datapoint.dateRange.from instanceof Date
+          ? datapoint.dateRange.from
+          : new Date(datapoint.dateRange.from);
+      const toDate =
+        datapoint.dateRange.to instanceof Date
+          ? datapoint.dateRange.to
+          : new Date(datapoint.dateRange.to);
+      return `${formatDate(fromDate.toISOString())} - ${formatDate(toDate.toISOString())}`;
     }
 
     if (datapoint.dateRange.from) {
-      return `From ${formatDate(datapoint.dateRange.from.toISOString())}`;
+      const fromDate =
+        datapoint.dateRange.from instanceof Date
+          ? datapoint.dateRange.from
+          : new Date(datapoint.dateRange.from);
+      return `From ${formatDate(fromDate.toISOString())}`;
     }
 
     if (datapoint.dateRange.to) {
-      return `To ${formatDate(datapoint.dateRange.to.toISOString())}`;
+      const toDate =
+        datapoint.dateRange.to instanceof Date
+          ? datapoint.dateRange.to
+          : new Date(datapoint.dateRange.to);
+      return `To ${formatDate(toDate.toISOString())}`;
     }
 
     return "Select date range";

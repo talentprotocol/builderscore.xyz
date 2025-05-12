@@ -15,6 +15,7 @@ export const CACHE_TAGS = {
   TALENT_CREDENTIALS: "talent-credentials",
   TALENT_CREDENTIALS_DATAPOINTS: "talent-credentials-datapoints",
   SEARCH: "search",
+  STATS_DAILY: "stats-daily",
 };
 
 export const CACHE_60_MINUTES = 60 * 60;
