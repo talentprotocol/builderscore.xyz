@@ -4,6 +4,7 @@ import { Checkbox } from "@/app/components/ui/checkbox";
 import { CREDENTIALS } from "@/app/lib/constants";
 import type { TalentProfileSearchApi } from "@/app/types/talent";
 import type { ColumnDef } from "@tanstack/react-table";
+import { Star, User } from "lucide-react";
 
 export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
   return [
@@ -33,16 +34,17 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
       size: 40,
     },
     {
-      id: "name",
-      accessorKey: "name",
-      header: "Name",
-      enableHiding: true,
-    },
-    {
-      id: "display_name",
+      id: "identity",
       accessorKey: "display_name",
-      header: "Display Name",
+      header: "Builder",
       enableHiding: true,
+      meta: {
+        label: "Identity",
+        placeholder: "Search by Identity",
+        variant: "text",
+        icon: User,
+      },
+      enableColumnFilter: true,
     },
     {
       id: "location",
@@ -55,7 +57,16 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
       accessorKey: "builder_score",
       header: "Builder Score",
       enableHiding: true,
+      enableColumnFilter: true,
       cell: ({ row }) => row.original.builder_score?.points ?? "N/A",
+      meta: {
+        label: "Builder Score",
+        placeholder: "Filter by Builder Score",
+        variant: "range",
+        range: [0, 1000],
+        unit: "",
+        icon: Star,
+      },
     },
     {
       id: "human_checkmark",
@@ -75,7 +86,8 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
       enableHiding: true,
       enableColumnFilter: true,
       meta: {
-        placeholder: "Filter by credentials",
+        label: "Credentials",
+        placeholder: "Filter by Credentials",
         variant: "multiSelect",
         options: CREDENTIALS.flatMap((credential) =>
           credential.dataPoints.map((dataPoint) => ({

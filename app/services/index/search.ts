@@ -15,15 +15,37 @@ interface CredentialFilter {
   filterId: string;
 }
 
+interface ScoreFilter {
+  id: string;
+  value: string[];
+  variant: string;
+  operator: string;
+  filterId: string;
+}
+
+interface IdentityFilter {
+  id: string;
+  value: string;
+  variant: string;
+  operator: string;
+  filterId: string;
+}
+
 interface TransformedQuery {
-  credentials: CredentialType[];
+  credentials?: CredentialType[];
+  score?: {
+    min: number;
+    max: number;
+  };
+  identity?: string;
 }
 
 export const searchProfiles = unstable_cache(
   async function (
     queryParams: Partial<SearchData> = {},
   ): Promise<SearchDataResponse> {
-    const transformedQuery = transformCredentialsQuery(queryParams.query || {});
+    console.log("queryParams", queryParams);
+    const transformedQuery = transformQuery(queryParams.query || {});
 
     const searchData: SearchData = {
       query: transformedQuery,
@@ -81,43 +103,93 @@ export const searchProfiles = unstable_cache(
   { revalidate: CACHE_60_MINUTES },
 );
 
-function transformCredentialsQuery(
-  query: Record<string, unknown>,
-): TransformedQuery | Record<string, unknown> {
+function transformQuery(query: Record<string, unknown>): TransformedQuery {
   if (!query || typeof query !== "object") {
-    return query;
+    return {};
   }
 
-  const credentialsFilter = Object.values(query).find(
-    (filter): filter is CredentialFilter =>
-      filter !== null &&
-      typeof filter === "object" &&
-      "id" in filter &&
-      filter.id === "credentials" &&
-      "value" in filter,
-  );
+  const result: TransformedQuery = {};
 
-  if (!credentialsFilter) {
-    return query;
-  }
+  Object.values(query).forEach((filter: unknown) => {
+    if (!filter || typeof filter !== "object") return;
 
-  const credentialValues = credentialsFilter.value || [];
-  const credentials = credentialValues
-    .map((credentialStr: string) => {
-      try {
-        const credential = JSON.parse(credentialStr);
-        return {
-          dataIssuer: credential.dataIssuer,
-          name: credential.dataPoint,
-        };
-      } catch (error) {
-        console.error("Error parsing credential:", credentialStr, error);
-        return null;
+    if (isCredentialFilter(filter)) {
+      const credentialValues = filter.value || [];
+      const credentials = credentialValues
+        .map((credentialStr: string) => {
+          try {
+            const credential = JSON.parse(credentialStr);
+            return {
+              dataIssuer: credential.dataIssuer,
+              name: credential.dataPoint,
+            };
+          } catch (error) {
+            console.error("Error parsing credential:", credentialStr, error);
+            return null;
+          }
+        })
+        .filter(Boolean) as CredentialType[];
+
+      if (credentials.length > 0) {
+        result.credentials = credentials;
       }
-    })
-    .filter(Boolean) as CredentialType[];
+    }
 
-  return {
-    credentials,
-  };
+    if (isScoreFilter(filter)) {
+      const [min, max] = filter.value;
+      result.score = {
+        min: min ? parseInt(min, 10) : 0,
+        max: max ? parseInt(max, 10) : 10000,
+      };
+    }
+
+    if (isIdentityFilter(filter)) {
+      result.identity = filter.value;
+    }
+  });
+
+  return result;
+}
+
+function isCredentialFilter(filter: unknown): filter is CredentialFilter {
+  if (
+    filter !== null &&
+    typeof filter === "object" &&
+    "id" in filter &&
+    "value" in filter
+  ) {
+    const typedFilter = filter as Record<string, unknown>;
+    return typedFilter.id === "credentials";
+  }
+  return false;
+}
+
+function isScoreFilter(filter: unknown): filter is ScoreFilter {
+  if (
+    filter !== null &&
+    typeof filter === "object" &&
+    "id" in filter &&
+    "value" in filter
+  ) {
+    const typedFilter = filter as Record<string, unknown>;
+    return (
+      typedFilter.id === "builder_score" && Array.isArray(typedFilter.value)
+    );
+  }
+  return false;
+}
+
+function isIdentityFilter(filter: unknown): filter is IdentityFilter {
+  if (
+    filter !== null &&
+    typeof filter === "object" &&
+    "id" in filter &&
+    "value" in filter
+  ) {
+    const typedFilter = filter as Record<string, unknown>;
+    return (
+      typedFilter.id === "identity" && typeof typedFilter.value === "string"
+    );
+  }
+  return false;
 }
