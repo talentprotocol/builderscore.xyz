@@ -44,7 +44,6 @@ export const searchProfiles = unstable_cache(
   async function (
     queryParams: Partial<SearchData> = {},
   ): Promise<SearchDataResponse> {
-    console.log("queryParams", queryParams);
     const transformedQuery = transformQuery(queryParams.query || {});
 
     const searchData: SearchData = {
@@ -71,8 +70,6 @@ export const searchProfiles = unstable_cache(
     if (queryParams.keep_alive_minutes) {
       searchData.keep_alive_minutes = queryParams.keep_alive_minutes;
     }
-
-    console.log("searchData", searchData);
 
     const encodedParams = Object.entries(searchData)
       .map(([key, value]) => {

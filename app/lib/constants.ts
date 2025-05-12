@@ -23,6 +23,13 @@ export const SPONSORS: Record<string, SponsorInfo> = {
 
 export const DEFAULT_SPONSOR_SLUG = SPONSORS.base.slug;
 
+export const CHART_DATAPOINTS = [
+  {
+    dataIssuer: "Base",
+    dataPoints: ["Contracts Deployed (Mainnet)", "Primary Basename"],
+  },
+];
+
 export const CREDENTIALS = [
   {
     dataIssuer: "Arbitrum",
