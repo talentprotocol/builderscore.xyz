@@ -132,10 +132,12 @@ export const CHART_DATAPOINTS = [
   {
     dataIssuer: "Base",
     dataPoints: [
-      "base_basename",
-      "base_contracts_deployed_mainnet",
-      "base_active_smart_contracts",
-      "base_transactions_outgoing",
+      { name: "Basename", value: "base_basename" },
+      {
+        name: "Mainnet Contracts Deployed",
+        value: "base_mainnet_contracts_deployed",
+      },
+      { name: "Created Accounts", value: "created_accounts" },
     ],
   },
 ];

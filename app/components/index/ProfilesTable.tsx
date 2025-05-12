@@ -38,6 +38,7 @@ export function ProfilesTable({ initialData, dailyStats }: ProfilesTableProps) {
   const chartData = useChartData({
     initialData: dailyStats,
     datapoints: [],
+    dateRange: undefined,
   });
 
   const toolbar = (

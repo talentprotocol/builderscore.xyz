@@ -143,13 +143,20 @@ const dataPointSchema = z.object({
   id: z.string(),
   dataIssuer: z.string(),
   dataPoint: z.string(),
+});
+
+export type DataPointSchema = z.infer<typeof dataPointSchema>;
+
+// Chart data schema with shared date range
+export const chartDataSchema = z.object({
+  datapoints: z.array(dataPointSchema),
   dateRange: z.object({
     from: z.string(),
     to: z.string(),
   }),
 });
 
-export type DataPointSchema = z.infer<typeof dataPointSchema>;
+export type ChartDataSchema = z.infer<typeof chartDataSchema>;
 
 export const getChartDatapointsStateParser = () => {
   return createParser({
@@ -161,6 +168,29 @@ export const getChartDatapointsStateParser = () => {
         if (!result.success) return null;
 
         return result.data as DataPointSchema[];
+      } catch {
+        return null;
+      }
+    },
+    serialize: (value) => JSON.stringify(value),
+  });
+};
+
+export const getChartDateRangeStateParser = () => {
+  return createParser({
+    parse: (value) => {
+      try {
+        const parsed = JSON.parse(value);
+        const result = z
+          .object({
+            from: z.string(),
+            to: z.string(),
+          })
+          .safeParse(parsed);
+
+        if (!result.success) return null;
+
+        return result.data;
       } catch {
         return null;
       }

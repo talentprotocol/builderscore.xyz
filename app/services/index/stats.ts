@@ -6,6 +6,10 @@ import { StatsResponse } from "@/app/types/stats";
 
 type DailyStatsQueryParams = {
   chartDatapoints: DataPointSchema[];
+  dateRange?: {
+    from: string;
+    to: string;
+  };
 };
 
 export const fetchDailyStats = unstable_cache(
@@ -20,9 +24,11 @@ export const fetchDailyStats = unstable_cache(
 
     const query = {
       metrics,
-      date_from: queryParams.chartDatapoints[0]?.dateRange.from,
-      date_to: queryParams.chartDatapoints[0]?.dateRange.to,
+      date_from: queryParams.dateRange?.from,
+      date_to: queryParams.dateRange?.to,
     };
+
+    console.log("query", query);
 
     const encodedQuery = encodeURIComponent(JSON.stringify(query));
 

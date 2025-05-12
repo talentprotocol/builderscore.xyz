@@ -29,6 +29,7 @@ import {
   CHART_DATAPOINTS_KEY,
   chartDatapointsParser,
 } from "@/app/lib/data-table/parsers";
+import { getChartDateRangeStateParser } from "@/app/lib/data-table/parsers";
 import { cn, formatDate } from "@/app/lib/utils";
 import {
   CalendarIcon,
@@ -45,10 +46,7 @@ interface ChartDataPoint {
   id: string;
   dataIssuer: string;
   dataPoint: string;
-  dateRange: {
-    from: Date | undefined;
-    to: Date | undefined;
-  };
+  name: string;
 }
 
 interface DataTableChartSelectorProps
@@ -66,16 +64,24 @@ export function DataTableChartSelector({
   const labelId = React.useId();
   const descriptionId = React.useId();
   const addButtonRef = React.useRef<HTMLButtonElement>(null);
+  const [showDateRangePicker, setShowDateRangePicker] = React.useState(false);
+  const dateRangePickerId = "chart-date-range-picker";
 
   const allDatapoints = React.useMemo(() => {
-    const datapoints: { issuer: string; datapoint: string; id: string }[] = [];
+    const datapoints: {
+      issuer: string;
+      datapoint: string;
+      id: string;
+      name: string;
+    }[] = [];
 
     CHART_DATAPOINTS.forEach((item) => {
       item.dataPoints.forEach((datapoint) => {
         datapoints.push({
           issuer: item.dataIssuer,
-          datapoint,
-          id: `${item.dataIssuer}:${datapoint}`,
+          datapoint: datapoint.value,
+          name: datapoint.name,
+          id: `${item.dataIssuer}:${datapoint.value}`,
         });
       });
     });
@@ -92,22 +98,30 @@ export function DataTableChartSelector({
     }),
   );
 
+  const [dateRange, setDateRange] = useQueryState(
+    "chartDateRange",
+    getChartDateRangeStateParser()
+      .withDefault({
+        from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+        to: new Date().toISOString(),
+      })
+      .withOptions({
+        clearOnDefault: false,
+        shallow,
+        throttleMs,
+      }),
+  );
+
   const onDatapointAdd = () => {
     if (allDatapoints.length === 0) return;
 
     const firstDatapoint = allDatapoints[0];
-    const now = new Date();
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
     const newDatapoint: ChartDataPoint = {
       id: generateId({ length: 8 }),
       dataIssuer: firstDatapoint.issuer,
       dataPoint: firstDatapoint.datapoint,
-      dateRange: {
-        from: oneMonthAgo,
-        to: now,
-      },
+      name: firstDatapoint.name,
     };
 
     setSelectedDatapoints([...selectedDatapoints, newDatapoint]);
@@ -133,6 +147,30 @@ export function DataTableChartSelector({
 
   const onResetDatapoints = () => {
     setSelectedDatapoints([]);
+  };
+
+  const formatDateRangeDisplay = () => {
+    if (!dateRange.from && !dateRange.to) {
+      return "Select date range";
+    }
+
+    if (dateRange.from && dateRange.to) {
+      const fromDate = new Date(dateRange.from);
+      const toDate = new Date(dateRange.to);
+      return `${formatDate(fromDate.toISOString())} - ${formatDate(toDate.toISOString())}`;
+    }
+
+    if (dateRange.from) {
+      const fromDate = new Date(dateRange.from);
+      return `From ${formatDate(fromDate.toISOString())}`;
+    }
+
+    if (dateRange.to) {
+      const toDate = new Date(dateRange.to);
+      return `To ${formatDate(toDate.toISOString())}`;
+    }
+
+    return "Select date range";
   };
 
   return (
@@ -180,6 +218,49 @@ export function DataTableChartSelector({
                 Add data points to visualize.
               </p>
             )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Popover
+              open={showDateRangePicker}
+              onOpenChange={setShowDateRangePicker}
+            >
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-between rounded font-normal"
+                  aria-controls={dateRangePickerId}
+                >
+                  <CalendarIcon className="mr-1 h-4 w-4" />
+                  <span className="truncate">{formatDateRangeDisplay()}</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                id={dateRangePickerId}
+                align="start"
+                className="w-auto origin-[var(--radix-popover-content-transform-origin)] p-0"
+              >
+                <Calendar
+                  mode="range"
+                  initialFocus
+                  selected={{
+                    from: dateRange.from ? new Date(dateRange.from) : undefined,
+                    to: dateRange.to ? new Date(dateRange.to) : undefined,
+                  }}
+                  onSelect={(range) => {
+                    if (range?.from) {
+                      setDateRange({
+                        from: range.from.toISOString(),
+                        to: range.to
+                          ? range.to.toISOString()
+                          : range.from.toISOString(),
+                      });
+                    }
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           {selectedDatapoints.length > 0 && (
@@ -238,7 +319,12 @@ export function DataTableChartSelector({
 
 interface DataTableChartItemProps {
   datapoint: ChartDataPoint;
-  allDatapoints: { issuer: string; datapoint: string; id: string }[];
+  allDatapoints: {
+    issuer: string;
+    datapoint: string;
+    id: string;
+    name: string;
+  }[];
   onDatapointUpdate: (
     id: string,
     updates: Partial<Omit<ChartDataPoint, "id">>,
@@ -254,15 +340,15 @@ function DataTableChartItem({
 }: DataTableChartItemProps) {
   const [showDatapointSelector, setShowDatapointSelector] =
     React.useState(false);
-  const [showDateRangePicker, setShowDateRangePicker] = React.useState(false);
 
   const datapointId = `${datapoint.dataIssuer}:${datapoint.dataPoint}`;
   const datapointSelectorId = `chart-datapoint-${datapoint.id}-selector`;
-  const dateRangePickerId = `chart-datapoint-${datapoint.id}-date-range`;
 
-  // Group datapoints by issuer for the selector
   const groupedDatapoints = React.useMemo(() => {
-    const groups: Record<string, { datapoint: string; id: string }[]> = {};
+    const groups: Record<
+      string,
+      { datapoint: string; id: string; name: string }[]
+    > = {};
 
     allDatapoints.forEach((item) => {
       if (!groups[item.issuer]) {
@@ -272,6 +358,7 @@ function DataTableChartItem({
       groups[item.issuer].push({
         datapoint: item.datapoint,
         id: item.id,
+        name: item.name,
       });
     });
 
@@ -287,7 +374,7 @@ function DataTableChartItem({
         return;
       }
 
-      if (showDatapointSelector || showDateRangePicker) {
+      if (showDatapointSelector) {
         return;
       }
 
@@ -296,49 +383,8 @@ function DataTableChartItem({
         onDatapointRemove(datapoint.id);
       }
     },
-    [
-      datapoint.id,
-      showDatapointSelector,
-      showDateRangePicker,
-      onDatapointRemove,
-    ],
+    [datapoint.id, showDatapointSelector, onDatapointRemove],
   );
-
-  const formatDateRange = () => {
-    if (!datapoint.dateRange.from && !datapoint.dateRange.to) {
-      return "Select date range";
-    }
-
-    if (datapoint.dateRange.from && datapoint.dateRange.to) {
-      const fromDate =
-        datapoint.dateRange.from instanceof Date
-          ? datapoint.dateRange.from
-          : new Date(datapoint.dateRange.from);
-      const toDate =
-        datapoint.dateRange.to instanceof Date
-          ? datapoint.dateRange.to
-          : new Date(datapoint.dateRange.to);
-      return `${formatDate(fromDate.toISOString())} - ${formatDate(toDate.toISOString())}`;
-    }
-
-    if (datapoint.dateRange.from) {
-      const fromDate =
-        datapoint.dateRange.from instanceof Date
-          ? datapoint.dateRange.from
-          : new Date(datapoint.dateRange.from);
-      return `From ${formatDate(fromDate.toISOString())}`;
-    }
-
-    if (datapoint.dateRange.to) {
-      const toDate =
-        datapoint.dateRange.to instanceof Date
-          ? datapoint.dateRange.to
-          : new Date(datapoint.dateRange.to);
-      return `To ${formatDate(toDate.toISOString())}`;
-    }
-
-    return "Select date range";
-  };
 
   return (
     <SortableItem value={datapoint.id} asChild>
@@ -357,9 +403,9 @@ function DataTableChartItem({
               aria-controls={datapointSelectorId}
               variant="outline"
               size="sm"
-              className="w-36 justify-between rounded font-normal"
+              className="flex-1 justify-between rounded font-normal"
             >
-              <span className="truncate">{datapoint.dataPoint}</span>
+              <span className="truncate">{datapoint.name}</span>
               <ChevronsUpDown className="ml-1 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -384,6 +430,7 @@ function DataTableChartItem({
                             onDatapointUpdate(datapoint.id, {
                               dataIssuer: issuer,
                               dataPoint,
+                              name: item.name,
                             });
                             setShowDatapointSelector(false);
                           }}
@@ -396,7 +443,7 @@ function DataTableChartItem({
                                 : "opacity-0",
                             )}
                           />
-                          <span className="truncate">{item.datapoint}</span>
+                          <span className="truncate">{item.name}</span>
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -404,42 +451,6 @@ function DataTableChartItem({
                 )}
               </CommandList>
             </Command>
-          </PopoverContent>
-        </Popover>
-
-        <Popover
-          open={showDateRangePicker}
-          onOpenChange={setShowDateRangePicker}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-36 justify-between rounded font-normal"
-              aria-controls={dateRangePickerId}
-            >
-              <CalendarIcon className="mr-1 h-4 w-4" />
-              <span className="truncate">{formatDateRange()}</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent
-            id={dateRangePickerId}
-            align="start"
-            className="w-auto origin-[var(--radix-popover-content-transform-origin)] p-0"
-          >
-            <Calendar
-              mode="range"
-              initialFocus
-              selected={datapoint.dateRange}
-              onSelect={(range) => {
-                onDatapointUpdate(datapoint.id, {
-                  dateRange: {
-                    from: range?.from,
-                    to: range?.to || range?.from,
-                  },
-                });
-              }}
-            />
           </PopoverContent>
         </Popover>
 
