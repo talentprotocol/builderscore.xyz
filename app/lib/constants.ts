@@ -128,6 +128,13 @@ export const SPONSORS: Record<string, SponsorInfo> = {
   },
 };
 
+export const CHART_DATAPOINTS = [
+  {
+    dataIssuer: "Base",
+    dataPoints: ["Contracts Deployed (Mainnet)", "Primary Basename"],
+  },
+];
+
 export const CREDENTIALS = [
   {
     dataIssuer: "Arbitrum",

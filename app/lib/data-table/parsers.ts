@@ -6,6 +6,26 @@ import type {
 import { createParser } from "nuqs/server";
 import { z } from "zod";
 
+export const VIEW_MODE_KEY = "viewMode";
+export const viewModeParser = createParser({
+  parse: (value) => (value === "chart" ? "chart" : "table"),
+  serialize: (value) => value,
+});
+
+export const CHART_DATAPOINTS_KEY = "chartDatapoints";
+export const chartDatapointsParser = createParser({
+  parse: (value) => {
+    if (!value) return [];
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  },
+  serialize: (value) => JSON.stringify(value),
+});
+
 const sortingItemSchema = z.object({
   id: z.string(),
   desc: z.boolean(),
