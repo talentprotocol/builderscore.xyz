@@ -29,7 +29,7 @@ export default function SelectGrant() {
           isAllTimeSelected() ? "all_time" : selectedGrant?.id?.toString() || ""
         }
       >
-        <SelectTrigger className="h-6 w-56 cursor-not-allowed border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+        <SelectTrigger className="button-style h-6 w-56 cursor-not-allowed p-2 text-xs">
           <SelectValue placeholder="Loading..." />
         </SelectTrigger>
       </Select>
@@ -46,9 +46,7 @@ export default function SelectGrant() {
     if (selectedSponsor?.slug === "global") {
       return (
         <div className="flex items-start gap-2">
-          <span className="text-neutral-600 dark:text-neutral-500">
-            {grant.sponsor.name}
-          </span>
+          <span className="secondary-text-style">{grant.sponsor.name}</span>
           <span>
             {startDate} - {endDate}
           </span>
@@ -72,7 +70,7 @@ export default function SelectGrant() {
         setSelectedGrant(grant);
       }}
     >
-      <SelectTrigger className="h-6 w-56 cursor-pointer border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+      <SelectTrigger className="button-style h-6 w-56 cursor-pointer p-2 text-xs">
         <SelectValue placeholder="Select Grant" />
       </SelectTrigger>
       <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">

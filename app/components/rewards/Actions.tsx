@@ -36,7 +36,7 @@ export default function Actions() {
             >
               <Button
                 size="lg"
-                className="w-full cursor-pointer border border-neutral-300 bg-white text-xs text-black hover:bg-neutral-100 sm:text-sm dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+                className="button-style w-full cursor-pointer text-xs sm:text-sm"
               >
                 <span className="hidden sm:block">
                   {talentProfile ? "Connect GitHub" : "Sign Up for Talent"}

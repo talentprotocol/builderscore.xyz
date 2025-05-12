@@ -175,7 +175,12 @@ export function DataTableSortList<TData>({
     >
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" onKeyDown={onTriggerKeyDown}>
+          <Button
+            className="button-style text-xs"
+            variant="outline"
+            size="sm"
+            onKeyDown={onTriggerKeyDown}
+          >
             <ArrowDownUp />
             Sort
             {sorting.length > 0 && (
@@ -191,17 +196,17 @@ export function DataTableSortList<TData>({
         <PopoverContent
           aria-labelledby={labelId}
           aria-describedby={descriptionId}
-          className="flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3.5 p-4 sm:min-w-[380px]"
+          className="border-style flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3 p-3 sm:min-w-[380px]"
           {...props}
         >
           <div className="flex flex-col gap-1">
-            <h4 id={labelId} className="leading-none font-medium">
+            <h4 id={labelId} className="text-xs leading-none font-medium">
               {sorting.length > 0 ? "Sort by" : "No sorting applied"}
             </h4>
             <p
               id={descriptionId}
               className={cn(
-                "text-muted-foreground text-sm",
+                "secondary-text-style text-xs",
                 sorting.length > 0 && "sr-only",
               )}
             >
@@ -214,7 +219,7 @@ export function DataTableSortList<TData>({
             <SortableContent asChild>
               <div
                 role="list"
-                className="flex max-h-[300px] flex-col gap-2 overflow-y-auto p-1"
+                className="flex max-h-[300px] flex-col gap-2 overflow-y-auto"
               >
                 {sorting.map((sort) => (
                   <DataTableSortItem
@@ -233,7 +238,7 @@ export function DataTableSortList<TData>({
           <div className="flex w-full items-center gap-2">
             <Button
               size="sm"
-              className="rounded"
+              className="button-style text-xs"
               ref={addButtonRef}
               onClick={onSortAdd}
               disabled={
@@ -241,19 +246,19 @@ export function DataTableSortList<TData>({
                 (MAX_SORTS !== -1 && sorting.length >= MAX_SORTS)
               }
             >
-              Add sort
+              Add Sort
               {MAX_SORTS !== -1 && sorting.length >= MAX_SORTS && (
-                <span className="ml-1 text-xs">(Max {MAX_SORTS})</span>
+                <span className="text-xs">(Max. {MAX_SORTS})</span>
               )}
             </Button>
             {sorting.length > 0 && (
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded"
+                className="button-style text-xs"
                 onClick={onSortingReset}
               >
-                Reset sorting
+                Reset Sorting
               </Button>
             )}
           </div>

@@ -125,7 +125,7 @@ export default function Header() {
           : "Total Rewards Pool";
 
     return (
-      <h2 className="text-sm text-neutral-600 dark:text-neutral-500">
+      <h2 className="secondary-text-style text-sm">
         {process.env.NODE_ENV === "development" && userLeaderboard && (
           <span className="mr-4 text-xs text-green-500">
             ID: {userLeaderboard.id}
@@ -180,7 +180,7 @@ export default function Header() {
               )
             : "0"}
         </span>
-        <span className="mb-[1px] text-neutral-600 dark:text-neutral-500">
+        <span className="secondary-text-style mb-[1px]">
           {sponsorTokenTicker}
         </span>
       </div>
@@ -196,9 +196,7 @@ export default function Header() {
             TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker],
           )}
         </span>
-        <span className="mb-[1px] text-neutral-600 dark:text-neutral-500">
-          {ticker}
-        </span>
+        <span className="secondary-text-style mb-[1px]">{ticker}</span>
       </div>
     ));
   }
@@ -225,7 +223,7 @@ export default function Header() {
             TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorTokenTicker],
           )}
         </span>
-        <span className="mb-[1px] text-neutral-600 dark:text-neutral-500">
+        <span className="secondary-text-style mb-[1px]">
           {sponsorTokenTicker}
         </span>
       </div>
@@ -258,9 +256,7 @@ export default function Header() {
 
     return (
       <div className="flex flex-col items-center justify-between">
-        <p className="text-sm text-neutral-600 dark:text-neutral-500">
-          {titleText}
-        </p>
+        <p className="secondary-text-style text-sm">{titleText}</p>
         <p className="font-mono text-2xl font-semibold">{valueText}</p>
       </div>
     );
@@ -285,9 +281,7 @@ export default function Header() {
 
     return (
       <div className="flex flex-col items-center justify-between">
-        <p className="text-sm text-neutral-600 dark:text-neutral-500">
-          {titleText}
-        </p>
+        <p className="secondary-text-style text-sm">{titleText}</p>
         <p className="font-mono text-2xl font-semibold">{scoreValue}</p>
       </div>
     );
@@ -296,7 +290,7 @@ export default function Header() {
   return (
     <div className="flex flex-col gap-3">
       {renderIntermediateGrantInfo()}
-      <div className="rounded-lg border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+      <div className="card-style">
         {renderHeaderSection()}
         {renderStatsSection()}
       </div>

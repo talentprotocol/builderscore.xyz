@@ -50,7 +50,7 @@ export default function SelectSponsor() {
   if (loadingSponsors) {
     return (
       <Select disabled>
-        <SelectTrigger className="h-6 cursor-not-allowed border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+        <SelectTrigger className="button-style h-6 w-36 cursor-not-allowed p-2 text-xs">
           <SelectValue className="dark:text-white" placeholder="Loading..." />
         </SelectTrigger>
       </Select>
@@ -59,7 +59,7 @@ export default function SelectSponsor() {
 
   return (
     <Select value={selectedSponsor?.slug} onValueChange={handleSponsorChange}>
-      <SelectTrigger className="h-6 cursor-pointer border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+      <SelectTrigger className="button-style h-6 w-36 cursor-pointer p-2 text-xs">
         <SelectValue className="dark:text-white" placeholder="Select Sponsor" />
       </SelectTrigger>
       <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
