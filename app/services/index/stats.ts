@@ -26,9 +26,8 @@ export const fetchDailyStats = unstable_cache(
       metrics,
       date_from: queryParams.dateRange?.from,
       date_to: queryParams.dateRange?.to,
+      cumulative: true,
     };
-
-    console.log("query", query);
 
     const encodedQuery = encodeURIComponent(JSON.stringify(query));
 

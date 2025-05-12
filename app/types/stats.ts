@@ -7,7 +7,7 @@ export interface StatsQueryParams {
 
 export interface StatsDataPoint {
   date: string;
-  value: number;
+  count: number;
 }
 
 export interface StatsResponse {
