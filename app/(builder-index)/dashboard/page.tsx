@@ -9,6 +9,7 @@ import {
 import { searchProfiles } from "@/app/services/index/search";
 import { fetchDailyStats } from "@/app/services/index/stats";
 import type { SearchParams } from "@/app/types/index";
+import { connection } from "next/server";
 import { Suspense } from "react";
 
 interface PageProps {
@@ -16,6 +17,9 @@ interface PageProps {
 }
 
 export default async function Page(props: PageProps) {
+  // This is a workaround to ensure PPR is enabled
+  await connection();
+
   const urlSearchParams = await props.searchParams;
   const search = searchParamsCache.parse(urlSearchParams);
   const stats = statsParamsCache.parse(urlSearchParams);
