@@ -15,7 +15,10 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     ppr: true,
+<<<<<<< HEAD
     authInterrupts: true,
+=======
+>>>>>>> ff25a02 (Next canary.)
     inlineCss: true,
     reactCompiler: true,
     optimizePackageImports: ["react-icons", "lucide-react"],
