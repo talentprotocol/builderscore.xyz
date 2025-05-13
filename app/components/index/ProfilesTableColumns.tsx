@@ -20,18 +20,17 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
         variant: "text",
         icon: User,
       },
-      size: 200,
       enableColumnFilter: true,
       enableSorting: false,
       cell: ({ row }) => {
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <Image
               src={row.original.image_url!}
               alt={row.original.display_name || "Builder"}
-              width={22}
-              height={22}
-              className="mr-1 aspect-square rounded-full object-cover"
+              width={12}
+              height={12}
+              className="aspect-square rounded-full object-cover"
             />
             <span className="truncate">{row.original.display_name}</span>
           </div>
@@ -47,7 +46,6 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
       meta: {
         label: "Location",
       },
-      size: 200,
     },
     {
       id: "builder_score",
@@ -64,7 +62,6 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
         unit: "",
         icon: Star,
       },
-      size: 100,
     },
     {
       id: "human_checkmark",
@@ -78,7 +75,6 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
       cell: ({ row }) => {
         return row.original.human_checkmark && <BadgeCheck size={16} />;
       },
-      size: 100,
     },
     {
       id: "tags",
@@ -99,7 +95,6 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
     },
     {
       id: "credentials",
-      enableHiding: true,
       enableSorting: false,
       enableColumnFilter: true,
       meta: {
