@@ -31,17 +31,21 @@ export function DataTable<TData>({
     >
       {children}
       <div className="card-style overflow-hidden">
-        <Table>
+        <Table className="table-fixed">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
+                {headerGroup.headers.map((header, headerIndex) => (
                   <TableHead
                     className="h-9 text-xs font-medium"
                     key={header.id}
                     colSpan={header.colSpan}
                     style={{
+                      width: `${100 / table.getAllColumns().length}%`,
                       ...getCommonPinningStyles({ column: header.column }),
+                      ...(headerGroup.headers.length === 2 && headerIndex === 1
+                        ? { textAlign: "right" }
+                        : {}),
                     }}
                   >
                     {header.isPlaceholder
@@ -61,13 +65,17 @@ export function DataTable<TData>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="h-9 text-xs"
+                  className="h-5 text-xs"
                 >
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map((cell, cellIndex) => (
                     <TableCell
                       key={cell.id}
                       style={{
                         ...getCommonPinningStyles({ column: cell.column }),
+                        ...(row.getVisibleCells().length === 2 &&
+                        cellIndex === 1
+                          ? { textAlign: "right" }
+                          : {}),
                       }}
                     >
                       {flexRender(

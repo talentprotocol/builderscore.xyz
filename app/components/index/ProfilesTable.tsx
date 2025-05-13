@@ -29,6 +29,12 @@ export function ProfilesTable({ initialData, dailyStats }: ProfilesTableProps) {
     initialState: {
       sorting: [{ id: "builder_score", desc: true }],
       columnPinning: { right: ["actions"] },
+      columnVisibility: {
+        credentials: false,
+        location: false,
+        tags: false,
+        human_checkmark: false,
+      },
     },
     getRowId: (originalRow) => originalRow.id,
     shallow: false,

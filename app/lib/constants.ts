@@ -32,8 +32,11 @@ export const CHART_DATAPOINTS = [
         name: "Mainnet Contracts Deployed",
         value: "base_mainnet_contracts_deployed",
       },
-      { name: "Created Accounts", value: "created_accounts" },
     ],
+  },
+  {
+    dataIssuer: "Talent Protocol",
+    dataPoints: [{ name: "Created Accounts", value: "created_accounts" }],
   },
 ];
 
