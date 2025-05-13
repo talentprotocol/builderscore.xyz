@@ -25,14 +25,18 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-1">
-            <Image
-              src={row.original.image_url!}
-              alt={row.original.display_name || "Builder"}
-              width={12}
-              height={12}
-              className="aspect-square rounded-full object-cover"
-            />
-            <span className="truncate">{row.original.display_name}</span>
+            {row.original.image_url && (
+              <Image
+                src={row.original.image_url}
+                alt={row.original.display_name || "Builder"}
+                width={12}
+                height={12}
+                className="aspect-square rounded-full object-cover"
+              />
+            )}
+            <span className={`${row.original.image_url && "ml-2"} truncate`}>
+              {row.original.display_name}
+            </span>
           </div>
         );
       },
