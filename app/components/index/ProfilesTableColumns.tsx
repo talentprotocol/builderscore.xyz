@@ -35,7 +35,7 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
               />
             )}
             <span className={`${row.original.image_url && "ml-2"} truncate`}>
-              {row.original.display_name}
+              {row.original.display_name || row.original.name}
             </span>
           </div>
         );
@@ -90,7 +90,7 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
         label: "Tags",
       },
       cell: ({ row }) => {
-        return row.original.tags.map((tag) => (
+        return row.original.tags?.map((tag) => (
           <Badge key={tag} variant="outline" className="mr-1">
             {tag}
           </Badge>
@@ -99,6 +99,8 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
     },
     {
       id: "credentials",
+      accessorKey: "credentials",
+      header: "Credentials",
       enableSorting: false,
       enableColumnFilter: true,
       meta: {

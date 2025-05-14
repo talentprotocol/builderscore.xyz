@@ -120,8 +120,7 @@ function transformQuery(query: Record<string, unknown>): TransformedQuery {
               dataIssuer: credential.dataIssuer,
               name: credential.dataPoint,
             };
-          } catch (error) {
-            console.error("Error parsing credential:", credentialStr, error);
+          } catch {
             return null;
           }
         })
