@@ -4,7 +4,7 @@ import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
-import { ALLOWED_SPONSORS, DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
+import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
 import { getGrants } from "@/app/services/grants";
 import {
   getLeaderboardEntry,
@@ -53,11 +53,7 @@ export function useLoadRewards() {
     setLoadingSponsors(true);
     const response = await getSponsors();
     if (response) {
-      const allowedSponsors = response.sponsors.filter((sponsor) =>
-        ALLOWED_SPONSORS.includes(sponsor.slug),
-      );
-
-      setSponsors(allowedSponsors);
+      setSponsors(response.sponsors);
     }
     setLoadingSponsors(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
