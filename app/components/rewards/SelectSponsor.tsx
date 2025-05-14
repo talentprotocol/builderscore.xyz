@@ -9,6 +9,7 @@ import {
 } from "@/app/components/ui/select";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useHistoryListener } from "@/app/hooks/useHistoryListener";
+import { ALLOWED_SPONSORS } from "@/app/lib/constants";
 import { Sponsor } from "@/app/types/sponsors";
 
 export default function SelectSponsor() {
@@ -25,7 +26,7 @@ export default function SelectSponsor() {
     //   name: "Global",
     //   slug: "global",
     // },
-    ...sponsors,
+    ...sponsors.filter((sponsor) => ALLOWED_SPONSORS.includes(sponsor.slug)),
   ];
 
   const handleSponsorChange = (newSponsor: string) => {
