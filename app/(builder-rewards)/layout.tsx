@@ -7,7 +7,6 @@ import { GrantProvider } from "@/app/context/GrantContext";
 import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
 import { SponsorProvider } from "@/app/context/SponsorContext";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 
 // const frame = {
 //   version: "next",
