@@ -6,7 +6,6 @@ import { GrantProvider } from "@/app/context/GrantContext";
 import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
 import { SponsorProvider } from "@/app/context/SponsorContext";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 
 const frame = {
   version: "next",
@@ -46,9 +45,6 @@ export default async function BuilderRewardsLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headerList = await headers();
-  const sponsor = headerList.get("x-current-sponsor");
-
   return (
     <SponsorProvider>
       <GrantProvider>
@@ -61,7 +57,6 @@ export default async function BuilderRewardsLayout({
               </>
             )}
             <Navbar sponsored />
-            <p>Headers sponsor: {sponsor || "no sponsor"}</p>
             <main className="flex h-full flex-col">{children}</main>
             <Footer />
           </div>

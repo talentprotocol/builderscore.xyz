@@ -47,7 +47,7 @@ export async function middleware(request: NextRequest) {
   const headers = new Headers(request.headers);
 
   if (subdomain) {
-    headers.set("x-current-sponsor", subdomain);
+    headers.set("x-current-subdomain", subdomain);
 
     // Block access to admin page from subdomains
     if (pathname.startsWith("/admin")) {
