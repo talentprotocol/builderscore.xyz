@@ -16,7 +16,7 @@ export default async function Page() {
   const subdomain = headersAsObject["x-current-subdomain"];
 
   console.log("subdomain from sponsor page", subdomain);
-  console.log("requestHeaders from sponsor page", requestHeaders);
+  console.log("requestHeaders from sponsor page", headersAsObject);
 
   return <Home />;
 }
