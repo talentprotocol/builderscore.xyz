@@ -8,6 +8,8 @@ export async function GET() {
   });
   const subdomain = headersAsObject["x-current-subdomain"];
 
+  console.log("subdomain from farcaster.json", subdomain);
+
   const baseJson = {
     accountAssociation: {
       header:

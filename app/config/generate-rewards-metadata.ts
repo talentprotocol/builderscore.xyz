@@ -9,6 +9,8 @@ export async function generateRewardsMetadata(): Promise<Metadata> {
   });
   const subdomain = headersAsObject["x-current-subdomain"];
 
+  console.log("subdomain from generateRewardsMetadata", subdomain);
+
   return {
     title: `Sub: ${subdomain}`,
   };
