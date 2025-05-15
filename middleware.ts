@@ -7,13 +7,8 @@ function extractSubdomain(request: NextRequest): string | null {
   const host = request.headers.get("host") || "";
   const hostname = host.split(":")[0];
 
-  console.log("url", url);
-  console.log("host", host);
-  console.log("hostname", hostname);
-
   // Local development environment
   if (url.includes("localhost") || url.includes("127.0.0.1")) {
-    console.log("is localhost");
     // Try to extract subdomain from the full URL
     const fullUrlMatch = url.match(/http:\/\/([^.]+)\.localhost/);
     if (fullUrlMatch && fullUrlMatch[1]) {
@@ -30,11 +25,9 @@ function extractSubdomain(request: NextRequest): string | null {
 
   // Production environment
   const rootDomainFormatted = rootDomain.split(":")[0];
-  console.log("rootDomainFormatted", rootDomainFormatted);
 
   // Handle preview deployment URLs (tenant---branch-name.vercel.app)
   if (hostname.includes("---") && hostname.endsWith(".vercel.app")) {
-    console.log("is preview deployment");
     const parts = hostname.split("---");
     return parts.length > 0 ? parts[0] : null;
   }
@@ -45,22 +38,17 @@ function extractSubdomain(request: NextRequest): string | null {
     hostname !== `www.${rootDomainFormatted}` &&
     hostname.endsWith(`.${rootDomainFormatted}`);
 
-  console.log("isSubdomain", isSubdomain);
-
   return isSubdomain ? hostname.replace(`.${rootDomainFormatted}`, "") : null;
 }
 
 export async function middleware(request: NextRequest) {
-  console.log("middleware started");
   const { pathname } = request.nextUrl;
   const subdomain = extractSubdomain(request);
-
-  console.log("pathname", pathname);
-  console.log("subdomain", subdomain);
+  const headers = new Headers(request.headers);
 
   if (subdomain) {
-    console.log("subdomain found");
-    console.log("pathname", pathname);
+    headers.set("x-current-sponsor", subdomain);
+
     // Block access to admin page from subdomains
     if (pathname.startsWith("/admin")) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -68,8 +56,6 @@ export async function middleware(request: NextRequest) {
 
     // For the root path on a subdomain, rewrite to the subdomain page
     if (pathname === "/") {
-      console.log("rewriting to subdomain");
-      console.log("new URL", new URL(`/${subdomain}`, request.url));
       return NextResponse.rewrite(new URL(`/${subdomain}`, request.url));
     }
   }
