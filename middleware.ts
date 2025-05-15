@@ -63,7 +63,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // On the root domain, allow normal access
-  return NextResponse.next();
+  return NextResponse.next({
+    request: {
+      headers: headers,
+    },
+  });
 }
 
 export const config = {
