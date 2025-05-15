@@ -51,68 +51,70 @@ export default function LeaderboardWrapper() {
         <SelectGrant />
       </div>
 
-      {!isLoading && leaderboardData
-        ? leaderboardData?.users?.length > 0 &&
-          !error && (
-            <>
-              {userLeaderboard ? (
-                <LeaderboardRow
-                  leaderboardData={userLeaderboard}
-                  isHighlighted={true}
-                  className="mb-2"
-                  onBuilderSelect={setSelectedBuilder}
-                />
-              ) : (
-                talentProfile && (
-                  <LeaderboardRow
-                    leaderboardData={defaultUserLeaderboard}
-                    isHighlighted={true}
-                    className="mb-2"
-                    onBuilderSelect={setSelectedBuilder}
-                  />
-                )
-              )}
-              <Leaderboard
-                leaderboardData={leaderboardData!}
-                onLoadMore={handleLoadMore}
-                hasMore={hasMore}
-                isLoadingMore={isLoadingMore}
-                onBuilderSelect={setSelectedBuilder}
-              />
-              <LeaderboardRowDrawer
-                selectedBuilder={selectedBuilder}
-                onClose={() => setSelectedBuilder(null)}
-                weekly={!!selectedGrant}
-                context={
-                  selectedGrant
-                    ? format(
-                        new Date(selectedGrant?.start_date || ""),
-                        "MMM d",
-                      ) +
-                      " - " +
-                      format(
-                        new Date(selectedGrant?.end_date || ""),
-                        "MMM d, yyyy",
-                      )
-                    : "All Time"
-                }
-              />
-            </>
-          )
-        : talentProfile && (
-            <>
-              <LeaderboardRow
-                leaderboardData={defaultUserLeaderboard}
-                isHighlighted={true}
-                className="mb-2"
-                onBuilderSelect={setSelectedBuilder}
-              />
-              <LeaderboardRowDrawer
-                selectedBuilder={selectedBuilder}
-                onClose={() => setSelectedBuilder(null)}
-              />
-            </>
+      {!isLoading && talentProfile && (
+        <>
+          {userLeaderboard ? (
+            <LeaderboardRow
+              leaderboardData={userLeaderboard}
+              isHighlighted={true}
+              className="mb-2"
+              onBuilderSelect={setSelectedBuilder}
+            />
+          ) : (
+            <LeaderboardRow
+              leaderboardData={defaultUserLeaderboard}
+              isHighlighted={true}
+              className="mb-2"
+              onBuilderSelect={setSelectedBuilder}
+            />
           )}
+        </>
+      )}
+
+      {!isLoading &&
+        leaderboardData &&
+        leaderboardData?.users?.length > 0 &&
+        !error && (
+          <>
+            <Leaderboard
+              leaderboardData={leaderboardData!}
+              onLoadMore={handleLoadMore}
+              hasMore={hasMore}
+              isLoadingMore={isLoadingMore}
+              onBuilderSelect={setSelectedBuilder}
+            />
+            <LeaderboardRowDrawer
+              selectedBuilder={selectedBuilder}
+              onClose={() => setSelectedBuilder(null)}
+              weekly={!!selectedGrant}
+              context={
+                selectedGrant
+                  ? format(new Date(selectedGrant?.start_date || ""), "MMM d") +
+                    " - " +
+                    format(
+                      new Date(selectedGrant?.end_date || ""),
+                      "MMM d, yyyy",
+                    )
+                  : "All Time"
+              }
+            />
+          </>
+        )}
+
+      {selectedBuilder && (
+        <LeaderboardRowDrawer
+          selectedBuilder={selectedBuilder}
+          onClose={() => setSelectedBuilder(null)}
+          weekly={!!selectedGrant}
+          context={
+            selectedGrant
+              ? format(new Date(selectedGrant?.start_date || ""), "MMM d") +
+                " - " +
+                format(new Date(selectedGrant?.end_date || ""), "MMM d, yyyy")
+              : "All Time"
+          }
+        />
+      )}
 
       {(isLoading || loadingSponsors) && (
         <div className="flex h-96 items-center justify-center">
@@ -124,9 +126,7 @@ export default function LeaderboardWrapper() {
 
       {error && (
         <div className="mt-10 mb-6 flex h-full items-center justify-center text-sm">
-          <p className="text-neutral-600 dark:text-neutral-500">
-            Rewards Calculation hasn&apos;t started yet.
-          </p>
+          <p className="text-neutral-600 dark:text-neutral-500">{error}</p>
         </div>
       )}
     </div>

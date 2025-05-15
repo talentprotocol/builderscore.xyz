@@ -1,17 +1,10 @@
 "use client";
 
-import { useGrant } from "@/app/context/GrantContext";
 import {
   LeaderboardEntry,
   LeaderboardResponse,
 } from "@/app/types/leaderboards";
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 type ImplementableFetchLeaderboard = ((
   page?: number,
@@ -61,20 +54,11 @@ export function LeaderboardProvider({ children }: { children: ReactNode }) {
     useState<LeaderboardEntry | null>(null);
   const [showUserLeaderboard, setShowUserLeaderboard] = useState(true);
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardResponse>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-
-  const { selectedGrant } = useGrant();
-
-  useEffect(() => {
-    if (selectedGrant) {
-      setUserLeaderboard(null);
-      setLeaderboardData(undefined);
-    }
-  }, [selectedGrant]);
 
   const toggleUserLeaderboard = () => setShowUserLeaderboard((prev) => !prev);
 

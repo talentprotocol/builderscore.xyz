@@ -1,7 +1,7 @@
 "use client";
 
 import ToggleLeaderboard from "@/app/components/rewards/ToggleLeaderboard";
-import { useGrant } from "@/app/context/GrantContext";
+import { ALL_TIME_GRANT, useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
@@ -19,7 +19,10 @@ export default function Header() {
     useLeaderboard();
   const { selectedSponsor, sponsorTokenTicker, loadingSponsors } = useSponsor();
   const { loadingUser } = useUser();
-  const grantsToUse = selectedGrant ? [selectedGrant] : grants;
+  const grantsToUse =
+    selectedGrant && selectedGrant.id !== ALL_TIME_GRANT.id
+      ? [selectedGrant]
+      : grants;
   const isLoading =
     loadingGrants || loadingSponsors || loadingLeaderboard || loadingUser;
 
@@ -33,12 +36,22 @@ export default function Header() {
     {} as Record<string, number>,
   );
 
-  // TODO: Update endpoint to return ongoing, tracked Rewards
   const getDisplayAmount = (ticker: string, amount: number) => {
-    if (selectedSponsor?.slug === "base") {
-      return Math.min(Math.max(amount, 2), 8);
+    let displayAmount = amount;
+
+    switch (selectedSponsor?.slug) {
+      case "base":
+        displayAmount = Math.max(amount, 2);
+        break;
+      case "celo":
+        displayAmount = Math.max(amount, 10000);
+        break;
+      default:
+        displayAmount = amount;
+        break;
     }
-    return amount;
+
+    return displayAmount;
   };
 
   const totalRewardedBuilders = grantsToUse.reduce(
@@ -65,7 +78,12 @@ export default function Header() {
   const shouldShowUserLeaderboard = showUserLeaderboard && userLeaderboard;
 
   function renderIntermediateGrantInfo() {
-    if (!isIntermediateGrant || isLoading) return null;
+    if (
+      !isIntermediateGrant ||
+      isLoading ||
+      selectedGrant?.id === ALL_TIME_GRANT.id
+    )
+      return null;
 
     return (
       <div className="border-primary text-primary rounded-lg border px-3 py-1 text-xs">
@@ -186,10 +204,26 @@ export default function Header() {
   }
 
   function renderDefaultRewards() {
+    let displayAmount = 0;
+    switch (selectedSponsor?.slug) {
+      case "base":
+        displayAmount = 2;
+        break;
+      case "celo":
+        displayAmount = 10000;
+        break;
+      default:
+        displayAmount = 0;
+        break;
+    }
+
     return (
       <div className="flex items-end gap-2 font-mono">
         <span className="text-4xl font-semibold">
-          {selectedSponsor?.slug === "base" ? "2" : "0"}
+          {formatNumber(
+            displayAmount,
+            TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorTokenTicker],
+          )}
         </span>
         <span className="mb-[1px] text-neutral-600 dark:text-neutral-500">
           {sponsorTokenTicker}

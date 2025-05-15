@@ -7,17 +7,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
-import { useGrant } from "@/app/context/GrantContext";
+import { ALL_TIME_GRANT, useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { format } from "date-fns";
 
 export default function SelectGrant() {
-  const { grants, selectedGrant, setSelectedGrant, loadingGrants } = useGrant();
+  const {
+    grants,
+    selectedGrant,
+    setSelectedGrant,
+    loadingGrants,
+    isAllTimeSelected,
+  } = useGrant();
   const { selectedSponsor } = useSponsor();
 
   if (loadingGrants) {
     return (
-      <Select disabled value={selectedGrant?.id?.toString() || "all"}>
+      <Select
+        disabled
+        value={
+          isAllTimeSelected() ? "all_time" : selectedGrant?.id?.toString() || ""
+        }
+      >
         <SelectTrigger className="h-6 w-56 cursor-not-allowed border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
           <SelectValue placeholder="Loading..." />
         </SelectTrigger>
@@ -49,13 +60,15 @@ export default function SelectGrant() {
 
   return (
     <Select
-      value={selectedGrant?.id?.toString() || "all"}
+      value={
+        isAllTimeSelected() ? "all_time" : selectedGrant?.id?.toString() || ""
+      }
       onValueChange={(value) => {
-        if (value === "all") {
-          setSelectedGrant(null);
+        if (value === "all_time") {
+          setSelectedGrant(ALL_TIME_GRANT);
           return;
         }
-        const grant = grants.find((g) => g.id === Number(value)) || null;
+        const grant = grants.find((g) => g.id.toString() === value) || null;
         setSelectedGrant(grant);
       }}
     >
@@ -65,7 +78,7 @@ export default function SelectGrant() {
       <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
         <SelectItem
           className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-          value="all"
+          value="all_time"
         >
           All Time
         </SelectItem>

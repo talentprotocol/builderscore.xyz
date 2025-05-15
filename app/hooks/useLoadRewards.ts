@@ -1,6 +1,6 @@
 "use client";
 
-import { useGrant } from "@/app/context/GrantContext";
+import { ALL_TIME_GRANT, useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
@@ -33,6 +33,7 @@ export function useLoadRewards() {
     loadingGrants,
     setLoadingGrants,
     setSelectedGrant,
+    isAllTimeSelected,
   } = useGrant();
 
   const {
@@ -59,41 +60,25 @@ export function useLoadRewards() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchGrants = useCallback(async () => {
-    if (!loadingSponsors) {
-      setLoadingGrants(true);
-      const response = await getGrants({
-        sponsor_slug: selectedSponsor?.slug,
-      });
-      if (response) {
-        if (response.grants.length > 0) {
-          const sortedGrants = [...response.grants].sort(
-            (a, b) =>
-              new Date(b.end_date).getTime() - new Date(a.end_date).getTime(),
-          );
-
-          setSelectedGrant(sortedGrants[0]);
-          setGrants(response.grants);
-        }
-      }
-      setLoadingGrants(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsor]);
-
   const fetchUserLeaderboard = useCallback(async () => {
     if (!frameContext) {
       setLoadingLeaderboard(false);
       return;
     }
 
-    if (!loadingUser && !loadingGrants && !loadingSponsors && talentProfile) {
+    if (
+      !loadingUser &&
+      !loadingGrants &&
+      !loadingSponsors &&
+      talentProfile &&
+      selectedGrant
+    ) {
       setLoadingLeaderboard(true);
 
       try {
         const entry = await getLeaderboardEntry(
           talentProfile.id.toString(),
-          selectedGrant?.id?.toString(),
+          isAllTimeSelected() ? undefined : selectedGrant?.id?.toString(),
           selectedSponsor?.slug,
         );
         setUserLeaderboard(entry);
@@ -108,6 +93,18 @@ export function useLoadRewards() {
 
   const fetchLeaderboard = useCallback(
     async (page: number = 1, append: boolean = false) => {
+      if (!selectedGrant) {
+        return;
+      }
+
+      if (
+        !isAllTimeSelected() &&
+        "sponsor" in selectedGrant &&
+        selectedGrant.sponsor?.slug !== selectedSponsor?.slug
+      ) {
+        return;
+      }
+
       if (!loadingSponsors && !loadingUser && !loadingGrants) {
         try {
           const loadingState = append ? setIsLoadingMore : setIsLoading;
@@ -121,10 +118,16 @@ export function useLoadRewards() {
               selectedSponsor?.slug === "global"
                 ? undefined
                 : selectedSponsor?.slug,
-            grant_id: selectedGrant?.id?.toString(),
+            grant_id: isAllTimeSelected()
+              ? undefined
+              : selectedGrant?.id?.toString(),
           });
 
           if (response) {
+            if (response.users.length === 0 && !append) {
+              setError("Rewards Calculation hasn't started yet.");
+            }
+
             if (append) {
               setLeaderboardData((prevData) => {
                 if (prevData) {
@@ -143,23 +146,26 @@ export function useLoadRewards() {
               response.pagination.current_page < response.pagination.last_page,
             );
           }
-        } catch (err) {
-          setError(`Failed to fetch leaderboard data: ${err}`);
+        } catch {
+          setError(`Rewards Calculation hasn't started yet.`);
         } finally {
           const loadingState = append ? setIsLoadingMore : setIsLoading;
           loadingState(false);
         }
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       selectedSponsor,
       selectedGrant,
+      loadingSponsors,
+      loadingUser,
+      loadingGrants,
       setIsLoading,
       setIsLoadingMore,
       setError,
       setLeaderboardData,
       setHasMore,
+      isAllTimeSelected,
     ],
   );
 
@@ -167,6 +173,65 @@ export function useLoadRewards() {
     fetchLeaderboard(currentPage + 1, true);
     setCurrentPage(currentPage + 1);
   }, [fetchLeaderboard, currentPage, setCurrentPage]);
+
+  useEffect(() => {
+    if (selectedGrant) {
+      setUserLeaderboard(null);
+      setLeaderboardData({
+        users: [],
+        pagination: {
+          current_page: 1,
+          last_page: 1,
+          total: 0,
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGrant]);
+
+  useEffect(() => {
+    const resetAndFetchGrants = async () => {
+      setLoadingGrants(true);
+      setGrants([]);
+      setSelectedGrant(null);
+      setUserLeaderboard(null);
+      setLeaderboardData({
+        users: [],
+        pagination: {
+          current_page: 1,
+          last_page: 1,
+          total: 0,
+        },
+      });
+      setError(null);
+
+      if (!loadingSponsors && selectedSponsor) {
+        const response = await getGrants({
+          sponsor_slug: selectedSponsor?.slug,
+        });
+        if (response) {
+          if (response.grants.length > 0) {
+            const sortedGrants = [...response.grants].sort(
+              (a, b) =>
+                new Date(b.end_date).getTime() - new Date(a.end_date).getTime(),
+            );
+
+            setGrants(response.grants);
+            setSelectedGrant(sortedGrants[0] || ALL_TIME_GRANT);
+          } else {
+            setError("Rewards Calculation hasn't started yet.");
+            setSelectedGrant(ALL_TIME_GRANT);
+          }
+        }
+        setLoadingGrants(false);
+      } else {
+        setLoadingGrants(false);
+      }
+    };
+
+    resetAndFetchGrants();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSponsor]);
 
   useEffect(() => {
     if (sponsors.length > 0) {
@@ -182,22 +247,17 @@ export function useLoadRewards() {
   }, []);
 
   useEffect(() => {
-    fetchGrants();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsor]);
-
-  useEffect(() => {
     fetchUserLeaderboard();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [frameContext, selectedGrant, selectedSponsor, talentProfile]);
 
   useEffect(() => {
-    if (!loadingSponsors) {
+    if (!loadingSponsors && !loadingGrants && selectedGrant) {
       setCurrentPage(1);
       fetchLeaderboard(1, false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSponsor, selectedGrant, loadingSponsors]);
+  }, [selectedSponsor, selectedGrant, loadingSponsors, loadingGrants]);
 
   useEffect(() => {
     Object.defineProperty(contextFetchLeaderboard, "implementation", {
