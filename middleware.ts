@@ -1,85 +1,38 @@
-import { type NextRequest, NextResponse } from "next/server";
+// middleware.ts
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
-
-function extractSubdomain(request: NextRequest): string | null {
-  const url = request.url;
-  const host = request.headers.get("host") || "";
-  const hostname = host.split(":")[0];
-
-  console.log("url", url);
-  console.log("host", host);
-  console.log("hostname", hostname);
-
-  // Local development environment
-  if (url.includes("localhost") || url.includes("127.0.0.1")) {
-    console.log("is localhost");
-    // Try to extract subdomain from the full URL
-    const fullUrlMatch = url.match(/http:\/\/([^.]+)\.localhost/);
-    if (fullUrlMatch && fullUrlMatch[1]) {
-      return fullUrlMatch[1];
-    }
-
-    // Fallback to host header approach
-    if (hostname.includes(".localhost")) {
-      return hostname.split(".")[0];
-    }
-
-    return null;
+const getValidSubdomain = (host?: string | null) => {
+  let subdomain: string | null = null;
+  if (!host && typeof window !== "undefined") {
+    // On client side, get the host from window
+    host = window.location.host;
   }
-
-  // Production environment
-  const rootDomainFormatted = rootDomain.split(":")[0];
-  console.log("rootDomainFormatted", rootDomainFormatted);
-
-  // Handle preview deployment URLs (tenant---branch-name.vercel.app)
-  if (hostname.includes("---") && hostname.endsWith(".vercel.app")) {
-    console.log("is preview deployment");
-    const parts = hostname.split("---");
-    return parts.length > 0 ? parts[0] : null;
+  if (host && host.includes(".")) {
+    const candidate = host.split(".")[0];
+    if (candidate && !candidate.includes("localhost")) {
+      // Valid candidate
+      subdomain = candidate;
+    }
   }
+  return subdomain;
+};
 
-  // Regular subdomain detection
-  const isSubdomain =
-    hostname !== rootDomainFormatted &&
-    hostname !== `www.${rootDomainFormatted}` &&
-    hostname.endsWith(`.${rootDomainFormatted}`);
+export async function middleware(req: NextRequest) {
+  // Clone the URL
+  const url = req.nextUrl.clone();
 
-  console.log("isSubdomain", isSubdomain);
-
-  return isSubdomain ? hostname.replace(`.${rootDomainFormatted}`, "") : null;
-}
-
-export async function middleware(request: NextRequest) {
-  console.log("middleware started");
-  const { pathname } = request.nextUrl;
-  const subdomain = extractSubdomain(request);
-
-  console.log("pathname", pathname);
-  console.log("subdomain", subdomain);
-
+  const host = req.headers.get("host");
+  const subdomain = getValidSubdomain(host);
   if (subdomain) {
-    console.log("subdomain found");
-    console.log("pathname", pathname);
-    // Block access to admin page from subdomains
-    if (pathname.startsWith("/admin")) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-
-    // Check if this is a client-side navigation to root
-    const isClientNavigation = request.headers.get("x-nextjs-data") === "1";
-
-    // For the root path on a subdomain, rewrite to the subdomain page
-    // But only if it's not a client-side navigation
-    if (pathname === "/" && !isClientNavigation) {
-      console.log("rewriting to subdomain");
-      console.log("new URL", new URL(`/${subdomain}`, request.url));
-      return NextResponse.rewrite(new URL(`/${subdomain}`, request.url));
-    }
+    // Subdomain available, rewriting
+    console.log(
+      `>>> Rewriting: ${url.pathname} to /${subdomain}${url.pathname}`,
+    );
+    url.pathname = `/${subdomain}${url.pathname}`;
   }
 
-  // On the root domain, allow normal access
-  return NextResponse.next();
+  return NextResponse.rewrite(url);
 }
 
 export const config = {
