@@ -49,9 +49,14 @@ export const howToEarnConfig = (
         "Talent Protocol distributes weekly rewards to builders that own verified contracts on Celo and contribute to public crypto repositories on GitHub. Follow the steps below to be eligible:",
       steps: [
         {
-          text: "Get your Self.xyz Account",
-          url: "https://self.xyz/verify",
+          text: "Verify your humanity with Self.xyz on Talent Protocol",
+          url: "https://app.talentprotocol.com/accounts",
           condition: !loadingUser && selfXyzAccount,
+        },
+        {
+          text: "Get your Celo Activity Credential (Coming Soon)",
+          url: "https://app.talentprotocol.com",
+          condition: false,
         },
         {
           text: "Increase your Builder Score to 40+",
