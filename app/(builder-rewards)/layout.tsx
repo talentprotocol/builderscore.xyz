@@ -2,11 +2,9 @@ import Navbar from "@/app/components/Navbar";
 import { Footer } from "@/app/components/rewards/Footer";
 import RewardsStatus from "@/app/components/rewards/RewardsStatus";
 import UserStatus from "@/app/components/rewards/UserStatus";
-import { generateRewardsMetadata } from "@/app/config/generate-rewards-metadata";
 import { GrantProvider } from "@/app/context/GrantContext";
 import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
 import { SponsorProvider } from "@/app/context/SponsorContext";
-import type { Metadata } from "next";
 
 // const frame = {
 //   version: "next",
@@ -40,10 +38,6 @@ import type { Metadata } from "next";
 //     "fc:frame": JSON.stringify(frame),
 //   },
 // };
-
-export async function generateMetadata(): Promise<Metadata> {
-  return generateRewardsMetadata();
-}
 
 export default async function BuilderRewardsLayout({
   children,
