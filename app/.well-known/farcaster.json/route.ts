@@ -8,7 +8,8 @@ export async function GET() {
   });
   const subdomain = headersAsObject["x-current-subdomain"];
 
-  console.log("headerList from well known", requestHeaders);
+  console.log("headerList from well known", headersAsObject);
+  console.log("subdomain", subdomain);
 
   const URL = process.env.NEXT_PUBLIC_URL;
 
