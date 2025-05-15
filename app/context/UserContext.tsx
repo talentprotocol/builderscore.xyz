@@ -8,7 +8,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
   user: {
-    fid: 235510,
+    fid: 210671,
     username: "simao",
     displayName: "Simão",
   },
@@ -27,6 +27,7 @@ interface UserContextType {
   github: boolean;
   basename: string | null;
   builderScore: TalentBuilderScore | null;
+  selfXyz: boolean;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -38,6 +39,7 @@ const UserContext = createContext<UserContextType>({
   github: false,
   basename: null,
   builderScore: null,
+  selfXyz: false,
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
@@ -51,6 +53,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [builderScore, setBuilderScore] = useState<TalentBuilderScore | null>(
     null,
   );
+  const [selfXyz, setSelfXyz] = useState(false);
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
   useEffect(() => {
@@ -88,6 +91,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setGithub(response.github || false);
         setBasename(response.basename || null);
         setBuilderScore(response.builderScore || null);
+        setSelfXyz(response.selfXyz || false);
       } catch {
         setTalentProfile(null);
         setGithub(false);
@@ -110,6 +114,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         github,
         basename,
         builderScore,
+        selfXyz,
       }}
     >
       {children}
