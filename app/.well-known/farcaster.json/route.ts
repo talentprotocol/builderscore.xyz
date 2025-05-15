@@ -8,12 +8,7 @@ export async function GET() {
   });
   const subdomain = headersAsObject["x-current-subdomain"];
 
-  console.log("headerList from well known", headersAsObject);
-  console.log("subdomain", subdomain);
-
-  const URL = process.env.NEXT_PUBLIC_URL;
-
-  const oldJson = {
+  const baseJson = {
     accountAssociation: {
       header:
         "eyJmaWQiOjIwNDQyLCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NDQ1Nzc2QzU4RDZmZkI0NWQ5YjlmNkQ2ODI0NkU5ODVFMTgzMDI2NSJ9",
@@ -35,24 +30,41 @@ export async function GET() {
     },
   };
 
-  console.log("oldJson", oldJson);
-
-  return Response.json({
+  const celoJson = {
     accountAssociation: {
-      header: subdomain,
-      payload: process.env.FARCASTER_PAYLOAD,
-      signature: process.env.FARCASTER_SIGNATURE,
+      header: "",
+      payload: "",
+      signature: "",
     },
     frame: {
-      version: process.env.NEXT_PUBLIC_VERSION,
-      name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
-      homeUrl: URL,
-      iconUrl: process.env.NEXT_PUBLIC_ICON_URL,
-      imageUrl: process.env.NEXT_PUBLIC_IMAGE_URL,
-      buttonTitle: `Launch ${process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME}`,
-      splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE_URL,
-      splashBackgroundColor: `#${process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR}`,
-      webhookUrl: `${URL}/api/webhook`,
+      version: "0.0.1",
+      name: "Celo Rewards",
+      homeUrl: "https://celo.builderscore.xyz",
+      iconUrl: "https://celo.builderscore.xyz/images/icon.png",
+      imageUrl: "https://celo.builderscore.xyz/images/frame-image.png",
+      buttonTitle: "Earn Celo Rewards",
+      splashImageUrl: "https://celo.builderscore.xyz/images/icon.png",
+      splashBackgroundColor: "#0D0740",
+      webhookUrl:
+        "https://api.neynar.com/f/app/55d7c137-31ed-4fe8-bcf4-ae48bc6b13ac/event",
     },
-  });
+  };
+
+  let json;
+
+  switch (subdomain) {
+    case "base":
+      json = baseJson;
+      break;
+    case "celo":
+      json = celoJson;
+      break;
+    case "talent-protocol":
+      json = baseJson;
+      break;
+    default:
+      json = baseJson;
+  }
+
+  return Response.json(json);
 }

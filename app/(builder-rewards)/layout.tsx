@@ -6,6 +6,7 @@ import { GrantProvider } from "@/app/context/GrantContext";
 import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
 import { SponsorProvider } from "@/app/context/SponsorContext";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
 const frame = {
   version: "next",
@@ -45,6 +46,13 @@ export default async function BuilderRewardsLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestHeaders = await headers();
+  const headersAsObject: { [key: string]: string } = {};
+  requestHeaders.forEach((value, key) => {
+    headersAsObject[key] = value;
+  });
+  const subdomain = headersAsObject["x-current-subdomain"];
+
   return (
     <SponsorProvider>
       <GrantProvider>
@@ -57,6 +65,7 @@ export default async function BuilderRewardsLayout({
               </>
             )}
             <Navbar sponsored />
+            <p>Subdomain: {subdomain || "No subdomain"}</p>
             <main className="flex h-full flex-col">{children}</main>
             <Footer />
           </div>

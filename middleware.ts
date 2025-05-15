@@ -47,9 +47,8 @@ export async function middleware(request: NextRequest) {
   const headers = new Headers(request.headers);
 
   if (subdomain) {
+    // Set the current subdomain in the header
     headers.set("x-current-subdomain", subdomain);
-    console.log("subdomain", subdomain);
-    console.log("headers", headers);
 
     // Block access to admin page from subdomains
     if (pathname.startsWith("/admin")) {
