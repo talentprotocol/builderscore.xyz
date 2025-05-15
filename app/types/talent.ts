@@ -72,6 +72,7 @@ export type TalentProfileResponse = {
   github: boolean;
   basename: string | null;
   builderScore: TalentBuilderScore | null;
+  selfXyz: boolean;
 };
 
 export interface TalentSocial {

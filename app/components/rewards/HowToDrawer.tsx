@@ -10,35 +10,41 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/app/components/ui/drawer";
+import { SponsorSlug, howToEarnConfig } from "@/app/config/how-to-earn";
+import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
+import { AVAILABLE_SPONSORS } from "@/app/types/sponsors";
 import { Check } from "lucide-react";
 import { useState } from "react";
 
 export default function HowToDrawer() {
-  const { loadingUser, talentProfile, frameContext, basename, builderScore } =
-    useUser();
+  const {
+    loadingUser,
+    talentProfile,
+    frameContext,
+    basename,
+    builderScore,
+    selfXyz,
+  } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
+  const { selectedSponsor } = useSponsor();
 
-  const EARNING_STEPS = [
-    {
-      text: `Own a Basename ${basename ? `(${basename})` : ""}`,
-      url: "https://www.base.org/names",
-      condition: !loadingUser && basename,
-    },
-    {
-      text: "Get your Human Checkmark",
-      url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
-      condition: !loadingUser && talentProfile?.human_checkmark,
-    },
-    {
-      text: "Increase your Builder Score to 40+",
-      url: "https://app.talentprotocol.com/profile",
-      condition:
-        !loadingUser && builderScore?.points && builderScore?.points >= 40,
-    },
-  ];
+  const sponsorSlug =
+    (selectedSponsor?.slug as SponsorSlug) || AVAILABLE_SPONSORS[0];
 
-  const allConditionsMet = EARNING_STEPS.every((step) => step.condition);
+  const loadSponsorConfig = howToEarnConfig(
+    basename,
+    loadingUser,
+    talentProfile,
+    builderScore,
+    selfXyz,
+  );
+
+  const sponsorConfig = loadSponsorConfig[sponsorSlug]
+    ? loadSponsorConfig[sponsorSlug]
+    : loadSponsorConfig.base;
+
+  const allConditionsMet = sponsorConfig?.steps.every((step) => step.condition);
 
   return (
     <Drawer open={openHowToEarn} onOpenChange={setOpenHowToEarn}>
@@ -71,24 +77,23 @@ export default function HowToDrawer() {
 
           <div className="px-4 pb-16">
             <p className="mb-5 text-neutral-600 dark:text-neutral-500">
-              Talent Protocol distributes weekly rewards to builders that own
-              verified contracts on Base and contribute to public crypto
-              repositories on GitHub. Follow the steps below to be eligible:
+              {sponsorConfig?.description}
             </p>
             {allConditionsMet ? (
               <p className="mb-6 text-sm text-green-500">
-                You are eligible for Builder Rewards!
+                You are eligible for {selectedSponsor?.name} Builder Rewards!
               </p>
             ) : (
               frameContext && (
                 <p className="mb-6 text-sm text-neutral-600 dark:text-neutral-500">
-                  You are not eligible for Builder Rewards yet.
+                  You are not eligible for {selectedSponsor?.name} Builder
+                  Rewards yet.
                 </p>
               )
             )}
 
             <ul className="list-none space-y-6 text-sm">
-              {EARNING_STEPS.map((step, index) => (
+              {sponsorConfig?.steps.map((step, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <div
                     className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-medium ${

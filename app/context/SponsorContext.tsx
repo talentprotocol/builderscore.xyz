@@ -32,7 +32,11 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (isThemeLoaded && selectedSponsor) {
-      setIsDarkMode(selectedSponsor.slug !== "base");
+      setIsDarkMode(selectedSponsor.slug === "talent-protocol");
+      document.documentElement.setAttribute(
+        "data-sponsor",
+        selectedSponsor.slug,
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSponsor, isThemeLoaded]);
@@ -48,6 +52,9 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
     switch (selectedSponsor?.slug) {
       case "base":
         ticker = "ETH";
+        break;
+      case "celo":
+        ticker = "CELO";
         break;
       case "talent-protocol":
         ticker = "$TALENT";

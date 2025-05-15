@@ -48,6 +48,26 @@ const fetchTalentSocials = unstable_cache(
   { revalidate: CACHE_60_MINUTES },
 );
 
+const fetchTalentAccounts = unstable_cache(
+  async (fid: string) => {
+    const accountResponse = await fetch(
+      `${API_BASE_URL}${ENDPOINTS.talent.accounts}?id=${fid}&account_source=farcaster`,
+      {
+        method: "GET",
+        headers: DEFAULT_HEADERS,
+      },
+    );
+
+    if (!accountResponse.ok) {
+      return null;
+    }
+
+    return accountResponse.json();
+  },
+  [CACHE_TAGS.TALENT_ACCOUNTS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
 const fetchTalentBuilderScore = unstable_cache(
   async (fid: string) => {
     const builderScoreResponse = await fetch(
@@ -80,13 +100,20 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const [profileData, socialsData, builderScoreData] = await Promise.all([
-      fetchTalentProfile(fid),
-      fetchTalentSocials(fid),
-      fetchTalentBuilderScore(fid),
-    ]);
+    const [profileData, socialsData, builderScoreData, accountsData] =
+      await Promise.all([
+        fetchTalentProfile(fid),
+        fetchTalentSocials(fid),
+        fetchTalentBuilderScore(fid),
+        fetchTalentAccounts(fid),
+      ]);
 
-    if (!profileData.profile || !socialsData || !builderScoreData) {
+    if (
+      !profileData.profile ||
+      !socialsData ||
+      !builderScoreData ||
+      !accountsData
+    ) {
       return NextResponse.json({ profile: null });
     }
 
@@ -106,11 +133,16 @@ export async function GET(request: NextRequest) {
           social.source === "basename",
       );
 
+      const hasSelfXyzAccount = accountsData.accounts.some(
+        (account: { source: string }) => account.source === "self",
+      );
+
       return NextResponse.json({
         profile: matchingProfile,
         github: hasGithubCredential,
         basename: basenameSocial?.name,
         builderScore: builderScoreData?.score,
+        selfXyz: hasSelfXyzAccount,
       });
     }
 
