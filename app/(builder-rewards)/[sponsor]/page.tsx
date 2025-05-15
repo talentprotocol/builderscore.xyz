@@ -7,16 +7,22 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateRewardsMetadata();
 }
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: { sponsor: string };
+}) {
   const requestHeaders = await headers();
   const headersAsObject: { [key: string]: string } = {};
   requestHeaders.forEach((value, key) => {
     headersAsObject[key] = value;
   });
   const subdomain = headersAsObject["x-current-subdomain"];
+  const sponsorParam = params.sponsor;
 
-  console.log("subdomain from sponsor page", subdomain);
-  console.log("requestHeaders from sponsor page", headersAsObject);
+  console.log("sponsor param:", sponsorParam);
+  console.log("subdomain from sponsor page:", subdomain);
+  console.log("all requestHeaders:", headersAsObject);
 
   return <Home />;
 }
