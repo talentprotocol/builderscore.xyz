@@ -4,6 +4,8 @@ export async function GET() {
   const headerList = await headers();
   const subdomain = headerList.get("x-current-subdomain");
 
+  console.log("headerList from well known", headerList);
+
   const URL = process.env.NEXT_PUBLIC_URL;
 
   return Response.json({
