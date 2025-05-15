@@ -66,8 +66,12 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
+    // Check if this is a client-side navigation to root
+    const isClientNavigation = request.headers.get("x-nextjs-data") === "1";
+
     // For the root path on a subdomain, rewrite to the subdomain page
-    if (pathname === "/") {
+    // But only if it's not a client-side navigation
+    if (pathname === "/" && !isClientNavigation) {
       console.log("rewriting to subdomain");
       console.log("new URL", new URL(`/${subdomain}`, request.url));
       return NextResponse.rewrite(new URL(`/${subdomain}`, request.url));

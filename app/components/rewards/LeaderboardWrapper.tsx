@@ -46,7 +46,7 @@ export default function LeaderboardWrapper() {
         <h2
           className={`ml-1 text-sm font-semibold ${isIntermediateGrant ? "text-primary" : "text-neutral-800 dark:text-white"}`}
         >
-          {isIntermediateGrant ? "Provisional" : "Leaderboard"}
+          {isIntermediateGrant && !error ? "Provisional" : "Leaderboard"}
         </h2>
         <SelectGrant />
       </div>
