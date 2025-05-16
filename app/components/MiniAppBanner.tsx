@@ -1,5 +1,6 @@
 "use client";
 
+import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -9,6 +10,7 @@ import { useEffect, useState } from "react";
 export default function MiniAppBanner() {
   const [isVisible, setIsVisible] = useState(true);
   const { loadingUser, frameContext } = useUser();
+  const { selectedSponsor } = useSponsor();
   const localStorageKey = "builder-rewards-warpcast-banner-closed";
 
   useEffect(() => {
@@ -24,6 +26,25 @@ export default function MiniAppBanner() {
   };
 
   if (!isVisible || frameContext || loadingUser) return null;
+
+  let appUrl;
+
+  switch (selectedSponsor?.slug) {
+    case "base":
+      appUrl = "https://warpcast.com/miniapps/003OFAiGOJCy/builder-rewards";
+      break;
+    case "celo":
+      appUrl =
+        "https://warpcast.com/miniapps/XhQmVJM8RIeD/celo-builder-rewards";
+      break;
+    case "talent-protocol":
+      appUrl = "https://warpcast.com/miniapps/003OFAiGOJCy/builder-rewards";
+      break;
+    default:
+      appUrl = "https://warpcast.com/miniapps/003OFAiGOJCy/builder-rewards";
+  }
+
+  console.log(selectedSponsor);
 
   return (
     <div className="border-b border-b-neutral-200 bg-white dark:border-b-neutral-800 dark:bg-neutral-900">
@@ -43,14 +64,14 @@ export default function MiniAppBanner() {
         />
         <div>
           <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-            Add Builder Rewards App
+            Add {selectedSponsor?.name} Builder Rewards App
           </p>
           <p className="text-sm text-neutral-500">
             Weekly Rewards for the most impactful builders.
           </p>
         </div>
         <Link
-          href="https://www.warpcast.com/~/mini-apps/launch?domain=www.builderscore.xyz"
+          href={appUrl}
           target="_blank"
           className="ml-auto rounded-lg bg-black px-3 py-1.5 text-sm text-white hover:bg-neutral-900 dark:bg-white dark:text-black dark:hover:bg-neutral-100"
         >
