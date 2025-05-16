@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 export const DEFAULT_SPONSOR_SLUG = "base";
 
 export const ALLOWED_SPONSORS = ["base", "celo", "talent-protocol"];
@@ -17,18 +19,27 @@ export const baseFrame = {
   },
 };
 
-export const baseMetadata = {
+export const baseMetadata: Metadata = {
   title: "Builder Rewards",
   description: "Weekly Rewards for the most impactful builders.",
   openGraph: {
     title: "Builder Rewards",
     description: "Weekly Rewards for the most impactful builders.",
-    images: [
-      {
-        url: "https://www.builderscore.xyz/images/frame-image.png",
-        alt: "Builder Rewards",
-      },
-    ],
+    images: {
+      url: "https://www.builderscore.xyz/images/frame-image.png",
+      alt: "Builder Rewards",
+    },
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Builder Rewards",
+    description: "Weekly Rewards for the most impactful builders.",
+    images: {
+      url: "https://www.builderscore.xyz/images/frame-image.png",
+      alt: "Builder Rewards",
+    },
+    site: "@TalentProtocol",
+    creator: "@TalentProtocol",
   },
   other: {
     "fc:frame": JSON.stringify(baseFrame),
@@ -50,18 +61,27 @@ export const celoFrame = {
   },
 };
 
-export const celoMetadata = {
+export const celoMetadata: Metadata = {
   title: "Celo Builder Rewards",
   description: "Weekly Rewards for the most impactful builders on Celo.",
   openGraph: {
     title: "Celo Builder Rewards",
     description: "Weekly Rewards for the most impactful builders on Celo.",
-    images: [
-      {
-        url: "https://celo.builderscore.xyz/images/celo/frame-image.png",
-        alt: "Celo Builder Rewards",
-      },
-    ],
+    images: {
+      url: "https://celo.builderscore.xyz/images/celo/frame-image.png",
+      alt: "Celo Builder Rewards",
+    },
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Celo Builder Rewards",
+    description: "Weekly Rewards for the most impactful builders on Celo.",
+    images: {
+      url: "https://celo.builderscore.xyz/images/celo/frame-image.png",
+      alt: "Celo Builder Rewards",
+    },
+    site: "@TalentProtocol",
+    creator: "@TalentProtocol",
   },
   other: {
     "fc:frame": JSON.stringify(celoFrame),
