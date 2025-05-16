@@ -18,11 +18,11 @@ export async function GET() {
     },
     frame: {
       version: "0.0.1",
-      name: "Builder Rewards",
+      name: "Base Builder Rewards",
       homeUrl: "https://www.builderscore.xyz",
       iconUrl: "https://www.builderscore.xyz/images/icon.png",
       imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
-      buttonTitle: "Earn Builder Rewards",
+      buttonTitle: "Earn Base Builder Rewards",
       splashImageUrl: "https://www.builderscore.xyz/images/icon.png",
       splashBackgroundColor: "#0D0740",
       webhookUrl:

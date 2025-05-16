@@ -17,7 +17,7 @@ export const baseFrame = {
   version: "next",
   imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
   button: {
-    title: "Earn Builder Rewards",
+    title: "Earn Base Builder Rewards",
     action: {
       type: "launch_frame",
       name: "Builder Rewards",
@@ -29,23 +29,23 @@ export const baseFrame = {
 };
 
 export const baseMetadata: Metadata = {
-  title: "Builder Rewards",
+  title: "Base Builder Rewards",
   description: "Weekly Rewards for the most impactful builders.",
   openGraph: {
-    title: "Builder Rewards",
+    title: "Base Builder Rewards",
     description: "Weekly Rewards for the most impactful builders.",
     images: {
       url: "https://www.builderscore.xyz/images/frame-image.png",
-      alt: "Builder Rewards",
+      alt: "Base Builder Rewards",
     },
   },
   twitter: {
     card: "summary_large_image",
-    title: "Builder Rewards",
+    title: "Base Builder Rewards",
     description: "Weekly Rewards for the most impactful builders.",
     images: {
       url: "https://www.builderscore.xyz/images/frame-image.png",
-      alt: "Builder Rewards",
+      alt: "Base Builder Rewards",
     },
     site: "@TalentProtocol",
     creator: "@TalentProtocol",
@@ -72,10 +72,10 @@ export const celoFrame = {
 
 export const celoMetadata: Metadata = {
   title: "Celo Builder Rewards",
-  description: "Weekly Rewards for the most impactful builders on Celo.",
+  description: "CELO Rewards for the most impactful builders.",
   openGraph: {
     title: "Celo Builder Rewards",
-    description: "Weekly Rewards for the most impactful builders on Celo.",
+    description: "CELO Rewards for the most impactful builders.",
     images: {
       url: "https://celo.builderscore.xyz/images/celo/frame-image.png",
       alt: "Celo Builder Rewards",
@@ -84,7 +84,7 @@ export const celoMetadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Celo Builder Rewards",
-    description: "Weekly Rewards for the most impactful builders on Celo.",
+    description: "CELO Rewards for the most impactful builders.",
     images: {
       url: "https://celo.builderscore.xyz/images/celo/frame-image.png",
       alt: "Celo Builder Rewards",
