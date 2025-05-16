@@ -73,6 +73,7 @@ export type TalentProfileResponse = {
   basename: string | null;
   builderScore: TalentBuilderScore | null;
   selfXyz: boolean;
+  celoTransaction: boolean;
 };
 
 export interface TalentSocial {

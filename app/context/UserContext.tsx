@@ -28,6 +28,7 @@ interface UserContextType {
   basename: string | null;
   builderScore: TalentBuilderScore | null;
   selfXyz: boolean;
+  celoTransaction: boolean;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -40,6 +41,7 @@ const UserContext = createContext<UserContextType>({
   basename: null,
   builderScore: null,
   selfXyz: false,
+  celoTransaction: false,
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
@@ -54,6 +56,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     null,
   );
   const [selfXyz, setSelfXyz] = useState(false);
+  const [celoTransaction, setCeloTransaction] = useState(false);
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
   useEffect(() => {
@@ -92,6 +95,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setBasename(response.basename || null);
         setBuilderScore(response.builderScore || null);
         setSelfXyz(response.selfXyz || false);
+        setCeloTransaction(response.celoTransaction || false);
       } catch {
         setTalentProfile(null);
         setGithub(false);
@@ -115,6 +119,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         basename,
         builderScore,
         selfXyz,
+        celoTransaction,
       }}
     >
       {children}

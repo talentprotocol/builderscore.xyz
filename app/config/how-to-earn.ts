@@ -20,6 +20,7 @@ export const howToEarnConfig = (
   talentProfile: APITalentProfile | null,
   builderScore: TalentBuilderScore | null,
   selfXyzAccount: boolean,
+  celoTransaction: boolean,
 ): HowToEarnConfig => {
   return {
     base: {
@@ -46,17 +47,17 @@ export const howToEarnConfig = (
     },
     celo: {
       description:
-        "Talent Protocol distributes weekly rewards to builders that own verified contracts on Celo and contribute to public crypto repositories on GitHub. Follow the steps below to be eligible:",
+        "Monthly rewards automatically distributed to the top 100 builders who contribute to the Celo ecosystem through verified smart contracts and public contributions on GitHub.",
       steps: [
         {
-          text: "Verify your humanity with Self.xyz on Talent Protocol",
+          text: "Verify your humanity with Self.xyz",
           url: "https://app.talentprotocol.com/accounts",
           condition: !loadingUser && selfXyzAccount,
         },
         {
-          text: "Get your Celo Activity Credential (Coming Soon)",
+          text: "Have 1+ outgoing transaction on Celo",
           url: "https://app.talentprotocol.com",
-          condition: false,
+          condition: !loadingUser && celoTransaction,
         },
         {
           text: "Increase your Builder Score to 40+",

@@ -12,6 +12,7 @@ export const ENDPOINTS = {
     profile: "/profile",
     builderScore: "/score",
     accounts: "/accounts",
+    credentials: "/credentials",
   },
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",

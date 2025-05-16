@@ -44,8 +44,6 @@ export default function MiniAppBanner() {
       appUrl = "https://warpcast.com/miniapps/003OFAiGOJCy/builder-rewards";
   }
 
-  console.log(selectedSponsor);
-
   return (
     <div className="border-b border-b-neutral-200 bg-white dark:border-b-neutral-800 dark:bg-neutral-900">
       <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-2">

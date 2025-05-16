@@ -26,6 +26,7 @@ export default function HowToDrawer() {
     basename,
     builderScore,
     selfXyz,
+    celoTransaction,
   } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
   const { selectedSponsor } = useSponsor();
@@ -39,6 +40,7 @@ export default function HowToDrawer() {
     talentProfile,
     builderScore,
     selfXyz,
+    celoTransaction,
   );
 
   const sponsorConfig = loadSponsorConfig[sponsorSlug]

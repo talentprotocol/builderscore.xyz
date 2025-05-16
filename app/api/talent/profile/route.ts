@@ -68,6 +68,26 @@ const fetchTalentAccounts = unstable_cache(
   { revalidate: CACHE_60_MINUTES },
 );
 
+const fetchTalentCredentials = unstable_cache(
+  async (fid: string) => {
+    const credentialsResponse = await fetch(
+      `${API_BASE_URL}${ENDPOINTS.talent.credentials}?id=${fid}&account_source=farcaster`,
+      {
+        method: "GET",
+        headers: DEFAULT_HEADERS,
+      },
+    );
+
+    if (!credentialsResponse.ok) {
+      return null;
+    }
+
+    return credentialsResponse.json();
+  },
+  [CACHE_TAGS.TALENT_CREDENTIALS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
 const fetchTalentBuilderScore = unstable_cache(
   async (fid: string) => {
     const builderScoreResponse = await fetch(
@@ -100,19 +120,26 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const [profileData, socialsData, builderScoreData, accountsData] =
-      await Promise.all([
-        fetchTalentProfile(fid),
-        fetchTalentSocials(fid),
-        fetchTalentBuilderScore(fid),
-        fetchTalentAccounts(fid),
-      ]);
+    const [
+      profileData,
+      socialsData,
+      builderScoreData,
+      accountsData,
+      credentialsData,
+    ] = await Promise.all([
+      fetchTalentProfile(fid),
+      fetchTalentSocials(fid),
+      fetchTalentBuilderScore(fid),
+      fetchTalentAccounts(fid),
+      fetchTalentCredentials(fid),
+    ]);
 
     if (
       !profileData.profile ||
       !socialsData ||
       !builderScoreData ||
-      !accountsData
+      !accountsData ||
+      !credentialsData
     ) {
       return NextResponse.json({ profile: null });
     }
@@ -137,12 +164,18 @@ export async function GET(request: NextRequest) {
         (account: { source: string }) => account.source === "self",
       );
 
+      const hasCeloTransactionCredential = credentialsData.credentials.some(
+        (credential: { slug: string }) =>
+          credential.slug === "celo_out_transactions",
+      );
+
       return NextResponse.json({
         profile: matchingProfile,
         github: hasGithubCredential,
         basename: basenameSocial?.name,
         builderScore: builderScoreData?.score,
         selfXyz: hasSelfXyzAccount,
+        celoTransaction: hasCeloTransactionCredential,
       });
     }
 
