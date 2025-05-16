@@ -34,10 +34,10 @@ export async function GET() {
   const celoJson = {
     accountAssociation: {
       header:
-        "eyJmaWQiOjIwNDQyLCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NDQ1Nzc2YzU4ZDZmZmI0NWQ5YjlmNmQ2ODI0NmU5ODVlMTgzMDI2NSJ9",
+        "eyJmaWQiOjIwNDQyLCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NDQ1Nzc2QzU4RDZmZkI0NWQ5YjlmNkQ2ODI0NkU5ODVFMTgzMDI2NSJ9",
       payload: "eyJkb21haW4iOiJjZWxvLmJ1aWxkZXJzY29yZS54eXoifQ",
       signature:
-        "MHhkODU0NTRmY2IyMDg4M2IzZjJhNjFjNzllZmZhOGIzNTE4MTcyYjJkNDYwN2JiODI0ZGU3YjUzNDQ0YzdkYTZlMGViZTA5ZDM2YjA5M2IyMDcwNzVjYjBkNzIzMGYwMDQyZTc4ZjdjNDEyNDIyZTM2MzJlMjg4MDEzOTcyY2QxYjFi",
+        "MHhkMTkzY2RjOTc1YmQ1ZWM5NmNkYTk1ZDAzMzE5Y2FkODkzNGU2YWIzYTlmZjQ5N2EyOTg4ZTFhMjFhYTk3MzI2MjhjNTQ1MmM5MDU3MDNiZGIxYjYwMmE0ODBmMzQ5ZTJkZTEwMThhNDRlNDRlNTc5NjkzODYxYTY1NWE3ODYxZDFi",
     },
     frame: {
       version: "0.0.1",
