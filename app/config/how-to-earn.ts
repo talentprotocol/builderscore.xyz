@@ -55,7 +55,7 @@ export const howToEarnConfig = (
           condition: !loadingUser && selfXyzAccount,
         },
         {
-          text: "Have 1+ outgoing transaction on Celo",
+          text: "Have 1+ outgoing transaction on Celo (Coming Soon)",
           url: "https://app.talentprotocol.com",
           condition: !loadingUser && celoTransaction,
         },
