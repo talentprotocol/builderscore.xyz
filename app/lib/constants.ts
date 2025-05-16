@@ -4,6 +4,15 @@ export const DEFAULT_SPONSOR_SLUG = "base";
 
 export const ALLOWED_SPONSORS = ["base", "celo", "talent-protocol"];
 
+export const SPONSOR_TERMS = {
+  base: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
+  celo: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions-1",
+  "talent-protocol":
+    "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
+  default:
+    "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
+};
+
 export const baseFrame = {
   version: "next",
   imageUrl: "https://www.builderscore.xyz/images/frame-image.png",

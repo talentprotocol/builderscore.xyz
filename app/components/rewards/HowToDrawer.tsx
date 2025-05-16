@@ -13,6 +13,7 @@ import {
 import { SponsorSlug, howToEarnConfig } from "@/app/config/how-to-earn";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
+import { SPONSOR_TERMS } from "@/app/lib/constants";
 import { AVAILABLE_SPONSORS } from "@/app/types/sponsors";
 import { Check } from "lucide-react";
 import { useState } from "react";
@@ -116,7 +117,17 @@ export default function HowToDrawer() {
 
             <p className="mt-6 text-sm text-neutral-600 dark:text-neutral-500">
               Subject to{" "}
-              <MiniAppExternalLink href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions">
+              <MiniAppExternalLink
+                href={
+                  selectedSponsor?.slug
+                    ? SPONSOR_TERMS[
+                        selectedSponsor?.slug as
+                          | keyof typeof SPONSOR_TERMS
+                          | "default"
+                      ]
+                    : SPONSOR_TERMS["default"]
+                }
+              >
                 Terms and Conditions
               </MiniAppExternalLink>
               .

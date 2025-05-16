@@ -2,6 +2,7 @@
 
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { SPONSOR_TERMS } from "@/app/lib/constants";
 
 export function Footer() {
   const { selectedSponsor } = useSponsor();
@@ -18,7 +19,15 @@ export function Footer() {
       <p className="text-center text-xs text-neutral-600 dark:text-neutral-500">
         © {new Date().getFullYear()}{" "}
         <MiniAppExternalLink
-          href="https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions"
+          href={
+            selectedSponsor?.slug
+              ? SPONSOR_TERMS[
+                  selectedSponsor?.slug as
+                    | keyof typeof SPONSOR_TERMS
+                    | "default"
+                ]
+              : SPONSOR_TERMS["default"]
+          }
           className="text-center text-xs text-neutral-600 underline dark:text-neutral-500"
         >
           Terms and Conditions
