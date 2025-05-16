@@ -82,6 +82,10 @@ export default function HowToDrawer() {
               {sponsorConfig?.description}
             </p>
 
+            <p className="mb-6 text-sm text-neutral-600 dark:text-neutral-500">
+              How to be eligible:
+            </p>
+
             <ul className="list-none space-y-6 text-sm">
               {sponsorConfig?.steps.map((step, index) => (
                 <li key={index} className="flex items-start gap-3">
