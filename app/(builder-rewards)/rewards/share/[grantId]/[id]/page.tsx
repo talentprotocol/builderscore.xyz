@@ -11,6 +11,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, grantId } = await params;
 
+  // TODO: Update with Celo image
   const imageUrl = `${process.env.BUILDER_REWARDS_URL}/api/leaderboards/${id}/shareable?grant_id=${grantId}`;
 
   const frame = {

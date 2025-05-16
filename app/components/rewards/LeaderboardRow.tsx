@@ -88,25 +88,17 @@ export default function LeaderboardRow({
 
       <div className="bg-white pl-2 dark:bg-neutral-900">
         <p className="text-neutral-800 dark:text-white">
-          {leaderboardData.reward_amount ? (
-            <>
-              <span className="font-mono">
-                {formatNumber(
-                  parseFloat(leaderboardData.reward_amount),
-                  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
-                    sponsorTokenTicker
-                  ],
-                )}
-              </span>
-              <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
-                {sponsorTokenTicker}
-              </span>
-            </>
-          ) : (
-            <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
-              No Rewards Earned
-            </span>
-          )}
+          <span className="font-mono">
+            {formatNumber(
+              parseFloat(leaderboardData.reward_amount || "0"),
+              INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+                sponsorTokenTicker
+              ],
+            )}
+          </span>
+          <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
+            {sponsorTokenTicker}
+          </span>
         </p>
       </div>
     </div>
