@@ -15,14 +15,13 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
 import { SPONSOR_TERMS } from "@/app/lib/constants";
 import { AVAILABLE_SPONSORS } from "@/app/types/sponsors";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { useState } from "react";
 
 export default function HowToDrawer() {
   const {
     loadingUser,
     talentProfile,
-    frameContext,
     basename,
     builderScore,
     selfXyz,
@@ -82,18 +81,6 @@ export default function HowToDrawer() {
             <p className="mb-5 text-neutral-600 dark:text-neutral-500">
               {sponsorConfig?.description}
             </p>
-            {allConditionsMet ? (
-              <p className="mb-6 text-sm text-green-500">
-                You are eligible for {selectedSponsor?.name} Builder Rewards!
-              </p>
-            ) : (
-              frameContext && (
-                <p className="mb-6 text-sm text-neutral-600 dark:text-neutral-500">
-                  You are not eligible for {selectedSponsor?.name} Builder
-                  Rewards yet.
-                </p>
-              )
-            )}
 
             <ul className="list-none space-y-6 text-sm">
               {sponsorConfig?.steps.map((step, index) => (
@@ -105,7 +92,11 @@ export default function HowToDrawer() {
                         : "bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-white"
                     }`}
                   >
-                    {step.condition ? <Check className="h-3 w-3" /> : index + 1}
+                    {step.condition ? (
+                      <Check className="h-3 w-3" />
+                    ) : (
+                      <X className="h-3 w-3" />
+                    )}
                   </div>
                   <MiniAppExternalLink
                     href={step.url}
