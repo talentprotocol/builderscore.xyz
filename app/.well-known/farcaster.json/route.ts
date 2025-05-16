@@ -8,8 +8,6 @@ export async function GET() {
   });
   const subdomain = headersAsObject["x-current-subdomain"];
 
-  console.log("subdomain from farcaster.json", subdomain);
-
   const baseJson = {
     accountAssociation: {
       header:
@@ -32,23 +30,25 @@ export async function GET() {
     },
   };
 
+  // TODO: Add webhookUrl
   const celoJson = {
     accountAssociation: {
-      header: "",
-      payload: "",
-      signature: "",
+      header:
+        "eyJmaWQiOjIwNDQyLCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NDQ1Nzc2YzU4ZDZmZmI0NWQ5YjlmNmQ2ODI0NmU5ODVlMTgzMDI2NSJ9",
+      payload: "eyJkb21haW4iOiJjZWxvLmJ1aWxkZXJzY29yZS54eXoifQ",
+      signature:
+        "MHhkODU0NTRmY2IyMDg4M2IzZjJhNjFjNzllZmZhOGIzNTE4MTcyYjJkNDYwN2JiODI0ZGU3YjUzNDQ0YzdkYTZlMGViZTA5ZDM2YjA5M2IyMDcwNzVjYjBkNzIzMGYwMDQyZTc4ZjdjNDEyNDIyZTM2MzJlMjg4MDEzOTcyY2QxYjFi",
     },
     frame: {
       version: "0.0.1",
-      name: "Celo Rewards",
+      name: "Celo Builder Rewards",
       homeUrl: "https://celo.builderscore.xyz",
-      iconUrl: "https://celo.builderscore.xyz/images/icon.png",
-      imageUrl: "https://celo.builderscore.xyz/images/frame-image.png",
-      buttonTitle: "Earn Celo Rewards",
-      splashImageUrl: "https://celo.builderscore.xyz/images/icon.png",
-      splashBackgroundColor: "#0D0740",
-      webhookUrl:
-        "https://api.neynar.com/f/app/55d7c137-31ed-4fe8-bcf4-ae48bc6b13ac/event",
+      iconUrl: "https://celo.builderscore.xyz/images/celo/icon.png",
+      imageUrl: "https://celo.builderscore.xyz/images/celo/frame-image.png",
+      buttonTitle: "Earn Celo Builder Rewards",
+      splashImageUrl: "https://celo.builderscore.xyz/images/celo/icon.png",
+      splashBackgroundColor: "#fcf6f1",
+      webhookUrl: "https://celo.builderscore.xyz/webhook",
     },
   };
 
