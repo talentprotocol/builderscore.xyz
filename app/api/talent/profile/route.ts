@@ -88,6 +88,26 @@ const fetchTalentCredentials = unstable_cache(
   { revalidate: CACHE_60_MINUTES },
 );
 
+const fetchTalentCredentialsDatapoints = unstable_cache(
+  async (fid: string, slug: string) => {
+    const credentialsResponse = await fetch(
+      `${API_BASE_URL}${ENDPOINTS.talent.credentialsDatapoints}?id=${fid}&account_source=farcaster&slug=${slug}`,
+      {
+        method: "GET",
+        headers: DEFAULT_HEADERS,
+      },
+    );
+
+    if (!credentialsResponse.ok) {
+      return null;
+    }
+
+    return credentialsResponse.json();
+  },
+  [CACHE_TAGS.TALENT_CREDENTIALS_DATAPOINTS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
 const fetchTalentBuilderScore = unstable_cache(
   async (fid: string) => {
     const builderScoreResponse = await fetch(
@@ -126,12 +146,14 @@ export async function GET(request: NextRequest) {
       builderScoreData,
       accountsData,
       credentialsData,
+      celoOutTransactionsData,
     ] = await Promise.all([
       fetchTalentProfile(fid),
       fetchTalentSocials(fid),
       fetchTalentBuilderScore(fid),
       fetchTalentAccounts(fid),
       fetchTalentCredentials(fid),
+      fetchTalentCredentialsDatapoints(fid, "celo_out_transactions"),
     ]);
 
     if (
@@ -139,7 +161,8 @@ export async function GET(request: NextRequest) {
       !socialsData ||
       !builderScoreData ||
       !accountsData ||
-      !credentialsData
+      !credentialsData ||
+      !celoOutTransactionsData
     ) {
       return NextResponse.json({ profile: null });
     }
@@ -164,10 +187,12 @@ export async function GET(request: NextRequest) {
         (account: { source: string }) => account.source === "self",
       );
 
-      const hasCeloTransactionCredential = credentialsData.credentials.some(
-        (credential: { slug: string }) =>
-          credential.slug === "celo_out_transactions",
-      );
+      const hasCeloTransactionCredential =
+        celoOutTransactionsData?.credentials.some(
+          (datapoint: { slug: string; readable_value: string }) =>
+            datapoint.slug === "celo_out_transactions" &&
+            parseInt(datapoint.readable_value, 10) > 0,
+        );
 
       return NextResponse.json({
         profile: matchingProfile,

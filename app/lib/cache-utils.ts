@@ -13,6 +13,7 @@ export const CACHE_TAGS = {
   TALENT_BUILDER_SCORE: "talent-builder-score",
   TALENT_ACCOUNTS: "talent-accounts",
   TALENT_CREDENTIALS: "talent-credentials",
+  TALENT_CREDENTIALS_DATAPOINTS: "talent-credentials-datapoints",
 };
 
 export const CACHE_60_MINUTES = 60 * 60;
