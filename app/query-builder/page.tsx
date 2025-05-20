@@ -1,5 +1,6 @@
 "use client";
 
+import { ClientOnly } from "@/app/components/ClientOnly";
 import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import React from "react";
@@ -45,9 +46,14 @@ const Page = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(`api/search/advanced/documents`);
-      const documents = await response.json();
-      setDocuments(documents);
+      try {
+        const response = await fetch(`api/search/advanced/documents`);
+        const data = await response.json();
+        setDocuments(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching documents:", error);
+        setDocuments([]);
+      }
     })();
   }, []);
 
@@ -129,13 +135,15 @@ const Page = () => {
       </label>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div style={{ flex: 1 }}>
-          <QueryBuilder
-            fields={fields}
-            query={query}
-            onQueryChange={setQuery}
-            showShiftActions={true}
-            controlClassnames={{ queryBuilder: "queryBuilder-branches" }}
-          />
+          <ClientOnly>
+            <QueryBuilder
+              fields={fields}
+              query={query}
+              onQueryChange={setQuery}
+              showShiftActions={true}
+              controlClassnames={{ queryBuilder: "queryBuilder-branches" }}
+            />
+          </ClientOnly>
           <h4>TALENT API Query</h4>
           <JsonView
             data={buildQueryString()}
