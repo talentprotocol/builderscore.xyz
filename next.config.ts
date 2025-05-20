@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     ppr: true,
+    authInterrupts: true,
     inlineCss: true,
     reactCompiler: true,
     optimizePackageImports: ["react-icons", "lucide-react"],
