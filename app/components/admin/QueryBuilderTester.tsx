@@ -10,7 +10,7 @@ import "react-json-view-lite/dist/index.css";
 import { QueryBuilder, RuleGroupType, formatQuery } from "react-querybuilder";
 import "react-querybuilder/dist/query-builder.css";
 
-const Page = () => {
+export default function QueryBuilderTester() {
   const [fields, setFields] = useState([]);
   const [query, setQuery] = useState<RuleGroupType>({
     combinator: "and",
@@ -47,7 +47,7 @@ const Page = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(`api/search/advanced/documents`);
+        const response = await fetch(`/api/search/advanced/documents`);
         const data = await response.json();
         setDocuments(Array.isArray(data) ? data : []);
       } catch (error) {
@@ -167,6 +167,4 @@ const Page = () => {
       </div>
     </>
   );
-};
-
-export default Page;
+}
