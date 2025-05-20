@@ -1,19 +1,21 @@
 "use client";
 
+import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
+import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import React from "react";
-import { useState, useEffect } from "react";
-import { QueryBuilder, formatQuery } from "react-querybuilder";
+import { useEffect, useState } from "react";
 import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
 import "react-json-view-lite/dist/index.css";
+import { QueryBuilder, RuleGroupType, formatQuery } from "react-querybuilder";
 import "react-querybuilder/dist/query-builder.css";
 
 const Page = () => {
   const [fields, setFields] = useState([]);
-  const [query, setQuery] = useState({
+  const [query, setQuery] = useState<RuleGroupType>({
     combinator: "and",
     rules: [],
   });
-  const [documents, setDocuments] = useState([]);
+  const [documents, setDocuments] = useState<AdvancedSearchDocument[]>([]);
   const [documentSelected, setDocumentSelected] = useState("");
   const [queryResults, setQueryResults] = useState([]);
 
@@ -49,7 +51,7 @@ const Page = () => {
     })();
   }, []);
 
-  const onChangeDocumentSelect = (e) => {
+  const onChangeDocumentSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setDocumentSelected(e.target.value);
   };
 
@@ -63,7 +65,8 @@ const Page = () => {
 
   const onClickExecuteQuery = () => {
     const queryString = buildQueryString();
-    const requestBody = {
+
+    const requestBody: AdvancedSearchRequest = {
       query: {
         customQuery: queryString,
       },
@@ -79,7 +82,7 @@ const Page = () => {
     const fullQueryString = Object.keys(requestBody)
       .map(
         (key) =>
-          `${key}=${encodeURIComponent(JSON.stringify(requestBody[key]))}`,
+          `${key}=${encodeURIComponent(JSON.stringify(requestBody[key as keyof AdvancedSearchRequest]))}`,
       )
       .join("&");
 
