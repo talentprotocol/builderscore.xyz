@@ -91,7 +91,7 @@ const fetchTalentCredentials = unstable_cache(
 const fetchTalentCredentialsDatapoints = unstable_cache(
   async (fid: string, slug: string) => {
     const credentialsResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.credentialsDatapoints}?id=${fid}&account_source=farcaster&slug=${slug}`,
+      `${API_BASE_URL}${ENDPOINTS.talent.credentialsDatapoints}?id=${fid}&account_source=farcaster&slugs=${slug}`,
       {
         method: "GET",
         headers: DEFAULT_HEADERS,
@@ -188,9 +188,9 @@ export async function GET(request: NextRequest) {
       );
 
       const hasCeloTransactionCredential =
-        celoOutTransactionsData?.credentials.some(
-          (datapoint: { slug: string; readable_value: string }) =>
-            datapoint.slug === "celo_out_transactions" &&
+        celoOutTransactionsData?.data_points.some(
+          (datapoint: { credential_slug: string; readable_value: string }) =>
+            datapoint.credential_slug === "celo_out_transactions" &&
             parseInt(datapoint.readable_value, 10) > 0,
         );
 

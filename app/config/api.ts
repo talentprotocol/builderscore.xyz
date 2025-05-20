@@ -13,7 +13,7 @@ export const ENDPOINTS = {
     builderScore: "/score",
     accounts: "/accounts",
     credentials: "/credentials",
-    credentialsDatapoints: "/credentials/data_points",
+    credentialsDatapoints: "/data_points",
   },
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",
