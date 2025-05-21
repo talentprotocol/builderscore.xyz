@@ -1,6 +1,6 @@
-import { formatQuery } from "react-querybuilder";
+import { formatQuery, RuleGroupTypeAny } from "react-querybuilder";
 
-const buildQueryString = (query) => {
+const buildQueryString = (query: RuleGroupTypeAny) => {
   return formatQuery(query, {
     format: "elasticsearch",
     parseNumbers: true,
@@ -8,19 +8,29 @@ const buildQueryString = (query) => {
   });
 };
 
-const groupByLongestPrefix = (arr) => {
+const groupByLongestPrefix = (arr: []) => {
   // Extract all keys
   // Note that here we have objects like these:
   // { "term": { "scores.scorer": "Builder Score" } }
   // { "range": { "scores.points": { "gte": 0, "lte": 500 } } }
   // So, it is not the first key of the root object, but the first key of the nested object
   // that we need to group by.
-  const keys = arr.map((obj) => Object.keys(obj[Object.keys(obj)[0]])[0]);
+  const keys = arr
+    .map((obj) => {
+      const firstKey = Object.keys(obj)[0];
+      const firstValue = obj[firstKey];
+      const firstNestedKey =
+        firstValue && typeof firstValue === "object"
+          ? Object.keys(firstValue)[0]
+          : undefined;
+      return firstNestedKey;
+    })
+    .filter((key) => key !== undefined) as string[];
 
   // Sort the keys to prepare for grouping by common prefix
   keys.sort();
 
-  const groups = {};
+  const groups: { [key: string]: [] } = {};
 
   for (let i = 0; i < keys.length; i++) {
     const currentKey = keys[i];
@@ -35,7 +45,7 @@ const groupByLongestPrefix = (arr) => {
       const otherKey = keys[j];
       const otherParts = otherKey.split(".");
 
-      let commonParts = [];
+      const commonParts = [];
       for (
         let k = 0;
         k < Math.min(currentParts.length, otherParts.length);
@@ -72,7 +82,7 @@ const groupByLongestPrefix = (arr) => {
 
 const mergeCombinatorObjects = (
   combinator: string,
-  query: Record<string, any>,
+  query: Record<string, ESQueryClause>[],
 ) => {
   console.debug("mergeCombinatorObjects: combinator", combinator);
   for (let i = 0; i < query.length; i++) {
@@ -125,7 +135,7 @@ const mergeCombinatorObjects = (
 
   const groupedByLongestPrefix = groupByLongestPrefix(nestedFieldItems);
   console.debug("groupedByLongestPrefix", groupedByLongestPrefix);
-  const mergedResult = {};
+  const mergedResult: Record<string, ESQueryClause> = {};
   for (const group in groupedByLongestPrefix) {
     console.debug("group name:", group);
     const groupItems = groupedByLongestPrefix[group];
@@ -170,7 +180,9 @@ const mergeCombinatorObjects = (
   return mergeCombinatorObjectsResult;
 };
 
-const handleNestedDocuments = (formattedQuery: Record<string, any>) => {
+const handleNestedDocuments = (
+  formattedQuery: Record<string, ESqueryClause>,
+) => {
   console.debug("formattedQuery", formattedQuery);
   if (formattedQuery && typeof formattedQuery === "object") {
     for (const key in formattedQuery) {
