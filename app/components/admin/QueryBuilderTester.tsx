@@ -138,6 +138,18 @@ export default function QueryBuilderTester() {
     console.debug("nonBoolItems", nonBoolItems);
 
     // TODO: I need to treat the bool items as well
+    const boolItems = query.filter((item) => {
+      const operator = Object.keys(item)[0];
+      console.debug("operator", operator);
+      if (operator === "bool") {
+        return item;
+      }
+    });
+    console.debug("boolItems", boolItems);
+    const boolItemsHandled = boolItems.map((boolItem) => {
+      return handleNestedDocuments(boolItem);
+    });
+    console.debug("boolItems after handleNestedDocuments", boolItemsHandled);
 
     const nestedFieldItems = nonBoolItems.filter((item) => {
       const operator = Object.keys(item)[0];
@@ -199,8 +211,9 @@ export default function QueryBuilderTester() {
 
     console.debug("mergeResultValues", mergeResultValues);
 
-    const mergeCombinatorObjectsResult =
-      nonNestedFieldItems.concat(mergeResultValues);
+    const mergeCombinatorObjectsResult = nonNestedFieldItems
+      .concat(mergeResultValues)
+      .concat(boolItemsHandled);
     console.debug("mergeCombinatorObjectsResult", mergeCombinatorObjectsResult);
     return mergeCombinatorObjectsResult;
   };
