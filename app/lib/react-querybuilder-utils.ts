@@ -111,7 +111,6 @@ const mergeCombinatorObjects = (
   });
   console.debug("nonBoolItems", nonBoolItems);
 
-  // TODO: I need to treat the bool items as well
   const boolItems = query.filter((item) => {
     const operator = Object.keys(item)[0];
     console.debug("operator", operator);
