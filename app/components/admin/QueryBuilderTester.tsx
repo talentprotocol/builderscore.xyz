@@ -10,7 +10,7 @@ import "react-json-view-lite/dist/index.css";
 import { QueryBuilder, RuleGroupType, formatQuery } from "react-querybuilder";
 import "react-querybuilder/dist/query-builder.css";
 
-function groupByLongestPrefix(arr) {
+const groupByLongestPrefix = (arr) => {
   // Extract all keys
   const keys = arr.map((obj) => Object.keys(obj[Object.keys(obj)[0]])[0]);
 
@@ -65,7 +65,137 @@ function groupByLongestPrefix(arr) {
   }
 
   return groups;
-}
+};
+
+const mergeCombinatorObjects = (
+  combinator: string,
+  query: Record<string, any>,
+) => {
+  console.debug("mergeCombinatorObjects: combinator", combinator);
+  for (let i = 0; i < query.length; i++) {
+    const queryItem = query[i];
+    console.debug("queryItem", queryItem);
+  }
+
+  const nonBoolItems = query.filter((item) => {
+    const operator = Object.keys(item)[0];
+    console.debug("operator", operator);
+    if (operator !== "bool") {
+      return item;
+    }
+  });
+  console.debug("nonBoolItems", nonBoolItems);
+
+  // TODO: I need to treat the bool items as well
+  const boolItems = query.filter((item) => {
+    const operator = Object.keys(item)[0];
+    console.debug("operator", operator);
+    if (operator === "bool") {
+      return item;
+    }
+  });
+  console.debug("boolItems", boolItems);
+  const boolItemsHandled = boolItems.map((boolItem) => {
+    return handleNestedDocuments(boolItem);
+  });
+  console.debug("boolItems after handleNestedDocuments", boolItemsHandled);
+
+  const nestedFieldItems = nonBoolItems.filter((item) => {
+    const operator = Object.keys(item)[0];
+    const fieldName = Object.keys(item[operator])[0];
+    console.debug("fieldName", fieldName);
+    if (fieldName.includes(".")) {
+      return item;
+    }
+  });
+  console.debug("nestedFieldItems", nestedFieldItems);
+
+  const nonNestedFieldItems = nonBoolItems.filter((item) => {
+    const operator = Object.keys(item)[0];
+    const fieldName = Object.keys(item[operator])[0];
+    console.debug("fieldName", fieldName);
+    if (!fieldName.includes(".")) {
+      return item;
+    }
+  });
+  console.debug("nonNestedFieldItems", nonNestedFieldItems);
+
+  const groupedByLongestPrefix = groupByLongestPrefix(nestedFieldItems);
+  console.debug("groupedByLongestPrefix", groupedByLongestPrefix);
+  const mergedResult = {};
+  for (const group in groupedByLongestPrefix) {
+    console.debug("group name:", group);
+    const groupItems = groupedByLongestPrefix[group];
+    console.debug("group items:", groupItems);
+    mergedResult[group] = {
+      nested: {
+        path: group,
+        query: {
+          bool: {
+            [combinator]: groupItems,
+          },
+        },
+      },
+    };
+    // We need to build an object like this:
+    // {
+    //   "nested": {
+    //     "path": "scores",
+    //     "query": {
+    //       "bool": {
+    //         "must": [
+    //           { "term": { "scores.scorer": "Builder Score" } },
+    //           { "range": { "scores.points": { "gte": 0, "lte": 500 } } }
+    //         ]
+    //       }
+    //     }
+    //   }
+    // },
+  }
+  console.debug("mergedResult", mergedResult);
+
+  const mergeResultValues = Object.keys(mergedResult).map((key) => {
+    return mergedResult[key];
+  });
+
+  console.debug("mergeResultValues", mergeResultValues);
+
+  const mergeCombinatorObjectsResult = nonNestedFieldItems
+    .concat(mergeResultValues)
+    .concat(boolItemsHandled);
+  console.debug("mergeCombinatorObjectsResult", mergeCombinatorObjectsResult);
+  return mergeCombinatorObjectsResult;
+};
+
+const handleNestedDocuments = (formattedQuery: Record<string, any>) => {
+  console.debug("formattedQuery", formattedQuery);
+  if (formattedQuery && typeof formattedQuery === "object") {
+    for (const key in formattedQuery) {
+      console.debug("key", key);
+      if (formattedQuery.hasOwnProperty(key)) {
+        if (key === "bool") {
+          console.debug("found bool", formattedQuery[key]);
+          const combinator = Object.keys(formattedQuery[key])[0];
+          console.debug("combinator", combinator);
+          const mergeResult = mergeCombinatorObjects(
+            combinator,
+            formattedQuery[key][combinator],
+          );
+          formattedQuery[key][combinator] = mergeResult;
+        }
+      }
+    }
+  }
+  return formattedQuery;
+};
+
+const buildQueryString = () => {
+  return formatQuery(query, {
+    format: "elasticsearch",
+    parseNumbers: true,
+    preserveValueOrder: true,
+  });
+};
 
 export default function QueryBuilderTester() {
   const [fields, setFields] = useState([]);
@@ -116,136 +246,6 @@ export default function QueryBuilderTester() {
 
   const onChangeDocumentSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setDocumentSelected(e.target.value);
-  };
-
-  const mergeCombinatorObjects = (
-    combinator: string,
-    query: Record<string, any>,
-  ) => {
-    console.debug("mergeCombinatorObjects: combinator", combinator);
-    for (let i = 0; i < query.length; i++) {
-      const queryItem = query[i];
-      console.debug("queryItem", queryItem);
-    }
-
-    const nonBoolItems = query.filter((item) => {
-      const operator = Object.keys(item)[0];
-      console.debug("operator", operator);
-      if (operator !== "bool") {
-        return item;
-      }
-    });
-    console.debug("nonBoolItems", nonBoolItems);
-
-    // TODO: I need to treat the bool items as well
-    const boolItems = query.filter((item) => {
-      const operator = Object.keys(item)[0];
-      console.debug("operator", operator);
-      if (operator === "bool") {
-        return item;
-      }
-    });
-    console.debug("boolItems", boolItems);
-    const boolItemsHandled = boolItems.map((boolItem) => {
-      return handleNestedDocuments(boolItem);
-    });
-    console.debug("boolItems after handleNestedDocuments", boolItemsHandled);
-
-    const nestedFieldItems = nonBoolItems.filter((item) => {
-      const operator = Object.keys(item)[0];
-      const fieldName = Object.keys(item[operator])[0];
-      console.debug("fieldName", fieldName);
-      if (fieldName.includes(".")) {
-        return item;
-      }
-    });
-    console.debug("nestedFieldItems", nestedFieldItems);
-
-    const nonNestedFieldItems = nonBoolItems.filter((item) => {
-      const operator = Object.keys(item)[0];
-      const fieldName = Object.keys(item[operator])[0];
-      console.debug("fieldName", fieldName);
-      if (!fieldName.includes(".")) {
-        return item;
-      }
-    });
-    console.debug("nonNestedFieldItems", nonNestedFieldItems);
-
-    const groupedByLongestPrefix = groupByLongestPrefix(nestedFieldItems);
-    console.debug("groupedByLongestPrefix", groupedByLongestPrefix);
-    const mergedResult = {};
-    for (const group in groupedByLongestPrefix) {
-      console.debug("group name:", group);
-      const groupItems = groupedByLongestPrefix[group];
-      console.debug("group items:", groupItems);
-      mergedResult[group] = {
-        nested: {
-          path: group,
-          query: {
-            bool: {
-              [combinator]: groupItems,
-            },
-          },
-        },
-      };
-      // We need to build an object like this:
-      // {
-      //   "nested": {
-      //     "path": "scores",
-      //     "query": {
-      //       "bool": {
-      //         "must": [
-      //           { "term": { "scores.scorer": "Builder Score" } },
-      //           { "range": { "scores.points": { "gte": 0, "lte": 500 } } }
-      //         ]
-      //       }
-      //     }
-      //   }
-      // },
-    }
-    console.debug("mergedResult", mergedResult);
-
-    const mergeResultValues = Object.keys(mergedResult).map((key) => {
-      return mergedResult[key];
-    });
-
-    console.debug("mergeResultValues", mergeResultValues);
-
-    const mergeCombinatorObjectsResult = nonNestedFieldItems
-      .concat(mergeResultValues)
-      .concat(boolItemsHandled);
-    console.debug("mergeCombinatorObjectsResult", mergeCombinatorObjectsResult);
-    return mergeCombinatorObjectsResult;
-  };
-
-  const handleNestedDocuments = (formattedQuery: Record<string, any>) => {
-    console.debug("formattedQuery", formattedQuery);
-    if (formattedQuery && typeof formattedQuery === "object") {
-      for (const key in formattedQuery) {
-        console.debug("key", key);
-        if (formattedQuery.hasOwnProperty(key)) {
-          if (key === "bool") {
-            console.debug("found bool", formattedQuery[key]);
-            const combinator = Object.keys(formattedQuery[key])[0];
-            console.debug("combinator", combinator);
-            const mergeResult = mergeCombinatorObjects(
-              combinator,
-              formattedQuery[key][combinator],
-            );
-            formattedQuery[key][combinator] = mergeResult;
-          }
-        }
-      }
-    }
-    return formattedQuery;
-  };
-
-  const buildQueryString = () => {
-    return formatQuery(query, {
-      format: "elasticsearch",
-      parseNumbers: true,
-      preserveValueOrder: true,
-    });
   };
 
   const onClickExecuteQuery = () => {
