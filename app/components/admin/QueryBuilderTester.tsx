@@ -194,7 +194,7 @@ const handleNestedDocuments = (formattedQuery: Record<string, any>) => {
   return formattedQuery;
 };
 
-const buildQueryString = () => {
+const buildQueryString = (query) => {
   return formatQuery(query, {
     format: "elasticsearch",
     parseNumbers: true,
@@ -254,7 +254,7 @@ export default function QueryBuilderTester() {
   };
 
   const onClickExecuteQuery = () => {
-    const queryString = handleNestedDocuments(buildQueryString());
+    const queryString = handleNestedDocuments(buildQueryString(query));
 
     const requestBody: AdvancedSearchRequest = {
       query: {
@@ -329,13 +329,13 @@ export default function QueryBuilderTester() {
           </ClientOnly>
           <h4>TALENT API Query Builder ElasticSearch Format</h4>
           <JsonView
-            data={buildQueryString()}
+            data={buildQueryString(query)}
             shouldExpandNode={allExpanded}
             style={defaultStyles}
           />
           <h4>TALENT API Query Builder After Handling Nested Documents</h4>
           <JsonView
-            data={handleNestedDocuments(buildQueryString())}
+            data={handleNestedDocuments(buildQueryString(query))}
             shouldExpandNode={allExpanded}
             style={defaultStyles}
           />
