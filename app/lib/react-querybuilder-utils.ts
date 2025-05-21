@@ -8,7 +8,7 @@ const buildQueryString = (query: RuleGroupTypeAny) => {
   });
 };
 
-const groupByLongestPrefix = (arr: []) => {
+const groupByLongestPrefix = (arr: Record<string, unknown>[]) => {
   // Extract all keys
   // Note that here we have objects like these:
   // { "term": { "scores.scorer": "Builder Score" } }
@@ -30,7 +30,7 @@ const groupByLongestPrefix = (arr: []) => {
   // Sort the keys to prepare for grouping by common prefix
   keys.sort();
 
-  const groups: { [key: string]: [] } = {};
+  const groups: { [key: string]: Record<string, unknown>[] } = {};
 
   for (let i = 0; i < keys.length; i++) {
     const currentKey = keys[i];
@@ -71,13 +71,25 @@ const groupByLongestPrefix = (arr: []) => {
       groups[prefix] = [];
     }
 
-    const obj = arr.find(
-      (o) => Object.keys(o[Object.keys(o)[0]])[0] === currentKey,
-    );
-    groups[prefix].push(obj);
+    const obj = arr.find((o) => {
+      const firstKey = Object.keys(o)[0];
+      const firstValue = o[firstKey];
+      return (
+        firstValue &&
+        typeof firstValue === "object" &&
+        Object.keys(firstValue)[0] === currentKey
+      );
+    });
+    if (obj !== undefined) {
+      groups[prefix].push(obj);
+    }
   }
 
   return groups;
+};
+
+type ESQueryClause = {
+  [key: string]: unknown;
 };
 
 const mergeCombinatorObjects = (
@@ -173,15 +185,16 @@ const mergeCombinatorObjects = (
 
   console.debug("mergeResultValues", mergeResultValues);
 
+  // Ensure mergeResultValues is an array of Record<string, ESQueryClause>
   const mergeCombinatorObjectsResult = nonNestedFieldItems
-    .concat(mergeResultValues)
+    .concat(mergeResultValues as Record<string, ESQueryClause>[])
     .concat(boolItemsHandled);
   console.debug("mergeCombinatorObjectsResult", mergeCombinatorObjectsResult);
   return mergeCombinatorObjectsResult;
 };
 
 const handleNestedDocuments = (
-  formattedQuery: Record<string, ESqueryClause>,
+  formattedQuery: Record<string, ESQueryClause>,
 ) => {
   console.debug("formattedQuery", formattedQuery);
   if (formattedQuery && typeof formattedQuery === "object") {
@@ -194,7 +207,7 @@ const handleNestedDocuments = (
           console.debug("combinator", combinator);
           const mergeResult = mergeCombinatorObjects(
             combinator,
-            formattedQuery[key][combinator],
+            formattedQuery[key][combinator] as Record<string, ESQueryClause>[],
           );
           formattedQuery[key][combinator] = mergeResult;
         }
