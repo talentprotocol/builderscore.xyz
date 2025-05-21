@@ -12,6 +12,11 @@ import "react-querybuilder/dist/query-builder.css";
 
 const groupByLongestPrefix = (arr) => {
   // Extract all keys
+  // Note that here we have objects like these:
+  // { "term": { "scores.scorer": "Builder Score" } }
+  // { "range": { "scores.points": { "gte": 0, "lte": 500 } } }
+  // So, it is not the first key of the root object, but the first key of the nested object
+  // that we need to group by.
   const keys = arr.map((obj) => Object.keys(obj[Object.keys(obj)[0]])[0]);
 
   // Sort the keys to prepare for grouping by common prefix
