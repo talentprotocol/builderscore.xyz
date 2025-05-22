@@ -1,4 +1,5 @@
-import { formatQuery, RuleGroupTypeAny } from "react-querybuilder";
+import { ESQuery } from "@/app/types/elasticSearchTypes";
+import { RuleGroupTypeAny, formatQuery } from "react-querybuilder";
 
 const buildQueryString = (query: RuleGroupTypeAny) => {
   return formatQuery(query, {
@@ -88,14 +89,7 @@ const groupByLongestPrefix = (arr: Record<string, unknown>[]) => {
   return groups;
 };
 
-type ESQueryClause = {
-  [key: string]: unknown;
-};
-
-const mergeCombinatorObjects = (
-  combinator: string,
-  query: Record<string, ESQueryClause>[],
-) => {
+const mergeCombinatorObjects = (combinator: string, query: ESQuery[]) => {
   const nonBoolItems = query.filter((item) => {
     const operator = Object.keys(item)[0];
     if (operator !== "bool") {
@@ -130,7 +124,7 @@ const mergeCombinatorObjects = (
   });
 
   const groupedByLongestPrefix = groupByLongestPrefix(nestedFieldItems);
-  const mergedResult: Record<string, ESQueryClause> = {};
+  const mergedResult: ESQuery = {};
   for (const group in groupedByLongestPrefix) {
     const groupItems = groupedByLongestPrefix[group];
     mergedResult[group] = {
@@ -165,14 +159,12 @@ const mergeCombinatorObjects = (
 
   // Ensure mergeResultValues is an array of Record<string, ESQueryClause>
   const mergeCombinatorObjectsResult = nonNestedFieldItems
-    .concat(mergeResultValues as Record<string, ESQueryClause>[])
+    .concat(mergeResultValues as ESQuery[])
     .concat(boolItemsHandled);
   return mergeCombinatorObjectsResult;
 };
 
-const handleNestedDocuments = (
-  formattedQuery: Record<string, ESQueryClause>,
-) => {
+const handleNestedDocuments = (formattedQuery: ESQuery) => {
   if (formattedQuery && typeof formattedQuery === "object") {
     for (const key in formattedQuery) {
       if (formattedQuery.hasOwnProperty(key)) {
@@ -180,7 +172,7 @@ const handleNestedDocuments = (
           const combinator = Object.keys(formattedQuery[key])[0];
           const mergeResult = mergeCombinatorObjects(
             combinator,
-            formattedQuery[key][combinator] as Record<string, ESQueryClause>[],
+            formattedQuery[key][combinator] as ESQuery[],
           );
           formattedQuery[key][combinator] = mergeResult;
         }
