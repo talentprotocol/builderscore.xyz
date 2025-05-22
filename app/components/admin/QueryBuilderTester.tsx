@@ -1,13 +1,17 @@
 "use client";
 
 import { ClientOnly } from "@/app/components/ClientOnly";
+import {
+  buildQueryString,
+  handleNestedDocuments,
+} from "@/app/lib/react-querybuilder-utils";
 import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import React from "react";
 import { useEffect, useState } from "react";
 import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
 import "react-json-view-lite/dist/index.css";
-import { QueryBuilder, RuleGroupType, formatQuery } from "react-querybuilder";
+import { QueryBuilder, RuleGroupType } from "react-querybuilder";
 import "react-querybuilder/dist/query-builder.css";
 
 export default function QueryBuilderTester() {
@@ -33,7 +37,6 @@ export default function QueryBuilderTester() {
           },
         );
         const metadataForFields = await response.json();
-        console.debug("metadataForFields", metadataForFields);
         setFields(metadataForFields);
       })();
 
@@ -61,16 +64,8 @@ export default function QueryBuilderTester() {
     setDocumentSelected(e.target.value);
   };
 
-  const buildQueryString = () => {
-    return formatQuery(query, {
-      format: "elasticsearch",
-      parseNumbers: true,
-      preserveValueOrder: true,
-    });
-  };
-
   const onClickExecuteQuery = () => {
-    const queryString = buildQueryString();
+    const queryString = handleNestedDocuments(buildQueryString(query));
 
     const requestBody: AdvancedSearchRequest = {
       query: {
@@ -94,7 +89,7 @@ export default function QueryBuilderTester() {
 
     (async () => {
       const response = await fetch(
-        `/api/search/advanced/${documentSelected}?${fullQueryString}`,
+        `/api/search/advanced/${documentSelected}?${fullQueryString}&debug=true`,
         {
           method: "GET",
           headers: {
@@ -103,7 +98,6 @@ export default function QueryBuilderTester() {
         },
       );
       const data = await response.json();
-      console.debug("data", data);
       setQueryResults(data);
     })();
   };
@@ -140,13 +134,18 @@ export default function QueryBuilderTester() {
               fields={fields}
               query={query}
               onQueryChange={setQuery}
-              showShiftActions={true}
               controlClassnames={{ queryBuilder: "queryBuilder-branches" }}
             />
           </ClientOnly>
-          <h4>TALENT API Query</h4>
+          <h4>TALENT API Query Builder ElasticSearch Format</h4>
           <JsonView
-            data={buildQueryString()}
+            data={buildQueryString(query)}
+            shouldExpandNode={allExpanded}
+            style={defaultStyles}
+          />
+          <h4>TALENT API Query Builder After Handling Nested Documents</h4>
+          <JsonView
+            data={handleNestedDocuments(buildQueryString(query))}
             shouldExpandNode={allExpanded}
             style={defaultStyles}
           />

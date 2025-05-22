@@ -1,4 +1,8 @@
-import { API_BASE_URL, DEFAULT_HEADERS } from "@/app/config/api";
+import {
+  API_BASE_URL,
+  DEFAULT_HEADERS,
+  DEBUG_VIEW_UNLOCK_WORD,
+} from "@/app/config/api";
 import { AdvancedSearchMetadataField } from "@/app/types/advancedSearchMetadataFields";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -9,6 +13,12 @@ const fetchSearchAdvanced = async ({
   documents: string;
   queryString: string;
 }) => {
+  if (queryString.includes("debug=true")) {
+    queryString = queryString.replace(
+      "debug=true",
+      `debug=${DEBUG_VIEW_UNLOCK_WORD}`,
+    );
+  }
   const response = await fetch(
     `${API_BASE_URL}/search/advanced/${documents}?${queryString}`,
     {
