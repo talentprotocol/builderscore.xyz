@@ -37,7 +37,6 @@ export default function QueryBuilderTester() {
           },
         );
         const metadataForFields = await response.json();
-        console.debug("metadataForFields", metadataForFields);
         setFields(metadataForFields);
       })();
 
@@ -99,7 +98,6 @@ export default function QueryBuilderTester() {
         },
       );
       const data = await response.json();
-      console.debug("data", data);
       setQueryResults(data);
     })();
   };

@@ -96,61 +96,43 @@ const mergeCombinatorObjects = (
   combinator: string,
   query: Record<string, ESQueryClause>[],
 ) => {
-  console.debug("mergeCombinatorObjects: combinator", combinator);
-  for (let i = 0; i < query.length; i++) {
-    const queryItem = query[i];
-    console.debug("queryItem", queryItem);
-  }
-
   const nonBoolItems = query.filter((item) => {
     const operator = Object.keys(item)[0];
-    console.debug("operator", operator);
     if (operator !== "bool") {
       return item;
     }
   });
-  console.debug("nonBoolItems", nonBoolItems);
 
   const boolItems = query.filter((item) => {
     const operator = Object.keys(item)[0];
-    console.debug("operator", operator);
     if (operator === "bool") {
       return item;
     }
   });
-  console.debug("boolItems", boolItems);
   const boolItemsHandled = boolItems.map((boolItem) => {
     return handleNestedDocuments(boolItem);
   });
-  console.debug("boolItems after handleNestedDocuments", boolItemsHandled);
 
   const nestedFieldItems = nonBoolItems.filter((item) => {
     const operator = Object.keys(item)[0];
     const fieldName = Object.keys(item[operator])[0];
-    console.debug("fieldName", fieldName);
     if (fieldName.includes(".")) {
       return item;
     }
   });
-  console.debug("nestedFieldItems", nestedFieldItems);
 
   const nonNestedFieldItems = nonBoolItems.filter((item) => {
     const operator = Object.keys(item)[0];
     const fieldName = Object.keys(item[operator])[0];
-    console.debug("fieldName", fieldName);
     if (!fieldName.includes(".")) {
       return item;
     }
   });
-  console.debug("nonNestedFieldItems", nonNestedFieldItems);
 
   const groupedByLongestPrefix = groupByLongestPrefix(nestedFieldItems);
-  console.debug("groupedByLongestPrefix", groupedByLongestPrefix);
   const mergedResult: Record<string, ESQueryClause> = {};
   for (const group in groupedByLongestPrefix) {
-    console.debug("group name:", group);
     const groupItems = groupedByLongestPrefix[group];
-    console.debug("group items:", groupItems);
     mergedResult[group] = {
       nested: {
         path: group,
@@ -176,34 +158,26 @@ const mergeCombinatorObjects = (
     //   }
     // },
   }
-  console.debug("mergedResult", mergedResult);
 
   const mergeResultValues = Object.keys(mergedResult).map((key) => {
     return mergedResult[key];
   });
 
-  console.debug("mergeResultValues", mergeResultValues);
-
   // Ensure mergeResultValues is an array of Record<string, ESQueryClause>
   const mergeCombinatorObjectsResult = nonNestedFieldItems
     .concat(mergeResultValues as Record<string, ESQueryClause>[])
     .concat(boolItemsHandled);
-  console.debug("mergeCombinatorObjectsResult", mergeCombinatorObjectsResult);
   return mergeCombinatorObjectsResult;
 };
 
 const handleNestedDocuments = (
   formattedQuery: Record<string, ESQueryClause>,
 ) => {
-  console.debug("formattedQuery", formattedQuery);
   if (formattedQuery && typeof formattedQuery === "object") {
     for (const key in formattedQuery) {
-      console.debug("key", key);
       if (formattedQuery.hasOwnProperty(key)) {
         if (key === "bool") {
-          console.debug("found bool", formattedQuery[key]);
           const combinator = Object.keys(formattedQuery[key])[0];
-          console.debug("combinator", combinator);
           const mergeResult = mergeCombinatorObjects(
             combinator,
             formattedQuery[key][combinator] as Record<string, ESQueryClause>[],
