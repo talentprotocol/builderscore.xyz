@@ -50,20 +50,19 @@ export const howToEarnConfig = (
         "Monthly rewards automatically distributed to the top 100 builders who contribute to the Celo ecosystem through verified smart contracts and public contributions on GitHub.",
       steps: [
         {
-          text: "Verify your humanity with Self.xyz",
-          url: "https://app.talentprotocol.com/accounts",
-          condition: !loadingUser && selfXyzAccount,
+          text: "Get your Human Checkmark",
+          url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
+          condition: !loadingUser && talentProfile?.human_checkmark,
         },
         {
-          text: "Have 1+ outgoing transaction on Celo",
+          text: "Have 1+ outgoing transactions on Celo",
           url: "https://app.talentprotocol.com",
           condition: !loadingUser && celoTransaction,
         },
         {
-          text: "Increase your Builder Score to 40+",
-          url: "https://app.talentprotocol.com/profile",
-          condition:
-            !loadingUser && builderScore?.points && builderScore?.points >= 40,
+          text: "Earn more by verifying your humanity with Self.xyz (optional)",
+          url: "https://app.talentprotocol.com/accounts",
+          condition: !loadingUser && selfXyzAccount,
         },
       ],
     },
