@@ -1,7 +1,36 @@
-import { metadata } from "@/app/(builder-rewards)/layout";
 import RewardsLayout from "@/app/components/rewards/RewardsLayout";
-import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
+import {
+  DEFAULT_SPONSOR_SLUG,
+  baseMetadata,
+  celoMetadata,
+} from "@/app/lib/constants";
+import { getSubdomain } from "@/app/lib/get-subdomain";
 import { getSponsorThemeClassName } from "@/app/lib/theme";
+import { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const subdomain = await getSubdomain();
+
+  let metadata;
+
+  switch (subdomain) {
+    case "base":
+      metadata = baseMetadata;
+      break;
+    case "celo":
+      metadata = celoMetadata;
+      break;
+    case "talent-protocol":
+      metadata = baseMetadata;
+      break;
+    default:
+      metadata = baseMetadata;
+  }
+
+  return metadata;
+}
 
 export default async function SponsoredRewardsLayout({
   children,
@@ -20,7 +49,7 @@ export default async function SponsoredRewardsLayout({
   return (
     <RewardsLayout
       themeClassName={themeClassName}
-      title={metadata.title as string}
+      title="Builder Rewards"
       sponsor={sponsor}
     >
       {children}

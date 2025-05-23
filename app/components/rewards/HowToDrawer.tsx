@@ -14,7 +14,7 @@ import { SponsorSlug, howToEarnConfig } from "@/app/config/how-to-earn";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
 import { SPONSOR_TERMS } from "@/app/lib/constants";
-import { AVAILABLE_SPONSORS } from "@/app/types/sponsors";
+import { AVAILABLE_SPONSORS } from "@/app/types/rewards/sponsors";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
 

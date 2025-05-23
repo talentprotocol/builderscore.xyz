@@ -1,7 +1,7 @@
 "use client";
 
 import { ClientOnly } from "@/app/components/ClientOnly";
-import { DataTable } from "@/app/components/data-table/data-table";
+import { DataTable } from "@/app/components/data-table";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
 import { SearchDataResponse } from "@/app/types/index/search";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";

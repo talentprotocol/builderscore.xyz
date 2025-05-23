@@ -1,7 +1,7 @@
 import BaseLogo from "@/app/components/logos/BaseLogo";
 import CeloLogo from "@/app/components/logos/CeloLogo";
 import TalentProtocolLogo from "@/app/components/logos/TalentProtocolLogo";
-import { SponsorInfo } from "@/app/types/sponsors";
+import { SponsorInfo } from "@/app/types/rewards/sponsors";
 import { Metadata } from "next";
 
 export const DEFAULT_SPONSOR_SLUG = "base";

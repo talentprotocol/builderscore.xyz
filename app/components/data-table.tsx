@@ -1,4 +1,3 @@
-import { DataTablePagination } from "@/app/components/data-table/data-table-pagination";
 import {
   Table,
   TableBody,
@@ -100,12 +99,6 @@ export function DataTable<TData>({
         </Table>
       </div>
       <div className="flex flex-col gap-2.5">
-        <DataTablePagination
-          table={table}
-          hasSelectColumn={table
-            .getAllColumns()
-            .some((column) => column.id === "select")}
-        />
         {actionBar &&
           table.getFilteredSelectedRowModel().rows.length > 0 &&
           actionBar}

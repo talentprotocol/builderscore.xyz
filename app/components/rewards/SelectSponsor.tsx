@@ -10,7 +10,7 @@ import {
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useHistoryListener } from "@/app/hooks/useHistoryListener";
 import { ALLOWED_SPONSORS } from "@/app/lib/constants";
-import { Sponsor } from "@/app/types/sponsors";
+import { Sponsor } from "@/app/types/rewards/sponsors";
 
 export default function SelectSponsor() {
   const {

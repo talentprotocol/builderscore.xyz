@@ -1,5 +1,5 @@
-import { AVAILABLE_SPONSORS } from "@/app/types/sponsors";
-import { APITalentProfile, TalentBuilderScore } from "@/app/types/talent";
+import { AVAILABLE_SPONSORS } from "@/app/types/rewards/sponsors";
+import { TalentBuilderScore, TalentProfileApi } from "@/app/types/talent";
 
 export type SponsorSlug = (typeof AVAILABLE_SPONSORS)[number];
 
@@ -17,7 +17,7 @@ type HowToEarnConfig = {
 export const howToEarnConfig = (
   basename: string | null,
   loadingUser: boolean,
-  talentProfile: APITalentProfile | null,
+  talentProfile: TalentProfileApi | null,
   builderScore: TalentBuilderScore | null,
   selfXyzAccount: boolean,
   celoTransaction: boolean,
