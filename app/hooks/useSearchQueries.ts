@@ -32,6 +32,7 @@ export function useSearchFields(
 export function useSearchProfiles(props: {
   selectedDocument?: string;
   query: RuleGroupType;
+  order?: "asc" | "desc";
   page?: number;
   perPage?: number;
   fields: Field[] | undefined;
@@ -39,6 +40,7 @@ export function useSearchProfiles(props: {
   const {
     selectedDocument = DEFAULT_SEARCH_DOCUMENT,
     query,
+    order = "desc",
     page = 1,
     perPage = 10,
     fields,
@@ -46,7 +48,7 @@ export function useSearchProfiles(props: {
 
   return useQuery({
     enabled: !!selectedDocument && !!fields,
-    queryKey: ["searchProfiles", query, page, perPage],
+    queryKey: ["searchProfiles", query, order, page, perPage],
     queryFn: async () => {
       const requestBody: AdvancedSearchRequest = {
         query: {
@@ -54,10 +56,10 @@ export function useSearchProfiles(props: {
         },
         sort: {
           score: {
-            order: "desc",
+            order,
           },
           id: {
-            order: "desc",
+            order,
           },
         },
         page,

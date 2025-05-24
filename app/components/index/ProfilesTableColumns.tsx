@@ -1,5 +1,6 @@
 "use client";
 
+import { DataTableColumnHeader } from "@/app/components/data-table/data-table-column-header";
 import { Badge } from "@/app/components/ui/badge";
 import { CREDENTIALS } from "@/app/lib/constants";
 import type { TalentProfileSearchApi } from "@/app/types/talent";
@@ -54,9 +55,12 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
     {
       id: "builder_score",
       accessorKey: "builder_score",
-      header: "Builder Score",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Builder Score" />
+      ),
       enableHiding: true,
       enableColumnFilter: true,
+      enableSorting: true,
       cell: ({ row }) => row.original.builder_score?.points ?? "N/A",
       meta: {
         label: "Builder Score",
@@ -98,7 +102,7 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
           <Badge
             key={tag}
             variant="outline"
-            className="mr-1 px-1 py-0.5 text-[7px] uppercase"
+            className="mr-1 px-1 py-0.5 text-[8px] uppercase"
           >
             {tag}
           </Badge>

@@ -86,7 +86,7 @@ export default function Header() {
       return null;
 
     return (
-      <div className="border-primary text-primary rounded-lg border px-3 py-1 text-xs">
+      <div className="border-primary text-primary rounded-md border px-3 py-1 text-xs">
         <span className="font-semibold">
           {getTimeRemaining(selectedGrant.end_date)}
         </span>{" "}

@@ -15,7 +15,7 @@ export default async function Page() {
       {
         field: "display_name",
         operator: "contains",
-        value: "pcbo",
+        value: "sim",
       },
     ],
   } as RuleGroupType;

@@ -25,7 +25,7 @@ export function DataTable<TData>({
 }: DataTableProps<TData>) {
   return (
     <div
-      className={cn("flex w-full flex-col gap-2.5 overflow-auto", className)}
+      className={cn("flex w-full flex-col overflow-auto", className)}
       {...props}
     >
       {children}
@@ -36,7 +36,7 @@ export function DataTable<TData>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header, headerIndex) => (
                   <TableHead
-                    className="h-9 text-xs font-medium"
+                    className="h-8 text-xs font-medium"
                     key={header.id}
                     colSpan={header.colSpan}
                     style={{

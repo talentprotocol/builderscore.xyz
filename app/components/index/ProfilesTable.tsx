@@ -1,19 +1,21 @@
 "use client";
 
-import { ClientOnly } from "@/app/components/ClientOnly";
-import { DataTable } from "@/app/components/data-table";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
-import TablePagination from "@/app/components/index/TablePagination";
+import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
+import TablePagination from "@/app/components/index/ProfilesTablePagination";
+import { DataTable } from "@/app/components/ui/data-table";
 import {
   useSearchFields,
   useSearchProfiles,
 } from "@/app/hooks/useSearchQueries";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
 import {
-  QueryBuilder as QueryBuilderComponent,
-  RuleGroupType,
-} from "react-querybuilder";
+  SortingState,
+  Updater,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
+import { RuleGroupType } from "react-querybuilder";
 
 export function ProfilesTable({
   initialQuery,
@@ -21,22 +23,43 @@ export function ProfilesTable({
   initialQuery: RuleGroupType;
 }) {
   const [query, setQuery] = useState(initialQuery);
+  const [order, setOrder] = useState<"asc" | "desc">("desc");
+  const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
-  const [page, setPage] = useState(1);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "builder_score", desc: true },
+  ]);
 
   const { data: fields } = useSearchFields();
   const { data: profiles } = useSearchProfiles({
     query,
     fields,
+    order,
     page,
     perPage,
   });
 
   const table = useReactTable({
     data: profiles?.profiles || [],
-    columns: getProfilesTableColumns(),
+    columns: useMemo(() => getProfilesTableColumns(), []),
     getCoreRowModel: getCoreRowModel(),
+    state: {
+      sorting,
+    },
+    onSortingChange: (updaterOrValue: Updater<SortingState>) => {
+      const newSorting =
+        typeof updaterOrValue === "function"
+          ? updaterOrValue(sorting)
+          : updaterOrValue;
+
+      setSorting(newSorting);
+
+      const builderScoreSorting = newSorting.find(
+        (sort) => sort.id === "builder_score",
+      );
+      setOrder(builderScoreSorting?.desc ? "desc" : "asc");
+    },
   });
 
   useEffect(() => {
@@ -44,17 +67,12 @@ export function ProfilesTable({
   }, [profiles]);
 
   return (
-    <div>
-      <ClientOnly>
-        <QueryBuilderComponent
-          fields={fields}
-          query={query}
-          onQueryChange={setQuery}
-          controlClassnames={{
-            queryBuilder: "bg-white text-black p-4",
-          }}
-        />
-      </ClientOnly>
+    <div className="flex flex-col gap-3">
+      <ProfilesTableFilters
+        fields={fields || []}
+        query={query}
+        setQuery={setQuery}
+      />
 
       <DataTable table={table} />
 

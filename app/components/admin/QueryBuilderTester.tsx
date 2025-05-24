@@ -79,6 +79,8 @@ export default function QueryBuilderTester() {
           order: "desc",
         },
       },
+      page: 1,
+      per_page: 10,
     };
     const fullQueryString = Object.keys(requestBody)
       .map(

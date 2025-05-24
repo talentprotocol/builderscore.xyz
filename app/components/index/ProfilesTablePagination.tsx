@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
-import { formatNumber } from "@/app/lib/utils";
+import { cn, formatNumber } from "@/app/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 export default function TablePagination({
@@ -26,9 +26,11 @@ export default function TablePagination({
 }) {
   return (
     <div className="flex flex-1 items-center justify-between gap-2">
-      <p className="ml-1 text-xs">{formatNumber(total)} Builders</p>
+      <p className={cn("ml-1 text-xs", total === 1 ? "font-semibold" : "")}>
+        {formatNumber(total)} Builder{total === 1 ? "" : "s"}
+      </p>
 
-      <div className="mr-1 flex items-center gap-8">
+      <div className="flex items-center gap-8">
         <div className="flex items-center gap-2">
           <p className="text-xs">Rows</p>
 
