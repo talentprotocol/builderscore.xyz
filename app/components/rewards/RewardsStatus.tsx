@@ -35,7 +35,7 @@ export default function RewardsStatus() {
           className={`h-2 w-2 animate-pulse rounded-full ${isLoading ? "bg-gray-500" : "bg-green-500"}`}
         ></div>
         <span
-          className={`text-xs ${isLoading ? "text-gray-500" : "text-green-500"}`}
+          className={`text-xs ${isLoading ? "text-neutral-500" : "text-green-500"}`}
         >
           Rewards {isLoading ? "Loading..." : "Ready"}
         </span>
@@ -43,14 +43,14 @@ export default function RewardsStatus() {
       <div className="flex items-center gap-2">
         <span
           className={`text-xs ${
-            isLoading ? "text-gray-500" : "text-green-500"
+            isLoading ? "text-neutral-500" : "text-green-500"
           }`}
         >
           User: {!loadingUser ? "Ready" : "Loading..."}
         </span>
         <span
           className={`text-xs ${
-            isLoading ? "text-gray-500" : "text-green-500"
+            isLoading ? "text-neutral-500" : "text-green-500"
           }`}
         >
           Sponsors:{" "}
@@ -58,7 +58,7 @@ export default function RewardsStatus() {
         </span>
         <span
           className={`text-xs ${
-            isLoading ? "text-gray-500" : "text-green-500"
+            isLoading ? "text-neutral-500" : "text-green-500"
           }`}
         >
           Grants:{" "}
@@ -68,7 +68,7 @@ export default function RewardsStatus() {
         </span>
         <span
           className={`text-xs ${
-            isLoading ? "text-gray-500" : "text-green-500"
+            isLoading ? "text-neutral-500" : "text-green-500"
           }`}
         >
           Leaderboard:{" "}

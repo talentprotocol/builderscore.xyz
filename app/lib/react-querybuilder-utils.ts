@@ -182,9 +182,15 @@ const handleNestedDocuments = (formattedQuery: ESQuery) => {
   return formattedQuery;
 };
 
+const buildNestedQuery = (query: RuleGroupTypeAny) => {
+  const formattedQuery = buildQueryString(query);
+  return handleNestedDocuments(formattedQuery);
+};
+
 export {
   buildQueryString,
   groupByLongestPrefix,
   handleNestedDocuments,
   mergeCombinatorObjects,
+  buildNestedQuery,
 };

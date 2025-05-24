@@ -34,7 +34,7 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
                 className="aspect-square rounded-full object-cover"
               />
             )}
-            <span className={`${row.original.image_url && "ml-2"} truncate`}>
+            <span className={`${row.original.image_url && "ml-1"} truncate`}>
               {row.original.display_name || row.original.name}
             </span>
           </div>
@@ -77,7 +77,11 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
         label: "Human Checkmark",
       },
       cell: ({ row }) => {
-        return row.original.human_checkmark && <BadgeCheck size={16} />;
+        return (
+          row.original.human_checkmark && (
+            <BadgeCheck size={14} className="text-neutral-500" />
+          )
+        );
       },
     },
     {
@@ -91,7 +95,11 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
       },
       cell: ({ row }) => {
         return row.original.tags?.map((tag) => (
-          <Badge key={tag} variant="outline" className="mr-1">
+          <Badge
+            key={tag}
+            variant="outline"
+            className="mr-1 px-1 py-0.5 text-[7px] uppercase"
+          >
             {tag}
           </Badge>
         ));

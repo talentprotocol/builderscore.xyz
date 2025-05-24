@@ -4,6 +4,8 @@ import TalentProtocolLogo from "@/app/components/logos/TalentProtocolLogo";
 import { SponsorInfo } from "@/app/types/rewards/sponsors";
 import { Metadata } from "next";
 
+export const DEFAULT_SEARCH_DOCUMENT = "profiles";
+
 export const DEFAULT_SPONSOR_SLUG = "base";
 
 export const ALLOWED_SPONSORS = ["base", "celo", "talent-protocol"];

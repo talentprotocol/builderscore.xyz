@@ -3,18 +3,17 @@
 import { ClientOnly } from "@/app/components/ClientOnly";
 import { DataTable } from "@/app/components/data-table";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
-import { SearchDataResponse } from "@/app/types/index/search";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import axios from "axios";
-import { useState } from "react";
+import TablePagination from "@/app/components/index/TablePagination";
 import {
-  Field,
+  useSearchFields,
+  useSearchProfiles,
+} from "@/app/hooks/useSearchQueries";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import {
   QueryBuilder as QueryBuilderComponent,
   RuleGroupType,
 } from "react-querybuilder";
-
-const fields: Field[] = [{ name: "builder_score", label: "Builder Score" }];
 
 export function ProfilesTable({
   initialQuery,
@@ -22,21 +21,27 @@ export function ProfilesTable({
   initialQuery: RuleGroupType;
 }) {
   const [query, setQuery] = useState(initialQuery);
+  const [perPage, setPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(1);
 
-  const { data } = useQuery({
-    queryKey: ["searchProfiles", query],
-    queryFn: () =>
-      axios
-        .post("/api/search/profiles", query)
-        .then((res) => res.data as SearchDataResponse),
-    placeholderData: keepPreviousData,
+  const { data: fields } = useSearchFields();
+  const { data: profiles } = useSearchProfiles({
+    query,
+    fields,
+    page,
+    perPage,
   });
 
   const table = useReactTable({
-    data: data?.profiles || [],
+    data: profiles?.profiles || [],
     columns: getProfilesTableColumns(),
     getCoreRowModel: getCoreRowModel(),
   });
+
+  useEffect(() => {
+    setTotalPages(profiles?.pagination.last_page || 0);
+  }, [profiles]);
 
   return (
     <div>
@@ -52,6 +57,15 @@ export function ProfilesTable({
       </ClientOnly>
 
       <DataTable table={table} />
+
+      <TablePagination
+        total={profiles?.pagination.total || 0}
+        perPage={perPage}
+        setPerPage={setPerPage}
+        page={page}
+        setPage={setPage}
+        totalPages={totalPages}
+      />
     </div>
   );
 }

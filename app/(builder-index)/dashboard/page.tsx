@@ -1,4 +1,4 @@
-import { ProfilesTable } from "@/app/components/index/ProfilesTable2";
+import { ProfilesTable } from "@/app/components/index/ProfilesTable";
 import { searchProfiles } from "@/app/services/search/profiles";
 import {
   HydrationBoundary,
@@ -13,9 +13,9 @@ export default async function Page() {
   const query = {
     rules: [
       {
-        field: "builder_score",
-        operator: "between",
-        value: [0, 100],
+        field: "display_name",
+        operator: "contains",
+        value: "pcbo",
       },
     ],
   } as RuleGroupType;
