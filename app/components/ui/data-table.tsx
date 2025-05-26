@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/components/ui/table";
+import { TABLE_HEIGHT } from "@/app/lib/constants";
 import { getCommonPinningStyles } from "@/app/lib/data-table/data-table";
 import { cn } from "@/app/lib/utils";
 import { type Table as TanstackTable, flexRender } from "@tanstack/react-table";
@@ -91,7 +92,7 @@ export function DataTable<TData>({
               <TableRow>
                 <TableCell
                   colSpan={table.getAllColumns().length}
-                  className="h-24 text-center text-xs"
+                  className={cn("text-center text-xs", TABLE_HEIGHT)}
                 >
                   No results.
                 </TableCell>
