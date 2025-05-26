@@ -13,7 +13,9 @@ export function useSearchDocuments() {
     queryKey: ["searchDocuments"],
     queryFn: () =>
       axios
-        .get(`${process.env.BUILDER_REWARDS_URL}/api/search/advanced/documents`)
+        .get(
+          `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/search/advanced/documents`,
+        )
         .then((res) => res.data),
   });
 }
@@ -26,7 +28,7 @@ export function useSearchFields(
     queryFn: () =>
       axios
         .get(
-          `${process.env.BUILDER_REWARDS_URL}/api/search/advanced/metadata/fields/${selectedDocument}`,
+          `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/search/advanced/metadata/fields/${selectedDocument}`,
         )
         .then((res) => res.data),
   });

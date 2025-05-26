@@ -53,7 +53,7 @@ export default async function Page() {
         .join("&");
 
       const res = await axios.get(
-        `${process.env.BUILDER_REWARDS_URL}/api/search/advanced/${DEFAULT_SEARCH_DOCUMENT}?${queryString}`,
+        `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/search/advanced/${DEFAULT_SEARCH_DOCUMENT}?${queryString}`,
       );
 
       return res.data as SearchDataResponse;
