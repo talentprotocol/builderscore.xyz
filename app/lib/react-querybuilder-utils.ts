@@ -1,5 +1,6 @@
 import { ESQuery } from "@/app/types/elasticSearchTypes";
-import { RuleGroupTypeAny, formatQuery } from "react-querybuilder";
+import { RuleGroupTypeAny } from "react-querybuilder";
+import { formatQuery } from "react-querybuilder/formatQuery";
 
 const buildQueryString = (query: RuleGroupTypeAny) => {
   return formatQuery(query, {

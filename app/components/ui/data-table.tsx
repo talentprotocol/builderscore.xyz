@@ -14,6 +14,7 @@ import type * as React from "react";
 interface DataTableProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
   actionBar?: React.ReactNode;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData>({
@@ -21,11 +22,12 @@ export function DataTable<TData>({
   actionBar,
   children,
   className,
+  isLoading,
   ...props
 }: DataTableProps<TData>) {
   return (
     <div
-      className={cn("flex w-full flex-col overflow-auto", className)}
+      className={cn("relative flex w-full flex-col overflow-auto", className)}
       {...props}
     >
       {children}
@@ -58,7 +60,7 @@ export function DataTable<TData>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="max-h-80">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -98,6 +100,11 @@ export function DataTable<TData>({
           </TableBody>
         </Table>
       </div>
+      {isLoading && (
+        <div className="absolute inset-0 flex w-full items-center justify-center bg-white/70 dark:bg-neutral-900/70">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+        </div>
+      )}
       <div className="flex flex-col gap-2.5">
         {actionBar &&
           table.getFilteredSelectedRowModel().rows.length > 0 &&

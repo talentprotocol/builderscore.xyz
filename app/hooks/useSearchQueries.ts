@@ -3,28 +3,31 @@ import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
 import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { SearchDataResponse } from "@/app/types/index/search";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { RuleGroupType } from "react-querybuilder";
 import { Field } from "react-querybuilder";
 
 export function useSearchDocuments() {
-  return useQuery<AdvancedSearchDocument[]>({
+  return useSuspenseQuery<AdvancedSearchDocument[]>({
     queryKey: ["searchDocuments"],
     queryFn: () =>
-      axios.get("/api/search/advanced/documents").then((res) => res.data),
+      axios
+        .get(`${process.env.BUILDER_REWARDS_URL}/api/search/advanced/documents`)
+        .then((res) => res.data),
   });
 }
 
 export function useSearchFields(
   selectedDocument: string = DEFAULT_SEARCH_DOCUMENT,
 ) {
-  return useQuery<Field[]>({
-    enabled: !!selectedDocument,
+  return useSuspenseQuery<Field[]>({
     queryKey: ["searchFields", selectedDocument],
     queryFn: () =>
       axios
-        .get(`/api/search/advanced/metadata/fields/${selectedDocument}`)
+        .get(
+          `${process.env.BUILDER_REWARDS_URL}/api/search/advanced/metadata/fields/${selectedDocument}`,
+        )
         .then((res) => res.data),
   });
 }
@@ -43,11 +46,9 @@ export function useSearchProfiles(props: {
     order = "desc",
     page = 1,
     perPage = 10,
-    fields,
   } = props;
 
-  return useQuery({
-    enabled: !!selectedDocument && !!fields,
+  return useSuspenseQuery({
     queryKey: ["searchProfiles", query, order, page, perPage],
     queryFn: async () => {
       const requestBody: AdvancedSearchRequest = {
@@ -79,6 +80,5 @@ export function useSearchProfiles(props: {
 
       return res.data as SearchDataResponse;
     },
-    placeholderData: keepPreviousData,
   });
 }

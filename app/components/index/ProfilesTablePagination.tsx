@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
+import { PER_PAGE_OPTIONS } from "@/app/lib/constants";
 import { cn, formatNumber } from "@/app/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
@@ -44,29 +45,20 @@ export default function TablePagination({
               <SelectValue placeholder="123" />
             </SelectTrigger>
             <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
-              <SelectItem
-                className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                value="10"
-              >
-                10
-              </SelectItem>
-              <SelectItem
-                className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                value="20"
-              >
-                20
-              </SelectItem>
-              <SelectItem
-                className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                value="30"
-              >
-                30
-              </SelectItem>
+              {PER_PAGE_OPTIONS.map((option) => (
+                <SelectItem
+                  key={option}
+                  className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  value={option.toString()}
+                >
+                  {option}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-36 items-center justify-end gap-2">
           <p className="text-xs">
             Page {totalPages > 0 ? page : 0} of {formatNumber(totalPages)}
           </p>

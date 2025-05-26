@@ -5,6 +5,21 @@ import { SponsorInfo } from "@/app/types/rewards/sponsors";
 import { Metadata } from "next";
 
 export const DEFAULT_SEARCH_DOCUMENT = "profiles";
+export const DEFAULT_SEARCH_QUERY = {
+  combinator: "and",
+  rules: [
+    {
+      field: "display_name",
+      operator: "contains",
+      value: "sim",
+    },
+  ],
+};
+export const DEFAULT_SEARCH_SORT = "desc";
+export const DEFAULT_SEARCH_PAGE = 1;
+export const DEFAULT_SEARCH_PER_PAGE = 10;
+
+export const PER_PAGE_OPTIONS = [10, 25, 50, 100, 250];
 
 export const DEFAULT_SPONSOR_SLUG = "base";
 
