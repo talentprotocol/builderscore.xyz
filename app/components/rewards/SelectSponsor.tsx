@@ -62,11 +62,11 @@ export default function SelectSponsor() {
       <SelectTrigger className="button-style h-6 w-36 cursor-pointer p-2 text-xs">
         <SelectValue className="dark:text-white" placeholder="Select Sponsor" />
       </SelectTrigger>
-      <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
+      <SelectContent className="dropdown-menu-style">
         {sponsorsList.map((sponsor: Sponsor) => (
           <SelectItem
             key={sponsor.id}
-            className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+            className="dropdown-menu-item-style"
             value={sponsor.slug}
           >
             {sponsor.name}

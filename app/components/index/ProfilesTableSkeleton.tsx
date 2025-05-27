@@ -10,13 +10,17 @@ import {
 export default function ProfilesTableSkeleton({
   originalProfiles,
   originalSorting,
+  page,
+  perPage,
 }: {
   originalProfiles: TalentProfileSearchApi[];
   originalSorting: SortingState;
+  page: number;
+  perPage: number;
 }) {
   const table = useReactTable({
     data: originalProfiles,
-    columns: getProfilesTableColumns(),
+    columns: getProfilesTableColumns(page, perPage),
     getCoreRowModel: getCoreRowModel(),
     state: {
       sorting: originalSorting,

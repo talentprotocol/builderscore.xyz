@@ -9,6 +9,7 @@ import {
 import { PER_PAGE_OPTIONS } from "@/app/lib/constants";
 import { cn, formatNumber } from "@/app/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useEffect } from "react";
 
 export default function TablePagination({
   total,
@@ -25,6 +26,16 @@ export default function TablePagination({
   setPage: (page: number) => void;
   totalPages: number;
 }) {
+  useEffect(() => {
+    setPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [perPage]);
+
+  useEffect(() => {
+    setPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalPages]);
+
   return (
     <div className="flex flex-1 items-center justify-between gap-2">
       <p className={cn("ml-1 text-xs", total === 1 ? "font-semibold" : "")}>
@@ -44,11 +55,11 @@ export default function TablePagination({
             <SelectTrigger className="button-style h-6 w-20 cursor-pointer p-2 text-xs">
               <SelectValue placeholder="123" />
             </SelectTrigger>
-            <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
+            <SelectContent className="dropdown-menu-style">
               {PER_PAGE_OPTIONS.map((option) => (
                 <SelectItem
                   key={option}
-                  className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                  className="dropdown-menu-item-style"
                   value={option.toString()}
                 >
                   {option}

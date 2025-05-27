@@ -162,6 +162,18 @@
   @apply cursor-pointer rounded-md border border-neutral-300 bg-white text-black shadow-xs hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800;
 }
 
+.button-style-no-border {
+  @apply cursor-pointer rounded-none bg-white px-3 text-black shadow-xs hover:bg-neutral-100 focus-visible:bg-neutral-100 focus-visible:ring-0 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:focus-visible:bg-neutral-800;
+}
+
+.dropdown-menu-style {
+  @apply bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white;
+}
+
+.dropdown-menu-item-style {
+  @apply cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700;
+}
+
 .secondary-text-style {
   @apply text-neutral-600 dark:text-neutral-500;
 }

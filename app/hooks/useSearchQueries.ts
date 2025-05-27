@@ -77,7 +77,7 @@ export function useSearchProfiles(props: {
         .join("&");
 
       const res = await axios.get(
-        `/api/search/advanced/${selectedDocument}?${queryString}`,
+        `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/search/advanced/${selectedDocument}?${queryString}`,
       );
 
       return res.data as SearchDataResponse;

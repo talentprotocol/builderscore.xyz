@@ -73,17 +73,14 @@ export default function SelectGrant() {
       <SelectTrigger className="button-style h-6 w-56 cursor-pointer p-2 text-xs">
         <SelectValue placeholder="Select Grant" />
       </SelectTrigger>
-      <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
-        <SelectItem
-          className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-          value="all_time"
-        >
+      <SelectContent className="dropdown-menu-style">
+        <SelectItem className="dropdown-menu-item-style" value="all_time">
           All Time
         </SelectItem>
         {grants.map((grant) => (
           <SelectItem
             key={grant.id}
-            className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+            className="dropdown-menu-item-style"
             value={grant.id.toString()}
           >
             {formatGrantOption(grant)}

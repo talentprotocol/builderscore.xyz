@@ -2,6 +2,7 @@
 
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
 import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
+import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
 import TablePagination from "@/app/components/index/ProfilesTablePagination";
 import ProfilesTableSkeleton from "@/app/components/index/ProfilesTableSkeleton";
 import { DataTable } from "@/app/components/ui/data-table";
@@ -12,6 +13,7 @@ import {
 import { TalentProfileSearchApi } from "@/app/types/talent";
 import {
   SortingState,
+  Table,
   Updater,
   getCoreRowModel,
   useReactTable,
@@ -26,23 +28,20 @@ function TableContent({
   order,
   page,
   perPage,
-  sorting,
-  setProfiles,
-  setSorting,
-  setTotalProfiles,
-  setTotalPages,
+  table,
+  onDataChange,
 }: {
   query: RuleGroupType;
   fields: Field[];
   order: "asc" | "desc";
-  profiles: TalentProfileSearchApi[];
-  setProfiles: (profiles: TalentProfileSearchApi[]) => void;
   page: number;
   perPage: number;
-  sorting: SortingState;
-  setSorting: (updaterOrValue: Updater<SortingState>) => void;
-  setTotalProfiles: (total: number) => void;
-  setTotalPages: (pages: number) => void;
+  table: Table<TalentProfileSearchApi>;
+  onDataChange: (data: {
+    profiles: TalentProfileSearchApi[];
+    total: number;
+    totalPages: number;
+  }) => void;
 }) {
   const { data: profilesData } = useSearchProfiles({
     query,
@@ -52,21 +51,14 @@ function TableContent({
     perPage,
   });
 
-  const table = useReactTable({
-    data: profilesData?.profiles || [],
-    columns: useMemo(() => getProfilesTableColumns(), []),
-    getCoreRowModel: getCoreRowModel(),
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-  });
-
   useEffect(() => {
-    setProfiles(profilesData?.profiles || []);
-    setTotalProfiles(profilesData?.pagination.total || 0);
-    setTotalPages(profilesData?.pagination.last_page || 0);
-  }, [profilesData, setProfiles, setTotalPages, setTotalProfiles]);
+    onDataChange({
+      profiles: profilesData?.profiles || [],
+      total: profilesData?.pagination.total || 0,
+      totalPages: profilesData?.pagination.last_page || 0,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profilesData]);
 
   return <DataTable table={table} />;
 }
@@ -78,11 +70,13 @@ export function ProfilesTable({
 }) {
   const [query, setQuery] = useState(initialQuery);
   const [order, setOrder] = useState<"asc" | "desc">("desc");
-  const [profiles, setProfiles] = useState<TalentProfileSearchApi[]>([]);
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [totalProfiles, setTotalProfiles] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [profiles, setProfiles] = useState<TalentProfileSearchApi[]>([]);
+  const [currentProfilesPage, setCurrentProfilesPage] = useState(1);
+  const [currentProfilesPerPage, setCurrentProfilesPerPage] = useState(10);
   const [sorting, setSorting] = useState<SortingState>([
     { id: "builder_score", desc: true },
   ]);
@@ -100,22 +94,58 @@ export function ProfilesTable({
     const builderScoreSorting = newSorting.find(
       (sort) => sort.id === "builder_score",
     );
+    setPage(1);
     setOrder(builderScoreSorting?.desc ? "desc" : "asc");
   };
 
+  const handleDataChange = ({
+    profiles,
+    total,
+    totalPages,
+  }: {
+    profiles: TalentProfileSearchApi[];
+    total: number;
+    totalPages: number;
+  }) => {
+    setProfiles(profiles);
+    setTotalProfiles(total);
+    setTotalPages(totalPages);
+    setCurrentProfilesPage(page);
+    setCurrentProfilesPerPage(perPage);
+  };
+
+  const table = useReactTable({
+    data: profiles,
+    columns: useMemo(
+      () => getProfilesTableColumns(page, perPage),
+      [page, perPage],
+    ),
+    getCoreRowModel: getCoreRowModel(),
+    state: {
+      sorting,
+    },
+    onSortingChange: handleSortingChange,
+  });
+
   return (
     <div className="flex flex-col gap-3">
-      <ProfilesTableFilters
-        fields={fields || []}
-        query={query}
-        setQuery={setQuery}
-      />
+      <div className="flex items-center justify-between">
+        <ProfilesTableFilters
+          fields={fields || []}
+          query={query}
+          setQuery={setQuery}
+        />
+
+        <ProfilesTableOptions table={table} />
+      </div>
 
       <Suspense
         fallback={
           <ProfilesTableSkeleton
             originalProfiles={profiles}
             originalSorting={sorting}
+            page={currentProfilesPage}
+            perPage={currentProfilesPerPage}
           />
         }
       >
@@ -123,14 +153,10 @@ export function ProfilesTable({
           query={query}
           fields={fields || []}
           order={order}
-          profiles={profiles}
-          setProfiles={setProfiles}
           page={page}
           perPage={perPage}
-          sorting={sorting}
-          setSorting={handleSortingChange}
-          setTotalProfiles={setTotalProfiles}
-          setTotalPages={setTotalPages}
+          table={table}
+          onDataChange={handleDataChange}
         />
       </Suspense>
 

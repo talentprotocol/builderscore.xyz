@@ -5,19 +5,45 @@ import { Badge } from "@/app/components/ui/badge";
 import { CREDENTIALS } from "@/app/lib/constants";
 import type { TalentProfileSearchApi } from "@/app/types/talent";
 import type { ColumnDef } from "@tanstack/react-table";
-import { BadgeCheck, Star, User } from "lucide-react";
+import { BadgeCheck, Hash, Star, User } from "lucide-react";
 import Image from "next/image";
 
-export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
+export function getProfilesTableColumns(
+  page: number = 1,
+  perPage: number = 10,
+): ColumnDef<TalentProfileSearchApi>[] {
   return [
     {
-      id: "identity",
-      accessorKey: "display_name",
-      header: "Builder",
+      id: "row_number",
+      accessorKey: "row_number",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="#" />
+      ),
       enableHiding: true,
       meta: {
-        label: "Identity",
-        placeholder: "Search by Identity",
+        label: "Row Number",
+        placeholder: "Search by #",
+        variant: "text",
+        icon: Hash,
+      },
+      enableColumnFilter: true,
+      enableSorting: false,
+      size: 20,
+      cell: ({ row }) => {
+        const rowNumber = (page - 1) * perPage + row.index + 1;
+        return <span className="text-xs text-neutral-500">{rowNumber}</span>;
+      },
+    },
+    {
+      id: "builder",
+      accessorKey: "display_name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Builder" />
+      ),
+      enableHiding: true,
+      meta: {
+        label: "Builder",
+        placeholder: "Search by Builder",
         variant: "text",
         icon: User,
       },
@@ -45,7 +71,9 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
     {
       id: "location",
       accessorKey: "location",
-      header: "Location",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Location" />
+      ),
       enableHiding: true,
       enableSorting: false,
       meta: {
@@ -74,7 +102,9 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
     {
       id: "human_checkmark",
       accessorKey: "human_checkmark",
-      header: "Human Checkmark",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Human Checkmark" />
+      ),
       enableHiding: true,
       enableSorting: false,
       meta: {
@@ -91,7 +121,9 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
     {
       id: "tags",
       accessorKey: "tags",
-      header: "Tags",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Tags" />
+      ),
       enableHiding: true,
       enableSorting: false,
       meta: {
@@ -112,7 +144,10 @@ export function getProfilesTableColumns(): ColumnDef<TalentProfileSearchApi>[] {
     {
       id: "credentials",
       accessorKey: "credentials",
-      header: "Credentials",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Credentials" />
+      ),
+      enableHiding: true,
       enableSorting: false,
       enableColumnFilter: true,
       meta: {
