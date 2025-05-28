@@ -1,7 +1,7 @@
 import {
   API_BASE_URL,
-  DEFAULT_HEADERS,
   DEBUG_VIEW_UNLOCK_WORD,
+  DEFAULT_HEADERS,
 } from "@/app/config/api";
 import { AdvancedSearchMetadataField } from "@/app/types/advancedSearchMetadataFields";
 import { NextRequest, NextResponse } from "next/server";

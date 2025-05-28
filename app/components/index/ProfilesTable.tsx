@@ -10,6 +10,7 @@ import {
   useSearchFields,
   useSearchProfiles,
 } from "@/app/hooks/useSearchQueries";
+import { ViewOption } from "@/app/types/index/data";
 import { TalentProfileSearchApi } from "@/app/types/talent";
 import {
   SortingState,
@@ -80,6 +81,18 @@ export function ProfilesTable({
   const [sorting, setSorting] = useState<SortingState>([
     { id: "builder_score", desc: true },
   ]);
+  const [selectedView, setSelectedView] = useState<ViewOption>("table");
+  const [showPagination, setShowPagination] = useState(true);
+  const [showTotal, setShowTotal] = useState(true);
+  const [columnOrder, setColumnOrder] = useState<string[]>([
+    "row_number",
+    "builder",
+    "location",
+    "builder_score",
+    "human_checkmark",
+    "tags",
+    "credentials",
+  ]);
 
   const { data: fields } = useSearchFields();
 
@@ -96,6 +109,14 @@ export function ProfilesTable({
     );
     setPage(1);
     setOrder(builderScoreSorting?.desc ? "desc" : "asc");
+  };
+
+  const handleColumnOrderChange = (updaterOrValue: Updater<string[]>) => {
+    const newColumnOrder =
+      typeof updaterOrValue === "function"
+        ? updaterOrValue(columnOrder)
+        : updaterOrValue;
+    setColumnOrder(newColumnOrder);
   };
 
   const handleDataChange = ({
@@ -123,8 +144,10 @@ export function ProfilesTable({
     getCoreRowModel: getCoreRowModel(),
     state: {
       sorting,
+      columnOrder,
     },
     onSortingChange: handleSortingChange,
+    onColumnOrderChange: handleColumnOrderChange,
   });
 
   return (
@@ -136,7 +159,17 @@ export function ProfilesTable({
           setQuery={setQuery}
         />
 
-        <ProfilesTableOptions table={table} />
+        <ProfilesTableOptions
+          table={table}
+          selectedView={selectedView}
+          setSelectedView={setSelectedView}
+          showPagination={showPagination}
+          setShowPagination={setShowPagination}
+          showTotal={showTotal}
+          setShowTotal={setShowTotal}
+          columnOrder={columnOrder}
+          onColumnOrderChange={handleColumnOrderChange}
+        />
       </div>
 
       <Suspense
@@ -146,18 +179,23 @@ export function ProfilesTable({
             originalSorting={sorting}
             page={currentProfilesPage}
             perPage={currentProfilesPerPage}
+            columnOrder={columnOrder}
           />
         }
       >
-        <TableContent
-          query={query}
-          fields={fields || []}
-          order={order}
-          page={page}
-          perPage={perPage}
-          table={table}
-          onDataChange={handleDataChange}
-        />
+        {selectedView === "table" && (
+          <TableContent
+            query={query}
+            fields={fields || []}
+            order={order}
+            page={page}
+            perPage={perPage}
+            table={table}
+            onDataChange={handleDataChange}
+          />
+        )}
+
+        {selectedView === "chart" && <p>Chart</p>}
       </Suspense>
 
       <TablePagination
@@ -167,6 +205,8 @@ export function ProfilesTable({
         page={page}
         setPage={setPage}
         totalPages={totalPages}
+        showPagination={showPagination}
+        showTotal={showTotal}
       />
     </div>
   );

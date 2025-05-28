@@ -1,4 +1,5 @@
 import { DataTableColumnsOptions } from "@/app/components/data-table/data-table-columns-options";
+import ProfilesTableViewOptions from "@/app/components/index/ProfilesTableViewOptions";
 import { Button } from "@/app/components/ui/button";
 import {
   DropdownMenu,
@@ -7,14 +8,31 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
 import { exportTableToCSV } from "@/app/lib/data-table/export";
+import { ViewOption } from "@/app/types/index/data";
 import { Table } from "@tanstack/react-table";
-import { ArrowRightFromLine, Rows3, SettingsIcon } from "lucide-react";
+import { ArrowRightFromLine, SettingsIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function ProfilesTableOptions<TData>({
   table,
+  selectedView,
+  setSelectedView,
+  showPagination,
+  setShowPagination,
+  showTotal,
+  setShowTotal,
+  columnOrder,
+  onColumnOrderChange,
 }: {
   table: Table<TData> | undefined;
+  selectedView: ViewOption;
+  setSelectedView: (view: ViewOption) => void;
+  showPagination: boolean;
+  setShowPagination: (show: boolean) => void;
+  showTotal: boolean;
+  setShowTotal: (show: boolean) => void;
+  columnOrder?: string[];
+  onColumnOrderChange?: (columnOrder: string[]) => void;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -27,11 +45,19 @@ export default function ProfilesTableOptions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="dropdown-menu-style w-48" align="end">
-        <DropdownMenuItem className="dropdown-menu-item-style">
-          <Rows3 className="text-neutral-500" />
-          View
-        </DropdownMenuItem>
-        <DataTableColumnsOptions table={table} />
+        <ProfilesTableViewOptions
+          selectedView={selectedView}
+          setSelectedView={setSelectedView}
+          showPagination={showPagination}
+          setShowPagination={setShowPagination}
+          showTotal={showTotal}
+          setShowTotal={setShowTotal}
+        />
+        <DataTableColumnsOptions
+          table={table}
+          columnOrder={columnOrder}
+          onColumnOrderChange={onColumnOrderChange}
+        />
         <DropdownMenuItem
           className="dropdown-menu-item-style"
           onClick={() =>
@@ -41,7 +67,7 @@ export default function ProfilesTableOptions<TData>({
           }
         >
           <ArrowRightFromLine className="text-neutral-500" />
-          Export
+          Export to CSV
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

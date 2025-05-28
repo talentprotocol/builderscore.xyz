@@ -28,7 +28,7 @@ export function getProfilesTableColumns(
       },
       enableColumnFilter: true,
       enableSorting: false,
-      size: 20,
+      size: 30,
       cell: ({ row }) => {
         const rowNumber = (page - 1) * perPage + row.index + 1;
         return <span className="text-xs text-neutral-500">{rowNumber}</span>;

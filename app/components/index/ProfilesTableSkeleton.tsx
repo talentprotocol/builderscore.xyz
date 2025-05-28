@@ -12,11 +12,13 @@ export default function ProfilesTableSkeleton({
   originalSorting,
   page,
   perPage,
+  columnOrder,
 }: {
   originalProfiles: TalentProfileSearchApi[];
   originalSorting: SortingState;
   page: number;
   perPage: number;
+  columnOrder: string[];
 }) {
   const table = useReactTable({
     data: originalProfiles,
@@ -24,6 +26,7 @@ export default function ProfilesTableSkeleton({
     getCoreRowModel: getCoreRowModel(),
     state: {
       sorting: originalSorting,
+      columnOrder,
     },
   });
 
