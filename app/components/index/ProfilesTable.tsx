@@ -1,5 +1,6 @@
 "use client";
 
+import ProfilesChart from "@/app/components/index/ProfilesChart";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
 import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
 import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
@@ -195,19 +196,21 @@ export function ProfilesTable({
           />
         )}
 
-        {selectedView === "chart" && <p>Chart</p>}
+        {selectedView === "chart" && <ProfilesChart />}
       </Suspense>
 
-      <TablePagination
-        total={totalProfiles}
-        perPage={perPage}
-        setPerPage={setPerPage}
-        page={page}
-        setPage={setPage}
-        totalPages={totalPages}
-        showPagination={showPagination}
-        showTotal={showTotal}
-      />
+      {selectedView === "table" && (
+        <TablePagination
+          total={totalProfiles}
+          perPage={perPage}
+          setPerPage={setPerPage}
+          page={page}
+          setPage={setPage}
+          totalPages={totalPages}
+          showPagination={showPagination}
+          showTotal={showTotal}
+        />
+      )}
     </div>
   );
 }

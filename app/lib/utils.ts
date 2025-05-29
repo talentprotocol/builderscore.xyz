@@ -64,6 +64,23 @@ export function formatDate(date: string): string {
   });
 }
 
+export function formatChartDate(date: string): string {
+  try {
+    const dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) {
+      return "Invalid Date";
+    }
+
+    const day = dateObj.getDate().toString().padStart(2, "0");
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+    const year = dateObj.getFullYear().toString().slice(-2);
+
+    return `${day}/${month}/${year}`;
+  } catch {
+    return "Invalid Date";
+  }
+}
+
 export function formatDateRange(startDate: string, endDate: string): string {
   const start = new Date(startDate);
   const end = new Date(endDate);
