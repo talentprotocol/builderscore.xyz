@@ -13,7 +13,7 @@ export function Footer() {
         {selectedSponsor &&
           selectedSponsor?.slug !== "talent-protocol" &&
           `Sponsored by ${selectedSponsor?.name} and`}{" "}
-        Powered by Talent Protocol
+        Powered by <a href="https://www.talentprotocol.com">Talent Protocol</a>
       </p>
 
       <p className="text-center text-xs text-neutral-600 dark:text-neutral-500">
