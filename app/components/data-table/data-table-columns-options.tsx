@@ -167,7 +167,7 @@ export function DataTableColumnsOptions<TData>({
           {orderedColumns.filter((column) => !column.getIsVisible()).length >
             0 && (
             <>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="bg-neutral-700" />
               <DropdownMenuLabel className="text-xs text-neutral-500">
                 Hidden
               </DropdownMenuLabel>

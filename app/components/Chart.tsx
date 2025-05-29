@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/app/context/ThemeContext";
+import { DataPoint } from "@/app/types/index/chart";
 import {
   Area,
   Bar,
@@ -16,10 +17,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-interface DataPoint {
-  [key: string]: string | number;
-}
 
 type ChartType = "line" | "column" | "stacked-column" | "area";
 

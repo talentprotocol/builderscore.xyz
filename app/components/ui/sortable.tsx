@@ -77,7 +77,7 @@ const SORTABLE_ERRORS = {
 
 interface SortableRootContextValue<T> {
   id: string;
-  items: UniqueIdentifier[];
+  items: UniqueIdentifier[] | Record<UniqueIdentifier, UniqueIdentifier[]>;
   modifiers: DndContextProps["modifiers"];
   strategy: SortableContextProps["strategy"];
   activeId: UniqueIdentifier | null;
@@ -107,14 +107,20 @@ interface GetItemValue<T> {
 }
 
 type SortableProps<T> = DndContextProps & {
-  value: T[];
-  onValueChange?: (items: T[]) => void;
+  value: T[] | Record<UniqueIdentifier, T[]>;
+  onValueChange?: (items: T[] | Record<UniqueIdentifier, T[]>) => void;
   onMove?: (
-    event: DragEndEvent & { activeIndex: number; overIndex: number },
+    event: DragEndEvent & {
+      activeIndex: number;
+      overIndex: number;
+      activeContainer?: UniqueIdentifier;
+      overContainer?: UniqueIdentifier;
+    },
   ) => void;
   strategy?: SortableContextProps["strategy"];
   orientation?: "vertical" | "horizontal" | "mixed";
   flatCursor?: boolean;
+  isMultiContainer?: boolean;
 } & (T extends object ? GetItemValue<T> : Partial<GetItemValue<T>>);
 
 function Sortable<T>(props: SortableProps<T>) {
@@ -129,6 +135,7 @@ function Sortable<T>(props: SortableProps<T>) {
     flatCursor = false,
     getItemValue: getItemValueProp,
     accessibility,
+    isMultiContainer = false,
     ...sortableProps
   } = props;
   const id = React.useId();
@@ -161,29 +168,153 @@ function Sortable<T>(props: SortableProps<T>) {
   );
 
   const items = React.useMemo(() => {
-    return value.map((item) => getItemValue(item));
-  }, [value, getItemValue]);
+    if (isMultiContainer) {
+      const containerItems = value as Record<UniqueIdentifier, T[]>;
+      return Object.fromEntries(
+        Object.entries(containerItems).map(([containerId, containerValue]) => [
+          containerId,
+          containerValue.map((item: T) => getItemValue(item)),
+        ]),
+      );
+    }
+    const singleContainerValue = value as T[];
+    return singleContainerValue.map((item: T) => getItemValue(item));
+  }, [value, getItemValue, isMultiContainer]);
+
+  const findContainer = React.useCallback(
+    (id: UniqueIdentifier) => {
+      if (!isMultiContainer) return null;
+      const containerItems = items as Record<
+        UniqueIdentifier,
+        UniqueIdentifier[]
+      >;
+
+      const container = Object.keys(containerItems).find((key) =>
+        containerItems[key].includes(id),
+      );
+
+      if (container) return container;
+
+      const idString = String(id);
+      if (idString.startsWith("empty-")) {
+        const containerName = idString.replace("empty-", "");
+        if (Object.keys(containerItems).includes(containerName)) {
+          return containerName;
+        }
+      }
+
+      return null;
+    },
+    [items, isMultiContainer],
+  );
 
   const onDragEnd = React.useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event;
-      if (over && active.id !== over?.id) {
-        const activeIndex = value.findIndex(
+      if (!over || active.id === over.id) {
+        setActiveId(null);
+        return;
+      }
+
+      if (isMultiContainer) {
+        const containerItems = items as Record<
+          UniqueIdentifier,
+          UniqueIdentifier[]
+        >;
+        const activeContainer = findContainer(active.id);
+        const overContainer = findContainer(over.id);
+
+        if (!activeContainer || !overContainer) {
+          setActiveId(null);
+          return;
+        }
+
+        const activeItems = containerItems[activeContainer];
+        const overItems = containerItems[overContainer];
+        const activeIndex = activeItems.indexOf(active.id);
+        let overIndex = overItems.indexOf(over.id);
+
+        if (overIndex === -1) {
+          overIndex = overItems.length;
+        }
+
+        if (onMove) {
+          onMove({
+            ...event,
+            activeIndex,
+            overIndex,
+            activeContainer,
+            overContainer,
+          });
+        } else if (activeContainer === overContainer) {
+          const newItems = {
+            ...containerItems,
+            [activeContainer]: arrayMove(activeItems, activeIndex, overIndex),
+          };
+          const valueAsRecord = value as Record<UniqueIdentifier, T[]>;
+          onValueChange?.(
+            Object.fromEntries(
+              Object.entries(newItems).map(([containerId, containerItems]) => [
+                containerId,
+                valueAsRecord[containerId].filter(
+                  (_, i) =>
+                    containerItems[i] ===
+                    getItemValue(valueAsRecord[containerId][i]),
+                ),
+              ]),
+            ),
+          );
+        } else {
+          const newItems = {
+            ...containerItems,
+            [activeContainer]: activeItems.filter((id) => id !== active.id),
+            [overContainer]: [
+              ...overItems.slice(0, overIndex),
+              active.id,
+              ...overItems.slice(overIndex),
+            ],
+          };
+          const valueAsRecord = value as Record<UniqueIdentifier, T[]>;
+          onValueChange?.(
+            Object.fromEntries(
+              Object.entries(newItems).map(([containerId, containerItems]) => [
+                containerId,
+                containerItems.map(
+                  (id) =>
+                    valueAsRecord[
+                      id === active.id ? activeContainer : containerId
+                    ].find((item) => getItemValue(item) === id)!,
+                ),
+              ]),
+            ),
+          );
+        }
+      } else {
+        const valueAsArray = value as T[];
+        const activeIndex = valueAsArray.findIndex(
           (item) => getItemValue(item) === active.id,
         );
-        const overIndex = value.findIndex(
+        const overIndex = valueAsArray.findIndex(
           (item) => getItemValue(item) === over.id,
         );
 
         if (onMove) {
           onMove({ ...event, activeIndex, overIndex });
         } else {
-          onValueChange?.(arrayMove(value, activeIndex, overIndex));
+          onValueChange?.(arrayMove(valueAsArray, activeIndex, overIndex));
         }
       }
       setActiveId(null);
     },
-    [value, onValueChange, onMove, getItemValue],
+    [
+      value,
+      onValueChange,
+      onMove,
+      getItemValue,
+      items,
+      isMultiContainer,
+      findContainer,
+    ],
   );
 
   const announcements: Announcements = React.useMemo(
@@ -300,6 +431,7 @@ interface SortableContentProps extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
   asChild?: boolean;
   withoutSlot?: boolean;
+  containerId?: UniqueIdentifier;
 }
 
 const SortableContent = React.forwardRef<HTMLDivElement, SortableContentProps>(
@@ -309,16 +441,31 @@ const SortableContent = React.forwardRef<HTMLDivElement, SortableContentProps>(
       asChild,
       withoutSlot,
       children,
+      containerId,
       ...contentProps
     } = props;
     const context = useSortableContext(CONTENT_NAME);
+    const isMultiContainer = !Array.isArray(context.items);
 
     const ContentPrimitive = asChild ? Slot : "div";
+    const items = React.useMemo(() => {
+      if (!isMultiContainer) {
+        return context.items as UniqueIdentifier[];
+      }
+      const containerItems = context.items as Record<
+        UniqueIdentifier,
+        UniqueIdentifier[]
+      >;
+      if (containerId) {
+        return containerItems[containerId] || [];
+      }
+      return Object.values(containerItems).flat();
+    }, [context.items, containerId, isMultiContainer]);
 
     return (
       <SortableContentContext.Provider value={true}>
         <SortableContext
-          items={context.items}
+          items={items}
           strategy={strategyProp ?? context.strategy}
         >
           {withoutSlot ? (
@@ -557,7 +704,6 @@ export {
   Item,
   ItemHandle,
   Overlay,
-  //
   Sortable,
   SortableContent,
   SortableItem,

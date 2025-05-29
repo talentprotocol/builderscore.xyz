@@ -23,6 +23,7 @@ export default function ProfilesTableOptions<TData>({
   setShowTotal,
   columnOrder,
   onColumnOrderChange,
+  showColumnsOptions,
 }: {
   table: Table<TData> | undefined;
   selectedView: ViewOption;
@@ -33,6 +34,7 @@ export default function ProfilesTableOptions<TData>({
   setShowTotal: (show: boolean) => void;
   columnOrder?: string[];
   onColumnOrderChange?: (columnOrder: string[]) => void;
+  showColumnsOptions: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -53,11 +55,13 @@ export default function ProfilesTableOptions<TData>({
           showTotal={showTotal}
           setShowTotal={setShowTotal}
         />
-        <DataTableColumnsOptions
-          table={table}
-          columnOrder={columnOrder}
-          onColumnOrderChange={onColumnOrderChange}
-        />
+        {showColumnsOptions && (
+          <DataTableColumnsOptions
+            table={table}
+            columnOrder={columnOrder}
+            onColumnOrderChange={onColumnOrderChange}
+          />
+        )}
         <DropdownMenuItem
           className="dropdown-menu-item-style"
           onClick={() =>
