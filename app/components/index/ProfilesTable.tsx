@@ -1,6 +1,7 @@
 "use client";
 
 import ProfilesChart from "@/app/components/index/ProfilesChart";
+import ProfilesChartComposer from "@/app/components/index/ProfilesChartComposer";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
 import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
 import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
@@ -25,8 +26,6 @@ import {
 import { Suspense } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Field, RuleGroupType } from "react-querybuilder";
-
-import ProfilesChartComposer from "./ProfilesChartComposer";
 
 function TableContent({
   query,

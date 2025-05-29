@@ -138,7 +138,7 @@ export default function Chart({
         <Dot
           cx={cx}
           cy={cy}
-          r={4}
+          r={3}
           fill={color}
           stroke="white"
           strokeWidth={1}
@@ -149,20 +149,7 @@ export default function Chart({
 
   const CustomActiveBar = (props: BarProps & { color: string }) => {
     const { x, y, width, height, color } = props;
-    return (
-      <>
-        <rect x={x} y={y} width={width} height={height} fill={color} />
-        <line
-          stroke="white"
-          strokeWidth={0.5}
-          strokeDasharray="1 2"
-          x1={yAxisWidth}
-          y1={y}
-          x2={getLineEndX()}
-          y2={y}
-        />
-      </>
-    );
+    return <rect x={x} y={y} width={width} height={height} fill={color} />;
   };
 
   const CustomLegend = ({ payload }: { payload?: LegendPayload[] }) => (

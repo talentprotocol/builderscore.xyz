@@ -81,9 +81,12 @@ export function DataTableColumnsOptions<TData>({
   );
 
   const handleColumnOrderChange = React.useCallback(
-    (newColumnOrder: string[]) => {
+    (newColumnOrder: string[] | Record<string, string[]>) => {
       if (onColumnOrderChange) {
-        onColumnOrderChange(newColumnOrder);
+        const columnOrder = Array.isArray(newColumnOrder)
+          ? newColumnOrder
+          : Object.values(newColumnOrder).flat();
+        onColumnOrderChange(columnOrder);
       }
     },
     [onColumnOrderChange],

@@ -227,7 +227,7 @@ export default function ProfilesChartComposer({
           <DropdownMenuSubTrigger className="dropdown-menu-item-style">
             Add Series
           </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent className="dropdown-menu-style p-0">
+          <DropdownMenuSubContent className="p-0">
             <Command>
               <CommandInput
                 placeholder="Search"
@@ -235,7 +235,9 @@ export default function ProfilesChartComposer({
                 className="h-9"
               />
               <CommandList className="dropdown-menu-style">
-                <CommandEmpty>No label found.</CommandEmpty>
+                <CommandEmpty className="px-3 py-2.5 text-xs text-neutral-500">
+                  No data points found.
+                </CommandEmpty>
                 <CommandGroup>
                   {availableToAdd.map((dataPoint) => (
                     <CommandItem
