@@ -9,11 +9,7 @@ export function useChartMetrics() {
   return useSuspenseQuery<DataPointDefinition[]>({
     queryKey: ["chartMetrics"],
     queryFn: () =>
-      axios
-        .get(
-          `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/stats/daily/metrics`,
-        )
-        .then((res) => res.data),
+      axios.get(`/api/stats/daily/metrics`).then((res) => res.data),
   });
 }
 
@@ -43,9 +39,7 @@ export function useDailyStats(props: {
 
         const encodedQuery = encodeURIComponent(JSON.stringify(requestBody));
 
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/stats/daily?q=${encodedQuery}`,
-        );
+        const response = await axios.get(`/api/stats/daily?q=${encodedQuery}`);
 
         return { metric: seriesItem.key, data: response.data };
       });

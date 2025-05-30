@@ -12,11 +12,7 @@ export function useSearchDocuments() {
   return useSuspenseQuery<AdvancedSearchDocument[]>({
     queryKey: ["searchDocuments"],
     queryFn: () =>
-      axios
-        .get(
-          `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/search/advanced/documents`,
-        )
-        .then((res) => res.data),
+      axios.get(`/api/search/advanced/documents`).then((res) => res.data),
   });
 }
 
@@ -27,9 +23,7 @@ export function useSearchFields(
     queryKey: ["searchFields", selectedDocument],
     queryFn: () =>
       axios
-        .get(
-          `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/search/advanced/metadata/fields/${selectedDocument}`,
-        )
+        .get(`/api/search/advanced/metadata/fields/${selectedDocument}`)
         .then((res) => res.data),
   });
 }
@@ -77,7 +71,7 @@ export function useSearchProfiles(props: {
         .join("&");
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/api/search/advanced/${selectedDocument}?${queryString}`,
+        `/api/search/advanced/${selectedDocument}?${queryString}`,
       );
 
       return res.data as SearchDataResponse;
