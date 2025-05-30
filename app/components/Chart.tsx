@@ -246,7 +246,7 @@ export default function Chart({
         dy={10}
         strokeWidth={0.25}
         tickLine={false}
-        interval={data.length <= 15 ? 0 : Math.ceil(data.length / 15) - 1}
+        interval="equidistantPreserveStart"
       />
     ),
     cartesianGrid: (

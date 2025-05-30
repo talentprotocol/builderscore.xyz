@@ -141,7 +141,7 @@ const SortableSeries = ({
               title="Change series color"
             >
               <div
-                className="h-3.5 w-3.5 rounded-full border border-neutral-100"
+                className="h-3 w-3 rounded-full border border-neutral-100"
                 style={{ backgroundColor: item.color }}
               />
             </button>

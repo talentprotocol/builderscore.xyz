@@ -25,6 +25,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Image from "next/image";
 import { Suspense } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Field, RuleGroupType } from "react-querybuilder";
@@ -234,21 +235,33 @@ export function ProfilesTable({
           />
         }
       >
-        {selectedView === "table" && (
-          <TableContent
-            query={query}
-            fields={fields || []}
-            order={order}
-            page={page}
-            perPage={perPage}
-            table={table}
-            onDataChange={handleDataChange}
-          />
-        )}
+        <div className="relative">
+          <div className="card-style-background absolute top-0 left-0 z-0 flex h-full w-full items-center justify-center">
+            <Image
+              src="/images/talent-protocol-logo.png"
+              alt="Talent Protocol"
+              width={1402}
+              height={212}
+              className="h-12 w-auto opacity-10"
+            />
+          </div>
 
-        {selectedView === "chart" && (
-          <ProfilesChart data={chartData} series={series} />
-        )}
+          {selectedView === "table" && (
+            <TableContent
+              query={query}
+              fields={fields || []}
+              order={order}
+              page={page}
+              perPage={perPage}
+              table={table}
+              onDataChange={handleDataChange}
+            />
+          )}
+
+          {selectedView === "chart" && (
+            <ProfilesChart data={chartData} series={series} />
+          )}
+        </div>
       </Suspense>
 
       {selectedView === "table" && (

@@ -108,7 +108,7 @@ export async function GET(
         <div tw="flex flex-col items-center justify-center border-2 border-red-500 w-full h-full">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`${process.env.BUILDER_REWARDS_URL}/images/shareable_background.png`}
+            src={`${process.env.BUILDER_REWARDS_URL}/images/shareable-background.png`}
             alt="Shareable Background"
             width={1620}
             height={1080}
