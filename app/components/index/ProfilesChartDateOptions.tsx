@@ -19,6 +19,7 @@ export default function ProfilesChartDateOptions({
     { value: "90d", label: "90D" },
     { value: "180d", label: "180D" },
     { value: "365d", label: "365D" },
+    { value: "max", label: "Max" },
   ];
 
   const dateSizeOptions = [

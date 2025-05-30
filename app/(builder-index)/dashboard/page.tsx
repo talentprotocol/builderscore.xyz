@@ -62,7 +62,10 @@ export default async function Page() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProfilesTable initialQuery={query} />
+      <div className="flex flex-col gap-6">
+        <ProfilesTable initialQuery={query} />
+        <ProfilesTable initialQuery={query} />
+      </div>
     </HydrationBoundary>
   );
 }

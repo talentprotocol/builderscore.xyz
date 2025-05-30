@@ -154,9 +154,14 @@ export function calculateDateRange(dateRange: string): {
   date_to: string;
 } {
   const now = new Date();
-  const days = parseInt(dateRange.replace("d", ""));
-
   const date_to = now.toISOString().split("T")[0];
+
+  if (dateRange === "max") {
+    const date_from = new Date(0).toISOString().split("T")[0];
+    return { date_from, date_to };
+  }
+
+  const days = parseInt(dateRange.replace("d", ""));
   const date_from = new Date(now.getTime() - days * 24 * 60 * 60 * 1000)
     .toISOString()
     .split("T")[0];

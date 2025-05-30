@@ -2,7 +2,6 @@
 
 import { DataTableColumnHeader } from "@/app/components/data-table/data-table-column-header";
 import { Badge } from "@/app/components/ui/badge";
-import { CREDENTIALS } from "@/app/lib/constants";
 import type { TalentProfileSearchApi } from "@/app/types/talent";
 import type { ColumnDef } from "@tanstack/react-table";
 import { BadgeCheck, Hash, Star, User } from "lucide-react";
@@ -67,6 +66,23 @@ export function getProfilesTableColumns(
           </div>
         );
       },
+    },
+    {
+      id: "bio",
+      accessorKey: "bio",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Bio" />
+      ),
+      enableHiding: true,
+      enableSorting: false,
+      meta: {
+        label: "Bio",
+      },
+      cell: ({ row }) => (
+        <p className="truncate text-xs text-neutral-400">
+          {row.original.bio || "No bio"}
+        </p>
+      ),
     },
     {
       id: "location",
@@ -139,31 +155,6 @@ export function getProfilesTableColumns(
             {tag}
           </Badge>
         ));
-      },
-    },
-    {
-      id: "credentials",
-      accessorKey: "credentials",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Credentials" />
-      ),
-      enableHiding: true,
-      enableSorting: false,
-      enableColumnFilter: true,
-      meta: {
-        label: "Credentials",
-        placeholder: "Filter by Credentials",
-        variant: "multiSelect",
-        options: CREDENTIALS.flatMap((credential) =>
-          credential.dataPoints.map((dataPoint) => ({
-            label: `${dataPoint}`,
-            value: JSON.stringify({
-              dataPoint,
-              dataIssuer: credential.dataIssuer,
-            }),
-            group: credential.dataIssuer,
-          })),
-        ),
       },
     },
   ];

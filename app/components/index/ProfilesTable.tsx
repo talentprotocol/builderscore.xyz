@@ -94,11 +94,11 @@ export function ProfilesTable({
   const [columnOrder, setColumnOrder] = useState<string[]>([
     "row_number",
     "builder",
+    "bio",
     "location",
     "builder_score",
     "human_checkmark",
     "tags",
-    "credentials",
   ]);
   const [dateRange, setDateRange] = useState<string>("30d");
   const [dateInterval, setDateInterval] = useState<string>("d");
