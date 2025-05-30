@@ -20,6 +20,7 @@ interface ProfilesTableViewOptionsProps {
   setShowPagination: (show: boolean) => void;
   showTotal: boolean;
   setShowTotal: (show: boolean) => void;
+  showColumnsOptions: boolean;
 }
 
 export default function ProfilesTableViewOptions({
@@ -29,6 +30,7 @@ export default function ProfilesTableViewOptions({
   setShowPagination,
   showTotal,
   setShowTotal,
+  showColumnsOptions,
 }: ProfilesTableViewOptionsProps) {
   const viewOptions = [
     { id: "table" as ViewOption, label: "Table", icon: Rows3 },
@@ -75,45 +77,49 @@ export default function ProfilesTableViewOptions({
             );
           })}
 
-          <DropdownMenuSeparator className="bg-neutral-700" />
+          {showColumnsOptions && (
+            <>
+              <DropdownMenuSeparator className="bg-neutral-700" />
 
-          <DropdownMenuLabel className="text-xs">Options</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-xs">Options</DropdownMenuLabel>
 
-          <DropdownMenuItem
-            className="dropdown-menu-item-style flex items-center justify-between"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowPagination(!showPagination);
-            }}
-          >
-            <BookOpen className="size-4 text-neutral-500" />
-            <span className="flex items-center gap-2">Pagination</span>
-            <Check
-              className={cn(
-                "ml-auto size-4 shrink-0",
-                showPagination ? "opacity-100" : "opacity-0",
-              )}
-            />
-          </DropdownMenuItem>
+              <DropdownMenuItem
+                className="dropdown-menu-item-style flex items-center justify-between"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowPagination(!showPagination);
+                }}
+              >
+                <BookOpen className="size-4 text-neutral-500" />
+                <span className="flex items-center gap-2">Pagination</span>
+                <Check
+                  className={cn(
+                    "ml-auto size-4 shrink-0",
+                    showPagination ? "opacity-100" : "opacity-0",
+                  )}
+                />
+              </DropdownMenuItem>
 
-          <DropdownMenuItem
-            className="dropdown-menu-item-style flex items-center justify-between"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowTotal(!showTotal);
-            }}
-          >
-            <Hash className="size-4 text-neutral-500" />
-            <span className="flex items-center gap-2">Total</span>
-            <Check
-              className={cn(
-                "ml-auto size-4 shrink-0",
-                showTotal ? "opacity-100" : "opacity-0",
-              )}
-            />
-          </DropdownMenuItem>
+              <DropdownMenuItem
+                className="dropdown-menu-item-style flex items-center justify-between"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowTotal(!showTotal);
+                }}
+              >
+                <Hash className="size-4 text-neutral-500" />
+                <span className="flex items-center gap-2">Total</span>
+                <Check
+                  className={cn(
+                    "ml-auto size-4 shrink-0",
+                    showTotal ? "opacity-100" : "opacity-0",
+                  )}
+                />
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuSubContent>
       </DropdownMenuPortal>
     </DropdownMenuSub>

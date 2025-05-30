@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/app/context/ThemeContext";
+import { capitalize, formatCompactNumber } from "@/app/lib/utils";
 import { DataPoint } from "@/app/types/index/chart";
 import {
   Area,
@@ -23,6 +24,7 @@ type ChartType = "line" | "column" | "stacked-column" | "area";
 interface ChartConfig {
   key: string;
   name: string;
+  dataProvider: string;
   color: string;
   type: ChartType;
 }
@@ -47,10 +49,6 @@ interface ChartProps {
     right?: ChartConfig[];
   };
   xAxisKey: string;
-  yAxisLabel?: {
-    left?: string;
-    right?: string;
-  };
   yAxisWidth?: number;
   height?: number | string;
 }
@@ -59,8 +57,7 @@ export default function Chart({
   data,
   series,
   xAxisKey,
-  yAxisLabel = {},
-  yAxisWidth = 50,
+  yAxisWidth = 65,
   height = "100%",
 }: ChartProps) {
   const { isDarkMode } = useTheme();
@@ -86,6 +83,12 @@ export default function Chart({
     );
   };
 
+  const formatLegendLabel = (value: string) => {
+    const allSeries = [...(series.left || []), ...(series.right || [])];
+    const config = allSeries.find((s) => s.name === value);
+    return config ? formatSeriesName(config) : value;
+  };
+
   const CustomTooltip = ({
     active,
     payload,
@@ -107,9 +110,13 @@ export default function Chart({
                 className="h-[3px] w-2"
                 style={{ backgroundColor: entry.color }}
               />
-              <p className="text-xs">
-                <span className="font-medium">{entry.name}: </span>
-                <span className="font-semibold">{entry.value}</span>
+              <p className="w-42 truncate text-xs">
+                <span className="font-medium">
+                  {formatLegendLabel(entry.name)}
+                </span>
+              </p>
+              <p className="text-xs font-semibold">
+                {formatCompactNumber(entry.value)}
               </p>
             </div>
           ))}
@@ -119,18 +126,20 @@ export default function Chart({
   };
 
   const getLineEndX = () => {
-    return `calc(100% - ${series.right ? yAxisWidth : 0}px)`;
+    return `calc(100% - ${series.right && series.right.length > 0 ? yAxisWidth : 0}px)`;
   };
 
   const CustomActiveDot = (props: DotProps & { color: string }) => {
     const { cx, cy, color } = props;
+    const leftAxisWidth =
+      series.left && series.left.length > 0 ? yAxisWidth : 0;
     return (
       <>
         <line
           stroke="white"
           strokeWidth={0.5}
           strokeDasharray="1 2"
-          x1={yAxisWidth}
+          x1={leftAxisWidth}
           y1={cy}
           x2={getLineEndX()}
           y2={cy}
@@ -152,55 +161,81 @@ export default function Chart({
     return <rect x={x} y={y} width={width} height={height} fill={color} />;
   };
 
-  const CustomLegend = ({ payload }: { payload?: LegendPayload[] }) => (
-    <div style={{ display: "flex", gap: "15px", fontSize: 10 }}>
-      {payload?.map((entry, index) => (
-        <div
-          key={index}
-          style={{ display: "flex", alignItems: "center", gap: "6px" }}
-        >
+  const formatSeriesName = (seriesItem: ChartConfig) => {
+    return `${seriesItem.dataProvider} - ${capitalize(seriesItem.key.split("_").join(" "))}`;
+  };
+
+  const CustomLegend = ({ payload }: { payload?: LegendPayload[] }) => {
+    return (
+      <div style={{ display: "flex", gap: "15px", fontSize: 10 }}>
+        {payload?.map((entry, index) => (
           <div
-            style={{
-              width: 8,
-              height: 3,
-              backgroundColor: entry.color,
-            }}
-          />
-          <span style={{ color: isDarkMode ? "#fff" : "#333" }}>
-            {entry.value}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
+            key={index}
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+          >
+            <div
+              style={{
+                width: 8,
+                height: 3,
+                backgroundColor: entry.color,
+              }}
+            />
+            <span style={{ color: isDarkMode ? "#fff" : "#333" }}>
+              {formatLegendLabel(entry.value)}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const getYAxis = (orientation: "left" | "right") => {
+    const seriesForAxis = orientation === "left" ? series.left : series.right;
+
+    if (!seriesForAxis || seriesForAxis.length === 0) {
+      return null;
+    }
+
+    const axisLabel =
+      seriesForAxis.length === 1
+        ? formatSeriesName(seriesForAxis[0])
+        : seriesForAxis.map((s) => formatSeriesName(s)).join(" & ");
+
+    return (
+      <YAxis
+        yAxisId={orientation}
+        orientation={orientation}
+        domain={["auto", "auto"]}
+        tick={{ fontSize: 10 }}
+        stroke={isDarkMode ? "#aaa" : "#666"}
+        axisLine={false}
+        tickLine={false}
+        width={yAxisWidth}
+        tickCount={5}
+        tickFormatter={(value) => formatCompactNumber(value)}
+        label={
+          axisLabel
+            ? {
+                value: axisLabel,
+                angle: orientation === "left" ? -90 : 90,
+                position: orientation === "left" ? "insideLeft" : "insideRight",
+                style: { textAnchor: "middle", fontSize: 10 },
+              }
+            : undefined
+        }
+      />
+    );
+  };
 
   const commonProps = {
     data,
-    margin: { top: 0, right: 0, left: 0, bottom: 0 },
+    margin: {
+      top: 0,
+      right: series.right && series.right.length > 0 ? 0 : 0,
+      left: series.left && series.left.length > 0 ? 0 : 0,
+      bottom: 0,
+    },
   };
-
-  const getYAxis = (orientation: "left" | "right") => (
-    <YAxis
-      yAxisId={orientation}
-      orientation={orientation}
-      domain={[0, "auto"]}
-      tick={{ fontSize: 10 }}
-      stroke={isDarkMode ? "#aaa" : "#666"}
-      axisLine={false}
-      tickLine={false}
-      width={yAxisWidth}
-      label={
-        yAxisLabel[orientation]
-          ? {
-              value: yAxisLabel[orientation],
-              angle: orientation === "left" ? -90 : 90,
-              position: orientation === "left" ? "insideLeft" : "insideRight",
-              style: { textAnchor: "middle", fontSize: 10 },
-            }
-          : undefined
-      }
-    />
-  );
 
   const commonAxisProps = {
     xAxis: (
@@ -209,8 +244,9 @@ export default function Chart({
         tick={{ fontSize: 10 }}
         stroke={isDarkMode ? "#aaa" : "#666"}
         dy={10}
-        axisLine={false}
+        strokeWidth={0.25}
         tickLine={false}
+        interval={data.length <= 15 ? 0 : Math.ceil(data.length / 15) - 1}
       />
     ),
     cartesianGrid: (
@@ -264,7 +300,7 @@ export default function Chart({
               name={config.name}
               stroke={config.color}
               strokeLinejoin="round"
-              strokeWidth={3}
+              strokeWidth={2}
               type="linear"
             />
           );
@@ -280,7 +316,7 @@ export default function Chart({
               name={config.name}
               stroke={config.color}
               strokeLinejoin="round"
-              strokeWidth={3}
+              strokeWidth={2}
               type="linear"
             />
           );
@@ -317,16 +353,23 @@ export default function Chart({
 
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <ComposedChart {...commonProps} barCategoryGap={2}>
-        {commonAxisProps.cartesianGrid}
-        {commonAxisProps.xAxis}
-        {series.left && getYAxis("left")}
-        {series.right && getYAxis("right")}
-        {commonAxisProps.tooltip}
-        {commonAxisProps.legend}
-        {renderSeries(series.left, "left")}
-        {renderSeries(series.right, "right")}
-      </ComposedChart>
+      {(series.left && series.left.length > 0) ||
+      (series.right && series.right.length > 0) ? (
+        <ComposedChart {...commonProps} barCategoryGap={0}>
+          {commonAxisProps.cartesianGrid}
+          {commonAxisProps.xAxis}
+          {series.left && series.left.length > 0 && getYAxis("left")}
+          {series.right && series.right.length > 0 && getYAxis("right")}
+          {commonAxisProps.tooltip}
+          {commonAxisProps.legend}
+          {renderSeries(series.left, "left")}
+          {renderSeries(series.right, "right")}
+        </ComposedChart>
+      ) : (
+        <div className="flex h-full items-center justify-center">
+          <p className="text-xs text-neutral-500">No Series Selected</p>
+        </div>
+      )}
     </ResponsiveContainer>
   );
 }

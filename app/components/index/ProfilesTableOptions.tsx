@@ -54,6 +54,7 @@ export default function ProfilesTableOptions<TData>({
           setShowPagination={setShowPagination}
           showTotal={showTotal}
           setShowTotal={setShowTotal}
+          showColumnsOptions={showColumnsOptions}
         />
         {showColumnsOptions && (
           <DataTableColumnsOptions

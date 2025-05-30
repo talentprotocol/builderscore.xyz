@@ -118,9 +118,8 @@ export function DataTableColumnsOptions<TData>({
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        column.toggleVisibility(!column.getIsVisible());
                       }}
-                      className="dropdown-menu-item-style flex cursor-pointer items-center justify-between gap-2 pl-1"
+                      className="dropdown-menu-item-style-static flex items-center justify-between gap-2 pl-1"
                     >
                       <div className="flex flex-1 items-center gap-2">
                         <SortableItemHandle>
@@ -134,12 +133,21 @@ export function DataTableColumnsOptions<TData>({
                         </span>
                       </div>
 
-                      <Eye
-                        className={cn(
-                          "pointer-events-none ml-auto size-4 shrink-0",
-                          column.getIsVisible() ? "opacity-100" : "opacity-0",
-                        )}
-                      />
+                      <button
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          column.toggleVisibility(!column.getIsVisible());
+                        }}
+                      >
+                        <Eye
+                          className={cn(
+                            "pointer-events-none ml-auto size-4 shrink-0",
+                            column.getIsVisible() ? "opacity-100" : "opacity-0",
+                          )}
+                        />
+                      </button>
                     </DropdownMenuItem>
                   </SortableItem>
                 ))}
@@ -187,12 +195,21 @@ export function DataTableColumnsOptions<TData>({
                   e.stopPropagation();
                   column.toggleVisibility(!column.getIsVisible());
                 }}
-                className="dropdown-menu-item-style flex cursor-pointer items-center justify-between gap-2"
+                className="dropdown-menu-item-style-static flex items-center justify-between gap-2"
               >
                 <span className="truncate">
                   {column.columnDef.meta?.label ?? column.id}
                 </span>
-                <Eye className="pointer-events-none ml-auto size-4 shrink-0 text-neutral-600" />
+                <button
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    column.toggleVisibility(!column.getIsVisible());
+                  }}
+                >
+                  <Eye className="pointer-events-none ml-auto size-4 shrink-0 text-neutral-600" />
+                </button>
               </DropdownMenuItem>
             ))}
         </DropdownMenuSubContent>

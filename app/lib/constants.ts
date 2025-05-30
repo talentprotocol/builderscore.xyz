@@ -19,8 +19,9 @@ export const DEFAULT_SEARCH_SORT = "desc";
 export const DEFAULT_SEARCH_PAGE = 1;
 export const DEFAULT_SEARCH_PER_PAGE = 10;
 
-export const TABLE_HEIGHT = "h-[calc(22rem+1px)]";
-export const MAX_TABLE_HEIGHT = `max-${TABLE_HEIGHT}`;
+export const TABLE_CONTENT_HEIGHT = "h-[20rem]";
+export const MAX_TABLE_CONTENT_HEIGHT = `max-${TABLE_CONTENT_HEIGHT}`;
+export const TABLE_HEIGHT = "h-[22.45rem]";
 export const PER_PAGE_OPTIONS = [10, 50, 100, 250];
 
 export const DEFAULT_SPONSOR_SLUG = "base";

@@ -17,8 +17,10 @@ export interface ChartSeries {
 export interface ChartSeriesItem {
   key: string;
   name: string;
+  dataProvider: string;
   color: string;
   type: "line" | "column" | "stacked-column" | "area";
+  cumulative: boolean;
 }
 
 export interface DataPoint {

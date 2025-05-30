@@ -39,6 +39,44 @@ export function formatNumber(x: number, decimals: number = 0): string {
   return formattedAmount;
 }
 
+export function formatCompactNumber(x: number, forceDecimals?: number): string {
+  const isNegative = x < 0;
+  const absValue = Math.abs(x);
+
+  if (absValue < 1000) {
+    const decimals = forceDecimals !== undefined ? forceDecimals : 0;
+    const formatted = new Intl.NumberFormat("en-US", {
+      style: "decimal",
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(absValue);
+    return isNegative ? `-${formatted}` : formatted;
+  }
+
+  const units = ["", "K", "M", "B", "T"];
+  const order = Math.floor(Math.log(absValue) / Math.log(1000));
+  const unitname = units[Math.min(order, units.length - 1)];
+  const num = absValue / Math.pow(1000, order);
+
+  const decimals =
+    forceDecimals !== undefined ? forceDecimals : order >= 2 ? 1 : 0;
+
+  let navigatorLanguage = "en-US";
+
+  if (typeof window !== "undefined") {
+    navigatorLanguage = navigator.language;
+  }
+
+  const formatted =
+    new Intl.NumberFormat(navigatorLanguage, {
+      style: "decimal",
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(num) + unitname;
+
+  return isNegative ? `-${formatted}` : formatted;
+}
+
 export function formatDate(date: string): string {
   let dateObj;
 
@@ -111,6 +149,121 @@ export function formatDateRange(startDate: string, endDate: string): string {
   return `${formattedStartDate} - ${formattedEndDate}`;
 }
 
+export function calculateDateRange(dateRange: string): {
+  date_from: string;
+  date_to: string;
+} {
+  const now = new Date();
+  const days = parseInt(dateRange.replace("d", ""));
+
+  const date_to = now.toISOString().split("T")[0];
+  const date_from = new Date(now.getTime() - days * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0];
+
+  return { date_from, date_to };
+}
+
+export function aggregateChartData(
+  chartData: Array<Record<string, string | number>>,
+  interval: string,
+  cumulativeFields: Set<string> = new Set(),
+): Array<Record<string, string | number>> {
+  if (!chartData || chartData.length === 0) return [];
+
+  // For daily data, return as is
+  if (interval === "d") {
+    return chartData;
+  }
+
+  // Group data by the specified interval
+  const grouped = chartData.reduce(
+    (acc, dataPoint) => {
+      const dateStr = dataPoint.date as string;
+      const date = parseChartDate(dateStr);
+      if (!date) return acc;
+
+      let groupKey: string;
+
+      switch (interval) {
+        case "w": // Weekly - group by ISO week
+          const weekStart = getWeekStart(date);
+          groupKey = formatChartDate(weekStart.toISOString());
+          break;
+        case "m": // Monthly
+          groupKey = formatChartDate(
+            new Date(date.getFullYear(), date.getMonth(), 1).toISOString(),
+          );
+          break;
+        case "q": // Quarterly
+          const quarter = Math.floor(date.getMonth() / 3);
+          groupKey = formatChartDate(
+            new Date(date.getFullYear(), quarter * 3, 1).toISOString(),
+          );
+          break;
+        case "y": // Yearly
+          groupKey = formatChartDate(
+            new Date(date.getFullYear(), 0, 1).toISOString(),
+          );
+          break;
+        default:
+          groupKey = dateStr;
+      }
+
+      if (!acc[groupKey]) {
+        acc[groupKey] = { date: groupKey };
+      }
+
+      // Aggregate numeric values
+      Object.keys(dataPoint).forEach((key) => {
+        if (key !== "date" && typeof dataPoint[key] === "number") {
+          if (cumulativeFields.has(key)) {
+            // For cumulative fields, take the maximum value (latest cumulative total)
+            acc[groupKey][key] = Math.max(
+              (acc[groupKey][key] as number) || 0,
+              dataPoint[key] as number,
+            );
+          } else {
+            // For non-cumulative fields, sum them up
+            acc[groupKey][key] =
+              ((acc[groupKey][key] as number) || 0) +
+              (dataPoint[key] as number);
+          }
+        }
+      });
+
+      return acc;
+    },
+    {} as Record<string, Record<string, string | number>>,
+  );
+
+  // Convert back to array and sort by date
+  return Object.values(grouped).sort((a, b) => {
+    const dateA = parseChartDate(a.date as string);
+    const dateB = parseChartDate(b.date as string);
+    if (!dateA || !dateB) return 0;
+    return dateA.getTime() - dateB.getTime();
+  });
+}
+
+// Helper function to parse chart date format (DD/MM/YY)
+function parseChartDate(dateStr: string): Date | null {
+  try {
+    const [day, month, year] = dateStr.split("/");
+    const fullYear = parseInt(year) + (parseInt(year) > 50 ? 1900 : 2000);
+    return new Date(fullYear, parseInt(month) - 1, parseInt(day));
+  } catch {
+    return null;
+  }
+}
+
+// Helper function to get the start of the week (Monday)
+function getWeekStart(date: Date): Date {
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+  return new Date(date.setDate(diff));
+}
+
 export function getTimeRemaining(endDate: string): string {
   const now = new Date();
   const end = new Date(endDate);
@@ -136,4 +289,11 @@ export function getTimeRemaining(endDate: string): string {
       return `${diffMinutes} Minute${diffMinutes > 1 ? "s" : ""} Left`;
     }
   }
+}
+
+export function capitalize(str: string) {
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }

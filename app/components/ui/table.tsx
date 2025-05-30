@@ -1,6 +1,6 @@
 "use client";
 
-import { MAX_TABLE_HEIGHT } from "@/app/lib/constants";
+import { MAX_TABLE_CONTENT_HEIGHT } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
 import * as React from "react";
 
@@ -10,7 +10,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
       data-slot="table-container"
       className={cn(
         "relative w-full overflow-x-auto overflow-y-auto",
-        MAX_TABLE_HEIGHT,
+        MAX_TABLE_CONTENT_HEIGHT,
       )}
     >
       <table

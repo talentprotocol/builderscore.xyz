@@ -2,18 +2,20 @@
 
 import ProfilesChart from "@/app/components/index/ProfilesChart";
 import ProfilesChartComposer from "@/app/components/index/ProfilesChartComposer";
+import ProfilesChartDateOptions from "@/app/components/index/ProfilesChartDateOptions";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
 import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
 import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
 import TablePagination from "@/app/components/index/ProfilesTablePagination";
 import ProfilesTableSkeleton from "@/app/components/index/ProfilesTableSkeleton";
 import { DataTable } from "@/app/components/ui/data-table";
+import { useChartData, useChartMetrics } from "@/app/hooks/useChartMetrics";
 import {
   useSearchFields,
   useSearchProfiles,
 } from "@/app/hooks/useSearchQueries";
-import { formatChartDate } from "@/app/lib/utils";
-import { ChartSeries, ProfilesData } from "@/app/types/index/chart";
+import { calculateDateRange } from "@/app/lib/utils";
+import { ChartSeries } from "@/app/types/index/chart";
 import { ViewOption } from "@/app/types/index/data";
 import { TalentProfileSearchApi } from "@/app/types/talent";
 import {
@@ -97,54 +99,33 @@ export function ProfilesTable({
     "tags",
     "credentials",
   ]);
+  const [dateRange, setDateRange] = useState<string>("30d");
+  const [dateInterval, setDateInterval] = useState<string>("d");
   const [series, setSeries] = useState<ChartSeries>({
     left: [
       {
-        key: "ens",
-        name: "ENS Domains",
+        key: "created_accounts",
+        name: "talent_created_accounts",
+        dataProvider: "Talent Protocol",
         color: "var(--chart-1)",
-        type: "stacked-column",
-      },
-      {
-        key: "farcaster",
-        name: "Farcaster Accounts",
-        color: "var(--chart-2)",
-        type: "stacked-column",
-      },
-    ],
-    right: [
-      {
-        key: "base_basename",
-        name: "Base Basename",
-        color: "var(--chart-3)",
         type: "area",
-      },
-      {
-        key: "farcaster123",
-        name: "Farcaster Accounts 123",
-        color: "var(--chart-2)",
-        type: "stacked-column",
+        cumulative: true,
       },
     ],
+    right: [],
   });
 
-  // Mock available data points - this will come from an API endpoint
-  const availableDataPoints = [
-    { data_provider: "Base", name: "base_account_age", uom: "years" },
-    { data_provider: "Base", name: "base_basecamp", uom: "attendances" },
-    { data_provider: "Base", name: "base_basename", uom: "names" },
-    { data_provider: "Base", name: "base_builder_rewards_eth", uom: "eth" },
-    { data_provider: "ENS", name: "ens", uom: "domains" },
-    { data_provider: "Farcaster", name: "farcaster", uom: "accounts" },
-    {
-      data_provider: "GitHub",
-      name: "github_contributions",
-      uom: "contributions",
-    },
-    { data_provider: "Lens", name: "lens_protocol", uom: "profiles" },
-  ];
-
   const { data: fields } = useSearchFields();
+  const { data: availableDataPoints } = useChartMetrics();
+
+  const { date_from, date_to } = calculateDateRange(dateRange);
+
+  const chartData = useChartData({
+    series: series,
+    date_from,
+    date_to,
+    interval: dateInterval,
+  });
 
   const handleSortingChange = (updaterOrValue: Updater<SortingState>) => {
     const newSorting =
@@ -200,54 +181,6 @@ export function ProfilesTable({
     onColumnOrderChange: handleColumnOrderChange,
   });
 
-  const simulatedData: ProfilesData = {
-    base_basename: [
-      { date: "2025-05-02", count: 0 },
-      { date: "2025-05-01", count: 0 },
-      { date: "2025-04-30", count: 296 },
-      { date: "2025-04-29", count: 0 },
-      { date: "2025-04-28", count: 279 },
-      { date: "2025-04-27", count: 312 },
-      { date: "2025-04-26", count: 185 },
-      { date: "2025-04-25", count: 234 },
-      { date: "2025-04-24", count: 156 },
-      { date: "2025-04-23", count: 298 },
-    ],
-    ens: [
-      { date: "2025-05-02", count: 12 },
-      { date: "2025-05-01", count: 8 },
-      { date: "2025-04-30", count: 45 },
-      { date: "2025-04-29", count: 23 },
-      { date: "2025-04-28", count: 67 },
-      { date: "2025-04-27", count: 34 },
-      { date: "2025-04-26", count: 29 },
-      { date: "2025-04-25", count: 52 },
-      { date: "2025-04-24", count: 41 },
-      { date: "2025-04-23", count: 38 },
-    ],
-    farcaster: [
-      { date: "2025-05-02", count: 156 },
-      { date: "2025-05-01", count: 134 },
-      { date: "2025-04-30", count: 178 },
-      { date: "2025-04-29", count: 167 },
-      { date: "2025-04-28", count: 145 },
-      { date: "2025-04-27", count: 189 },
-      { date: "2025-04-26", count: 123 },
-      { date: "2025-04-25", count: 198 },
-      { date: "2025-04-24", count: 176 },
-      { date: "2025-04-23", count: 201 },
-    ],
-  };
-
-  const dailyChartData = simulatedData.base_basename
-    .map((item, index) => ({
-      date: formatChartDate(item.date),
-      base_basename: item.count,
-      ens: simulatedData.ens[index]?.count || 0,
-      farcaster: simulatedData.farcaster[index]?.count || 0,
-    }))
-    .reverse();
-
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
@@ -260,11 +193,20 @@ export function ProfilesTable({
         )}
 
         {selectedView === "chart" && (
-          <ProfilesChartComposer
-            series={series}
-            setSeries={setSeries}
-            availableDataPoints={availableDataPoints}
-          />
+          <div className="flex items-center gap-2">
+            <ProfilesChartComposer
+              series={series}
+              setSeries={setSeries}
+              availableDataPoints={availableDataPoints}
+            />
+
+            <ProfilesChartDateOptions
+              dateRange={dateRange}
+              onDateRangeChange={setDateRange}
+              dateInterval={dateInterval}
+              onDateIntervalChange={setDateInterval}
+            />
+          </div>
         )}
 
         <ProfilesTableOptions
@@ -305,7 +247,7 @@ export function ProfilesTable({
         )}
 
         {selectedView === "chart" && (
-          <ProfilesChart data={dailyChartData} series={series} />
+          <ProfilesChart data={chartData} series={series} />
         )}
       </Suspense>
 
