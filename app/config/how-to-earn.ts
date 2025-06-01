@@ -10,6 +10,7 @@ type HowToEarnConfig = {
       text: string;
       url: string;
       condition: boolean | string | null | number | undefined;
+      required: boolean;
     }[];
   };
 };
@@ -31,17 +32,20 @@ export const howToEarnConfig = (
           text: `Own a Basename ${basename ? `(${basename})` : ""}`,
           url: "https://www.base.org/names",
           condition: !loadingUser && basename,
+          required: true,
         },
         {
           text: "Get your Human Checkmark",
           url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
           condition: !loadingUser && talentProfile?.human_checkmark,
+          required: true,
         },
         {
           text: "Increase your Builder Score to 40+",
           url: "https://app.talentprotocol.com/profile",
           condition:
             !loadingUser && builderScore?.points && builderScore?.points >= 40,
+          required: true,
         },
       ],
     },
@@ -53,16 +57,19 @@ export const howToEarnConfig = (
           text: "Get your Human Checkmark",
           url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
           condition: !loadingUser && talentProfile?.human_checkmark,
+          required: true,
         },
         {
           text: "Have 1+ outgoing transactions on Celo",
           url: "https://app.talentprotocol.com",
           condition: !loadingUser && celoTransaction,
+          required: true,
         },
         {
           text: "Earn more by verifying your humanity with Self.xyz (optional)",
           url: "https://app.talentprotocol.com/accounts",
           condition: !loadingUser && selfXyzAccount,
+          required: false,
         },
       ],
     },
