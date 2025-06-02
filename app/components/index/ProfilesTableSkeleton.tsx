@@ -1,3 +1,5 @@
+"use client";
+
 import ProfilesTable from "@/app/components/index/ProfilesTable";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
 import { TalentProfileSearchApi } from "@/app/types/talent";

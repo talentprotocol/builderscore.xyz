@@ -7,7 +7,6 @@ import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableCol
 import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
 import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
 import ProfilesTablePagination from "@/app/components/index/ProfilesTablePagination";
-import ProfilesTableSkeleton from "@/app/components/index/ProfilesTableSkeleton";
 import { useChartData, useChartMetrics } from "@/app/hooks/useChartMetrics";
 import { useSearchFields } from "@/app/hooks/useSearchQueries";
 import {
@@ -32,7 +31,6 @@ import {
 } from "@tanstack/react-table";
 import axios from "axios";
 import Image from "next/image";
-import { Suspense } from "react";
 import { useMemo, useState } from "react";
 import { RuleGroupType } from "react-querybuilder";
 
@@ -186,7 +184,7 @@ export function ProfilesComponent() {
     },
     onSortingChange: handleSortingChange,
     onColumnOrderChange: handleColumnOrderChange,
-    onPaginationChange: setPagination, // Handle pagination state updates
+    onPaginationChange: setPagination,
   });
 
   return (
@@ -231,35 +229,23 @@ export function ProfilesComponent() {
         />
       </div>
 
-      <Suspense
-        fallback={
-          <ProfilesTableSkeleton
-            originalProfiles={profiles}
-            originalSorting={sorting}
-            page={pagination.pageIndex + 1}
-            perPage={pagination.pageSize}
-            columnOrder={columnOrder}
+      <div className="relative">
+        <div className="card-style-background absolute top-0 left-0 z-0 flex h-full w-full items-center justify-center">
+          <Image
+            src="/images/talent-protocol-logo.png"
+            alt="Talent Protocol"
+            width={1402}
+            height={212}
+            className="h-12 w-auto opacity-10"
           />
-        }
-      >
-        <div className="relative">
-          <div className="card-style-background absolute top-0 left-0 z-0 flex h-full w-full items-center justify-center">
-            <Image
-              src="/images/talent-protocol-logo.png"
-              alt="Talent Protocol"
-              width={1402}
-              height={212}
-              className="h-12 w-auto opacity-10"
-            />
-          </div>
-
-          {selectedView === "table" && <ProfilesTable table={table} />}
-
-          {selectedView === "chart" && (
-            <ProfilesChart data={chartData} series={series} />
-          )}
         </div>
-      </Suspense>
+
+        {selectedView === "table" && <ProfilesTable table={table} />}
+
+        {selectedView === "chart" && (
+          <ProfilesChart data={chartData} series={series} />
+        )}
+      </div>
 
       {selectedView === "table" && (
         <ProfilesTablePagination
