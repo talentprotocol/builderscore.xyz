@@ -11,7 +11,10 @@ import ProfilesTableSkeleton from "@/app/components/index/ProfilesTableSkeleton"
 import { DataTable } from "@/app/components/ui/data-table";
 import { useChartData, useChartMetrics } from "@/app/hooks/useChartMetrics";
 import { useSearchFields } from "@/app/hooks/useSearchQueries";
-import { DEFAULT_SEARCH_DOCUMENT } from "@/app/lib/constants";
+import {
+  DEFAULT_SEARCH_DOCUMENT,
+  DEFAULT_SEARCH_QUERY,
+} from "@/app/lib/constants";
 import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
 import { calculateDateRange } from "@/app/lib/utils";
 import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
@@ -29,23 +32,21 @@ import {
 import axios from "axios";
 import Image from "next/image";
 import { Suspense } from "react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { RuleGroupType } from "react-querybuilder";
 
 const isServer = typeof window === "undefined";
 
-export function ProfilesTable({
-  initialQuery,
-}: {
-  initialQuery: RuleGroupType;
-}) {
-  const [query, setQuery] = useState(initialQuery);
+export function ProfilesTable() {
+  const [query, setQuery] = useState<RuleGroupType>(DEFAULT_SEARCH_QUERY);
   const [order, setOrder] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+
   const [sorting, setSorting] = useState<SortingState>([
     { id: "builder_score", desc: true },
   ]);
+
   const [selectedView, setSelectedView] = useState<ViewOption>("table");
   const [showPagination, setShowPagination] = useState(true);
   const [showTotal, setShowTotal] = useState(true);
@@ -58,6 +59,7 @@ export function ProfilesTable({
     "human_checkmark",
     "tags",
   ]);
+
   const [dateRange, setDateRange] = useState<string>("30d");
   const [dateInterval, setDateInterval] = useState<string>("d");
   const [series, setSeries] = useState<ChartSeries>({
@@ -77,7 +79,6 @@ export function ProfilesTable({
   const { data: fields } = useSearchFields();
   const { data: availableDataPoints } = useChartMetrics();
 
-  // Use useSuspenseQuery directly instead of useSearchProfiles
   const { data: profilesData } = useSuspenseQuery({
     queryKey: ["searchProfiles", query, order, page, perPage],
     queryFn: async () => {
@@ -152,17 +153,13 @@ export function ProfilesTable({
     setColumnOrder(newColumnOrder);
   };
 
-  // Get profiles data from the query response
   const profiles = profilesData?.profiles || [];
   const totalProfiles = profilesData?.pagination.total || 0;
   const totalPages = profilesData?.pagination.last_page || 0;
 
   const table = useReactTable({
     data: profiles,
-    columns: useMemo(
-      () => getProfilesTableColumns(page, perPage),
-      [page, perPage],
-    ),
+    columns: getProfilesTableColumns(page, perPage),
     getCoreRowModel: getCoreRowModel(),
     state: {
       sorting,

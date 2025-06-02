@@ -69,8 +69,6 @@ export default function Page() {
           queryString,
         });
 
-        console.log("Response data from search advanced:", data);
-
         return data as SearchDataResponse;
       },
     }),
@@ -79,8 +77,7 @@ export default function Page() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex flex-col gap-6">
-        <ProfilesTable initialQuery={query} />
-        <ProfilesTable initialQuery={query} />
+        <ProfilesTable />
       </div>
     </HydrationBoundary>
   );
