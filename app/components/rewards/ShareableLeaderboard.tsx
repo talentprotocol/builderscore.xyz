@@ -3,6 +3,7 @@
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import { Button } from "@/app/components/ui/button";
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
+import { ENDPOINTS } from "@/app/config/api";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useUser } from "@/app/context/UserContext";
@@ -72,7 +73,7 @@ export default function ShareableLeaderboard({
       ? `Sponsored by @base and powered by @TalentProtocol`
       : `Powered by @TalentProtocol`;
 
-  const url = `/api/leaderboards/${id}/shareable?${params.toString()}`;
+  const url = `${ENDPOINTS.localApi.builderRewards.leaderboards}/${id}/shareable?${params.toString()}`;
   const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/${sponsor_slug}/share/${grant_id}/${id}`;
 
   const handleShare = async () => {

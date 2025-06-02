@@ -1,6 +1,7 @@
 "use client";
 
 import { ClientOnly } from "@/app/components/ClientOnly";
+import { ENDPOINTS } from "@/app/config/api";
 import {
   buildQueryString,
   handleNestedDocuments,
@@ -28,7 +29,7 @@ export default function QueryBuilderTester() {
     if (documentSelected) {
       (async () => {
         const response = await fetch(
-          `/api/search/advanced/metadata/fields/${documentSelected}`,
+          `${ENDPOINTS.localApi.talent.searchAdvancedMetadataFields}/${documentSelected}`,
           {
             method: "GET",
             headers: {
@@ -50,7 +51,9 @@ export default function QueryBuilderTester() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(`/api/search/advanced/documents`);
+        const response = await fetch(
+          ENDPOINTS.localApi.talent.searchAdvancedDocuments,
+        );
         const data = await response.json();
         setDocuments(Array.isArray(data) ? data : []);
       } catch (error) {
@@ -91,7 +94,7 @@ export default function QueryBuilderTester() {
 
     (async () => {
       const response = await fetch(
-        `/api/search/advanced/${documentSelected}?${fullQueryString}&debug=true`,
+        `${ENDPOINTS.localApi.talent.searchAdvanced}/${documentSelected}?${fullQueryString}&debug=true`,
         {
           method: "GET",
           headers: {

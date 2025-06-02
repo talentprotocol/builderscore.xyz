@@ -1,3 +1,4 @@
+import { ENDPOINTS } from "@/app/config/api";
 import { aggregateChartData, formatChartDate } from "@/app/lib/utils";
 import { fetchChartMetrics } from "@/app/services/index/chart-metrics";
 import { fetchDailyStatsData } from "@/app/services/index/daily-stats";
@@ -16,7 +17,9 @@ export function useChartMetrics() {
       if (isServer) {
         return fetchChartMetrics();
       }
-      const res = await axios.get(`/api/stats/daily/metrics`);
+      const res = await axios.get(
+        `${ENDPOINTS.localApi.talent.statsDailyMetrics}`,
+      );
       return res.data;
     },
   });
@@ -53,7 +56,7 @@ export function useDailyStats(props: {
           data = await fetchDailyStatsData(`q=${encodedQuery}`);
         } else {
           const response = await axios.get(
-            `/api/stats/daily?q=${encodedQuery}`,
+            `${ENDPOINTS.localApi.talent.statsDaily}?q=${encodedQuery}`,
           );
           data = response.data;
         }

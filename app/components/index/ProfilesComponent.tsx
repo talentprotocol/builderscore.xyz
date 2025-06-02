@@ -7,6 +7,7 @@ import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableCol
 import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
 import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
 import ProfilesTablePagination from "@/app/components/index/ProfilesTablePagination";
+import { ENDPOINTS } from "@/app/config/api";
 import { useChartData, useChartMetrics } from "@/app/hooks/useChartMetrics";
 import { useSearchFields } from "@/app/hooks/useSearchQueries";
 import {
@@ -140,7 +141,7 @@ export function ProfilesComponent({ config }: ProfilesComponentProps) {
         return data as SearchDataResponse;
       } else {
         const res = await axios.get(
-          `/api/search/advanced/${selectedDocument}?${queryString}`,
+          `${ENDPOINTS.localApi.talent.searchAdvanced}/${selectedDocument}?${queryString}`,
         );
         return res.data as SearchDataResponse;
       }

@@ -1,3 +1,4 @@
+import { ENDPOINTS } from "@/app/config/api";
 import {
   LeaderboardEntry,
   LeaderboardParams,
@@ -23,7 +24,7 @@ export async function getLeaderboards(
   }
 
   const queryString = searchParams.toString();
-  const url = `/api/leaderboards${queryString ? `?${queryString}` : ""}`;
+  const url = `${ENDPOINTS.localApi.talent.leaderboards}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url, {
     cache: "no-store",
@@ -55,7 +56,7 @@ export async function getLeaderboardEntry(
   }
 
   const queryString = searchParams.toString();
-  const url = `/api/leaderboards/${userId}${queryString ? `?${queryString}` : ""}`;
+  const url = `${ENDPOINTS.localApi.talent.leaderboards}/${userId}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url);
 

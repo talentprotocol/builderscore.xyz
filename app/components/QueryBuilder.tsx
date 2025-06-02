@@ -1,6 +1,7 @@
 "use client";
 
 import { ClientOnly } from "@/app/components/ClientOnly";
+import { ENDPOINTS } from "@/app/config/api";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import {
@@ -24,7 +25,7 @@ export function QueryBuilder({
   const { data } = useQuery({
     queryKey: ["searchProfiles", query],
     queryFn: () =>
-      fetch("/api/search/profiles", {
+      fetch(ENDPOINTS.localApi.talent.searchProfiles, {
         method: "POST",
         body: JSON.stringify(query),
       }).then((res) => res.json()),

@@ -1,5 +1,6 @@
 "use client";
 
+import { ENDPOINTS } from "@/app/config/api";
 import { useTheme } from "@/app/context/ThemeContext";
 import {
   GoogleAnalyticsActiveUserData,
@@ -55,7 +56,7 @@ export default function SocialGrowthChart() {
         setLoading(true);
 
         const warpcastResponse = await fetch(
-          "/api/neynar/notification_tokens",
+          ENDPOINTS.localApi.neynar.notificationTokens,
           {
             next: {
               revalidate: 86400,
@@ -78,11 +79,14 @@ export default function SocialGrowthChart() {
           );
         }
 
-        const gaResponse = await fetch("/api/analytics/active_users", {
-          next: {
-            revalidate: 86400,
+        const gaResponse = await fetch(
+          ENDPOINTS.localApi.analytics.activeUsers,
+          {
+            next: {
+              revalidate: 86400,
+            },
           },
-        });
+        );
 
         if (!gaResponse.ok) {
           throw new Error(

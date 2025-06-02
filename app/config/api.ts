@@ -21,6 +21,33 @@ export const ENDPOINTS = {
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",
   },
+  localApi: {
+    builderRewards: {
+      leaderboards: "/api/leaderboards",
+    },
+    talent: {
+      profile: "/api/profile",
+      lookup: "/api/lookup",
+      grants: "/api/grants",
+      leaderboards: "/api/leaderboards",
+      sponsors: "/api/sponsors",
+      searchProfiles: "/api/search/profiles",
+      searchAdvancedMetadataFields: "/api/search/advanced/metadata/fields",
+      searchAdvancedDocuments: "/api/search/advanced/documents",
+      searchAdvanced: "/api/search/advanced",
+      statsDailyMetrics: "/api/stats/daily/metrics",
+      statsDaily: "/api/stats/daily",
+    },
+    neynar: {
+      notificationTokens: "/api/neynar/notification_tokens",
+    },
+    analytics: {
+      activeUsers: "/api/analytics/active_users",
+    },
+    revalidate: {
+      all: "/api/revalidate",
+    },
+  },
 } as const;
 
 export const DEFAULT_HEADERS = {

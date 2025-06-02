@@ -1,3 +1,4 @@
+import { ENDPOINTS } from "@/app/config/api";
 import { Sponsor, SponsorsResponse } from "@/app/types/rewards/sponsors";
 
 export async function getSponsors(
@@ -9,7 +10,7 @@ export async function getSponsors(
   }
 
   const queryString = params.toString();
-  const url = `/api/sponsors${queryString ? `?${queryString}` : ""}`;
+  const url = `${ENDPOINTS.localApi.talent.sponsors}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url);
 
@@ -25,7 +26,7 @@ export async function getSponsors(
 }
 
 export async function getSponsor(slug: string): Promise<Sponsor | null> {
-  const url = `/api/sponsors/${slug}`;
+  const url = `${ENDPOINTS.localApi.talent.sponsors}/${slug}`;
 
   const response = await fetch(url, {
     cache: "no-store",

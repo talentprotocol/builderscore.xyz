@@ -1,3 +1,4 @@
+import { ENDPOINTS } from "@/app/config/api";
 import { revalidateTag } from "next/cache";
 import "server-only";
 
@@ -35,7 +36,7 @@ export function invalidateAllCache() {
 export async function revalidateAllCache(): Promise<boolean> {
   try {
     const response = await fetch(
-      "/api/revalidate?all=true&token=" + process.env.REVALIDATION_TOKEN,
+      `${ENDPOINTS.localApi.revalidate.all}?all=true&token=${process.env.REVALIDATION_TOKEN}`,
     );
     return response.ok;
   } catch {

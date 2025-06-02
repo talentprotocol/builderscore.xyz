@@ -1,3 +1,4 @@
+import { ENDPOINTS } from "@/app/config/api";
 import { Grant, GrantParams, GrantsResponse } from "@/app/types/rewards/grants";
 
 export async function getGrants(
@@ -22,7 +23,7 @@ export async function getGrants(
   }
 
   const queryString = searchParams.toString();
-  const url = `/api/grants${queryString ? `?${queryString}` : ""}`;
+  const url = `${ENDPOINTS.localApi.talent.grants}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url, {
     cache: "no-store",
@@ -40,7 +41,7 @@ export async function getGrants(
 }
 
 export async function getGrant(id: number): Promise<Grant | null> {
-  const url = `/api/grants/${id}`;
+  const url = `${ENDPOINTS.localApi.talent.grants}/${id}`;
   const response = await fetch(url);
 
   if (response.status === 404) {

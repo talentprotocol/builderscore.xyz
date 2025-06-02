@@ -1,9 +1,10 @@
+import { ENDPOINTS } from "@/app/config/api";
 import { TalentProfileApi, TalentProfileResponse } from "@/app/types/talent";
 
 export async function fetchUserByFid(
   fid: number,
 ): Promise<TalentProfileResponse> {
-  const url = `/api/talent/profile?fid=${fid}`;
+  const url = `${ENDPOINTS.localApi.talent.profile}?fid=${fid}`;
 
   const response = await fetch(url, {
     cache: "no-store",
@@ -29,7 +30,7 @@ export async function fetchProfileById(
   id: string,
   accountSource: "farcaster" | "github" | "wallet" = "wallet",
 ): Promise<ProfileLookupResponse> {
-  const url = `/api/talent/lookup?id=${encodeURIComponent(id)}&account_source=${accountSource}`;
+  const url = `${ENDPOINTS.localApi.talent.lookup}?id=${encodeURIComponent(id)}&account_source=${accountSource}`;
 
   const response = await fetch(url, {
     cache: "no-store",

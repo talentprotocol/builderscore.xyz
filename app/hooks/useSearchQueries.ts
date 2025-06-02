@@ -1,3 +1,4 @@
+import { ENDPOINTS } from "@/app/config/api";
 import { DEFAULT_SEARCH_DOCUMENT } from "@/app/lib/constants";
 import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
 import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
@@ -16,7 +17,9 @@ export function useSearchDocuments() {
   return useSuspenseQuery<AdvancedSearchDocument[]>({
     queryKey: ["searchDocuments"],
     queryFn: () =>
-      axios.get(`/api/search/advanced/documents`).then((res) => res.data),
+      axios
+        .get(ENDPOINTS.localApi.talent.searchAdvancedDocuments)
+        .then((res) => res.data),
   });
 }
 
@@ -32,7 +35,7 @@ export function useSearchFields(
         });
       }
       const res = await axios.get(
-        `/api/search/advanced/metadata/fields/${selectedDocument}`,
+        `${ENDPOINTS.localApi.talent.searchAdvancedMetadataFields}/${selectedDocument}`,
       );
       return res.data;
     },
@@ -88,7 +91,7 @@ export function useSearchProfiles(props: {
         return data as SearchDataResponse;
       } else {
         const res = await axios.get(
-          `/api/search/advanced/${selectedDocument}?${queryString}`,
+          `${ENDPOINTS.localApi.talent.searchAdvanced}/${selectedDocument}?${queryString}`,
         );
         return res.data as SearchDataResponse;
       }
