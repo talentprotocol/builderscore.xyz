@@ -88,6 +88,7 @@ export interface TalentSocial {
   owned_since: string;
   profile_url: string;
   source: string;
+  handle: string;
 }
 
 export interface TalentSocialsResponse {
