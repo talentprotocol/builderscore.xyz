@@ -8,15 +8,21 @@ import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
 import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
 import TablePagination from "@/app/components/index/ProfilesTablePagination";
 import ProfilesTableSkeleton from "@/app/components/index/ProfilesTableSkeleton";
-import { DataTable } from "@/app/components/ui/data-table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@/app/components/ui/table";
 import { useChartData, useChartMetrics } from "@/app/hooks/useChartMetrics";
 import { useSearchFields } from "@/app/hooks/useSearchQueries";
 import {
   DEFAULT_SEARCH_DOCUMENT,
   DEFAULT_SEARCH_QUERY,
+  TABLE_CONTENT_HEIGHT,
 } from "@/app/lib/constants";
 import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
-import { calculateDateRange } from "@/app/lib/utils";
+import { calculateDateRange, cn } from "@/app/lib/utils";
 import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { ChartSeries } from "@/app/types/index/chart";
@@ -26,13 +32,14 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   SortingState,
   Updater,
+  flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import axios from "axios";
 import Image from "next/image";
 import { Suspense } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RuleGroupType } from "react-querybuilder";
 
 const isServer = typeof window === "undefined";
@@ -159,7 +166,10 @@ export function ProfilesTable() {
 
   const table = useReactTable({
     data: profiles,
-    columns: getProfilesTableColumns(page, perPage),
+    columns: useMemo(
+      () => getProfilesTableColumns(page, perPage),
+      [page, perPage],
+    ),
     getCoreRowModel: getCoreRowModel(),
     state: {
       sorting,
@@ -233,7 +243,50 @@ export function ProfilesTable() {
             />
           </div>
 
-          {selectedView === "table" && <DataTable table={table} />}
+          {selectedView === "table" && (
+            <Table className="table-fixed">
+              <TableBody className="max-h-80">
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                      className="h-8 text-xs"
+                    >
+                      {row.getVisibleCells().map((cell, cellIndex) => (
+                        <TableCell
+                          key={cell.id}
+                          style={{
+                            ...(row.getVisibleCells().length === 2 &&
+                            cellIndex === 1
+                              ? { textAlign: "right" }
+                              : {}),
+                          }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={table.getAllColumns().length}
+                      className={cn(
+                        "text-center text-xs",
+                        TABLE_CONTENT_HEIGHT,
+                      )}
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
 
           {selectedView === "chart" && (
             <ProfilesChart data={chartData} series={series} />
