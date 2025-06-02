@@ -4,6 +4,7 @@ import { fetchUserByFid } from "@/app/services/talent";
 import { FrameContext } from "@/app/types/farcaster";
 import { APITalentProfile, TalentBuilderScore } from "@/app/types/talent";
 import { sdk } from "@farcaster/frame-sdk";
+import { useSearchParams } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
@@ -45,6 +46,9 @@ const UserContext = createContext<UserContextType>({
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
+  const searchParams = useSearchParams();
+  const testFid = searchParams.get("testFid");
+
   const [loadingUser, setLoadingUser] = useState(true);
   const [talentProfile, setTalentProfile] = useState<APITalentProfile | null>(
     null,
@@ -62,7 +66,17 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadSDK = async () => {
       if (process.env.NODE_ENV === "development") {
-        setFrameContext(DEV_FRAME_CONTEXT);
+        const contextToUse = testFid
+          ? {
+              ...DEV_FRAME_CONTEXT,
+              user: {
+                ...DEV_FRAME_CONTEXT.user,
+                fid: parseInt(testFid, 10),
+              },
+            }
+          : DEV_FRAME_CONTEXT;
+
+        setFrameContext(contextToUse);
         sdk.actions.ready();
       } else {
         setFrameContext(await sdk.context);
@@ -75,7 +89,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       loadSDK();
       setIsSDKLoaded(true);
     }
-  }, [isSDKLoaded]);
+  }, [isSDKLoaded, testFid]);
 
   useEffect(() => {
     if (!isSDKLoaded) {
