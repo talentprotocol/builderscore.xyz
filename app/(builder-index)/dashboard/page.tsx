@@ -69,6 +69,8 @@ export default function Page() {
           queryString,
         });
 
+        console.log("Response data from search advanced:", data);
+
         return data as SearchDataResponse;
       },
     }),
