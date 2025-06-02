@@ -10,63 +10,29 @@ import TablePagination from "@/app/components/index/ProfilesTablePagination";
 import ProfilesTableSkeleton from "@/app/components/index/ProfilesTableSkeleton";
 import { DataTable } from "@/app/components/ui/data-table";
 import { useChartData, useChartMetrics } from "@/app/hooks/useChartMetrics";
-import {
-  useSearchFields,
-  useSearchProfiles,
-} from "@/app/hooks/useSearchQueries";
+import { useSearchFields } from "@/app/hooks/useSearchQueries";
+import { DEFAULT_SEARCH_DOCUMENT } from "@/app/lib/constants";
+import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
 import { calculateDateRange } from "@/app/lib/utils";
+import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
+import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { ChartSeries } from "@/app/types/index/chart";
 import { ViewOption } from "@/app/types/index/data";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { SearchDataResponse } from "@/app/types/index/search";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   SortingState,
-  Table,
   Updater,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import axios from "axios";
 import Image from "next/image";
 import { Suspense } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { RuleGroupType } from "react-querybuilder";
 
-function TableContent({
-  query,
-  order,
-  page,
-  perPage,
-  table,
-  onDataChange,
-}: {
-  query: RuleGroupType;
-  order: "asc" | "desc";
-  page: number;
-  perPage: number;
-  table: Table<TalentProfileSearchApi>;
-  onDataChange: (data: {
-    profiles: TalentProfileSearchApi[];
-    total: number;
-    totalPages: number;
-  }) => void;
-}) {
-  const { data: profilesData } = useSearchProfiles({
-    query,
-    order,
-    page,
-    perPage,
-  });
-
-  useEffect(() => {
-    onDataChange({
-      profiles: profilesData?.profiles || [],
-      total: profilesData?.pagination.total || 0,
-      totalPages: profilesData?.pagination.last_page || 0,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profilesData]);
-
-  return <DataTable table={table} />;
-}
+const isServer = typeof window === "undefined";
 
 export function ProfilesTable({
   initialQuery,
@@ -77,11 +43,6 @@ export function ProfilesTable({
   const [order, setOrder] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-  const [totalProfiles, setTotalProfiles] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [profiles, setProfiles] = useState<TalentProfileSearchApi[]>([]);
-  const [currentProfilesPage, setCurrentProfilesPage] = useState(1);
-  const [currentProfilesPerPage, setCurrentProfilesPerPage] = useState(10);
   const [sorting, setSorting] = useState<SortingState>([
     { id: "builder_score", desc: true },
   ]);
@@ -116,6 +77,49 @@ export function ProfilesTable({
   const { data: fields } = useSearchFields();
   const { data: availableDataPoints } = useChartMetrics();
 
+  // Use useSuspenseQuery directly instead of useSearchProfiles
+  const { data: profilesData } = useSuspenseQuery({
+    queryKey: ["searchProfiles", query, order, page, perPage],
+    queryFn: async () => {
+      const selectedDocument = DEFAULT_SEARCH_DOCUMENT;
+      const requestBody: AdvancedSearchRequest = {
+        query: {
+          customQuery: buildNestedQuery(query),
+        },
+        sort: {
+          score: {
+            order,
+          },
+          id: {
+            order,
+          },
+        },
+        page,
+        per_page: perPage,
+      };
+
+      const queryString = Object.keys(requestBody)
+        .map(
+          (key) =>
+            `${key}=${encodeURIComponent(JSON.stringify(requestBody[key as keyof AdvancedSearchRequest]))}`,
+        )
+        .join("&");
+
+      if (isServer) {
+        const data = await fetchSearchAdvanced({
+          documents: selectedDocument,
+          queryString,
+        });
+        return data as SearchDataResponse;
+      } else {
+        const res = await axios.get(
+          `/api/search/advanced/${selectedDocument}?${queryString}`,
+        );
+        return res.data as SearchDataResponse;
+      }
+    },
+  });
+
   const { date_from, date_to } = calculateDateRange(dateRange);
 
   const chartData = useChartData({
@@ -148,21 +152,10 @@ export function ProfilesTable({
     setColumnOrder(newColumnOrder);
   };
 
-  const handleDataChange = ({
-    profiles,
-    total,
-    totalPages,
-  }: {
-    profiles: TalentProfileSearchApi[];
-    total: number;
-    totalPages: number;
-  }) => {
-    setProfiles(profiles);
-    setTotalProfiles(total);
-    setTotalPages(totalPages);
-    setCurrentProfilesPage(page);
-    setCurrentProfilesPerPage(perPage);
-  };
+  // Get profiles data from the query response
+  const profiles = profilesData?.profiles || [];
+  const totalProfiles = profilesData?.pagination.total || 0;
+  const totalPages = profilesData?.pagination.last_page || 0;
 
   const table = useReactTable({
     data: profiles,
@@ -226,8 +219,8 @@ export function ProfilesTable({
           <ProfilesTableSkeleton
             originalProfiles={profiles}
             originalSorting={sorting}
-            page={currentProfilesPage}
-            perPage={currentProfilesPerPage}
+            page={page}
+            perPage={perPage}
             columnOrder={columnOrder}
           />
         }
@@ -243,16 +236,7 @@ export function ProfilesTable({
             />
           </div>
 
-          {selectedView === "table" && (
-            <TableContent
-              query={query}
-              order={order}
-              page={page}
-              perPage={perPage}
-              table={table}
-              onDataChange={handleDataChange}
-            />
-          )}
+          {selectedView === "table" && <DataTable table={table} />}
 
           {selectedView === "chart" && (
             <ProfilesChart data={chartData} series={series} />
