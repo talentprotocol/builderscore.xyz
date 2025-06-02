@@ -42,12 +42,22 @@ export function DataTableColumnHeader<TData, TValue>({
           <div className="flex w-full items-center justify-between gap-1">
             {title}
 
-            {column.getCanSort() &&
-              (column.getIsSorted() === "desc" ? (
-                <ChevronDown size={18} className="text-neutral-500" />
-              ) : (
-                <ChevronUp size={18} className="text-neutral-500" />
-              ))}
+            {column.getCanSort() && (
+              <>
+                {column.getIsSorted() === "desc" && (
+                  <ChevronDown size={18} className="text-neutral-500" />
+                )}
+                {column.getIsSorted() === "asc" && (
+                  <ChevronUp size={18} className="text-neutral-500" />
+                )}
+                {!column.getIsSorted() && (
+                  <ChevronUp
+                    size={18}
+                    className="text-neutral-400 opacity-50"
+                  />
+                )}
+              </>
+            )}
           </div>
         </Button>
       </DropdownMenuTrigger>

@@ -78,7 +78,6 @@ export default function Page() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex flex-col gap-6">
         <ProfilesComponent />
-        <ProfilesComponent />
       </div>
     </HydrationBoundary>
   );

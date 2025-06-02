@@ -186,7 +186,7 @@ export function ProfilesComponent() {
     },
     onSortingChange: handleSortingChange,
     onColumnOrderChange: handleColumnOrderChange,
-    onPaginationChange: setPagination,
+    onPaginationChange: setPagination, // Handle pagination state updates
   });
 
   return (
