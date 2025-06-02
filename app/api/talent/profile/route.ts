@@ -179,7 +179,7 @@ export async function GET(request: NextRequest) {
       );
 
       const basenameSocial = socialsData.socials.find(
-        (social: { source: string; name: string }) =>
+        (social: { source: string; handle: string }) =>
           social.source === "basename",
       );
 
@@ -197,7 +197,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         profile: matchingProfile,
         github: hasGithubCredential,
-        basename: basenameSocial?.name,
+        basename: basenameSocial?.handle,
         builderScore: builderScoreData?.score,
         selfXyz: hasSelfXyzAccount,
         celoTransaction: hasCeloTransactionCredential,
