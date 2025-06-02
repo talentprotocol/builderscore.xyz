@@ -19,6 +19,7 @@ import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { ChartSeries } from "@/app/types/index/chart";
 import { ViewOption } from "@/app/types/index/data";
+import { ProfilesComponentProps } from "@/app/types/index/profiles-component";
 import { SearchDataResponse } from "@/app/types/index/search";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
@@ -38,47 +39,61 @@ import ProfilesTable from "./ProfilesTable";
 
 const isServer = typeof window === "undefined";
 
-export function ProfilesComponent() {
-  const [query, setQuery] = useState<RuleGroupType>(DEFAULT_SEARCH_QUERY);
-  const [order, setOrder] = useState<"asc" | "desc">("desc");
+export function ProfilesComponent({ config }: ProfilesComponentProps) {
+  const [query, setQuery] = useState<RuleGroupType>(
+    config.query ?? DEFAULT_SEARCH_QUERY,
+  );
+  const [order, setOrder] = useState<"asc" | "desc">(config.order ?? "desc");
 
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [pagination, setPagination] = useState<PaginationState>(
+    config.pagination ?? {
+      pageIndex: 0,
+      pageSize: 10,
+    },
+  );
 
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: "builder_score", desc: true },
-  ]);
+  const [sorting, setSorting] = useState<SortingState>(
+    config.sorting ?? [{ id: "builder_score", desc: true }],
+  );
 
-  const [selectedView, setSelectedView] = useState<ViewOption>("table");
-  const [showPagination, setShowPagination] = useState(true);
-  const [showTotal, setShowTotal] = useState(true);
-  const [columnOrder, setColumnOrder] = useState<string[]>([
-    "row_number",
-    "builder",
-    "bio",
-    "location",
-    "builder_score",
-    "human_checkmark",
-    "tags",
-  ]);
-
-  const [dateRange, setDateRange] = useState<string>("30d");
-  const [dateInterval, setDateInterval] = useState<string>("d");
-  const [series, setSeries] = useState<ChartSeries>({
-    left: [
-      {
-        key: "created_accounts",
-        name: "talent_created_accounts",
-        dataProvider: "Talent Protocol",
-        color: "var(--chart-1)",
-        type: "area",
-        cumulative: true,
-      },
+  const [selectedView, setSelectedView] = useState<ViewOption>(
+    config.selectedView ?? "table",
+  );
+  const [showPagination, setShowPagination] = useState(
+    config.showPagination ?? true,
+  );
+  const [showTotal, setShowTotal] = useState(config.showTotal ?? true);
+  const [columnOrder, setColumnOrder] = useState<string[]>(
+    config.columnOrder ?? [
+      "row_number",
+      "builder",
+      "bio",
+      "location",
+      "builder_score",
+      "human_checkmark",
+      "tags",
     ],
-    right: [],
-  });
+  );
+
+  const [dateRange, setDateRange] = useState<string>(config.dateRange ?? "30d");
+  const [dateInterval, setDateInterval] = useState<string>(
+    config.dateInterval ?? "d",
+  );
+  const [series, setSeries] = useState<ChartSeries>(
+    config.series ?? {
+      left: [
+        {
+          key: "created_accounts",
+          name: "talent_created_accounts",
+          dataProvider: "Talent Protocol",
+          color: "var(--chart-1)",
+          type: "area",
+          cumulative: true,
+        },
+      ],
+      right: [],
+    },
+  );
 
   const { data: fields } = useSearchFields();
   const { data: availableDataPoints } = useChartMetrics();
@@ -86,6 +101,7 @@ export function ProfilesComponent() {
   const { data: profilesData } = useSuspenseQuery({
     queryKey: [
       "searchProfiles",
+      config.id,
       query,
       order,
       pagination.pageIndex,

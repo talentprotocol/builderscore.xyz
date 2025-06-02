@@ -7,13 +7,7 @@ import { Metadata } from "next";
 export const DEFAULT_SEARCH_DOCUMENT = "profiles";
 export const DEFAULT_SEARCH_QUERY = {
   combinator: "and",
-  rules: [
-    {
-      field: "display_name",
-      operator: "contains",
-      value: "sim",
-    },
-  ],
+  rules: [],
 };
 export const DEFAULT_SEARCH_SORT = "desc";
 export const DEFAULT_SEARCH_PAGE = 0;
