@@ -16,7 +16,7 @@ export const DEFAULT_SEARCH_QUERY = {
   ],
 };
 export const DEFAULT_SEARCH_SORT = "desc";
-export const DEFAULT_SEARCH_PAGE = 1;
+export const DEFAULT_SEARCH_PAGE = 0;
 export const DEFAULT_SEARCH_PER_PAGE = 10;
 
 export const TABLE_CONTENT_HEIGHT = "h-[20rem]";

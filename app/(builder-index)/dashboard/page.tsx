@@ -1,4 +1,4 @@
-import { ProfilesTable } from "@/app/components/index/ProfilesTable";
+import { ProfilesComponent } from "@/app/components/index/ProfilesComponent";
 import {
   DEFAULT_SEARCH_DOCUMENT,
   DEFAULT_SEARCH_PAGE,
@@ -77,7 +77,8 @@ export default function Page() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex flex-col gap-6">
-        <ProfilesTable />
+        <ProfilesComponent />
+        <ProfilesComponent />
       </div>
     </HydrationBoundary>
   );

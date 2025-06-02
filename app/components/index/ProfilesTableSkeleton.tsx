@@ -1,5 +1,5 @@
+import ProfilesTable from "@/app/components/index/ProfilesTable";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
-import { DataTable } from "@/app/components/ui/data-table";
 import { TalentProfileSearchApi } from "@/app/types/talent";
 import {
   SortingState,
@@ -30,5 +30,5 @@ export default function ProfilesTableSkeleton({
     },
   });
 
-  return <DataTable table={table} isLoading />;
+  return <ProfilesTable table={table} isLoading />;
 }

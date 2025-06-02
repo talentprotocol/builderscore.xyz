@@ -8,44 +8,33 @@ import {
 } from "@/app/components/ui/select";
 import { PER_PAGE_OPTIONS } from "@/app/lib/constants";
 import { cn, formatNumber } from "@/app/lib/utils";
+import { TalentProfileSearchApi } from "@/app/types/talent";
+import { Table } from "@tanstack/react-table";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useEffect } from "react";
 
-export default function TablePagination({
-  total,
-  perPage,
-  setPerPage,
-  page,
-  setPage,
-  totalPages,
+export default function ProfilesTablePagination({
+  table,
+  totalProfiles,
   showPagination,
   showTotal,
 }: {
-  total: number;
-  perPage: number;
-  setPerPage: (perPage: number) => void;
-  page: number;
-  setPage: (page: number) => void;
-  totalPages: number;
+  table: Table<TalentProfileSearchApi>;
+  totalProfiles: number;
   showPagination: boolean;
   showTotal: boolean;
 }) {
-  useEffect(() => {
-    setPage(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [perPage]);
-
-  useEffect(() => {
-    setPage(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalPages]);
-
   return (
     <div className="flex flex-1 items-center justify-between gap-2">
       <div className="ml-1 flex h-6 items-center">
         {showTotal && (
-          <p className={cn("text-xs", total === 1 ? "font-semibold" : "")}>
-            {formatNumber(total)} Builder{total === 1 ? "" : "s"}
+          <p
+            className={cn(
+              "text-xs",
+              totalProfiles === 1 ? "font-semibold" : "",
+            )}
+          >
+            {formatNumber(totalProfiles)} Builder
+            {totalProfiles === 1 ? "" : "s"}
           </p>
         )}
       </div>
@@ -56,9 +45,9 @@ export default function TablePagination({
             <p className="text-xs">Rows</p>
 
             <Select
-              value={perPage.toString()}
+              value={table.getState().pagination.pageSize.toString()}
               onValueChange={(value) => {
-                setPerPage(parseInt(value));
+                table.setPageSize(Number(value));
               }}
             >
               <SelectTrigger className="button-style h-6 w-20 cursor-pointer p-2 text-xs">
@@ -80,22 +69,26 @@ export default function TablePagination({
 
           <div className="flex min-w-36 items-center justify-end gap-2">
             <p className="text-xs">
-              Page {totalPages > 0 ? page : 0} of {formatNumber(totalPages)}
+              Page{" "}
+              {table.getPageCount() > 0
+                ? table.getState().pagination.pageIndex + 1
+                : 0}{" "}
+              of {formatNumber(table.getPageCount())}
             </p>
 
             <Button
               className="button-style h-6 w-6"
               size="sm"
-              disabled={page === 1}
-              onClick={() => setPage(page - 1)}
+              disabled={!table.getCanPreviousPage()}
+              onClick={() => table.previousPage()}
             >
               <ChevronLeftIcon className="h-4 w-4" />
             </Button>
             <Button
               className="button-style h-6 w-6"
               size="sm"
-              disabled={page === totalPages || totalPages === 0}
-              onClick={() => setPage(page + 1)}
+              disabled={!table.getCanNextPage()}
+              onClick={() => table.nextPage()}
             >
               <ChevronRightIcon className="h-4 w-4" />
             </Button>
