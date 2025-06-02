@@ -1,23 +1,10 @@
-import { API_BASE_URL, DEFAULT_HEADERS } from "@/app/config/api";
+import { fetchChartMetrics } from "@/app/services/index/chart-metrics";
 import { DataPointDefinition } from "@/app/types/index/chart";
 import { NextResponse } from "next/server";
 
-const fetchStatsDailyMetrics = async () => {
-  const response = await fetch(`${API_BASE_URL}/stats/daily/metrics`, {
-    method: "GET",
-    headers: DEFAULT_HEADERS,
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-};
-
 export async function GET() {
   try {
-    const data: DataPointDefinition[] = await fetchStatsDailyMetrics();
+    const data: DataPointDefinition[] = await fetchChartMetrics();
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(

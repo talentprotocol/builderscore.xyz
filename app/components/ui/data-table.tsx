@@ -94,7 +94,7 @@ export function DataTable<TData>({
                   colSpan={table.getAllColumns().length}
                   className={cn("text-center text-xs", TABLE_CONTENT_HEIGHT)}
                 >
-                  No results.
+                  {!isLoading && "No results."}
                 </TableCell>
               </TableRow>
             )}

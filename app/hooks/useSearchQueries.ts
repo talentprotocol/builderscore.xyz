@@ -1,5 +1,7 @@
 import { DEFAULT_SEARCH_DOCUMENT } from "@/app/lib/constants";
 import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
+import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
+import { fetchSearchAdvancedMetadataFields } from "@/app/services/index/search-fields";
 import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { SearchDataResponse } from "@/app/types/index/search";
@@ -7,6 +9,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { RuleGroupType } from "react-querybuilder";
 import { Field } from "react-querybuilder";
+
+const isServer = typeof window === "undefined";
 
 export function useSearchDocuments() {
   return useSuspenseQuery<AdvancedSearchDocument[]>({
@@ -21,10 +25,17 @@ export function useSearchFields(
 ) {
   return useSuspenseQuery<Field[]>({
     queryKey: ["searchFields", selectedDocument],
-    queryFn: () =>
-      axios
-        .get(`/api/search/advanced/metadata/fields/${selectedDocument}`)
-        .then((res) => res.data),
+    queryFn: async () => {
+      if (isServer) {
+        return fetchSearchAdvancedMetadataFields({
+          documents: selectedDocument,
+        });
+      }
+      const res = await axios.get(
+        `/api/search/advanced/metadata/fields/${selectedDocument}`,
+      );
+      return res.data;
+    },
   });
 }
 
@@ -34,7 +45,6 @@ export function useSearchProfiles(props: {
   order?: "asc" | "desc";
   page?: number;
   perPage?: number;
-  fields: Field[] | undefined;
 }) {
   const {
     selectedDocument = DEFAULT_SEARCH_DOCUMENT,
@@ -70,11 +80,18 @@ export function useSearchProfiles(props: {
         )
         .join("&");
 
-      const res = await axios.get(
-        `/api/search/advanced/${selectedDocument}?${queryString}`,
-      );
-
-      return res.data as SearchDataResponse;
+      if (isServer) {
+        const data = await fetchSearchAdvanced({
+          documents: selectedDocument,
+          queryString,
+        });
+        return data as SearchDataResponse;
+      } else {
+        const res = await axios.get(
+          `/api/search/advanced/${selectedDocument}?${queryString}`,
+        );
+        return res.data as SearchDataResponse;
+      }
     },
   });
 }

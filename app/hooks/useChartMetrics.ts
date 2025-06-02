@@ -1,15 +1,24 @@
 import { aggregateChartData, formatChartDate } from "@/app/lib/utils";
+import { fetchChartMetrics } from "@/app/services/index/chart-metrics";
+import { fetchDailyStatsData } from "@/app/services/index/daily-stats";
 import { ChartSeries, DataPointDefinition } from "@/app/types/index/chart";
 import { StatsDataPoint } from "@/app/types/stats";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useMemo } from "react";
 
+const isServer = typeof window === "undefined";
+
 export function useChartMetrics() {
   return useSuspenseQuery<DataPointDefinition[]>({
     queryKey: ["chartMetrics"],
-    queryFn: () =>
-      axios.get(`/api/stats/daily/metrics`).then((res) => res.data),
+    queryFn: async () => {
+      if (isServer) {
+        return fetchChartMetrics();
+      }
+      const res = await axios.get(`/api/stats/daily/metrics`);
+      return res.data;
+    },
   });
 }
 
@@ -39,9 +48,17 @@ export function useDailyStats(props: {
 
         const encodedQuery = encodeURIComponent(JSON.stringify(requestBody));
 
-        const response = await axios.get(`/api/stats/daily?q=${encodedQuery}`);
+        let data;
+        if (isServer) {
+          data = await fetchDailyStatsData(`q=${encodedQuery}`);
+        } else {
+          const response = await axios.get(
+            `/api/stats/daily?q=${encodedQuery}`,
+          );
+          data = response.data;
+        }
 
-        return { metric: seriesItem.key, data: response.data };
+        return { metric: seriesItem.key, data };
       });
 
       const results = await Promise.all(promises);
@@ -102,10 +119,8 @@ export function useChartData(props: {
       return chartPoint;
     });
 
-    // Apply aggregation based on the interval
     const interval = props.interval || "d";
 
-    // Identify cumulative fields
     const cumulativeFields = new Set<string>();
     allSeriesItems.forEach((seriesItem) => {
       if (seriesItem.cumulative) {

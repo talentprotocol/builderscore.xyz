@@ -28,11 +28,10 @@ import {
 import Image from "next/image";
 import { Suspense } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { Field, RuleGroupType } from "react-querybuilder";
+import { RuleGroupType } from "react-querybuilder";
 
 function TableContent({
   query,
-  fields,
   order,
   page,
   perPage,
@@ -40,7 +39,6 @@ function TableContent({
   onDataChange,
 }: {
   query: RuleGroupType;
-  fields: Field[];
   order: "asc" | "desc";
   page: number;
   perPage: number;
@@ -53,7 +51,6 @@ function TableContent({
 }) {
   const { data: profilesData } = useSearchProfiles({
     query,
-    fields,
     order,
     page,
     perPage,
@@ -249,7 +246,6 @@ export function ProfilesTable({
           {selectedView === "table" && (
             <TableContent
               query={query}
-              fields={fields || []}
               order={order}
               page={page}
               perPage={perPage}
