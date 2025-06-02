@@ -25,7 +25,7 @@ export function useChartMetrics() {
   });
 }
 
-export function useDailyStats(props: {
+function useDailyStats(props: {
   series: ChartSeries;
   date_from?: string;
   date_to?: string;

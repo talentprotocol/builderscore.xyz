@@ -3,16 +3,7 @@ export type TalentBuilderScore = {
   last_calculated_at: string;
 };
 
-export type TalentCredential = {
-  id: number;
-  type: string;
-  value: string;
-  verified: boolean;
-  created_at: string;
-  updated_at: string;
-};
-
-export interface TalentSocial {
+interface TalentSocial {
   follower_count: string;
   following_count: string;
   location: string;

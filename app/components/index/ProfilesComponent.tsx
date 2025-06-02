@@ -7,22 +7,16 @@ import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableCol
 import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
 import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
 import ProfilesTablePagination from "@/app/components/index/ProfilesTablePagination";
-import { ENDPOINTS } from "@/app/config/api";
 import { useChartData, useChartMetrics } from "@/app/hooks/useChartMetrics";
-import { useSearchFields } from "@/app/hooks/useSearchQueries";
 import {
-  DEFAULT_SEARCH_DOCUMENT,
-  DEFAULT_SEARCH_QUERY,
-} from "@/app/lib/constants";
-import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
+  useSearchFields,
+  useSearchProfiles,
+} from "@/app/hooks/useSearchQueries";
+import { DEFAULT_SEARCH_QUERY } from "@/app/lib/constants";
 import { calculateDateRange } from "@/app/lib/utils";
-import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
-import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { ChartSeries } from "@/app/types/index/chart";
 import { ViewOption } from "@/app/types/index/data";
 import { ProfilesComponentProps } from "@/app/types/index/profiles-component";
-import { SearchDataResponse } from "@/app/types/index/search";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   PaginationState,
   SortingState,
@@ -31,14 +25,11 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import axios from "axios";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { RuleGroupType } from "react-querybuilder";
 
 import ProfilesTable from "./ProfilesTable";
-
-const isServer = typeof window === "undefined";
 
 export function ProfilesComponent({ config }: ProfilesComponentProps) {
   const [query, setQuery] = useState<RuleGroupType>(
@@ -98,54 +89,11 @@ export function ProfilesComponent({ config }: ProfilesComponentProps) {
 
   const { data: fields } = useSearchFields();
   const { data: availableDataPoints } = useChartMetrics();
-
-  const { data: profilesData } = useSuspenseQuery({
-    queryKey: [
-      "searchProfiles",
-      config.id,
-      query,
-      order,
-      pagination.pageIndex,
-      pagination.pageSize,
-    ],
-    queryFn: async () => {
-      const selectedDocument = DEFAULT_SEARCH_DOCUMENT;
-      const requestBody: AdvancedSearchRequest = {
-        query: {
-          customQuery: buildNestedQuery(query),
-        },
-        sort: {
-          score: {
-            order,
-          },
-          id: {
-            order,
-          },
-        },
-        page: pagination.pageIndex + 1,
-        per_page: pagination.pageSize,
-      };
-
-      const queryString = Object.keys(requestBody)
-        .map(
-          (key) =>
-            `${key}=${encodeURIComponent(JSON.stringify(requestBody[key as keyof AdvancedSearchRequest]))}`,
-        )
-        .join("&");
-
-      if (isServer) {
-        const data = await fetchSearchAdvanced({
-          documents: selectedDocument,
-          queryString,
-        });
-        return data as SearchDataResponse;
-      } else {
-        const res = await axios.get(
-          `${ENDPOINTS.localApi.talent.searchAdvanced}/${selectedDocument}?${queryString}`,
-        );
-        return res.data as SearchDataResponse;
-      }
-    },
+  const { data: profilesData } = useSearchProfiles({
+    query,
+    order,
+    page: pagination.pageIndex + 1,
+    perPage: pagination.pageSize,
   });
 
   const { date_from, date_to } = calculateDateRange(dateRange);

@@ -4,7 +4,7 @@ import path from "path";
 
 const dataDir = path.join(process.cwd(), "app/data/base");
 
-export interface MetricsTotals {
+interface MetricsTotals {
   date: string;
   eligibleDevs: number;
   activeDevs: number;

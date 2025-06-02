@@ -11,4 +11,4 @@ interface AdvancedSearchMetadataField {
   values: AdvancedSearchMetadataFieldValue[];
 }
 
-export type { AdvancedSearchMetadataFieldValue, AdvancedSearchMetadataField };
+export type { AdvancedSearchMetadataField };

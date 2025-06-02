@@ -35,7 +35,7 @@ export function useSearchFields(
         });
       }
       const res = await axios.get(
-        `${ENDPOINTS.localApi.talent.searchAdvancedMetadataFields}/${selectedDocument}`,
+        `/api/search/advanced/metadata/fields/${selectedDocument}`,
       );
       return res.data;
     },

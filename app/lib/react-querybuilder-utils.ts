@@ -191,10 +191,4 @@ const buildNestedQuery = (query: RuleGroupTypeAny) => {
   return handleNestedDocuments(formattedQuery);
 };
 
-export {
-  buildQueryString,
-  groupByLongestPrefix,
-  handleNestedDocuments,
-  mergeCombinatorObjects,
-  buildNestedQuery,
-};
+export { buildQueryString, handleNestedDocuments, buildNestedQuery };

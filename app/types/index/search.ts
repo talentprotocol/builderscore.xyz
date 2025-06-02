@@ -1,48 +1,5 @@
 import { TalentProfileSearchApi } from "@/app/types/talent";
 
-export type CredentialType = {
-  name: string;
-  dataIssuer: string;
-  category?: string;
-  valueRange?: { min: number; max: number };
-};
-
-export type SearchQuery = {
-  credentials?: CredentialType[];
-  humanCheckmark?: boolean | null;
-  score?: {
-    min: number;
-    max: number;
-  };
-  location?: string;
-  tags?: string[];
-  walletAddresses?: string[];
-  identity?: string;
-  exactMatch?: boolean;
-  profileIds?: string[];
-  mainRole?: string[];
-  openTo?: string[];
-};
-
-export type SearchSortByOptions = "score" | "id";
-export type SearchSortOrder = "asc" | "desc";
-
-export interface SearchData {
-  query: SearchQuery;
-  sort: {
-    [key in SearchSortByOptions]?: {
-      order: SearchSortOrder;
-      scorer?: string;
-    };
-  };
-  page: number;
-  per_page: number;
-  debug?: string | null | undefined;
-  point_in_time_id?: string;
-  search_after?: (string | number)[];
-  keep_alive_minutes?: number;
-}
-
 export interface SearchDataResponse {
   pagination: {
     current_page: number;

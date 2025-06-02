@@ -1,14 +1,3 @@
-export interface ProfileData {
-  date: string;
-  count: number;
-}
-
-export interface ProfilesData {
-  base_basename: ProfileData[];
-  ens: ProfileData[];
-  farcaster: ProfileData[];
-}
-
 export interface ChartSeries {
   left: ChartSeriesItem[];
   right: ChartSeriesItem[];
