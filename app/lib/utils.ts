@@ -77,7 +77,14 @@ export function formatCompactNumber(x: number, forceDecimals?: number): string {
   return isNegative ? `-${formatted}` : formatted;
 }
 
-export function formatDate(date: string): string {
+export function formatDate(
+  date: string,
+  options?: {
+    month?: "long" | "short" | "narrow";
+    day?: "numeric";
+    year?: "numeric";
+  },
+): string {
   let dateObj;
 
   try {
@@ -95,11 +102,7 @@ export function formatDate(date: string): string {
     return "Invalid Date Format";
   }
 
-  return dateObj.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  return dateObj.toLocaleDateString("en-US", options);
 }
 
 export function formatChartDate(date: string): string {

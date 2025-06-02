@@ -8,8 +8,8 @@ import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
+import { formatDate } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
-import { format } from "date-fns";
 import { useState } from "react";
 
 export default function LeaderboardWrapper() {
@@ -89,12 +89,9 @@ export default function LeaderboardWrapper() {
               weekly={!!selectedGrant}
               context={
                 selectedGrant
-                  ? format(new Date(selectedGrant?.start_date || ""), "MMM d") +
+                  ? formatDate(selectedGrant.start_date) +
                     " - " +
-                    format(
-                      new Date(selectedGrant?.end_date || ""),
-                      "MMM d, yyyy",
-                    )
+                    formatDate(selectedGrant.end_date)
                   : "All Time"
               }
             />
@@ -108,9 +105,9 @@ export default function LeaderboardWrapper() {
           weekly={!!selectedGrant}
           context={
             selectedGrant
-              ? format(new Date(selectedGrant?.start_date || ""), "MMM d") +
+              ? formatDate(selectedGrant.start_date) +
                 " - " +
-                format(new Date(selectedGrant?.end_date || ""), "MMM d, yyyy")
+                formatDate(selectedGrant.end_date)
               : "All Time"
           }
         />

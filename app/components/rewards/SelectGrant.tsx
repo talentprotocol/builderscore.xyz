@@ -9,7 +9,7 @@ import {
 } from "@/app/components/ui/select";
 import { ALL_TIME_GRANT, useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { format } from "date-fns";
+import { formatDate } from "@/app/lib/utils";
 
 export default function SelectGrant() {
   const {
@@ -41,8 +41,15 @@ export default function SelectGrant() {
     start_date: string;
     end_date: string;
   }) => {
-    const startDate = format(new Date(grant.start_date), "MMM d");
-    const endDate = format(new Date(grant.end_date), "MMM d, yyyy");
+    const startDate = formatDate(grant.start_date, {
+      month: "long",
+      day: "numeric",
+    });
+    const endDate = formatDate(grant.end_date, {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
     if (selectedSponsor?.slug === "global") {
       return (
         <div className="flex items-start gap-2">
