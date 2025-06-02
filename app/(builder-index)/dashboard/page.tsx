@@ -15,6 +15,8 @@ import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { SearchDataResponse } from "@/app/types/index/search";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
+export const dynamic = "force-dynamic";
+
 export default function Page() {
   const queryClient = getQueryClient();
 
