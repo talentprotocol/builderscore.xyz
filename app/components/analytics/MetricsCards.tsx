@@ -1,3 +1,4 @@
+import { useSponsor } from "@/app/context/SponsorContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import { formatDate } from "@/app/lib/utils";
 import {
@@ -34,6 +35,7 @@ interface CardData {
 
 export default function MetricsCards({ metrics }: MetricsCardsProps) {
   const { isDarkMode } = useTheme();
+  const { selectedSponsor } = useSponsor();
 
   if (!metrics) {
     return (
@@ -51,15 +53,14 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       value: metrics.eligibleDevs?.toLocaleString() || "0",
       description: "This week",
       tooltip:
-        "Builders who meet all three requirements: have a Basename identity, Human Checkmark verification, and Builder Score ≥ 40.",
+        "Builders who meet all pre-requirements to be eligible for Builder Rewards.",
       icon: <Users className="h-4 w-4" />,
     },
     {
       title: "Active Builders",
       value: metrics.activeDevs?.toLocaleString() || "0",
       description: "All time",
-      tooltip:
-        "Eligible builders who have contributed to public repositories or have activity in verified contracts deployed by them on Base within the past week.",
+      tooltip: `Eligible builders who have contributed to public repositories or have activity in verified contracts deployed by them on ${selectedSponsor?.name} within the past week.`,
       icon: <UserCheck className="h-4 w-4" />,
     },
     {
@@ -77,16 +78,14 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
       title: "Builders with Active Smart Contracts",
       value: metrics.activeContractDevs?.toLocaleString() || "0",
       description: "All time",
-      tooltip:
-        "Number of smart contracts deployed to Base mainnet by the user that have at least 10 unique wallets interacting with them.",
+      tooltip: `Number of smart contracts deployed to ${selectedSponsor?.name} mainnet by the user that have at least 10 unique wallets interacting with them.`,
       icon: <Activity className="h-4 w-4" />,
     },
     {
       title: "Builders with Deployed Smart Contracts",
       value: metrics.deployedContractDevs?.toLocaleString() || "0",
       description: "All time",
-      tooltip:
-        "Total number of smart contracts the user has deployed to Base mainnet, regardless of activity level.",
+      tooltip: `Total number of smart contracts the user has deployed to ${selectedSponsor?.name} mainnet, regardless of activity level.`,
       icon: <Code className="h-4 w-4" />,
     },
   ];
