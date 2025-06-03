@@ -26,8 +26,8 @@ export const ENDPOINTS = {
       leaderboards: "/api/leaderboards",
     },
     talent: {
-      profile: "/api/profile",
-      lookup: "/api/lookup",
+      profile: "/api/talent/profile",
+      lookup: "/api/talent/lookup",
       grants: "/api/grants",
       leaderboards: "/api/leaderboards",
       sponsors: "/api/sponsors",
