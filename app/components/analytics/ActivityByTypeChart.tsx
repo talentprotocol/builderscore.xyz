@@ -1,5 +1,6 @@
 "use client";
 
+import { useSponsor } from "@/app/context/SponsorContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import { CSVRow } from "@/app/lib/csv-parser";
 import { formatDate } from "@/app/lib/utils";
@@ -22,6 +23,7 @@ export default function ActivityByTypeChart({
   data,
 }: ActivityByTypeChartProps) {
   const { isDarkMode } = useTheme();
+  const { selectedSponsor } = useSponsor();
 
   const CHART_COLORS = {
     githubDevs: "var(--chart-1)",
@@ -36,8 +38,10 @@ export default function ActivityByTypeChart({
       date: formatDate(dateStr),
       githubDevs: Number(row["Devs with GitHub Activity"]),
       githubRepos: Number(row["Total GitHub Repos"]),
-      contractDevs: Number(row["Devs with Base Contract Activity"]),
-      totalContracts: Number(row["Total Base Contracts"]),
+      contractDevs: Number(
+        row[`Devs with ${selectedSponsor?.name} Contract Activity`],
+      ),
+      totalContracts: Number(row[`Total ${selectedSponsor?.name} Contracts`]),
     };
   });
 
@@ -49,7 +53,7 @@ export default function ActivityByTypeChart({
             Builder Activity by Type
           </div>
           <div className="text-xs text-neutral-500 dark:text-neutral-400">
-            Weekly GitHub and Base Contract activity metrics
+            Weekly GitHub and {selectedSponsor?.name} Contract activity metrics
           </div>
         </div>
 
@@ -94,7 +98,7 @@ export default function ActivityByTypeChart({
                       return [value, "Public Repositories"];
                     case "Contract Developers":
                       return [value, "Contract Developers"];
-                    case "Base Contracts":
+                    case `${selectedSponsor?.name} Contracts`:
                       return [value, "Verified Contracts"];
                     default:
                       return [value, name];
