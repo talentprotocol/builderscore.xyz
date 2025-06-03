@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 export default async function Page({
   params,
 }: {
-  params: { sponsor: string };
+  params: Promise<{ sponsor: string }>;
 }) {
   const requestHeaders = await headers();
   const headersAsObject: { [key: string]: string } = {};
