@@ -4,9 +4,11 @@ import SelectSponsor from "@/app/components/rewards/SelectSponsor";
 import { useSponsor } from "@/app/context/SponsorContext";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar({ sponsored }: { sponsored?: boolean }) {
   const { selectedSponsor } = useSponsor();
+  const pathname = usePathname();
 
   let sponsorLogo = "";
 
@@ -21,6 +23,8 @@ export default function Navbar({ sponsored }: { sponsored?: boolean }) {
       sponsorLogo = "/images/talent_protocol_icon_white.svg";
       break;
   }
+
+  const isAnalyticsPage = pathname.includes("/analytics");
 
   return (
     <nav className="mb-3 flex items-center justify-between">
@@ -40,7 +44,7 @@ export default function Navbar({ sponsored }: { sponsored?: boolean }) {
         </h1>
       </Link>
 
-      {sponsored && <SelectSponsor />}
+      {sponsored && !isAnalyticsPage && <SelectSponsor />}
     </nav>
   );
 }
