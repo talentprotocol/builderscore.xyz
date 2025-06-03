@@ -1,9 +1,6 @@
+import { CSVRow, parseCSV } from "@/app/lib/csv-parser";
 import fs from "fs";
 import path from "path";
-
-import { CSVRow, parseCSV } from "../lib/csv-parser";
-
-const dataDir = path.join(process.cwd(), "app/data/base");
 
 export interface MetricsTotals {
   date: string;
@@ -29,7 +26,10 @@ export interface CSVDataResult {
   summaryText: string;
 }
 
-export async function getCSVData(): Promise<CSVDataResult> {
+export async function getCSVData(subdomain: string): Promise<CSVDataResult> {
+  const sponsor = subdomain || "base";
+  const dataDir = path.join(process.cwd(), `app/data/${sponsor}`);
+
   const activationCSV = fs.readFileSync(
     path.join(dataDir, "rewards_sponsor_metrics_activation_rate.csv"),
     "utf-8",
