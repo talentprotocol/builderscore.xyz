@@ -53,7 +53,7 @@ export default function RewardsBreakdownChart({
   const specialCategoriesData = data
     .filter(
       (row) =>
-        row["Category"] === "BR + /base-builds" ||
+        row["Category"] === "BR + Base-builds" ||
         row["Category"] === "BR + Buildathon Winner" ||
         row["Category"] === "BR + Self-XYZ",
     )
