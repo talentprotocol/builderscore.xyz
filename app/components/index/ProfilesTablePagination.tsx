@@ -1,3 +1,4 @@
+import { ClientOnly } from "@/app/components/ClientOnly";
 import { Button } from "@/app/components/ui/button";
 import {
   Select,
@@ -27,15 +28,17 @@ export default function ProfilesTablePagination({
     <div className="flex flex-1 items-center justify-between gap-2">
       <div className="ml-1 flex h-6 items-center">
         {showTotal && (
-          <p
-            className={cn(
-              "text-xs",
-              totalProfiles === 1 ? "font-semibold" : "",
-            )}
-          >
-            {formatNumber(totalProfiles)} Builder
-            {totalProfiles === 1 ? "" : "s"}
-          </p>
+          <ClientOnly>
+            <p
+              className={cn(
+                "text-xs",
+                totalProfiles === 1 ? "font-semibold" : "",
+              )}
+            >
+              {formatNumber(totalProfiles)} Builder
+              {totalProfiles === 1 ? "" : "s"}
+            </p>
+          </ClientOnly>
         )}
       </div>
 
