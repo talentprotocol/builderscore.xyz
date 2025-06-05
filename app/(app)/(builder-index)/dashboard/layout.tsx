@@ -1,4 +1,4 @@
-import Providers from "@/app/(builder-index)/dashboard/providers";
+import Providers from "@/app/(app)/(builder-index)/dashboard/providers";
 import MainLayout from "@/app/components/MainLayout";
 import Navbar from "@/app/components/Navbar";
 import { Metadata } from "next";
