@@ -50,11 +50,6 @@ export async function middleware(request: NextRequest) {
     // Set the current subdomain in the header
     headers.set("x-current-subdomain", subdomain);
 
-    // Block access to admin page from subdomains
-    if (pathname.startsWith("/admin")) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-
     // For the root path on a subdomain, rewrite to the subdomain page
     if (pathname === "/") {
       return NextResponse.rewrite(new URL(`/${subdomain}`, request.url), {
