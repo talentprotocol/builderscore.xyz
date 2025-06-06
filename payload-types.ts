@@ -65,7 +65,11 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
-  blocks: {};
+  blocks: {
+    section: Section;
+    profiles: Profiles;
+    text: Text;
+  };
   collections: {
     users: User;
     media: Media;
@@ -117,6 +121,63 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "section".
+ */
+export interface Section {
+  /**
+   * Spacing between blocks in this row
+   */
+  gap?: ('0' | '1' | '2' | '3' | '4') | null;
+  /**
+   * Vertical alignment of blocks in this row
+   */
+  alignment?: ('start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch') | null;
+  /**
+   * Allow blocks to wrap to new lines on smaller screens
+   */
+  wrap?: boolean | null;
+  blocks?: (Profiles | Text)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profiles".
+ */
+export interface Profiles {
+  title: string;
+  config?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'profiles';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "text".
+ */
+export interface Text {
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'text';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -158,6 +219,26 @@ export interface Media {
 export interface Dashboard {
   id: number;
   title: string;
+  blocks?:
+    | {
+        /**
+         * Spacing between blocks in this row
+         */
+        gap?: ('0' | '1' | '2' | '3' | '4') | null;
+        /**
+         * Vertical alignment of blocks in this row
+         */
+        alignment?: ('start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch') | null;
+        /**
+         * Allow blocks to wrap to new lines on smaller screens
+         */
+        wrap?: boolean | null;
+        blocks?: (Profiles | Text)[] | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'section';
+      }[]
+    | null;
   slug?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -262,6 +343,20 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface DashboardSelect<T extends boolean = true> {
   title?: T;
+  blocks?:
+    | T
+    | {
+        section?:
+          | T
+          | {
+              gap?: T;
+              alignment?: T;
+              wrap?: T;
+              blocks?: T | {};
+              id?: T;
+              blockName?: T;
+            };
+      };
   slug?: T;
   updatedAt?: T;
   createdAt?: T;

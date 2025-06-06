@@ -1,4 +1,6 @@
+import { RenderBlocks } from "@/app/components/blocks/render";
 import { getQueryClient } from "@/app/lib/get-query-client";
+import { Section as SectionProps } from "@/payload-types";
 import config from "@/payload.config";
 import { dehydrate } from "@tanstack/react-query";
 import { HydrationBoundary } from "@tanstack/react-query";
@@ -44,6 +46,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex flex-col gap-6">
         <p>{dashboard.title}</p>
+        <RenderBlocks blocks={dashboard.blocks as SectionProps["blocks"]} />
       </div>
     </HydrationBoundary>
   );

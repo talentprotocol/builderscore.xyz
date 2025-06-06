@@ -1,4 +1,7 @@
 // storage-adapter-import-placeholder
+import { ProfilesBlock } from "@/app/components/blocks/ProfilesBlock/config";
+import { SectionBlock } from "@/app/components/blocks/SectionBlock/config";
+import { TextBlock } from "@/app/components/blocks/TextBlock/config";
 import { Dashboard } from "@/collections/Dashboard";
 import { Media } from "@/collections/Media";
 import { Users } from "@/collections/Users";
@@ -21,6 +24,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Dashboard],
+  blocks: [SectionBlock, ProfilesBlock, TextBlock],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
