@@ -3,6 +3,7 @@
 import ProfilesChart from "@/app/components/index/ProfilesChart";
 import ProfilesChartComposer from "@/app/components/index/ProfilesChartComposer";
 import ProfilesChartDateOptions from "@/app/components/index/ProfilesChartDateOptions";
+import ProfilesTable from "@/app/components/index/ProfilesTable";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
 import ProfilesTableFilters from "@/app/components/index/ProfilesTableFilters";
 import ProfilesTableOptions from "@/app/components/index/ProfilesTableOptions";
@@ -12,7 +13,7 @@ import {
   useSearchFields,
   useSearchProfiles,
 } from "@/app/hooks/useSearchQueries";
-import { DEFAULT_SEARCH_QUERY } from "@/app/lib/constants";
+import { COLUMN_ORDER, DEFAULT_SEARCH_QUERY } from "@/app/lib/constants";
 import { calculateDateRange } from "@/app/lib/utils";
 import { ChartSeries } from "@/app/types/index/chart";
 import { ViewOption } from "@/app/types/index/data";
@@ -25,17 +26,18 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import { RuleGroupType } from "react-querybuilder";
 
-import ProfilesTable from "./ProfilesTable";
-
-export function ProfilesComponent({ config }: ProfilesComponentProps) {
+export function ProfilesComponent({
+  config,
+  debug,
+}: ProfilesComponentProps & { debug?: boolean }) {
   const [query, setQuery] = useState<RuleGroupType>(
     config.query ?? DEFAULT_SEARCH_QUERY,
   );
   const [order, setOrder] = useState<"asc" | "desc">(config.order ?? "desc");
+  const [showTools, setShowTools] = useState(false);
 
   const [pagination, setPagination] = useState<PaginationState>(
     config.pagination ?? {
@@ -56,15 +58,20 @@ export function ProfilesComponent({ config }: ProfilesComponentProps) {
   );
   const [showTotal, setShowTotal] = useState(config.showTotal ?? true);
   const [columnOrder, setColumnOrder] = useState<string[]>(
-    config.columnOrder ?? [
-      "row_number",
-      "builder",
-      "bio",
-      "location",
-      "builder_score",
-      "human_checkmark",
-      "tags",
-    ],
+    config.columnOrder ?? COLUMN_ORDER,
+  );
+  const [columnVisibility, setColumnVisibility] = useState<
+    Record<string, boolean>
+  >(
+    config.columnVisibility ?? {
+      row_number: false,
+      builder: true,
+      bio: true,
+      location: true,
+      builder_score: true,
+      human_checkmark: true,
+      tags: true,
+    },
   );
 
   const [dateRange, setDateRange] = useState<string>(config.dateRange ?? "30d");
@@ -146,16 +153,47 @@ export function ProfilesComponent({ config }: ProfilesComponentProps) {
       sorting,
       columnOrder,
       pagination,
+      columnVisibility,
     },
     onSortingChange: handleSortingChange,
     onColumnOrderChange: handleColumnOrderChange,
     onPaginationChange: setPagination,
+    onColumnVisibilityChange: setColumnVisibility,
   });
 
   return (
     <div className="flex flex-col gap-3">
+      {debug && (
+        <div className="flex flex-col gap-3">
+          <div
+            className="cursor-pointer border-1 border-red-500 text-xs"
+            onClick={() => navigator.clipboard.writeText(JSON.stringify(query))}
+          >
+            Query: {JSON.stringify(query)}
+          </div>
+          {series.left.map((s, index) => (
+            <div
+              key={index}
+              className="cursor-pointer border-1 border-red-500 text-xs"
+              onClick={() => navigator.clipboard.writeText(JSON.stringify(s))}
+            >
+              Series Left #{index + 1}: {JSON.stringify(s)}
+            </div>
+          ))}
+          {series.right.map((s, index) => (
+            <div
+              key={index}
+              className="cursor-pointer border-1 border-red-500 text-xs"
+              onClick={() => navigator.clipboard.writeText(JSON.stringify(s))}
+            >
+              Series Right #{index + 1}: {JSON.stringify(s)}
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
-        {selectedView === "table" && (
+        {selectedView === "table" && showTools && (
           <ProfilesTableFilters
             fields={fields || []}
             query={query}
@@ -163,7 +201,7 @@ export function ProfilesComponent({ config }: ProfilesComponentProps) {
           />
         )}
 
-        {selectedView === "chart" && (
+        {selectedView === "chart" && showTools && (
           <div className="flex items-center gap-2">
             <ProfilesChartComposer
               series={series}
@@ -180,35 +218,42 @@ export function ProfilesComponent({ config }: ProfilesComponentProps) {
           </div>
         )}
 
-        <ProfilesTableOptions
-          table={table}
-          selectedView={selectedView}
-          setSelectedView={setSelectedView}
-          showPagination={showPagination}
-          setShowPagination={setShowPagination}
-          showTotal={showTotal}
-          setShowTotal={setShowTotal}
-          columnOrder={columnOrder}
-          onColumnOrderChange={handleColumnOrderChange}
-          showColumnsOptions={selectedView === "table"}
-        />
+        {showTools && (
+          <ProfilesTableOptions
+            table={table}
+            selectedView={selectedView}
+            setSelectedView={setSelectedView}
+            showPagination={showPagination}
+            setShowPagination={setShowPagination}
+            showTotal={showTotal}
+            setShowTotal={setShowTotal}
+            columnOrder={columnOrder}
+            onColumnOrderChange={handleColumnOrderChange}
+            showColumnsOptions={selectedView === "table"}
+          />
+        )}
       </div>
 
       <div className="relative">
-        <div className="card-style-background absolute top-0 left-0 z-0 flex h-full w-full items-center justify-center">
-          <Image
-            src="/images/talent-protocol-logo.png"
-            alt="Talent Protocol"
-            width={1402}
-            height={212}
-            className="h-12 w-auto opacity-10"
+        {selectedView === "table" && (
+          <ProfilesTable
+            table={table}
+            title={config.title}
+            description={config.description}
+            showTools={showTools}
+            setShowTools={setShowTools}
           />
-        </div>
-
-        {selectedView === "table" && <ProfilesTable table={table} />}
+        )}
 
         {selectedView === "chart" && (
-          <ProfilesChart data={chartData} series={series} />
+          <ProfilesChart
+            data={chartData}
+            series={series}
+            title={config.title}
+            description={config.description}
+            showTools={showTools}
+            setShowTools={setShowTools}
+          />
         )}
       </div>
 

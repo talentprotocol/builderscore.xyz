@@ -18,7 +18,7 @@ export default function Navbar({
   const Logo = currentSponsor?.logo;
 
   return (
-    <nav className="mb-3 flex items-center justify-between">
+    <nav className="mb-4 flex items-center justify-between">
       <Link href="/" className="ml-1 flex items-center gap-2">
         <Logo height={15} color={currentSponsor?.color} />
         <h1 className="text-foreground font-semibold whitespace-nowrap">

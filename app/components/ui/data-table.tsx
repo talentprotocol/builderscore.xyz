@@ -32,7 +32,7 @@ export function DataTable<TData>({
       {...props}
     >
       {children}
-      <div className="card-style-transparent overflow-hidden">
+      <div className="card-style overflow-hidden">
         <Table className="table-fixed">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

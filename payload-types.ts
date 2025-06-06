@@ -143,6 +143,8 @@ export interface Section {
  */
 export interface Profiles {
   title: string;
+  description?: string | null;
+  selectedView?: ('table' | 'chart') | null;
   query?:
     | {
         [k: string]: unknown;
@@ -155,7 +157,6 @@ export interface Profiles {
   order?: ('asc' | 'desc') | null;
   pageIndex?: number | null;
   pageSize?: number | null;
-  selectedView?: ('table' | 'chart') | null;
   showPagination?: boolean | null;
   showTotal?: boolean | null;
   columnOrder?:
@@ -164,27 +165,33 @@ export interface Profiles {
         id?: string | null;
       }[]
     | null;
-  dateRange?: string | null;
+  dateRange?: ('7d' | '30d' | '90d' | '180d' | '365d' | 'max') | null;
   dateInterval?: ('day' | 'week' | 'month') | null;
   leftSeries?:
     | {
-        key?: string | null;
-        name?: string | null;
-        dataProvider?: string | null;
-        color?: string | null;
-        type?: ('line' | 'column' | 'stacked-column' | 'area') | null;
-        cumulative?: boolean | null;
+        series?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
   rightSeries?:
     | {
-        key?: string | null;
-        name?: string | null;
-        dataProvider?: string | null;
-        color?: string | null;
-        type?: ('line' | 'column' | 'stacked-column' | 'area') | null;
-        cumulative?: boolean | null;
+        series?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -259,6 +266,9 @@ export interface Media {
 export interface Dashboard {
   id: number;
   title: string;
+  description?: string | null;
+  image?: (number | null) | Media;
+  color?: string | null;
   blocks?:
     | {
         /**
@@ -379,6 +389,9 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface DashboardSelect<T extends boolean = true> {
   title?: T;
+  description?: T;
+  image?: T;
+  color?: T;
   blocks?:
     | T
     | {

@@ -134,7 +134,7 @@ export default function Page() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex flex-col gap-6">
         {pageConfig.components.map((config) => (
-          <ProfilesComponent key={config.id} config={config} />
+          <ProfilesComponent key={config.id} config={config} debug />
         ))}
       </div>
     </HydrationBoundary>

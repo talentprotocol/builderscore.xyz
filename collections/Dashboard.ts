@@ -14,6 +14,19 @@ export const Dashboard: CollectionConfig = {
       required: true,
     },
     {
+      name: "description",
+      type: "text",
+    },
+    {
+      name: "image",
+      type: "upload",
+      relationTo: "media",
+    },
+    {
+      name: "color",
+      type: "text",
+    },
+    {
       name: "blocks",
       type: "blocks",
       blocks: [SectionBlock],

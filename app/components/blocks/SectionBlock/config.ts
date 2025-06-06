@@ -13,7 +13,7 @@ export const SectionBlock: Block = {
         { label: "3", value: "3" },
         { label: "4", value: "4" },
       ],
-      defaultValue: "2",
+      defaultValue: "4",
       admin: {
         description: "Spacing between blocks in this section",
       },

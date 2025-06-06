@@ -1,11 +1,12 @@
+import { ChartSeries } from "@/app/types/index/chart";
+import { ViewOption } from "@/app/types/index/data";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { RuleGroupType } from "react-querybuilder";
 
-import { ChartSeries } from "./chart";
-import { ViewOption } from "./data";
-
 export interface ProfilesComponentConfig {
   id: string;
+  title?: string;
+  description?: string;
   query?: RuleGroupType;
   order?: "asc" | "desc";
   pagination?: PaginationState;
@@ -14,6 +15,7 @@ export interface ProfilesComponentConfig {
   showPagination?: boolean;
   showTotal?: boolean;
   columnOrder?: string[];
+  columnVisibility?: Record<string, boolean>;
   dateRange?: string;
   dateInterval?: string;
   series?: ChartSeries;

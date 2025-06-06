@@ -4,6 +4,7 @@ import { Section as SectionProps } from "@/payload-types";
 import config from "@/payload.config";
 import { dehydrate } from "@tanstack/react-query";
 import { HydrationBoundary } from "@tanstack/react-query";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getPayload } from "payload";
 
@@ -44,8 +45,34 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="flex flex-col gap-6">
-        <p>{dashboard.title}</p>
+      <div className="flex flex-col gap-4">
+        <div
+          className="-ml-4 flex w-[calc(100%+2rem)] flex-col gap-1 px-4 pt-18 pb-4"
+          style={{
+            backgroundColor: `#${dashboard.color}`,
+          }}
+        >
+          {dashboard.image &&
+            typeof dashboard.image === "object" &&
+            dashboard.image.url && (
+              <Image
+                src={dashboard.image.url}
+                alt={dashboard.title}
+                width={200}
+                height={100}
+                className="ml-0.5 h-6 w-auto self-start"
+              />
+            )}
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h1 className="text-lg font-semibold">{dashboard.title}</h1>
+
+          <p className="max-w-3xl text-sm text-neutral-500">
+            {dashboard.description}
+          </p>
+        </div>
+
         <RenderBlocks blocks={dashboard.blocks as SectionProps["blocks"]} />
       </div>
     </HydrationBoundary>

@@ -24,6 +24,8 @@ export default function ProfilesTablePagination({
   showPagination: boolean;
   showTotal: boolean;
 }) {
+  if (!showPagination && !showTotal) return null;
+
   return (
     <div className="flex flex-1 items-center justify-between gap-2">
       <div className="ml-1 flex h-6 items-center">

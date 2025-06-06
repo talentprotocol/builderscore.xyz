@@ -1,4 +1,5 @@
 import { ProfilesComponent } from "@/app/components/index/ProfilesComponent";
+import { COLUMN_ORDER } from "@/app/lib/constants";
 import { getQueryClient } from "@/app/lib/get-query-client";
 import { ChartSeriesItem } from "@/app/types/index/chart";
 import { ViewOption } from "@/app/types/index/data";
@@ -12,6 +13,7 @@ export const ProfilesBlock = (props: ProfilesProps) => {
   const {
     id,
     title,
+    description,
     query,
     order,
     pageIndex,
@@ -27,8 +29,27 @@ export const ProfilesBlock = (props: ProfilesProps) => {
   } = props;
   const queryClient = getQueryClient();
 
+  const leftSeriesData = leftSeries?.map((item) => item.series).flat();
+  const rightSeriesData = rightSeries?.map((item) => item.series).flat();
+
+  // Create columnVisibility based on columnOrder
+  const orderedColumns = columnOrder
+    ?.map((item) => item.column)
+    .filter(Boolean) as string[];
+
+  const columnVisibility = COLUMN_ORDER.reduce(
+    (acc, columnId) => {
+      // Hide columns that are not in the columnOrder, show ones that are
+      acc[columnId] = orderedColumns.includes(columnId);
+      return acc;
+    },
+    {} as Record<string, boolean>,
+  );
+
   const componentConfig: ProfilesComponentConfig = {
     id: `profiles-block-${id}`,
+    title,
+    description: description ?? undefined,
     query: query as RuleGroupType | undefined,
     selectedView: selectedView as ViewOption,
     order: order as "asc" | "desc",
@@ -39,22 +60,19 @@ export const ProfilesBlock = (props: ProfilesProps) => {
     sorting: [{ id: "builder_score", desc: true }],
     showPagination: showPagination as boolean,
     showTotal: showTotal as boolean,
-    columnOrder: columnOrder as string[],
+    columnOrder: orderedColumns,
+    columnVisibility,
     dateRange: dateRange as string,
     dateInterval: dateInterval as string,
     series: {
-      left: leftSeries as ChartSeriesItem[],
-      right: rightSeries as ChartSeriesItem[],
+      left: leftSeriesData as ChartSeriesItem[],
+      right: rightSeriesData as ChartSeriesItem[],
     },
   };
 
   return (
-    <div>
-      <h2>{title}</h2>
-
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProfilesComponent config={componentConfig} />
-      </HydrationBoundary>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ProfilesComponent config={componentConfig} />
+    </HydrationBoundary>
   );
 };

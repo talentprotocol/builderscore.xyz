@@ -13,14 +13,14 @@ export const SectionBlock = (props: SectionProps) => {
   };
 
   const columnsClass = {
-    "1": "grid-cols-1",
-    "2": "grid-cols-2",
-    "3": "grid-cols-3",
-    "4": "grid-cols-4",
-    auto: "grid-cols-auto",
+    "1": "lg:grid-cols-1",
+    "2": "lg:grid-cols-2",
+    "3": "lg:grid-cols-3",
+    "4": "lg:grid-cols-4",
+    auto: "md:grid-cols-auto",
   };
 
-  const sectionClasses = `grid ${columnsClass[columns as keyof typeof columnsClass]} ${gapClasses[gap as keyof typeof gapClasses]}`;
+  const sectionClasses = `grid grid-cols-1 ${columnsClass[columns as keyof typeof columnsClass]} ${gapClasses[gap as keyof typeof gapClasses]}`;
 
   return (
     <section className={sectionClasses}>
