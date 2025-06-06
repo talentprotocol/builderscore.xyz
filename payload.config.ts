@@ -22,6 +22,17 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      title: "Talent Protocol",
+      description: "Talent Protocol CMS",
+      icons: [
+        {
+          rel: "icon",
+          type: "image/png",
+          url: "/favicon.ico",
+        },
+      ],
+    },
   },
   collections: [Users, Media, Dashboard],
   blocks: [SectionBlock, ProfilesBlock, TextBlock],

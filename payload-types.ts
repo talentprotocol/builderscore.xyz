@@ -125,17 +125,13 @@ export interface UserAuthOperations {
  */
 export interface Section {
   /**
-   * Spacing between blocks in this row
+   * Spacing between blocks in this section
    */
   gap?: ('0' | '1' | '2' | '3' | '4') | null;
   /**
-   * Vertical alignment of blocks in this row
+   * Number of columns in this section
    */
-  alignment?: ('start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch') | null;
-  /**
-   * Allow blocks to wrap to new lines on smaller screens
-   */
-  wrap?: boolean | null;
+  columns?: ('1' | '2' | '3' | '4' | 'auto') | null;
   blocks?: (Profiles | Text)[] | null;
   id?: string | null;
   blockName?: string | null;
@@ -147,7 +143,51 @@ export interface Section {
  */
 export interface Profiles {
   title: string;
-  config?: string | null;
+  query?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  order?: ('asc' | 'desc') | null;
+  pageIndex?: number | null;
+  pageSize?: number | null;
+  selectedView?: ('table' | 'chart') | null;
+  showPagination?: boolean | null;
+  showTotal?: boolean | null;
+  columnOrder?:
+    | {
+        column?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  dateRange?: string | null;
+  dateInterval?: ('day' | 'week' | 'month') | null;
+  leftSeries?:
+    | {
+        key?: string | null;
+        name?: string | null;
+        dataProvider?: string | null;
+        color?: string | null;
+        type?: ('line' | 'column' | 'stacked-column' | 'area') | null;
+        cumulative?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  rightSeries?:
+    | {
+        key?: string | null;
+        name?: string | null;
+        dataProvider?: string | null;
+        color?: string | null;
+        type?: ('line' | 'column' | 'stacked-column' | 'area') | null;
+        cumulative?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'profiles';
@@ -222,17 +262,13 @@ export interface Dashboard {
   blocks?:
     | {
         /**
-         * Spacing between blocks in this row
+         * Spacing between blocks in this section
          */
         gap?: ('0' | '1' | '2' | '3' | '4') | null;
         /**
-         * Vertical alignment of blocks in this row
+         * Number of columns in this section
          */
-        alignment?: ('start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch') | null;
-        /**
-         * Allow blocks to wrap to new lines on smaller screens
-         */
-        wrap?: boolean | null;
+        columns?: ('1' | '2' | '3' | '4' | 'auto') | null;
         blocks?: (Profiles | Text)[] | null;
         id?: string | null;
         blockName?: string | null;
@@ -350,8 +386,7 @@ export interface DashboardSelect<T extends boolean = true> {
           | T
           | {
               gap?: T;
-              alignment?: T;
-              wrap?: T;
+              columns?: T;
               blocks?: T | {};
               id?: T;
               blockName?: T;

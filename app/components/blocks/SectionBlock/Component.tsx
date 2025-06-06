@@ -2,7 +2,7 @@ import { RenderBlocks } from "@/app/components/blocks/render";
 import { Section as SectionProps } from "@/payload-types";
 
 export const SectionBlock = (props: SectionProps) => {
-  const { blocks, gap = "2", alignment = "start", wrap = true } = props;
+  const { blocks, gap = "2", columns = "auto" } = props;
 
   const gapClasses = {
     "0": "gap-0",
@@ -12,19 +12,15 @@ export const SectionBlock = (props: SectionProps) => {
     "4": "gap-4",
   };
 
-  const alignmentClasses = {
-    start: "justify-start",
-    center: "justify-center",
-    end: "justify-end",
-    "space-between": "justify-between",
-    "space-around": "justify-around",
-    "space-evenly": "justify-evenly",
-    stretch: "justify-stretch",
+  const columnsClass = {
+    "1": "grid-cols-1",
+    "2": "grid-cols-2",
+    "3": "grid-cols-3",
+    "4": "grid-cols-4",
+    auto: "grid-cols-auto",
   };
 
-  const wrapClass = wrap ? "flex-wrap" : "flex-nowrap";
-
-  const sectionClasses = `flex ${gapClasses[gap as keyof typeof gapClasses]} ${alignmentClasses[alignment as keyof typeof alignmentClasses]} ${wrapClass}`;
+  const sectionClasses = `grid ${columnsClass[columns as keyof typeof columnsClass]} ${gapClasses[gap as keyof typeof gapClasses]}`;
 
   return (
     <section className={sectionClasses}>

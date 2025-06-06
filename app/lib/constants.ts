@@ -16,6 +16,15 @@ export const TABLE_CONTENT_HEIGHT = "h-[20rem]";
 export const MAX_TABLE_CONTENT_HEIGHT = `max-${TABLE_CONTENT_HEIGHT}`;
 export const TABLE_HEIGHT = "h-[22.45rem]";
 export const PER_PAGE_OPTIONS = [10, 50, 100, 250];
+export const COLUMN_ORDER = [
+  "row_number",
+  "builder",
+  "bio",
+  "location",
+  "builder_score",
+  "human_checkmark",
+  "tags",
+];
 
 export const DEFAULT_SPONSOR_SLUG = "base";
 

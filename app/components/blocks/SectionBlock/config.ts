@@ -15,32 +15,22 @@ export const SectionBlock: Block = {
       ],
       defaultValue: "2",
       admin: {
-        description: "Spacing between blocks in this row",
+        description: "Spacing between blocks in this section",
       },
     },
     {
-      name: "alignment",
+      name: "columns",
       type: "select",
       options: [
-        { label: "Start", value: "start" },
-        { label: "Center", value: "center" },
-        { label: "End", value: "end" },
-        { label: "Space Between", value: "space-between" },
-        { label: "Space Around", value: "space-around" },
-        { label: "Space Evenly", value: "space-evenly" },
-        { label: "Stretch", value: "stretch" },
+        { label: "1", value: "1" },
+        { label: "2", value: "2" },
+        { label: "3", value: "3" },
+        { label: "4", value: "4" },
+        { label: "Auto", value: "auto" },
       ],
-      defaultValue: "start",
+      defaultValue: "2",
       admin: {
-        description: "Vertical alignment of blocks in this row",
-      },
-    },
-    {
-      name: "wrap",
-      type: "checkbox",
-      defaultValue: true,
-      admin: {
-        description: "Allow blocks to wrap to new lines on smaller screens",
+        description: "Number of columns in this section",
       },
     },
     {
