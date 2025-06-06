@@ -146,6 +146,6 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     themeClassName: "light",
     ticker: "CELO",
     logo: CeloLogo,
-    color: "#fcff52",
+    color: "#000000",
   },
 };

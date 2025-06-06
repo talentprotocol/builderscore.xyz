@@ -9,7 +9,7 @@ export default async function Page({
 }) {
   const { sponsor } = await params;
 
-  if (!SPONSORS[sponsor as keyof typeof SPONSORS]) {
+  if (!SPONSORS[sponsor as keyof typeof SPONSORS] || sponsor === "preview") {
     return notFound();
   }
 

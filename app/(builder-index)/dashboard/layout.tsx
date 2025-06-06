@@ -4,7 +4,7 @@ import Navbar from "@/app/components/Navbar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Builder Index",
+  title: "Talent Index",
 };
 
 export default function IndexLayout({
@@ -16,7 +16,7 @@ export default function IndexLayout({
     <Providers>
       <MainLayout themeClassName="dark">
         <div className="mx-auto flex min-h-dvh flex-col px-4 py-4">
-          <Navbar title={metadata.title as string} />
+          <Navbar title={metadata.title as string} menu />
           <main className="flex h-full flex-col">{children}</main>
         </div>
       </MainLayout>
