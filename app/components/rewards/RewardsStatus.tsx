@@ -4,10 +4,12 @@ import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
+import { useSponsors } from "@/app/hooks/useLoadRewards";
 
 export default function RewardsStatus() {
   const { loadingUser } = useUser();
-  const { loadingSponsors, selectedSponsor } = useSponsor();
+  const { isLoading: loadingSponsors } = useSponsors();
+  const { selectedSponsor } = useSponsor();
   const { loadingGrants, selectedGrant } = useGrant();
   const {
     isLoading: loadingLeaderboardData,

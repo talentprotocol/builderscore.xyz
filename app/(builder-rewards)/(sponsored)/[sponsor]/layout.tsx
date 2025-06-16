@@ -40,8 +40,8 @@ export default async function SponsoredRewardsLayout({
   params: Promise<{ sponsor: string }>;
 }>) {
   const { sponsor } = await params;
-  let themeClassName = getSponsorThemeClassName(sponsor);
 
+  let themeClassName = getSponsorThemeClassName(sponsor);
   if (!themeClassName) {
     themeClassName = getSponsorThemeClassName(DEFAULT_SPONSOR_SLUG);
   }

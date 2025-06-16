@@ -5,6 +5,7 @@ import { ALL_TIME_GRANT, useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
+import { useSponsors } from "@/app/hooks/useLoadRewards";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
@@ -17,7 +18,8 @@ export default function Header() {
   const { grants, selectedGrant, loadingGrants } = useGrant();
   const { userLeaderboard, showUserLeaderboard, loadingLeaderboard } =
     useLeaderboard();
-  const { selectedSponsor, sponsorTokenTicker, loadingSponsors } = useSponsor();
+  const { selectedSponsor, sponsorTokenTicker } = useSponsor();
+  const { isLoading: loadingSponsors } = useSponsors();
   const { loadingUser } = useUser();
   const grantsToUse =
     selectedGrant && selectedGrant.id !== ALL_TIME_GRANT.id

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSponsors } from "@/app/hooks/useLoadRewards";
 import { SPONSORS } from "@/app/lib/constants";
 import { getSponsorThemeClassName, getSponsorTicker } from "@/app/lib/theme";
 import { Sponsor } from "@/app/types/rewards/sponsors";
@@ -12,10 +13,6 @@ import {
 } from "react";
 
 interface SponsorContextType {
-  loadingSponsors: boolean;
-  setLoadingSponsors: (loadingSponsors: boolean) => void;
-  sponsors: Sponsor[];
-  setSponsors: (sponsors: Sponsor[]) => void;
   selectedSponsor: Sponsor | null;
   setSelectedSponsor: (sponsor: Sponsor | null) => void;
   setSelectedSponsorFromSlug: (sponsorSlug: string) => void;
@@ -25,37 +22,38 @@ interface SponsorContextType {
 const SponsorContext = createContext<SponsorContextType | undefined>(undefined);
 
 export function SponsorProvider({ children }: { children: ReactNode }) {
-  const [loadingSponsors, setLoadingSponsors] = useState(true);
-  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
   const [sponsorTokenTicker, setSponsorTokenTicker] = useState<string>("");
 
-  useEffect(() => {
-    if (selectedSponsor) {
-      document.documentElement.setAttribute(
-        "data-sponsor",
-        selectedSponsor.slug,
-      );
-    }
-  }, [selectedSponsor]);
+  const { data: sponsorsData } = useSponsors();
 
   const setSelectedSponsorFromSlug = (sponsorSlug: string) => {
     setSelectedSponsor(
-      sponsors.find((sponsor) => sponsor.slug === sponsorSlug) || null,
+      sponsorsData?.sponsors.find((sponsor) => sponsor.slug === sponsorSlug) ||
+        null,
     );
   };
 
   useEffect(() => {
     if (selectedSponsor) {
+      // Set the sponsor attribute on the document element
+      document.documentElement.setAttribute(
+        "data-sponsor",
+        selectedSponsor.slug,
+      );
+
+      // Set the sponsor token ticker
       const ticker = getSponsorTicker(selectedSponsor?.slug);
       setSponsorTokenTicker(ticker);
 
+      // Remove the old sponsor theme class
       for (const sponsor of Object.keys(SPONSORS)) {
         document.documentElement.classList.remove(
           SPONSORS[sponsor as keyof typeof SPONSORS].themeClassName,
         );
       }
 
+      // Add the new sponsor theme class
       const themeClassName = getSponsorThemeClassName(selectedSponsor.slug);
       document.documentElement.classList.add(themeClassName);
     }
@@ -64,10 +62,6 @@ export function SponsorProvider({ children }: { children: ReactNode }) {
   return (
     <SponsorContext.Provider
       value={{
-        loadingSponsors,
-        setLoadingSponsors,
-        sponsors,
-        setSponsors,
         selectedSponsor,
         setSelectedSponsor,
         setSelectedSponsorFromSlug,

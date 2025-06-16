@@ -1,71 +1,64 @@
-import { ENDPOINTS } from "@/app/config/api";
+import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import {
   LeaderboardEntry,
   LeaderboardParams,
   LeaderboardResponse,
 } from "@/app/types/rewards/leaderboards";
 
-export async function getLeaderboards(
+export async function fetchLeaderboards(
   params?: LeaderboardParams,
-): Promise<LeaderboardResponse | null> {
+): Promise<LeaderboardResponse> {
   const searchParams = new URLSearchParams();
 
-  if (params?.grant_id) {
-    searchParams.append("grant_id", params.grant_id);
-  }
-  if (params?.sponsor_slug) {
-    searchParams.append("sponsor_slug", params.sponsor_slug);
-  }
-  if (params?.per_page) {
-    searchParams.append("per_page", params.per_page.toString());
-  }
-  if (params?.page) {
-    searchParams.append("page", params.page.toString());
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, value.toString());
+      }
+    });
   }
 
   const queryString = searchParams.toString();
-  const url = `${ENDPOINTS.localApi.talent.leaderboards}${queryString ? `?${queryString}` : ""}`;
+  const url = `${API_BASE_URL}${ENDPOINTS.leaderboards}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url, {
-    cache: "no-store",
+    method: "GET",
+    headers: DEFAULT_HEADERS,
   });
 
-  if (response.status === 404) {
-    return null;
-  }
-
   if (!response.ok) {
-    throw new Error("Failed to fetch leaderboards");
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
 
   return response.json();
 }
 
-export async function getLeaderboardEntry(
+export async function fetchLeaderboardEntry(
   userId: string,
   grantId?: string,
   sponsorSlug?: string,
-): Promise<LeaderboardEntry | null> {
+): Promise<LeaderboardEntry> {
   const searchParams = new URLSearchParams();
   if (grantId) {
     searchParams.append("grant_id", grantId);
   }
-
   if (sponsorSlug) {
     searchParams.append("sponsor_slug", sponsorSlug);
   }
 
   const queryString = searchParams.toString();
-  const url = `${ENDPOINTS.localApi.talent.leaderboards}/${userId}${queryString ? `?${queryString}` : ""}`;
+  const url = `${API_BASE_URL}${ENDPOINTS.leaderboards}/${userId}${queryString ? `?${queryString}` : ""}`;
 
-  const response = await fetch(url);
-
-  if (response.status === 404) {
-    return null;
-  }
+  const response = await fetch(url, {
+    method: "GET",
+    headers: DEFAULT_HEADERS,
+  });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch leaderboard entry");
+    if (response.status === 404) {
+      throw new Error("NOT_FOUND");
+    }
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
 
   return response.json();

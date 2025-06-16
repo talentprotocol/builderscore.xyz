@@ -1,4 +1,4 @@
-import Home from "@/app/components/rewards/Home";
+import RewardsView from "@/app/components/rewards/RewardsView";
 import { Metadata } from "next";
 
 type Props = {
@@ -44,5 +44,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Page() {
-  return <Home />;
+  return <RewardsView sponsor="base" />;
 }

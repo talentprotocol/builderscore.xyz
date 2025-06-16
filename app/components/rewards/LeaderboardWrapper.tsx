@@ -6,14 +6,14 @@ import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer"
 import SelectGrant from "@/app/components/rewards/SelectGrant";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
-import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
+import { useSponsors } from "@/app/hooks/useLoadRewards";
 import { formatDate } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { useState } from "react";
 
 export default function LeaderboardWrapper() {
-  const { loadingSponsors } = useSponsor();
+  const { isLoading: loadingSponsors } = useSponsors();
   const { selectedGrant } = useGrant();
   const { talentProfile } = useUser();
   const {

@@ -1,4 +1,4 @@
-import Home from "@/app/components/rewards/Home";
+import RewardsView from "@/app/components/rewards/RewardsView";
 import { SPONSORS } from "@/app/lib/constants";
 import { notFound } from "next/navigation";
 
@@ -13,5 +13,5 @@ export default async function Page({
     return notFound();
   }
 
-  return <Home />;
+  return <RewardsView sponsor={sponsor} />;
 }

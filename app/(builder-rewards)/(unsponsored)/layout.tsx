@@ -1,5 +1,9 @@
 import RewardsLayout from "@/app/components/rewards/RewardsLayout";
-import { baseMetadata, celoMetadata } from "@/app/lib/constants";
+import {
+  DEFAULT_SPONSOR_SLUG,
+  baseMetadata,
+  celoMetadata,
+} from "@/app/lib/constants";
 import { getSubdomain } from "@/app/lib/get-subdomain";
 import { getSponsorThemeClassName } from "@/app/lib/theme";
 import { Metadata } from "next";
@@ -33,13 +37,13 @@ export default async function UnsponsoredRewardsLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const subdomain = await getSubdomain();
+  const sponsor = (await getSubdomain()) || DEFAULT_SPONSOR_SLUG;
 
   return (
     <RewardsLayout
-      themeClassName={getSponsorThemeClassName(subdomain)}
+      themeClassName={getSponsorThemeClassName(sponsor)}
       title="Builder Rewards"
-      sponsor={subdomain}
+      sponsor={sponsor}
     >
       {children}
     </RewardsLayout>

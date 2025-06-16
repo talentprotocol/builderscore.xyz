@@ -2,24 +2,21 @@ import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
 import { Sponsor } from "@/app/types/rewards/sponsors";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 const fetchSponsorBySlug = unstable_cache(
   async (slug: string) => {
-    const response = await fetch(
+    const response = await axios.get(
       `${API_BASE_URL}${ENDPOINTS.sponsors}/${slug}`,
       {
         headers: DEFAULT_HEADERS,
       },
     );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
+    return response.data;
   },
   [CACHE_TAGS.SPONSOR_BY_SLUG],
   { revalidate: CACHE_60_MINUTES },

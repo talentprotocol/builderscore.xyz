@@ -1,55 +1,29 @@
-import { ENDPOINTS } from "@/app/config/api";
-import { Grant, GrantParams, GrantsResponse } from "@/app/types/rewards/grants";
+import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
+import { GrantParams, GrantsResponse } from "@/app/types/rewards/grants";
 
-export async function getGrants(
+export async function fetchGrants(
   params?: GrantParams,
-): Promise<GrantsResponse | null> {
+): Promise<GrantsResponse> {
   const searchParams = new URLSearchParams();
 
-  if (params?.end_date_after) {
-    searchParams.append("end_date_after", params.end_date_after);
-  }
-  if (params?.end_date_before) {
-    searchParams.append("end_date_before", params.end_date_before);
-  }
-  if (params?.sponsor_slug) {
-    searchParams.append("sponsor_slug", params.sponsor_slug);
-  }
-  if (params?.per_page) {
-    searchParams.append("per_page", params.per_page.toString());
-  }
-  if (params?.page) {
-    searchParams.append("page", params.page.toString());
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, value.toString());
+      }
+    });
   }
 
   const queryString = searchParams.toString();
-  const url = `${ENDPOINTS.localApi.talent.grants}${queryString ? `?${queryString}` : ""}`;
+  const url = `${API_BASE_URL}${ENDPOINTS.grants}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url, {
-    cache: "no-store",
+    method: "GET",
+    headers: DEFAULT_HEADERS,
   });
 
-  if (response.status === 404) {
-    return null;
-  }
-
   if (!response.ok) {
-    throw new Error("Failed to fetch grants");
-  }
-
-  return response.json();
-}
-
-export async function getGrant(id: number): Promise<Grant | null> {
-  const url = `${ENDPOINTS.localApi.talent.grants}/${id}`;
-  const response = await fetch(url);
-
-  if (response.status === 404) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch grant");
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
 
   return response.json();

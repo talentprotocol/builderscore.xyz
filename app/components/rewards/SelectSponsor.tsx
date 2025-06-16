@@ -9,16 +9,14 @@ import {
 } from "@/app/components/ui/select";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useHistoryListener } from "@/app/hooks/useHistoryListener";
+import { useSponsors } from "@/app/hooks/useLoadRewards";
 import { ALLOWED_SPONSORS } from "@/app/lib/constants";
 import { Sponsor } from "@/app/types/rewards/sponsors";
 
 export default function SelectSponsor() {
-  const {
-    sponsors,
-    loadingSponsors,
-    selectedSponsor,
-    setSelectedSponsorFromSlug,
-  } = useSponsor();
+  const { selectedSponsor, setSelectedSponsorFromSlug } = useSponsor();
+
+  const { data: sponsorsData, isLoading: loadingSponsors } = useSponsors();
 
   const sponsorsList = [
     // {
@@ -26,7 +24,9 @@ export default function SelectSponsor() {
     //   name: "Global",
     //   slug: "global",
     // },
-    ...sponsors.filter((sponsor) => ALLOWED_SPONSORS.includes(sponsor.slug)),
+    ...(sponsorsData?.sponsors?.filter((sponsor) =>
+      ALLOWED_SPONSORS.includes(sponsor.slug),
+    ) || []),
   ];
 
   const handleSponsorChange = (newSponsor: string) => {

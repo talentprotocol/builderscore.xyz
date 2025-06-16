@@ -30,6 +30,7 @@ export const ENDPOINTS = {
       lookup: "/api/talent/lookup",
       grants: "/api/grants",
       leaderboards: "/api/leaderboards",
+      leaderboardEntry: "/api/leaderboards/entry",
       sponsors: "/api/sponsors",
       searchProfiles: "/api/search/profiles",
       searchAdvancedMetadataFields: "/api/search/advanced/metadata/fields",

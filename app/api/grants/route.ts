@@ -1,29 +1,8 @@
-import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
-import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
-import { unstable_cache } from "@/app/lib/unstable-cache";
+import { fetchGrants } from "@/app/services/rewards/grants";
 import { GrantsResponse } from "@/app/types/rewards/grants";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
-
-const fetchGrants = unstable_cache(
-  async (queryString: string) => {
-    const response = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.grants}?${queryString}`,
-      {
-        headers: DEFAULT_HEADERS,
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
-  },
-  [CACHE_TAGS.GRANTS],
-  { revalidate: CACHE_60_MINUTES },
-);
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,15 +13,15 @@ export async function GET(request: NextRequest) {
     const per_page = searchParams.get("per_page");
     const page = searchParams.get("page");
 
-    const queryParams = new URLSearchParams({
+    const params = {
       ...(end_date_after && { end_date_after }),
       ...(end_date_before && { end_date_before }),
       ...(sponsor_slug && { sponsor_slug }),
-      ...(per_page && { per_page }),
-      ...(page && { page }),
-    });
+      ...(per_page && { per_page: parseInt(per_page) }),
+      ...(page && { page: parseInt(page) }),
+    };
 
-    const data: GrantsResponse = await fetchGrants(queryParams.toString());
+    const data: GrantsResponse = await fetchGrants(params);
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(

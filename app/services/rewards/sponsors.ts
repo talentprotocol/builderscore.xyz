@@ -1,44 +1,30 @@
-import { ENDPOINTS } from "@/app/config/api";
-import { Sponsor, SponsorsResponse } from "@/app/types/rewards/sponsors";
+import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
+import { SponsorsResponse } from "@/app/types/rewards/sponsors";
 
-export async function getSponsors(
-  perPage?: number,
-): Promise<SponsorsResponse | null> {
-  const params = new URLSearchParams();
-  if (perPage) {
-    params.append("per_page", perPage.toString());
+export async function fetchSponsors(params?: {
+  per_page?: number;
+}): Promise<SponsorsResponse> {
+  const searchParams = new URLSearchParams();
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, value.toString());
+      }
+    });
   }
 
-  const queryString = params.toString();
-  const url = `${ENDPOINTS.localApi.talent.sponsors}${queryString ? `?${queryString}` : ""}`;
-
-  const response = await fetch(url);
-
-  if (response.status === 404) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch sponsors");
-  }
-
-  return response.json();
-}
-
-export async function getSponsor(slug: string): Promise<Sponsor | null> {
-  const url = `${ENDPOINTS.localApi.talent.sponsors}/${slug}`;
+  const queryString = searchParams.toString();
+  const url = `${API_BASE_URL}${ENDPOINTS.sponsors}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url, {
-    cache: "no-store",
+    method: "GET",
+    headers: DEFAULT_HEADERS,
   });
 
-  if (response.status === 404) {
-    return null;
-  }
-
   if (!response.ok) {
-    throw new Error("Failed to fetch sponsor");
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
 
-  return response.json();
+  return response.json() as Promise<SponsorsResponse>;
 }
