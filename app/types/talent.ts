@@ -84,7 +84,7 @@ export type TalentProfileSearchApi = {
 };
 
 export type TalentProfileResponse = {
-  profile: TalentProfileApi | null;
+  profile: TalentProfileApi;
   github: boolean;
   basename: string | null;
   builderScore: TalentBuilderScore | null;

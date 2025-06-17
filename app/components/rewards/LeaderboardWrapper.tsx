@@ -5,38 +5,30 @@ import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer";
 import SelectGrant from "@/app/components/rewards/SelectGrant";
 import { useGrant } from "@/app/context/GrantContext";
-import { useLeaderboard } from "@/app/context/LeaderboardContext";
-import { useUser } from "@/app/context/UserContext";
-import { useSponsors } from "@/app/hooks/useLoadRewards";
+import {
+  useLeaderboards,
+  useUserLeaderboards,
+  useUserProfiles,
+} from "@/app/hooks/useLoadRewards";
 import { formatDate } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { useState } from "react";
 
 export default function LeaderboardWrapper() {
-  const { isLoading: loadingSponsors } = useSponsors();
   const { selectedGrant } = useGrant();
-  const { talentProfile } = useUser();
+
+  const { data: userProfileData } = useUserProfiles();
+  const { data: userLeaderboardData } = useUserLeaderboards();
   const {
-    isLoading,
-    isLoadingMore,
-    error,
-    leaderboardData,
-    hasMore,
-    userLeaderboard,
-    handleLoadMore,
-  } = useLeaderboard();
+    data: leaderboardData,
+    error: leaderboardError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useLeaderboards();
+
   const [selectedBuilder, setSelectedBuilder] =
     useState<LeaderboardEntry | null>(null);
-
-  const defaultUserLeaderboard: LeaderboardEntry = {
-    id: 0,
-    profile: talentProfile!,
-    leaderboard_position: null,
-    ranking_change: null,
-    reward_amount: null,
-    reward_transaction_hash: null,
-    summary: null,
-  };
 
   const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
 
@@ -46,57 +38,54 @@ export default function LeaderboardWrapper() {
         <h2
           className={`ml-1 text-sm font-semibold ${isIntermediateGrant ? "text-primary" : "text-neutral-800 dark:text-white"}`}
         >
-          {isIntermediateGrant && !error ? "Provisional" : "Leaderboard"}
+          {isIntermediateGrant && !leaderboardError
+            ? "Provisional"
+            : "Leaderboard"}
         </h2>
         <SelectGrant />
       </div>
 
-      {!isLoading && talentProfile && (
-        <>
-          {userLeaderboard ? (
-            <LeaderboardRow
-              leaderboardData={userLeaderboard}
-              isHighlighted={true}
-              className="mb-2"
-              onBuilderSelect={setSelectedBuilder}
-            />
-          ) : (
-            <LeaderboardRow
-              leaderboardData={defaultUserLeaderboard}
-              isHighlighted={true}
-              className="mb-2"
-              onBuilderSelect={setSelectedBuilder}
-            />
-          )}
-        </>
+      {userProfileData && userProfileData.profile && userLeaderboardData ? (
+        <LeaderboardRow
+          leaderboardData={userLeaderboardData}
+          isHighlighted={true}
+          className="mb-2"
+          onBuilderSelect={setSelectedBuilder}
+        />
+      ) : (
+        userProfileData?.profile && (
+          <LeaderboardRow
+            leaderboardData={{
+              id: 0,
+              profile: userProfileData.profile,
+              leaderboard_position: null,
+              ranking_change: null,
+              reward_amount: null,
+              reward_transaction_hash: null,
+              summary: null,
+            }}
+            isHighlighted={true}
+            className="mb-2"
+            onBuilderSelect={setSelectedBuilder}
+          />
+        )
       )}
 
-      {!isLoading &&
-        leaderboardData &&
-        leaderboardData?.users?.length > 0 &&
-        !error && (
-          <>
-            <Leaderboard
-              leaderboardData={leaderboardData!}
-              onLoadMore={handleLoadMore}
-              hasMore={hasMore}
-              isLoadingMore={isLoadingMore}
-              onBuilderSelect={setSelectedBuilder}
-            />
-            <LeaderboardRowDrawer
-              selectedBuilder={selectedBuilder}
-              onClose={() => setSelectedBuilder(null)}
-              weekly={!!selectedGrant}
-              context={
-                selectedGrant
-                  ? formatDate(selectedGrant.start_date) +
-                    " - " +
-                    formatDate(selectedGrant.end_date)
-                  : "All Time"
-              }
-            />
-          </>
-        )}
+      {leaderboardData ? (
+        <Leaderboard
+          leaderboardData={leaderboardData.pages[0]}
+          onLoadMore={fetchNextPage}
+          hasMore={hasNextPage}
+          isLoadingMore={isFetchingNextPage}
+          onBuilderSelect={setSelectedBuilder}
+        />
+      ) : (
+        <div className="flex h-96 items-center justify-center">
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+          </div>
+        </div>
+      )}
 
       {selectedBuilder && (
         <LeaderboardRowDrawer
@@ -113,17 +102,11 @@ export default function LeaderboardWrapper() {
         />
       )}
 
-      {(isLoading || loadingSponsors) && (
-        <div className="flex h-96 items-center justify-center">
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
-          </div>
-        </div>
-      )}
-
-      {error && (
+      {leaderboardError && (
         <div className="mt-10 mb-6 flex h-full items-center justify-center text-sm">
-          <p className="text-neutral-600 dark:text-neutral-500">{error}</p>
+          <p className="text-neutral-600 dark:text-neutral-500">
+            {leaderboardError.message}
+          </p>
         </div>
       )}
     </div>

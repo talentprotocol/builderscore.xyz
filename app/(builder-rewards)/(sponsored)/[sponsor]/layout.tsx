@@ -1,33 +1,18 @@
 import RewardsLayout from "@/app/components/rewards/RewardsLayout";
-import {
-  DEFAULT_SPONSOR_SLUG,
-  baseMetadata,
-  celoMetadata,
-} from "@/app/lib/constants";
-import { getSubdomain } from "@/app/lib/get-subdomain";
+import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
+import { getMetadata } from "@/app/lib/metadata";
 import { getSponsorThemeClassName } from "@/app/lib/theme";
 import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const subdomain = await getSubdomain();
-
-  let metadata;
-
-  switch (subdomain) {
-    case "base":
-      metadata = baseMetadata;
-      break;
-    case "celo":
-      metadata = celoMetadata;
-      break;
-    case "talent-protocol":
-      metadata = baseMetadata;
-      break;
-    default:
-      metadata = baseMetadata;
-  }
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ sponsor: string }>;
+}): Promise<Metadata> {
+  const { sponsor } = await params;
+  const metadata = getMetadata(sponsor || DEFAULT_SPONSOR_SLUG);
 
   return metadata;
 }
@@ -41,14 +26,9 @@ export default async function SponsoredRewardsLayout({
 }>) {
   const { sponsor } = await params;
 
-  let themeClassName = getSponsorThemeClassName(sponsor);
-  if (!themeClassName) {
-    themeClassName = getSponsorThemeClassName(DEFAULT_SPONSOR_SLUG);
-  }
-
   return (
     <RewardsLayout
-      themeClassName={themeClassName}
+      themeClassName={getSponsorThemeClassName(sponsor || DEFAULT_SPONSOR_SLUG)}
       title="Builder Rewards"
       sponsor={sponsor}
     >

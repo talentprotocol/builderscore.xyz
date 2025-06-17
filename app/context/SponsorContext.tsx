@@ -21,11 +21,19 @@ interface SponsorContextType {
 
 const SponsorContext = createContext<SponsorContextType | undefined>(undefined);
 
-export function SponsorProvider({ children }: { children: ReactNode }) {
-  const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
-  const [sponsorTokenTicker, setSponsorTokenTicker] = useState<string>("");
-
+export function SponsorProvider({
+  children,
+  initialSponsor,
+}: {
+  children: ReactNode;
+  initialSponsor: Sponsor | null;
+}) {
   const { data: sponsorsData } = useSponsors();
+
+  const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(
+    initialSponsor,
+  );
+  const [sponsorTokenTicker, setSponsorTokenTicker] = useState<string>("");
 
   const setSelectedSponsorFromSlug = (sponsorSlug: string) => {
     setSelectedSponsor(

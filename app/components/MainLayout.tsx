@@ -12,12 +12,14 @@ const inter = Inter({
 export default function MainLayout({
   children,
   themeClassName,
+  dataSponsor,
 }: {
   children: React.ReactNode;
   themeClassName: string;
+  dataSponsor: string;
 }) {
   return (
-    <html lang="en" className={themeClassName}>
+    <html lang="en" className={themeClassName} data-sponsor={dataSponsor}>
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider>
           <NuqsAdapter>

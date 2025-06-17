@@ -1,11 +1,12 @@
 "use client";
 
 import ToggleLeaderboard from "@/app/components/rewards/ToggleLeaderboard";
-import { ALL_TIME_GRANT, useGrant } from "@/app/context/GrantContext";
+import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useUser } from "@/app/context/UserContext";
-import { useSponsors } from "@/app/hooks/useLoadRewards";
+import { useGrants } from "@/app/hooks/useLoadRewards";
+import { useUserLeaderboards } from "@/app/hooks/useLoadRewards";
+import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
@@ -15,18 +16,15 @@ import {
 } from "@/app/lib/utils";
 
 export default function Header() {
-  const { grants, selectedGrant, loadingGrants } = useGrant();
-  const { userLeaderboard, showUserLeaderboard, loadingLeaderboard } =
-    useLeaderboard();
+  const { selectedGrant } = useGrant();
+  const { data: grantsData } = useGrants();
+  const { showUserLeaderboard } = useLeaderboard();
+  const { data: userLeaderboardData } = useUserLeaderboards();
   const { selectedSponsor, sponsorTokenTicker } = useSponsor();
-  const { isLoading: loadingSponsors } = useSponsors();
-  const { loadingUser } = useUser();
   const grantsToUse =
     selectedGrant && selectedGrant.id !== ALL_TIME_GRANT.id
       ? [selectedGrant]
-      : grants;
-  const isLoading =
-    loadingGrants || loadingSponsors || loadingLeaderboard || loadingUser;
+      : grantsData?.grants || [];
 
   const rewardsByTicker = grantsToUse.reduce(
     (acc, grant) => {
@@ -77,14 +75,10 @@ export default function Header() {
     : 0;
 
   const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
-  const shouldShowUserLeaderboard = showUserLeaderboard && userLeaderboard;
+  const shouldShowUserLeaderboard = showUserLeaderboard && userLeaderboardData;
 
   function renderIntermediateGrantInfo() {
-    if (
-      !isIntermediateGrant ||
-      isLoading ||
-      selectedGrant?.id === ALL_TIME_GRANT.id
-    )
+    if (!isIntermediateGrant || selectedGrant?.id === ALL_TIME_GRANT.id)
       return null;
 
     return (
@@ -108,7 +102,7 @@ export default function Header() {
   }
 
   function renderToggleLeaderboard() {
-    if (!userLeaderboard) return null;
+    if (!userLeaderboardData) return null;
 
     return (
       <div className="absolute top-2 left-2">
@@ -118,19 +112,17 @@ export default function Header() {
   }
 
   function renderHeaderTitle() {
-    const titleText = isLoading
-      ? "Rewards"
-      : shouldShowUserLeaderboard
-        ? "Rewards Earned"
-        : selectedGrant
-          ? "Rewards Pool"
-          : "Total Rewards Pool";
+    const titleText = shouldShowUserLeaderboard
+      ? "Rewards Earned"
+      : selectedGrant
+        ? "Rewards Pool"
+        : "Total Rewards Pool";
 
     return (
       <h2 className="secondary-text-style text-sm">
-        {process.env.NODE_ENV === "development" && userLeaderboard && (
+        {process.env.NODE_ENV === "development" && userLeaderboardData && (
           <span className="mr-4 text-xs text-green-500">
-            ID: {userLeaderboard.id}
+            ID: {userLeaderboardData.id}
           </span>
         )}
 
@@ -146,16 +138,6 @@ export default function Header() {
   }
 
   function renderRewardsAmount() {
-    if (isLoading) {
-      return (
-        <div className="mt-2 flex flex-col items-center gap-2">
-          <div className="flex items-end gap-2 font-mono">
-            <span className="text-4xl font-semibold">-</span>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div className="mt-2 flex flex-col items-center gap-2">
         {shouldShowUserLeaderboard
@@ -168,14 +150,14 @@ export default function Header() {
   }
 
   function renderUserRewards() {
-    if (!userLeaderboard) return null;
+    if (!userLeaderboardData) return null;
 
     return (
       <div className="flex items-end gap-2 font-mono">
         <span className="text-4xl font-semibold">
-          {userLeaderboard.reward_amount
+          {userLeaderboardData.reward_amount
             ? formatNumber(
-                parseFloat(userLeaderboard.reward_amount),
+                parseFloat(userLeaderboardData.reward_amount),
                 INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
                   sponsorTokenTicker
                 ],
@@ -242,18 +224,15 @@ export default function Header() {
   }
 
   function renderBuilderStats() {
-    const titleText = isLoading
-      ? "Builders"
-      : shouldShowUserLeaderboard
-        ? "Your Rank"
-        : isIntermediateGrant
-          ? "Builders"
-          : "Builders Rewarded";
+    const titleText = shouldShowUserLeaderboard
+      ? "Your Rank"
+      : isIntermediateGrant
+        ? "Builders"
+        : "Builders Rewarded";
 
-    const valueText = isLoading
-      ? "-"
-      : shouldShowUserLeaderboard && userLeaderboard
-        ? `#${userLeaderboard.leaderboard_position || "-"}`
+    const valueText =
+      shouldShowUserLeaderboard && userLeaderboardData
+        ? `#${userLeaderboardData.leaderboard_position || "-"}`
         : totalRewardedBuilders;
 
     return (
@@ -265,18 +244,15 @@ export default function Header() {
   }
 
   function renderScoreStats() {
-    const titleText = isLoading
+    const titleText = shouldShowUserLeaderboard
       ? "Builder Score"
-      : shouldShowUserLeaderboard
-        ? "Builder Score"
-        : "Avg. Builder Score";
+      : "Avg. Builder Score";
 
-    const scoreValue = isLoading
-      ? "-"
-      : shouldShowUserLeaderboard && userLeaderboard
+    const scoreValue =
+      shouldShowUserLeaderboard && userLeaderboardData
         ? `${
-            "builder_score" in userLeaderboard.profile
-              ? userLeaderboard.profile.builder_score?.points || "-"
+            "builder_score" in userLeaderboardData.profile
+              ? userLeaderboardData.profile.builder_score?.points || "-"
               : "-"
           }`
         : weightedAvgBuilderScore;

@@ -5,8 +5,8 @@ import { Button } from "@/app/components/ui/button";
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { ENDPOINTS } from "@/app/config/api";
 import { useGrant } from "@/app/context/GrantContext";
-import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useUser } from "@/app/context/UserContext";
+import { useUserLeaderboards } from "@/app/hooks/useLoadRewards";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatNumber,
@@ -29,7 +29,7 @@ export default function ShareableLeaderboard({
   sponsor_slug?: string;
 }) {
   const { frameContext } = useUser();
-  const { userLeaderboard } = useLeaderboard();
+  const { data: userLeaderboardData } = useUserLeaderboards();
   const { selectedGrant } = useGrant();
   const [open, setOpen] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
@@ -40,27 +40,27 @@ export default function ShareableLeaderboard({
   });
 
   const getSummaryForPlatform = (platform: "farcaster" | "twitter") => {
-    if (!userLeaderboard?.summary) return "";
+    if (!userLeaderboardData?.summary) return "";
     const maxLength = platform === "farcaster" ? 180 : 75;
-    return `\n\n"${userLeaderboard.summary.slice(0, maxLength)}${userLeaderboard.summary.length > maxLength ? "..." : ""}"`;
+    return `\n\n"${userLeaderboardData.summary.slice(0, maxLength)}${userLeaderboardData.summary.length > maxLength ? "..." : ""}"`;
   };
 
   const rewardsNumber = formatNumber(
-    parseFloat(userLeaderboard?.reward_amount || "0"),
+    parseFloat(userLeaderboardData?.reward_amount || "0"),
     INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
       selectedGrant?.token_ticker || ""
     ],
   );
 
-  const baseShareText = `I earned ${rewardsNumber} ${selectedGrant?.token_ticker} for ranking #${userLeaderboard?.leaderboard_position} on this week's ${selectedGrant?.sponsor.name} Builder Rewards!`;
+  const baseShareText = `I earned ${rewardsNumber} ${selectedGrant?.token_ticker} for ranking #${userLeaderboardData?.leaderboard_position} on this week's ${selectedGrant?.sponsor.name} Builder Rewards!`;
   const farcasterShareText =
     baseShareText +
-    (userLeaderboard?.summary && userLeaderboard?.summary !== ""
+    (userLeaderboardData?.summary && userLeaderboardData?.summary !== ""
       ? getSummaryForPlatform("farcaster")
       : "");
   const twitterShareText =
     baseShareText +
-    (userLeaderboard?.summary && userLeaderboard?.summary !== ""
+    (userLeaderboardData?.summary && userLeaderboardData?.summary !== ""
       ? getSummaryForPlatform("twitter")
       : "");
 

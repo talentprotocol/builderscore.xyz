@@ -4,11 +4,9 @@ import { fetchChartMetrics } from "@/app/services/index/chart-metrics";
 import { fetchDailyStatsData } from "@/app/services/index/daily-stats";
 import { ChartSeries, DataPointDefinition } from "@/app/types/index/chart";
 import { StatsDataPoint } from "@/app/types/stats";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { isServer, useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useMemo } from "react";
-
-const isServer = typeof window === "undefined";
 
 export function useChartMetrics() {
   return useSuspenseQuery<DataPointDefinition[]>({

@@ -1,21 +1,8 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { SponsorsResponse } from "@/app/types/rewards/sponsors";
 
-export async function fetchSponsors(params?: {
-  per_page?: number;
-}): Promise<SponsorsResponse> {
-  const searchParams = new URLSearchParams();
-
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        searchParams.append(key, value.toString());
-      }
-    });
-  }
-
-  const queryString = searchParams.toString();
-  const url = `${API_BASE_URL}${ENDPOINTS.sponsors}${queryString ? `?${queryString}` : ""}`;
+export async function fetchSponsors(): Promise<SponsorsResponse> {
+  const url = `${API_BASE_URL}${ENDPOINTS.sponsors}`;
 
   const response = await fetch(url, {
     method: "GET",

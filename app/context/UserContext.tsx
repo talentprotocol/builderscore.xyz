@@ -1,8 +1,6 @@
 "use client";
 
-import { fetchUserByFid } from "@/app/services/talent";
 import { FrameContext } from "@/app/types/rewards/farcaster";
-import { TalentBuilderScore, TalentProfileApi } from "@/app/types/talent";
 import { sdk } from "@farcaster/frame-sdk";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -19,44 +17,17 @@ const DEV_FRAME_CONTEXT: FrameContext = {
 };
 
 interface UserContextType {
-  loadingUser: boolean;
-
-  talentProfile: TalentProfileApi | null;
   frameContext: FrameContext | undefined;
-
-  github: boolean;
-  basename: string | null;
-  builderScore: TalentBuilderScore | null;
-  selfXyz: boolean;
-  celoTransaction: boolean;
+  isSDKLoaded: boolean;
 }
 
 const UserContext = createContext<UserContextType>({
-  loadingUser: true,
-
-  talentProfile: null,
   frameContext: undefined,
-
-  github: false,
-  basename: null,
-  builderScore: null,
-  selfXyz: false,
-  celoTransaction: false,
+  isSDKLoaded: false,
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [loadingUser, setLoadingUser] = useState(true);
-  const [talentProfile, setTalentProfile] = useState<TalentProfileApi | null>(
-    null,
-  );
   const [frameContext, setFrameContext] = useState<FrameContext>();
-  const [github, setGithub] = useState(false);
-  const [basename, setBasename] = useState<string | null>(null);
-  const [builderScore, setBuilderScore] = useState<TalentBuilderScore | null>(
-    null,
-  );
-  const [selfXyz, setSelfXyz] = useState(false);
-  const [celoTransaction, setCeloTransaction] = useState(false);
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
   useEffect(() => {
@@ -77,49 +48,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isSDKLoaded]);
 
-  useEffect(() => {
-    if (!isSDKLoaded) {
-      return;
-    }
-
-    if (!frameContext) {
-      setLoadingUser(false);
-      return;
-    }
-
-    const fetchUserData = async () => {
-      try {
-        const response = await fetchUserByFid(frameContext.user.fid);
-        setTalentProfile(response.profile as TalentProfileApi | null);
-        setGithub(response.github || false);
-        setBasename(response.basename || null);
-        setBuilderScore(response.builderScore || null);
-        setSelfXyz(response.selfXyz || false);
-        setCeloTransaction(response.celoTransaction || false);
-      } catch {
-        setTalentProfile(null);
-        setGithub(false);
-        setBasename(null);
-        setBuilderScore(null);
-      } finally {
-        setLoadingUser(false);
-      }
-    };
-
-    fetchUserData();
-  }, [frameContext, isSDKLoaded]);
-
   return (
     <UserContext.Provider
       value={{
-        loadingUser,
-        talentProfile,
         frameContext,
-        github,
-        basename,
-        builderScore,
-        selfXyz,
-        celoTransaction,
+        isSDKLoaded,
       }}
     >
       {children}

@@ -7,34 +7,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
-import { ALL_TIME_GRANT, useGrant } from "@/app/context/GrantContext";
+import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { useGrants } from "@/app/hooks/useLoadRewards";
+import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { formatDate } from "@/app/lib/utils";
+import { useEffect } from "react";
 
 export default function SelectGrant() {
-  const {
-    grants,
-    selectedGrant,
-    setSelectedGrant,
-    loadingGrants,
-    isAllTimeSelected,
-  } = useGrant();
+  const { selectedGrant, setSelectedGrant, isAllTimeSelected } = useGrant();
   const { selectedSponsor } = useSponsor();
 
-  if (loadingGrants) {
-    return (
-      <Select
-        disabled
-        value={
-          isAllTimeSelected() ? "all_time" : selectedGrant?.id?.toString() || ""
-        }
-      >
-        <SelectTrigger className="button-style h-6 w-56 cursor-not-allowed p-2 text-xs">
-          <SelectValue placeholder="Loading..." />
-        </SelectTrigger>
-      </Select>
-    );
-  }
+  const { data: grantsData } = useGrants();
+
+  useEffect(() => {
+    if (grantsData) {
+      setSelectedGrant(grantsData.grants[0] || ALL_TIME_GRANT);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [grantsData]);
 
   const formatGrantOption = (grant: {
     sponsor: { name: string };
@@ -73,7 +64,8 @@ export default function SelectGrant() {
           setSelectedGrant(ALL_TIME_GRANT);
           return;
         }
-        const grant = grants.find((g) => g.id.toString() === value) || null;
+        const grant =
+          grantsData?.grants.find((g) => g.id.toString() === value) || null;
         setSelectedGrant(grant);
       }}
     >
@@ -84,15 +76,30 @@ export default function SelectGrant() {
         <SelectItem className="dropdown-menu-item-style" value="all_time">
           All Time
         </SelectItem>
-        {grants.map((grant) => (
-          <SelectItem
-            key={grant.id}
-            className="dropdown-menu-item-style"
-            value={grant.id.toString()}
+        {grantsData ? (
+          grantsData.grants.map((grant) => (
+            <SelectItem
+              key={grant.id}
+              className="dropdown-menu-item-style"
+              value={grant.id.toString()}
+            >
+              {formatGrantOption(grant)}
+            </SelectItem>
+          ))
+        ) : (
+          <Select
+            disabled
+            value={
+              isAllTimeSelected()
+                ? "all_time"
+                : selectedGrant?.id?.toString() || ""
+            }
           >
-            {formatGrantOption(grant)}
-          </SelectItem>
-        ))}
+            <SelectTrigger className="button-style h-6 w-56 cursor-not-allowed p-2 text-xs">
+              <SelectValue placeholder="Loading..." />
+            </SelectTrigger>
+          </Select>
+        )}
       </SelectContent>
     </Select>
   );

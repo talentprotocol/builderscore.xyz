@@ -5,13 +5,14 @@ import HowToDrawer from "@/app/components/rewards/HowToDrawer";
 import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard";
 import { Button } from "@/app/components/ui/button";
 import { useGrant } from "@/app/context/GrantContext";
-import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useUser } from "@/app/context/UserContext";
+import { useUserLeaderboards } from "@/app/hooks/useLoadRewards";
 
 export default function Actions() {
   const { loadingUser, talentProfile, github } = useUser();
   const { selectedGrant } = useGrant();
-  const { isLoading, userLeaderboard } = useLeaderboard();
+
+  const { data: userLeaderboardData } = useUserLeaderboards();
 
   return (
     <div className="mt-3 grid w-full auto-cols-fr grid-flow-col gap-2 sm:gap-4">
@@ -50,15 +51,13 @@ export default function Actions() {
 
           <HowToDrawer />
 
-          {!isLoading &&
-            userLeaderboard &&
-            // userLeaderboard.reward_amount &&
-            // parseFloat(userLeaderboard.reward_amount) > 0 &&
+          {userLeaderboardData &&
+            parseFloat(userLeaderboardData.reward_amount!) > 0 &&
             selectedGrant &&
             ((selectedGrant.tracked && selectedGrant.track_type === "final") ||
               !selectedGrant.tracked) && (
               <ShareableLeaderboard
-                id={userLeaderboard.profile.id}
+                id={userLeaderboardData.profile.id}
                 grant_id={selectedGrant.id?.toString()}
               />
             )}

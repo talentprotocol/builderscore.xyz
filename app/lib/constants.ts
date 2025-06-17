@@ -1,6 +1,7 @@
 import BaseLogo from "@/app/components/logos/BaseLogo";
 import CeloLogo from "@/app/components/logos/CeloLogo";
 import TalentProtocolLogo from "@/app/components/logos/TalentProtocolLogo";
+import { Grant } from "@/app/types/rewards/grants";
 import { SponsorInfo } from "@/app/types/rewards/sponsors";
 import { Metadata } from "next";
 
@@ -25,6 +26,28 @@ export const COLUMN_ORDER = [
   "human_checkmark",
   "tags",
 ];
+
+export const ALL_TIME_GRANT = {
+  id: -1,
+  start_date: new Date("1970-01-01").toISOString(),
+  end_date: new Date("2100-01-01").toISOString(),
+  rewards_pool: "",
+  token_ticker: "",
+  rewarded_builders: 0,
+  total_builders: 0,
+  avg_builder_score: 0,
+  track_type: "intermediate",
+  tracked: true,
+  sponsor: {
+    id: 0,
+    name: "all_time",
+    slug: "all_time",
+    description: "all_time",
+    logo_url: "all_time",
+    color: "all_time",
+    website_url: "all_time",
+  },
+} as Grant;
 
 export const DEFAULT_SPONSOR_SLUG = "base";
 

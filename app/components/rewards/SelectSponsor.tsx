@@ -16,18 +16,11 @@ import { Sponsor } from "@/app/types/rewards/sponsors";
 export default function SelectSponsor() {
   const { selectedSponsor, setSelectedSponsorFromSlug } = useSponsor();
 
-  const { data: sponsorsData, isLoading: loadingSponsors } = useSponsors();
+  const { data: sponsorsData } = useSponsors();
 
-  const sponsorsList = [
-    // {
-    //   id: 0,
-    //   name: "Global",
-    //   slug: "global",
-    // },
-    ...(sponsorsData?.sponsors?.filter((sponsor) =>
-      ALLOWED_SPONSORS.includes(sponsor.slug),
-    ) || []),
-  ];
+  const sponsorsList = sponsorsData?.sponsors?.filter((sponsor) =>
+    ALLOWED_SPONSORS.includes(sponsor.slug),
+  );
 
   const handleSponsorChange = (newSponsor: string) => {
     setSelectedSponsorFromSlug(newSponsor);
@@ -47,31 +40,32 @@ export default function SelectSponsor() {
     }
   });
 
-  if (loadingSponsors) {
-    return (
-      <Select disabled>
-        <SelectTrigger className="button-style h-6 w-36 cursor-not-allowed p-2 text-xs">
-          <SelectValue className="dark:text-white" placeholder="Loading..." />
-        </SelectTrigger>
-      </Select>
-    );
-  }
-
   return (
     <Select value={selectedSponsor?.slug} onValueChange={handleSponsorChange}>
       <SelectTrigger className="button-style h-6 w-36 cursor-pointer p-2 text-xs">
         <SelectValue className="dark:text-white" placeholder="Select Sponsor" />
       </SelectTrigger>
       <SelectContent className="dropdown-menu-style">
-        {sponsorsList.map((sponsor: Sponsor) => (
-          <SelectItem
-            key={sponsor.id}
-            className="dropdown-menu-item-style"
-            value={sponsor.slug}
-          >
-            {sponsor.name}
-          </SelectItem>
-        ))}
+        {sponsorsList ? (
+          sponsorsList.map((sponsor: Sponsor) => (
+            <SelectItem
+              key={sponsor.id}
+              className="dropdown-menu-item-style"
+              value={sponsor.slug}
+            >
+              {sponsor.name}
+            </SelectItem>
+          ))
+        ) : (
+          <Select disabled>
+            <SelectTrigger className="button-style h-6 w-36 cursor-not-allowed p-2 text-xs">
+              <SelectValue
+                className="dark:text-white"
+                placeholder="Loading..."
+              />
+            </SelectTrigger>
+          </Select>
+        )}
       </SelectContent>
     </Select>
   );

@@ -6,12 +6,10 @@ import { fetchSearchAdvancedMetadataFields } from "@/app/services/index/search-f
 import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { SearchDataResponse } from "@/app/types/index/search";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { isServer, useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { RuleGroupType } from "react-querybuilder";
 import { Field } from "react-querybuilder";
-
-const isServer = typeof window === "undefined";
 
 export function useSearchDocuments() {
   return useSuspenseQuery<AdvancedSearchDocument[]>({
