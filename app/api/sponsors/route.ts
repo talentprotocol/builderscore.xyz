@@ -1,19 +1,12 @@
 import { fetchSponsors } from "@/app/services/rewards/sponsors";
 import { SponsorsResponse } from "@/app/types/rewards/sponsors";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const perPage = searchParams.get("per_page");
-
-    const params = {
-      ...(perPage && { per_page: parseInt(perPage) }),
-    };
-
-    const data: SponsorsResponse = await fetchSponsors(params);
+    const data: SponsorsResponse = await fetchSponsors();
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
