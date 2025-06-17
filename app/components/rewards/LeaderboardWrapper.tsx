@@ -27,6 +27,8 @@ export default function LeaderboardWrapper() {
     isFetchingNextPage,
   } = useLeaderboards();
 
+  console.log("leaderboardData", leaderboardData);
+
   const [selectedBuilder, setSelectedBuilder] =
     useState<LeaderboardEntry | null>(null);
 
@@ -73,7 +75,14 @@ export default function LeaderboardWrapper() {
 
       {leaderboardData ? (
         <Leaderboard
-          leaderboardData={leaderboardData.pages[0]}
+          leaderboardData={{
+            pagination: {
+              total: leaderboardData.pages[0].pagination.total,
+              current_page: leaderboardData.pages[leaderboardData.pages.length - 1].pagination.current_page,
+              last_page: leaderboardData.pages[0].pagination.last_page,
+            },
+            users: leaderboardData.pages.flatMap((page) => page.users),
+          }}
           onLoadMore={fetchNextPage}
           hasMore={hasNextPage}
           isLoadingMore={isFetchingNextPage}
