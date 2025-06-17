@@ -10,41 +10,17 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/app/components/ui/drawer";
-import { SponsorSlug, howToEarnConfig } from "@/app/config/how-to-earn";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useUser } from "@/app/context/UserContext";
+import { useHowToEarn } from "@/app/hooks/useHowToEarn";
 import { SPONSOR_TERMS } from "@/app/lib/constants";
-import { AVAILABLE_SPONSORS } from "@/app/types/rewards/sponsors";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
 
 export default function HowToDrawer() {
-  const {
-    loadingUser,
-    talentProfile,
-    basename,
-    builderScore,
-    selfXyz,
-    celoTransaction,
-  } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
   const { selectedSponsor } = useSponsor();
 
-  const sponsorSlug =
-    (selectedSponsor?.slug as SponsorSlug) || AVAILABLE_SPONSORS[0];
-
-  const loadSponsorConfig = howToEarnConfig(
-    basename,
-    loadingUser,
-    talentProfile,
-    builderScore,
-    selfXyz,
-    celoTransaction,
-  );
-
-  const sponsorConfig = loadSponsorConfig[sponsorSlug]
-    ? loadSponsorConfig[sponsorSlug]
-    : loadSponsorConfig.base;
+  const sponsorConfig = useHowToEarn(selectedSponsor!);
 
   const allConditionsMet = sponsorConfig?.steps.every((step) => step.condition);
 
