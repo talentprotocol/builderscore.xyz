@@ -16,7 +16,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/app/components/ui/tabs";
-import { useLoadRewards } from "@/app/hooks/useLoadRewards";
 import { CSVDataResult } from "@/app/services/rewards/analytics";
 
 interface AnalyticsProps {
@@ -24,8 +23,6 @@ interface AnalyticsProps {
 }
 
 export default function Analytics({ data }: AnalyticsProps) {
-  useLoadRewards();
-
   return (
     <div className="container mx-auto py-3">
       <Tabs defaultValue="charts" className="relative w-full">
