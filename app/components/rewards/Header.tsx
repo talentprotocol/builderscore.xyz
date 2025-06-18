@@ -4,8 +4,8 @@ import ToggleLeaderboard from "@/app/components/rewards/ToggleLeaderboard";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useGrants } from "@/app/hooks/useLoadRewards";
-import { useUserLeaderboards } from "@/app/hooks/useLoadRewards";
+import { useGrants } from "@/app/hooks/useRewards";
+import { useUserLeaderboards } from "@/app/hooks/useRewardsAnalytics";
 import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,

@@ -6,10 +6,8 @@ import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard"
 import { Button } from "@/app/components/ui/button";
 import { useGrant } from "@/app/context/GrantContext";
 import { useUser } from "@/app/context/UserContext";
-import {
-  useUserLeaderboards,
-  useUserProfiles,
-} from "@/app/hooks/useLoadRewards";
+import { useUserProfiles } from "@/app/hooks/useRewards";
+import { useUserLeaderboards } from "@/app/hooks/useRewardsAnalytics";
 
 export default function Actions() {
   const { selectedGrant } = useGrant();

@@ -9,7 +9,7 @@ import {
 } from "@/app/components/ui/select";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useHistoryListener } from "@/app/hooks/useHistoryListener";
-import { useSponsors } from "@/app/hooks/useLoadRewards";
+import { useSponsors } from "@/app/hooks/useRewards";
 import { ALLOWED_SPONSORS } from "@/app/lib/constants";
 import { Sponsor } from "@/app/types/rewards/sponsors";
 

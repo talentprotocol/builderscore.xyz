@@ -9,7 +9,7 @@ import {
 } from "@/app/components/ui/select";
 import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useGrants } from "@/app/hooks/useLoadRewards";
+import { useGrants } from "@/app/hooks/useRewards";
 import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { formatDate } from "@/app/lib/utils";
 import { useEffect } from "react";

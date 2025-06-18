@@ -1,4 +1,4 @@
-import { useUserProfiles } from "@/app/hooks/useLoadRewards";
+import { useUserProfiles } from "@/app/hooks/useRewards";
 import { AVAILABLE_SPONSORS, Sponsor } from "@/app/types/rewards/sponsors";
 
 export type SponsorSlug = (typeof AVAILABLE_SPONSORS)[number];

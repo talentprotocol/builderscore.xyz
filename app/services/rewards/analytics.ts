@@ -1,6 +1,7 @@
 import { CSVRow, parseCSV } from "@/app/lib/csv-parser";
 import fs from "fs";
 import path from "path";
+import "server-only";
 
 const dataDir = path.join(process.cwd(), "app/data/base");
 
@@ -26,6 +27,19 @@ export interface CSVDataResult {
   topBuilders: CSVRow[];
   metricsTotals: MetricsTotals;
   summaryText: string;
+}
+
+export interface BuilderData {
+  profileId: string;
+  shortProfileId: string;
+  earnedRewardsThisWeek: number;
+  thisWeekRewardsTotal: number;
+  allTimeRewardsCount: number;
+  allTimeRewardsTotal: number;
+  profileData?: {
+    name: string;
+    imageUrl: string;
+  };
 }
 
 export async function getCSVData(): Promise<CSVDataResult> {

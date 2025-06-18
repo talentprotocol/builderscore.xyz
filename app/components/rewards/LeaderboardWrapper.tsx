@@ -5,11 +5,8 @@ import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer";
 import SelectGrant from "@/app/components/rewards/SelectGrant";
 import { useGrant } from "@/app/context/GrantContext";
-import {
-  useLeaderboards,
-  useUserLeaderboards,
-  useUserProfiles,
-} from "@/app/hooks/useLoadRewards";
+import { useLeaderboards, useUserProfiles } from "@/app/hooks/useRewards";
+import { useUserLeaderboards } from "@/app/hooks/useRewardsAnalytics";
 import { formatDate } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { useState } from "react";

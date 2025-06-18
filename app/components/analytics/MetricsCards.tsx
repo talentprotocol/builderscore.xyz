@@ -125,10 +125,10 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
           style={{
             backgroundColor: isDarkMode ? "#404040" : "white",
             color: isDarkMode ? "white" : "#262626",
-            border: isDarkMode ? "1px solid #404040" : "1px solid #d4d4d4",
             padding: "10px",
             borderRadius: "10px",
           }}
+          border={isDarkMode ? "1px solid #404040" : "1px solid #d4d4d4"}
         />
       </div>
     </div>

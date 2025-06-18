@@ -6,7 +6,7 @@ import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { ENDPOINTS } from "@/app/config/api";
 import { useGrant } from "@/app/context/GrantContext";
 import { useUser } from "@/app/context/UserContext";
-import { useUserLeaderboards } from "@/app/hooks/useLoadRewards";
+import { useUserLeaderboards } from "@/app/hooks/useRewardsAnalytics";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatNumber,

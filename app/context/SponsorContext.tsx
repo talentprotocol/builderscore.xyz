@@ -1,6 +1,6 @@
 "use client";
 
-import { useSponsors } from "@/app/hooks/useLoadRewards";
+import { useSponsors } from "@/app/hooks/useRewards";
 import { SPONSORS } from "@/app/lib/constants";
 import { getSponsorThemeClassName, getSponsorTicker } from "@/app/lib/theme";
 import { Sponsor } from "@/app/types/rewards/sponsors";

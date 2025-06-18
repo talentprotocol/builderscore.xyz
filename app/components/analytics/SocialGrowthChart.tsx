@@ -1,17 +1,13 @@
 "use client";
 
 import { useTheme } from "@/app/context/ThemeContext";
-import { fetchAnalyticsActiveUsers } from "@/app/services/rewards/active-users";
-import { fetchNotificationTokensData } from "@/app/services/rewards/notification-tokens";
 import {
-  GoogleAnalyticsActiveUserData,
-  GoogleAnalyticsApiResponse,
-} from "@/app/types/rewards/googleAnalytics";
-import {
-  CumulativeNotificationData,
-  NotificationTokensApiResponse,
-} from "@/app/types/rewards/neynar";
-import { useEffect, useState } from "react";
+  useAnalyticsActiveUsers,
+  useNotificationTokens,
+} from "@/app/hooks/useRewardsAnalytics";
+import { GoogleAnalyticsActiveUserData } from "@/app/types/rewards/googleAnalytics";
+import { CumulativeNotificationData } from "@/app/types/rewards/neynar";
+import { useMemo } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -29,60 +25,40 @@ interface CombinedChartData extends CumulativeNotificationData {
 
 export default function SocialGrowthChart() {
   const { isDarkMode } = useTheme();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [cumulativeData, setCumulativeData] = useState<
-    CumulativeNotificationData[]
-  >([]);
-  const [analyticsData, setAnalyticsData] = useState<
-    GoogleAnalyticsActiveUserData[]
-  >([]);
 
-  const combinedData: CombinedChartData[] = cumulativeData.map((item) => {
-    const matchingGAData = analyticsData.find(
-      (gaItem) => gaItem.date === item.date,
-    );
-    return {
-      ...item,
-      activeUsers: matchingGAData?.activeUsers || 0,
-    };
-  });
+  const {
+    data: warpcastData,
+    isLoading: isLoadingWarpcast,
+    error: warpcastError,
+  } = useNotificationTokens();
+
+  const {
+    data: analyticsData,
+    isLoading: isLoadingAnalytics,
+    error: analyticsError,
+  } = useAnalyticsActiveUsers();
+
+  const combinedData: CombinedChartData[] = useMemo(() => {
+    if (!warpcastData?.cumulativeData || !analyticsData?.data) {
+      return [];
+    }
+
+    return warpcastData.cumulativeData.map((item) => {
+      const matchingGAData = analyticsData.data.find(
+        (gaItem: GoogleAnalyticsActiveUserData) => gaItem.date === item.date,
+      );
+      return {
+        ...item,
+        activeUsers: matchingGAData?.activeUsers || 0,
+      };
+    });
+  }, [warpcastData?.cumulativeData, analyticsData?.data]);
 
   const CHART_COLOR_1 = "var(--chart-1)";
   const CHART_COLOR_2 = "var(--chart-2)";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-
-        let warpcastResult: NotificationTokensApiResponse;
-        try {
-          warpcastResult = await fetchNotificationTokensData();
-        } catch (err) {
-          throw new Error(`Failed to fetch notification tokens: ${err}`);
-        }
-
-        let gaResult: GoogleAnalyticsApiResponse;
-        try {
-          gaResult = await fetchAnalyticsActiveUsers();
-        } catch (err) {
-          throw new Error(`Failed to fetch analytics data: ${err}`);
-        }
-
-        setCumulativeData(warpcastResult.cumulativeData || []);
-        setAnalyticsData(gaResult.data || []);
-      } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "An unknown error occurred",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const isLoading = isLoadingWarpcast || isLoadingAnalytics;
+  const error = warpcastError || analyticsError;
 
   const renderChart = (data: CombinedChartData[]) => (
     <ResponsiveContainer width="100%" height="100%">
@@ -161,7 +137,7 @@ export default function SocialGrowthChart() {
     </ResponsiveContainer>
   );
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
         <div className="font-semibold text-neutral-900 dark:text-white">
@@ -181,13 +157,14 @@ export default function SocialGrowthChart() {
           App Growth & Usage
         </div>
         <div className="mt-4 flex justify-center text-xs text-red-500">
-          Error: {error}
+          Error:{" "}
+          {error instanceof Error ? error.message : "An unknown error occurred"}
         </div>
       </div>
     );
   }
 
-  if (cumulativeData.length === 0 && analyticsData.length === 0) {
+  if (combinedData.length === 0) {
     return (
       <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
         <div className="font-semibold text-neutral-900 dark:text-white">

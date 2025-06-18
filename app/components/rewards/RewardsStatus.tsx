@@ -8,7 +8,7 @@ import {
   useLeaderboards,
   useSponsors,
   useUserProfiles,
-} from "@/app/hooks/useLoadRewards";
+} from "@/app/hooks/useRewards";
 
 export default function RewardsStatus() {
   const { isLoading: loadingUser } = useUserProfiles();

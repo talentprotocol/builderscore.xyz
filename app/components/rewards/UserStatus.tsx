@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@/app/context/UserContext";
-import { useUserProfiles } from "@/app/hooks/useLoadRewards";
+import { useUserProfiles } from "@/app/hooks/useRewards";
 
 export default function UserStatus() {
   const { frameContext } = useUser();

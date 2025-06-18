@@ -6,26 +6,14 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/app/components/ui/tabs";
+import { useTopBuildersLeaderboard } from "@/app/hooks/useRewardsAnalytics";
 import { CSVRow } from "@/app/lib/csv-parser";
-import { ProfileLookupResponse, fetchProfileById } from "@/app/services/talent";
+import { BuilderData } from "@/app/services/rewards/analytics";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface TopBuildersLeaderboardProps {
   data: CSVRow[];
-}
-
-interface BuilderData {
-  profileId: string;
-  shortProfileId: string;
-  earnedRewardsThisWeek: number;
-  thisWeekRewardsTotal: number;
-  allTimeRewardsCount: number;
-  allTimeRewardsTotal: number;
-  profileData?: {
-    name: string;
-    imageUrl: string;
-  };
 }
 
 interface BuildersTableProps {
@@ -110,63 +98,9 @@ export default function TopBuildersLeaderboard({
   data,
 }: TopBuildersLeaderboardProps) {
   const [activeTab, setActiveTab] = useState<"weekly" | "allTime">("allTime");
-  const [buildersData, setBuildersData] = useState<BuilderData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const processData = async () => {
-      setIsLoading(true);
-
-      const processedData: BuilderData[] = data.map((row) => ({
-        profileId: String(row["Profile UUID"]),
-        shortProfileId: String(row["Profile UUID"]).substring(0, 8) + "...",
-        earnedRewardsThisWeek: Number(row["Earned Rewards this"]),
-        thisWeekRewardsTotal: Number(row["This Week's Rewards Total"]),
-        allTimeRewardsCount: Number(row["All-time Rewards Count"]),
-        allTimeRewardsTotal: Number(row["All-time Rewards Total"]),
-      }));
-
-      try {
-        const topBuilders = [...processedData].sort(
-          (a, b) => b.allTimeRewardsTotal - a.allTimeRewardsTotal,
-        );
-
-        const fetchProfiles = async () => {
-          const profilePromises = topBuilders.map(async (builder) => {
-            const profileData: ProfileLookupResponse = await fetchProfileById(
-              builder.profileId,
-            );
-            if (profileData.profile) {
-              return {
-                ...builder,
-                profileData: {
-                  name:
-                    profileData.profile.name ||
-                    profileData.profile.display_name ||
-                    builder.shortProfileId,
-                  imageUrl:
-                    profileData.profile.image_url || "/default-avatar.png",
-                },
-              };
-            }
-            return builder;
-          });
-
-          const updatedBuilders = await Promise.all(profilePromises);
-
-          setBuildersData(updatedBuilders);
-          setIsLoading(false);
-        };
-
-        fetchProfiles();
-      } catch {
-        setBuildersData(processedData);
-        setIsLoading(false);
-      }
-    };
-
-    processData();
-  }, [data]);
+  const { data: buildersData = [], isLoading } =
+    useTopBuildersLeaderboard(data);
 
   const weeklyBuilders = [...buildersData].sort(
     (a, b) => b.thisWeekRewardsTotal - a.thisWeekRewardsTotal,

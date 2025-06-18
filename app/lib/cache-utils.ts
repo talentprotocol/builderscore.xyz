@@ -1,8 +1,3 @@
-import { ENDPOINTS } from "@/app/config/api";
-import axios from "axios";
-import { revalidateTag } from "next/cache";
-import "server-only";
-
 export const CACHE_TAGS = {
   GRANTS: "grants",
   GRANT_BY_ID: "grant-by-id",
@@ -28,26 +23,3 @@ export const CACHE_TAGS = {
 };
 
 export const CACHE_60_MINUTES = 60 * 60;
-
-export function invalidateMultipleTags(tags: string[]) {
-  for (const tag of tags) {
-    revalidateTag(tag);
-  }
-}
-
-export function invalidateAllCache() {
-  const allTags = Object.values(CACHE_TAGS);
-  invalidateMultipleTags(allTags);
-  return allTags;
-}
-
-export async function revalidateAllCache(): Promise<boolean> {
-  try {
-    await axios.get(
-      `${ENDPOINTS.localApi.revalidate.all}?all=true&token=${process.env.REVALIDATION_TOKEN}`,
-    );
-    return true;
-  } catch {
-    return false;
-  }
-}

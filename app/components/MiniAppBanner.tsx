@@ -3,7 +3,7 @@
 import FarcasterLogo from "@/app/components/logos/FarcasterLogo";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
-import { useUserProfiles } from "@/app/hooks/useLoadRewards";
+import { useUserProfiles } from "@/app/hooks/useRewards";
 import { X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";

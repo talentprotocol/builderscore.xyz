@@ -1,21 +1,13 @@
-"use client";
-
 import { ENDPOINTS } from "@/app/config/api";
 import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
 import { fetchGrants } from "@/app/services/rewards/grants";
-import {
-  fetchLeaderboardEntry,
-  fetchLeaderboards,
-} from "@/app/services/rewards/leaderboards";
+import { fetchLeaderboards } from "@/app/services/rewards/leaderboards";
 import { fetchSponsors } from "@/app/services/rewards/sponsors";
 import { fetchUserByFid } from "@/app/services/talent";
 import { GrantsResponse } from "@/app/types/rewards/grants";
-import {
-  LeaderboardEntry,
-  LeaderboardResponse,
-} from "@/app/types/rewards/leaderboards";
+import { LeaderboardResponse } from "@/app/types/rewards/leaderboards";
 import { SponsorsResponse } from "@/app/types/rewards/sponsors";
 import { TalentProfileResponse } from "@/app/types/talent";
 import { isServer, useInfiniteQuery, useQuery } from "@tanstack/react-query";
@@ -153,60 +145,5 @@ export function useLeaderboards() {
       !loadingUserProfile &&
       !loadingGrants
     ),
-  });
-}
-
-export function useUserLeaderboards() {
-  const { selectedGrant } = useGrant();
-  const { selectedSponsor } = useSponsor();
-  const { isAllTimeSelected } = useGrant();
-  const { frameContext } = useUser();
-
-  const { data: userProfileData, isLoading: loadingUserProfile } =
-    useUserProfiles();
-  const { isLoading: loadingGrants } = useGrants();
-  const { isLoading: loadingSponsors } = useSponsors();
-
-  return useQuery<LeaderboardEntry>({
-    queryKey: [
-      "userLeaderboards",
-      userProfileData?.profile?.id,
-      selectedGrant?.id,
-      selectedSponsor?.slug,
-      isAllTimeSelected(),
-    ],
-    queryFn: async () => {
-      if (isServer) {
-        const entry = await fetchLeaderboardEntry(
-          userProfileData!.profile!.id.toString(),
-          isAllTimeSelected() ? undefined : selectedGrant?.id?.toString(),
-          selectedSponsor?.slug,
-        );
-        return entry;
-      } else {
-        const queryParams = new URLSearchParams({
-          user_id: userProfileData!.profile!.id.toString(),
-          ...(isAllTimeSelected()
-            ? {}
-            : { grant_id: selectedGrant?.id?.toString() }),
-          ...(selectedSponsor?.slug && {
-            sponsor_slug: selectedSponsor.slug,
-          }),
-        }).toString();
-        const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.leaderboardEntry}?${queryParams}`,
-        );
-        return response.data;
-      }
-    },
-    enabled: !!(
-      frameContext &&
-      !loadingUserProfile &&
-      !loadingGrants &&
-      !loadingSponsors &&
-      userProfileData?.profile &&
-      selectedGrant
-    ),
-    retry: false,
   });
 }
