@@ -112,7 +112,7 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
 
       <div className="absolute right-2 bottom-2 text-xs">
         <HelpCircle
-          className="h-3.5 w-3.5 text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300"
+          className="hover:secondary-text-style h-3.5 w-3.5 text-neutral-400 dark:hover:text-neutral-300"
           data-tooltip-id={`tooltip-${index}`}
           data-tooltip-content={card.tooltip}
         />
@@ -124,10 +124,10 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
           style={{
             backgroundColor: isDarkMode ? "#404040" : "white",
             color: isDarkMode ? "white" : "#262626",
-            border: isDarkMode ? "1px solid #404040" : "1px solid #d4d4d4",
             padding: "10px",
             borderRadius: "10px",
           }}
+          border={isDarkMode ? "1px solid #404040" : "1px solid #d4d4d4"}
         />
       </div>
     </div>

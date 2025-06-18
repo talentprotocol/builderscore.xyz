@@ -1,38 +1,6 @@
-import {
-  API_BASE_URL,
-  DEFAULT_HEADERS,
-  DEBUG_VIEW_UNLOCK_WORD,
-} from "@/app/config/api";
+import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
 import { AdvancedSearchMetadataField } from "@/app/types/advancedSearchMetadataFields";
 import { NextRequest, NextResponse } from "next/server";
-
-const fetchSearchAdvanced = async ({
-  documents,
-  queryString,
-}: {
-  documents: string;
-  queryString: string;
-}) => {
-  if (queryString.includes("debug=true")) {
-    queryString = queryString.replace(
-      "debug=true",
-      `debug=${DEBUG_VIEW_UNLOCK_WORD}`,
-    );
-  }
-  const response = await fetch(
-    `${API_BASE_URL}/search/advanced/${documents}?${queryString}`,
-    {
-      method: "GET",
-      headers: DEFAULT_HEADERS,
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-};
 
 export async function GET(
   request: NextRequest,

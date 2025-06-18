@@ -1,26 +1,6 @@
-import { API_BASE_URL, DEFAULT_HEADERS } from "@/app/config/api";
+import { fetchSearchAdvancedMetadataFields } from "@/app/services/index/search-fields";
 import { AdvancedSearchMetadataField } from "@/app/types/advancedSearchMetadataFields";
 import { NextRequest, NextResponse } from "next/server";
-
-const fetchSearchAdvancedMetadataFields = async ({
-  documents,
-}: {
-  documents: string;
-}) => {
-  const response = await fetch(
-    `${API_BASE_URL}/search/advanced/metadata/fields/${documents}/default`,
-    {
-      method: "GET",
-      headers: DEFAULT_HEADERS,
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-};
 
 export async function GET(
   request: NextRequest,

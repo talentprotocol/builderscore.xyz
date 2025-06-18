@@ -1,8 +1,21 @@
-export interface TalentUser {
-  id: string;
-  name: string | null;
-  profile: TalentProfile;
-  profile_picture_url: string;
+export type TalentBuilderScore = {
+  points: number;
+  last_calculated_at: string;
+};
+
+interface TalentSocial {
+  follower_count: string;
+  following_count: string;
+  location: string;
+  owner: string;
+  bio: string;
+  display_name: string;
+  image_url: string;
+  name: string;
+  owned_since: string;
+  profile_url: string;
+  source: string;
+  handle: string;
 }
 
 export type TalentProfile = {
@@ -23,12 +36,7 @@ export type TalentProfile = {
   } | null;
 };
 
-export type TalentBuilderScore = {
-  points: number;
-  last_calculated_at: string;
-};
-
-export type APITalentProfile = {
+export type TalentProfileApi = {
   id: string;
   account: string | null;
   bio: string | null;
@@ -58,38 +66,32 @@ export type APITalentProfile = {
   };
 };
 
-export type TalentCredential = {
-  id: number;
-  type: string;
-  value: string;
-  verified: boolean;
+export type TalentProfileSearchApi = {
+  id: string;
+  bio: string | null;
   created_at: string;
-  updated_at: string;
+  display_name: string | null;
+  human_checkmark: boolean;
+  image_url: string | null;
+  location: string | null;
+  name: string | null;
+  onchain: boolean;
+  calculating_score: boolean;
+  tags: string[];
+  builder_score?: {
+    points: number;
+    last_calculated_at: string;
+  };
 };
 
 export type TalentProfileResponse = {
-  profile: APITalentProfile | null;
+  profile: TalentProfileApi;
   github: boolean;
   basename: string | null;
   builderScore: TalentBuilderScore | null;
   selfXyz: boolean;
   celoTransaction: boolean;
 };
-
-export interface TalentSocial {
-  follower_count: string;
-  following_count: string;
-  location: string;
-  owner: string;
-  bio: string;
-  display_name: string;
-  image_url: string;
-  name: string;
-  owned_since: string;
-  profile_url: string;
-  source: string;
-  handle: string;
-}
 
 export interface TalentSocialsResponse {
   socials: TalentSocial[];

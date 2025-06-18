@@ -10,41 +10,17 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/app/components/ui/drawer";
-import { SponsorSlug, howToEarnConfig } from "@/app/config/how-to-earn";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useUser } from "@/app/context/UserContext";
+import { useHowToEarn } from "@/app/hooks/useHowToEarn";
 import { SPONSOR_TERMS } from "@/app/lib/constants";
-import { AVAILABLE_SPONSORS } from "@/app/types/sponsors";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
 
 export default function HowToDrawer() {
-  const {
-    loadingUser,
-    talentProfile,
-    basename,
-    builderScore,
-    selfXyz,
-    celoTransaction,
-  } = useUser();
   const [openHowToEarn, setOpenHowToEarn] = useState(false);
   const { selectedSponsor } = useSponsor();
 
-  const sponsorSlug =
-    (selectedSponsor?.slug as SponsorSlug) || AVAILABLE_SPONSORS[0];
-
-  const loadSponsorConfig = howToEarnConfig(
-    basename,
-    loadingUser,
-    talentProfile,
-    builderScore,
-    selfXyz,
-    celoTransaction,
-  );
-
-  const sponsorConfig = loadSponsorConfig[sponsorSlug]
-    ? loadSponsorConfig[sponsorSlug]
-    : loadSponsorConfig.base;
+  const sponsorConfig = useHowToEarn(selectedSponsor!);
 
   const allConditionsMet = sponsorConfig?.steps
     .filter((step) => step.required)
@@ -55,7 +31,7 @@ export default function HowToDrawer() {
       <DrawerTrigger asChild>
         <Button
           size="lg"
-          className="cursor-pointer border border-neutral-300 bg-white text-xs text-black hover:bg-neutral-100 sm:text-sm dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+          className="button-style cursor-pointer text-xs sm:text-sm"
         >
           {allConditionsMet ? (
             <div className="flex items-center gap-2">
@@ -114,7 +90,7 @@ export default function HowToDrawer() {
               ))}
             </ul>
 
-            <p className="mt-6 text-sm text-neutral-600 dark:text-neutral-500">
+            <p className="secondary-text-style mt-6 text-sm">
               Subject to{" "}
               <MiniAppExternalLink
                 href={

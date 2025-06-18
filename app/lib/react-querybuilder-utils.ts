@@ -1,5 +1,6 @@
 import { ESQuery } from "@/app/types/elasticSearchTypes";
-import { RuleGroupTypeAny, formatQuery } from "react-querybuilder";
+import { RuleGroupTypeAny } from "react-querybuilder";
+import { formatQuery } from "react-querybuilder/formatQuery";
 
 const buildQueryString = (query: RuleGroupTypeAny) => {
   return formatQuery(query, {
@@ -31,11 +32,13 @@ const groupByLongestPrefix = (arr: Record<string, unknown>[]) => {
   // Sort the keys to prepare for grouping by common prefix
   keys.sort();
 
+  console.debug("Keys sorted for grouping:", keys);
+
   const groups: { [key: string]: Record<string, unknown>[] } = {};
 
   for (let i = 0; i < keys.length; i++) {
     const currentKey = keys[i];
-    const currentParts = currentKey.split(".");
+    const currentParts = currentKey.split(".").slice(0, -1); // Exclude the last part for grouping
 
     let longestPrefix = "";
     let maxLength = 0;
@@ -67,7 +70,7 @@ const groupByLongestPrefix = (arr: Record<string, unknown>[]) => {
     }
 
     // Fallback: use top-level prefix if no common one found
-    const prefix = longestPrefix || currentParts[0];
+    const prefix = longestPrefix || currentParts.join(".");
     if (!groups[prefix]) {
       groups[prefix] = [];
     }
@@ -125,6 +128,7 @@ const mergeCombinatorObjects = (combinator: string, query: ESQuery[]) => {
 
   const groupedByLongestPrefix = groupByLongestPrefix(nestedFieldItems);
   const mergedResult: ESQuery = {};
+  console.debug("Grouped by longest prefix:", groupedByLongestPrefix);
   for (const group in groupedByLongestPrefix) {
     const groupItems = groupedByLongestPrefix[group];
     mergedResult[group] = {
@@ -182,9 +186,9 @@ const handleNestedDocuments = (formattedQuery: ESQuery) => {
   return formattedQuery;
 };
 
-export {
-  buildQueryString,
-  groupByLongestPrefix,
-  handleNestedDocuments,
-  mergeCombinatorObjects,
+const buildNestedQuery = (query: RuleGroupTypeAny) => {
+  const formattedQuery = buildQueryString(query);
+  return handleNestedDocuments(formattedQuery);
 };
+
+export { buildQueryString, handleNestedDocuments, buildNestedQuery };

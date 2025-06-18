@@ -1,12 +1,14 @@
 "use client";
 
 import { ClientOnly } from "@/app/components/ClientOnly";
+import { ENDPOINTS } from "@/app/config/api";
 import {
   buildQueryString,
   handleNestedDocuments,
 } from "@/app/lib/react-querybuilder-utils";
 import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
+import axios, { AxiosError } from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
@@ -27,17 +29,24 @@ export default function QueryBuilderTester() {
   useEffect(() => {
     if (documentSelected) {
       (async () => {
-        const response = await fetch(
-          `/api/search/advanced/metadata/fields/${documentSelected}`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
+        try {
+          const response = await axios.get(
+            `${ENDPOINTS.localApi.talent.searchAdvancedMetadataFields}/${documentSelected}`,
+            {
+              headers: {
+                Accept: "application/json",
+              },
             },
-          },
-        );
-        const metadataForFields = await response.json();
-        setFields(metadataForFields);
+          );
+          setFields(response.data);
+        } catch (err) {
+          const error = err as AxiosError<Error>;
+          console.error(
+            "Error fetching metadata fields:",
+            `HTTP error! status: ${error.response?.status}`,
+          );
+          setFields([]);
+        }
       })();
 
       setQuery({
@@ -50,11 +59,16 @@ export default function QueryBuilderTester() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(`/api/search/advanced/documents`);
-        const data = await response.json();
-        setDocuments(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error("Error fetching documents:", error);
+        const response = await axios.get(
+          ENDPOINTS.localApi.talent.searchAdvancedDocuments,
+        );
+        setDocuments(Array.isArray(response.data) ? response.data : []);
+      } catch (err) {
+        const error = err as AxiosError<Error>;
+        console.error(
+          "Error fetching documents:",
+          `HTTP error! status: ${error.response?.status}`,
+        );
         setDocuments([]);
       }
     })();
@@ -79,6 +93,8 @@ export default function QueryBuilderTester() {
           order: "desc",
         },
       },
+      page: 1,
+      per_page: 10,
     };
     const fullQueryString = Object.keys(requestBody)
       .map(
@@ -88,17 +104,24 @@ export default function QueryBuilderTester() {
       .join("&");
 
     (async () => {
-      const response = await fetch(
-        `/api/search/advanced/${documentSelected}?${fullQueryString}&debug=true`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
+      try {
+        const response = await axios.get(
+          `${ENDPOINTS.localApi.talent.searchAdvanced}/${documentSelected}?${fullQueryString}&debug=true`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
           },
-        },
-      );
-      const data = await response.json();
-      setQueryResults(data);
+        );
+        setQueryResults(response.data);
+      } catch (err) {
+        const error = err as AxiosError<Error>;
+        console.error(
+          "Error executing query:",
+          `HTTP error! status: ${error.response?.status}`,
+        );
+        setQueryResults([]);
+      }
     })();
   };
 

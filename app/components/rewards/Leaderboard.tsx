@@ -2,7 +2,7 @@ import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import {
   LeaderboardEntry,
   LeaderboardResponse,
-} from "@/app/types/leaderboards";
+} from "@/app/types/rewards/leaderboards";
 import { useCallback, useEffect } from "react";
 
 export default function Leaderboard({
@@ -37,7 +37,7 @@ export default function Leaderboard({
   }, [handleScroll]);
 
   return (
-    <div className="rounded-lg border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+    <div className="card-style">
       {leaderboardData.users.map((user, index) => (
         <LeaderboardRow
           key={`${user.id}-${user.profile.id}-${index}`}

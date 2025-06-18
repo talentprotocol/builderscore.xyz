@@ -9,7 +9,7 @@ export function Footer() {
 
   return (
     <div className="flex flex-col justify-center gap-0 py-6">
-      <p className="text-center text-xs text-neutral-600 dark:text-neutral-500">
+      <p className="secondary-text-style text-center text-xs">
         {selectedSponsor &&
           selectedSponsor?.slug !== "talent-protocol" &&
           `Sponsored by ${selectedSponsor?.name} and`}{" "}
@@ -22,7 +22,7 @@ export function Footer() {
         </MiniAppExternalLink>
       </p>
 
-      <p className="text-center text-xs text-neutral-600 dark:text-neutral-500">
+      <p className="secondary-text-style text-center text-xs">
         © {new Date().getFullYear()}{" "}
         <MiniAppExternalLink
           href={

@@ -1,6 +1,3 @@
-import { revalidateTag } from "next/cache";
-import "server-only";
-
 export const CACHE_TAGS = {
   GRANTS: "grants",
   GRANT_BY_ID: "grant-by-id",
@@ -14,29 +11,15 @@ export const CACHE_TAGS = {
   TALENT_ACCOUNTS: "talent-accounts",
   TALENT_CREDENTIALS: "talent-credentials",
   TALENT_CREDENTIALS_DATAPOINTS: "talent-credentials-datapoints",
+  SEARCH: "search",
+  STATS_DAILY: "stats-daily",
+  TALENT_LOOKUP: "talent-lookup",
+  CHART_METRICS: "chart-metrics",
+  SEARCH_ADVANCED: "search-advanced",
+  SEARCH_FIELDS: "search-fields",
+  SEARCH_DOCUMENTS: "search-documents",
+  NOTIFICATION_TOKENS: "notification-tokens",
+  ANALYTICS_ACTIVE_USERS: "analytics-active-users",
 };
 
 export const CACHE_60_MINUTES = 60 * 60;
-
-export function invalidateMultipleTags(tags: string[]) {
-  for (const tag of tags) {
-    revalidateTag(tag);
-  }
-}
-
-export function invalidateAllCache() {
-  const allTags = Object.values(CACHE_TAGS);
-  invalidateMultipleTags(allTags);
-  return allTags;
-}
-
-export async function revalidateAllCache(): Promise<boolean> {
-  try {
-    const response = await fetch(
-      "/api/revalidate?all=true&token=" + process.env.REVALIDATION_TOKEN,
-    );
-    return response.ok;
-  } catch {
-    return false;
-  }
-}

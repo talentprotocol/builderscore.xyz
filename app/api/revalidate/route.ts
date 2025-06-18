@@ -1,5 +1,6 @@
+import { invalidateMultipleTags } from "@/app/lib/cache-server-utils";
 import { CACHE_TAGS } from "@/app/lib/cache-utils";
-import { invalidateMultipleTags } from "@/app/lib/cache-utils";
+import { getQueryClient } from "@/app/lib/get-query-client";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,10 +9,10 @@ import { NextRequest, NextResponse } from "next/server";
  * - To invalidate grant by ID: /api/revalidate?tag=grant-by-id&token=YOUR_TOKEN
  * - To invalidate multiple tags: /api/revalidate?tags=grants,grant-by-id&token=YOUR_TOKEN
  * - To invalidate all caches: /api/revalidate?all=true&token=YOUR_TOKEN
+ * - Will also invalidate TanStack Query cache
  */
 export async function GET(request: NextRequest) {
   try {
-    // Validate the revalidation token
     const token = request.nextUrl.searchParams.get("token");
     const validToken = process.env.REVALIDATION_TOKEN;
 
@@ -22,16 +23,21 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const queryClient = getQueryClient();
+
     const invalidateAll = request.nextUrl.searchParams.get("all") === "true";
 
     if (invalidateAll) {
       const allTags = Object.values(CACHE_TAGS);
       invalidateMultipleTags(allTags);
 
+      queryClient.invalidateQueries();
+
       return NextResponse.json({
         revalidated: true,
         timestamp: Date.now(),
         invalidated: allTags,
+        tanstackQueriesInvalidated: true,
       });
     }
 
@@ -55,10 +61,14 @@ export async function GET(request: NextRequest) {
       }
 
       revalidateTag(tag);
+
+      queryClient.invalidateQueries();
+
       return NextResponse.json({
         revalidated: true,
         timestamp: Date.now(),
         invalidated: [tag],
+        tanstackQueriesInvalidated: true,
       });
     }
 
@@ -74,10 +84,13 @@ export async function GET(request: NextRequest) {
         }
       }
 
+      queryClient.invalidateQueries();
+
       return NextResponse.json({
         revalidated: true,
         timestamp: Date.now(),
         invalidated: invalidatedTags,
+        tanstackQueriesInvalidated: true,
       });
     }
 

@@ -3,9 +3,10 @@
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import { Button } from "@/app/components/ui/button";
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
+import { ENDPOINTS } from "@/app/config/api";
 import { useGrant } from "@/app/context/GrantContext";
-import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useUser } from "@/app/context/UserContext";
+import { useUserLeaderboards } from "@/app/hooks/useRewardsAnalytics";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatNumber,
@@ -28,7 +29,7 @@ export default function ShareableLeaderboard({
   sponsor_slug?: string;
 }) {
   const { frameContext } = useUser();
-  const { userLeaderboard } = useLeaderboard();
+  const { data: userLeaderboardData } = useUserLeaderboards();
   const { selectedGrant } = useGrant();
   const [open, setOpen] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
@@ -39,27 +40,27 @@ export default function ShareableLeaderboard({
   });
 
   const getSummaryForPlatform = (platform: "farcaster" | "twitter") => {
-    if (!userLeaderboard?.summary) return "";
+    if (!userLeaderboardData?.summary) return "";
     const maxLength = platform === "farcaster" ? 180 : 75;
-    return `\n\n"${userLeaderboard.summary.slice(0, maxLength)}${userLeaderboard.summary.length > maxLength ? "..." : ""}"`;
+    return `\n\n"${userLeaderboardData.summary.slice(0, maxLength)}${userLeaderboardData.summary.length > maxLength ? "..." : ""}"`;
   };
 
   const rewardsNumber = formatNumber(
-    parseFloat(userLeaderboard?.reward_amount || "0"),
+    parseFloat(userLeaderboardData?.reward_amount || "0"),
     INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
       selectedGrant?.token_ticker || ""
     ],
   );
 
-  const baseShareText = `I earned ${rewardsNumber} ${selectedGrant?.token_ticker} for ranking #${userLeaderboard?.leaderboard_position} on this week's ${selectedGrant?.sponsor.name} Builder Rewards!`;
+  const baseShareText = `I earned ${rewardsNumber} ${selectedGrant?.token_ticker} for ranking #${userLeaderboardData?.leaderboard_position} on this week's ${selectedGrant?.sponsor.name} Builder Rewards!`;
   const farcasterShareText =
     baseShareText +
-    (userLeaderboard?.summary && userLeaderboard?.summary !== ""
+    (userLeaderboardData?.summary && userLeaderboardData?.summary !== ""
       ? getSummaryForPlatform("farcaster")
       : "");
   const twitterShareText =
     baseShareText +
-    (userLeaderboard?.summary && userLeaderboard?.summary !== ""
+    (userLeaderboardData?.summary && userLeaderboardData?.summary !== ""
       ? getSummaryForPlatform("twitter")
       : "");
 
@@ -72,8 +73,8 @@ export default function ShareableLeaderboard({
       ? `Sponsored by @base and powered by @TalentProtocol`
       : `Powered by @TalentProtocol`;
 
-  const url = `/api/leaderboards/${id}/shareable?${params.toString()}`;
-  const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/rewards/share/${grant_id}/${id}`;
+  const url = `${ENDPOINTS.localApi.builderRewards.leaderboards}/${id}/shareable?${params.toString()}`;
+  const shareUrl = `${process.env.NEXT_PUBLIC_BUILDER_REWARDS_URL}/${sponsor_slug}/share/${grant_id}/${id}`;
 
   const handleShare = async () => {
     if (frameContext) {
@@ -94,7 +95,7 @@ export default function ShareableLeaderboard({
     <>
       <Button
         size="lg"
-        className="w-full cursor-pointer border border-neutral-300 bg-white text-xs text-black hover:bg-neutral-100 sm:text-sm dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+        className="button-style w-full cursor-pointer text-xs sm:text-sm"
         onClick={handleShare}
       >
         <ShareIcon />

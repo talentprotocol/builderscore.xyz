@@ -1,29 +1,30 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
-import { LeaderboardEntry } from "@/app/types/leaderboards";
+import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 const fetchLeaderboardById = unstable_cache(
   async (id: string, queryString: string) => {
-    const response = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.leaderboards}/${id}?${queryString}`,
-      {
-        headers: DEFAULT_HEADERS,
-      },
-    );
-
-    if (response.status === 404) {
-      throw new Error("NOT_FOUND");
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.leaderboards}/${id}?${queryString}`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        throw new Error("NOT_FOUND");
+      }
+      throw new Error(
+        `HTTP error! status: ${axios.isAxiosError(error) ? error.response?.status : "unknown"}`,
+      );
     }
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
   },
   [CACHE_TAGS.LEADERBOARD_BY_ID],
   { revalidate: CACHE_60_MINUTES },

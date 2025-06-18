@@ -1,5 +1,6 @@
 "use client";
 
+import { MAX_TABLE_CONTENT_HEIGHT } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
 import * as React from "react";
 
@@ -7,7 +8,10 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      className={cn(
+        "relative w-full overflow-x-auto overflow-y-auto",
+        MAX_TABLE_CONTENT_HEIGHT,
+      )}
     >
       <table
         data-slot="table"
@@ -22,7 +26,10 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
+      className={cn(
+        "after:bg-border sticky top-0 z-1 bg-white after:absolute after:right-0 after:bottom-0 after:left-0 after:h-[1px] dark:bg-neutral-900",
+        className,
+      )}
       {...props}
     />
   );
@@ -69,7 +76,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-foreground h-10 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className,
       )}
       {...props}
@@ -82,7 +89,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "px-3 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className,
       )}
       {...props}

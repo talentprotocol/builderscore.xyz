@@ -1,9 +1,11 @@
 "use client";
 
 import { useUser } from "@/app/context/UserContext";
+import { useUserProfiles } from "@/app/hooks/useRewards";
 
 export default function UserStatus() {
-  const { frameContext, talentProfile } = useUser();
+  const { frameContext } = useUser();
+  const { data: userProfileData } = useUserProfiles();
 
   return (
     <div className="mb-2 inline-flex items-center justify-between gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-2 py-1">
@@ -16,7 +18,7 @@ export default function UserStatus() {
           FID: {frameContext?.user?.fid || "Not Loaded"}
         </span>
         <span className="text-xs text-green-500">
-          Talent: {talentProfile?.id || "Not Loaded"}
+          Talent: {userProfileData?.profile.id || "Not Loaded"}
         </span>
       </div>
     </div>

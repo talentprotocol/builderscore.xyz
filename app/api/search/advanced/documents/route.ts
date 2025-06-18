@@ -1,19 +1,30 @@
 import { API_BASE_URL, DEFAULT_HEADERS } from "@/app/config/api";
+import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
+import { unstable_cache } from "@/app/lib/unstable-cache";
 import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
+import axios, { AxiosError } from "axios";
 import { NextResponse } from "next/server";
 
-const fetchSearchAdvancedDocuments = async () => {
-  const response = await fetch(`${API_BASE_URL}/search/advanced/documents`, {
-    method: "GET",
-    headers: DEFAULT_HEADERS,
-  });
+const fetchSearchAdvancedDocuments = unstable_cache(
+  async () => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/search/advanced/documents`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<Error>;
 
-  return response.json();
-};
+      throw new Error(`HTTP error! status: ${error.response?.status}`);
+    }
+  },
+  [CACHE_TAGS.SEARCH_DOCUMENTS],
+  { revalidate: CACHE_60_MINUTES },
+);
 
 export async function GET() {
   try {

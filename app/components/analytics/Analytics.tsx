@@ -17,15 +17,13 @@ import {
   TabsTrigger,
 } from "@/app/components/ui/tabs";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useLoadRewards } from "@/app/hooks/useLoadRewards";
-import { CSVDataResult } from "@/app/services/analytics";
+import { CSVDataResult } from "@/app/services/rewards/analytics";
 
 interface AnalyticsProps {
   data: CSVDataResult;
 }
 
 export default function Analytics({ data }: AnalyticsProps) {
-  useLoadRewards();
   const { selectedSponsor } = useSponsor();
 
   return (

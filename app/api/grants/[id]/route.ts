@@ -1,22 +1,22 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
-import { Grant } from "@/app/types/grants";
+import { Grant } from "@/app/types/rewards/grants";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 const fetchGrantById = unstable_cache(
   async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}${ENDPOINTS.grants}/${id}`, {
-      headers: DEFAULT_HEADERS,
-    });
+    const response = await axios.get(
+      `${API_BASE_URL}${ENDPOINTS.grants}/${id}`,
+      {
+        headers: DEFAULT_HEADERS,
+      },
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
+    return response.data;
   },
   [CACHE_TAGS.GRANT_BY_ID],
   { revalidate: CACHE_60_MINUTES },

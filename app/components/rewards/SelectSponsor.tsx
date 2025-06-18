@@ -9,25 +9,18 @@ import {
 } from "@/app/components/ui/select";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useHistoryListener } from "@/app/hooks/useHistoryListener";
+import { useSponsors } from "@/app/hooks/useRewards";
 import { ALLOWED_SPONSORS } from "@/app/lib/constants";
-import { Sponsor } from "@/app/types/sponsors";
+import { Sponsor } from "@/app/types/rewards/sponsors";
 
 export default function SelectSponsor() {
-  const {
-    sponsors,
-    loadingSponsors,
-    selectedSponsor,
-    setSelectedSponsorFromSlug,
-  } = useSponsor();
+  const { selectedSponsor, setSelectedSponsorFromSlug } = useSponsor();
 
-  const sponsorsList = [
-    // {
-    //   id: 0,
-    //   name: "Global",
-    //   slug: "global",
-    // },
-    ...sponsors.filter((sponsor) => ALLOWED_SPONSORS.includes(sponsor.slug)),
-  ];
+  const { data: sponsorsData } = useSponsors();
+
+  const sponsorsList = sponsorsData?.sponsors?.filter((sponsor) =>
+    ALLOWED_SPONSORS.includes(sponsor.slug),
+  );
 
   const handleSponsorChange = (newSponsor: string) => {
     setSelectedSponsorFromSlug(newSponsor);
@@ -47,31 +40,32 @@ export default function SelectSponsor() {
     }
   });
 
-  if (loadingSponsors) {
-    return (
-      <Select disabled>
-        <SelectTrigger className="h-6 cursor-not-allowed border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-          <SelectValue className="dark:text-white" placeholder="Loading..." />
-        </SelectTrigger>
-      </Select>
-    );
-  }
-
   return (
     <Select value={selectedSponsor?.slug} onValueChange={handleSponsorChange}>
-      <SelectTrigger className="h-6 cursor-pointer border-neutral-300 bg-white p-2 text-xs text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+      <SelectTrigger className="button-style h-6 w-36 cursor-pointer p-2 text-xs">
         <SelectValue className="dark:text-white" placeholder="Select Sponsor" />
       </SelectTrigger>
-      <SelectContent className="border-none bg-white text-xs text-neutral-800 dark:bg-neutral-800 dark:text-white">
-        {sponsorsList.map((sponsor: Sponsor) => (
-          <SelectItem
-            key={sponsor.id}
-            className="cursor-pointer bg-white text-xs hover:bg-neutral-100 focus:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-            value={sponsor.slug}
-          >
-            {sponsor.name}
-          </SelectItem>
-        ))}
+      <SelectContent className="dropdown-menu-style">
+        {sponsorsList ? (
+          sponsorsList.map((sponsor: Sponsor) => (
+            <SelectItem
+              key={sponsor.id}
+              className="dropdown-menu-item-style"
+              value={sponsor.slug}
+            >
+              {sponsor.name}
+            </SelectItem>
+          ))
+        ) : (
+          <Select disabled>
+            <SelectTrigger className="button-style h-6 w-36 cursor-not-allowed p-2 text-xs">
+              <SelectValue
+                className="dark:text-white"
+                placeholder="Loading..."
+              />
+            </SelectTrigger>
+          </Select>
+        )}
       </SelectContent>
     </Select>
   );

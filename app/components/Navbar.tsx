@@ -1,50 +1,82 @@
 "use client";
 
 import SelectSponsor from "@/app/components/rewards/SelectSponsor";
-import { useSponsor } from "@/app/context/SponsorContext";
-import Image from "next/image";
+import { SPONSORS } from "@/app/lib/constants";
+import { cn } from "@/app/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navbar({ sponsored }: { sponsored?: boolean }) {
-  const { selectedSponsor } = useSponsor();
+export default function Navbar({
+  sponsor,
+  title,
+  menu,
+}: {
+  sponsor?: string;
+  title: string;
+  menu?: boolean;
+}) {
   const pathname = usePathname();
 
-  let sponsorLogo = "";
+  const currentSponsor = SPONSORS[sponsor as keyof typeof SPONSORS]
+    ? SPONSORS[sponsor as keyof typeof SPONSORS]
+    : SPONSORS["talent-protocol"];
 
-  switch (selectedSponsor?.slug) {
-    case "base":
-      sponsorLogo = "/images/base_logo_blue.svg";
+  const Logo = currentSponsor?.logo;
+
+  let homeUrl;
+
+  switch (true) {
+    case Boolean(sponsor):
+      homeUrl = `/${sponsor}`;
       break;
-    case "celo":
-      sponsorLogo = "/images/celo_logo_black.svg";
+    case pathname === "/dashboard/base":
+      homeUrl = "/dashboard/base";
       break;
-    case "talent-protocol":
-      sponsorLogo = "/images/talent_protocol_icon_white.svg";
-      break;
+    default:
+      homeUrl = "/";
   }
 
   const isAnalyticsPage = pathname.includes("/analytics");
 
   return (
     <nav className="mb-3 flex items-center justify-between">
-      <Link href="/" className="ml-1 flex items-center gap-2">
-        {sponsorLogo && (
-          <Image
-            src={sponsorLogo}
-            alt="Talent Protocol"
-            fill={false}
-            height={15}
-            width={15}
-            style={{ width: "auto", height: "15px" }}
-          />
-        )}
-        <h1 className="text-foreground font-semibold whitespace-nowrap">
-          Builder Rewards
+      <Link href={homeUrl} className="ml-1 flex items-center gap-2">
+        <Logo className="block h-3 w-auto" color={currentSponsor?.color} />
+        <h1
+          className={`text-foreground font-semibold whitespace-nowrap ${menu ? "text-xs" : "text-sm"}`}
+        >
+          {title}
         </h1>
       </Link>
 
-      {sponsored && !isAnalyticsPage && <SelectSponsor />}
+      {sponsor && !isAnalyticsPage && <SelectSponsor />}
+
+      {menu && (
+        <ul className="flex items-center gap-4">
+          <li>
+            <Link
+              href="/dashboard/base"
+              className={cn(
+                "text-xs text-neutral-500",
+                pathname === "/dashboard/base" && "text-white",
+              )}
+            >
+              Base Index
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/"
+              className={cn(
+                "text-xs text-neutral-500",
+                pathname === "/" && "text-white",
+              )}
+            >
+              Builder Rewards
+            </Link>
+          </li>
+        </ul>
+      )}
     </nav>
   );
 }
