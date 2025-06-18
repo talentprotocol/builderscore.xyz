@@ -3,7 +3,6 @@
 import FarcasterLogo from "@/app/components/logos/FarcasterLogo";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
-import { useUserProfiles } from "@/app/hooks/useRewards";
 import { X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -11,7 +10,6 @@ import { useEffect, useState } from "react";
 export default function MiniAppBanner({ className }: { className?: string }) {
   const [isVisible, setIsVisible] = useState(true);
   const { frameContext } = useUser();
-  const { data: userProfileData } = useUserProfiles();
   const { selectedSponsor } = useSponsor();
   const localStorageKey = "builder-rewards-warpcast-banner-closed";
 
@@ -27,7 +25,7 @@ export default function MiniAppBanner({ className }: { className?: string }) {
     localStorage.setItem(localStorageKey, "true");
   };
 
-  if (!isVisible || frameContext || !userProfileData) return null;
+  if (!isVisible || frameContext) return null;
 
   let appUrl;
 

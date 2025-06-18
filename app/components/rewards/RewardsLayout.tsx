@@ -1,5 +1,4 @@
 import MainLayout from "@/app/components/MainLayout";
-import MiniAppBanner from "@/app/components/MiniAppBanner";
 import QueryClientProviders from "@/app/components/QueryClientProviders";
 import { Footer } from "@/app/components/rewards/Footer";
 import RewardsStatus from "@/app/components/rewards/RewardsStatus";
@@ -46,7 +45,6 @@ export default async function RewardsLayout({
           <SponsorProvider initialSponsor={initialSponsor || null}>
             <GrantProvider initialGrant={grants.grants[0]}>
               <LeaderboardProvider>
-                <MiniAppBanner className="max-w-3xl" />
                 <div className="mx-auto flex min-h-dvh max-w-3xl flex-col px-4 py-4">
                   {process.env.NODE_ENV === "development" && (
                     <>
