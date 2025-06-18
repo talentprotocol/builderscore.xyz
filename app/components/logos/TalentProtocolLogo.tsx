@@ -6,6 +6,7 @@ export default function TalentProtocolLogo({
   width,
   className,
   color,
+  preserveAspectRatio = "xMidYMid meet",
 }: LogoProps) {
   return (
     <BaseSvgComponent
@@ -13,6 +14,7 @@ export default function TalentProtocolLogo({
       width={width}
       className={className}
       viewBox="0 0 103 216"
+      preserveAspectRatio={preserveAspectRatio}
     >
       <path
         d="M11.1245 90.8628C15.4526 95.1782 21.2234 97.3359 28.4368 97.3359L102.213 97.3359L93.9037 73.6013H35.1694C30.6811 73.6013 28.4368 71.2038 28.4368 66.409L28.4368 8.01778L4.87281 0L4.8728 73.6013C4.8728 80.7936 6.95672 86.5474 11.1245 90.8628Z"

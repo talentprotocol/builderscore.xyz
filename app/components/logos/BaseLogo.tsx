@@ -6,6 +6,7 @@ export default function BaseLogo({
   width,
   className,
   color,
+  preserveAspectRatio = "xMidYMid meet",
 }: LogoProps) {
   return (
     <BaseSvgComponent
@@ -13,6 +14,7 @@ export default function BaseLogo({
       width={width}
       className={className}
       viewBox="0 0 416 111"
+      preserveAspectRatio={preserveAspectRatio}
     >
       <path
         fillRule="evenodd"

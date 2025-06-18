@@ -6,6 +6,7 @@ export interface BaseSvgProps {
   className?: string;
   color?: string;
   viewBox: string;
+  preserveAspectRatio?: string;
   children: ReactNode;
 }
 
