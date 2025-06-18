@@ -117,8 +117,13 @@ export function useTopBuildersLeaderboard(data: CSVRow[]) {
         const response = await fetchTopBuildersLeaderboard(data);
         return response;
       } else {
+        const queryParams = new URLSearchParams({
+          ...(selectedSponsor?.slug && {
+            sponsor_slug: selectedSponsor.slug,
+          }),
+        }).toString();
         const response = await axios.get(
-          ENDPOINTS.localApi.analytics.topBuilders,
+          `${ENDPOINTS.localApi.analytics.topBuilders}?${queryParams}`,
         );
         return response.data;
       }

@@ -4,9 +4,14 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(): Promise<NextResponse<BuilderData[]>> {
+export async function GET(
+  request: Request,
+): Promise<NextResponse<BuilderData[]>> {
   try {
-    const data = await getCSVData();
+    const { searchParams } = new URL(request.url);
+    const sponsorSlug = searchParams.get("sponsor_slug") || "";
+
+    const data = await getCSVData(sponsorSlug);
     const topBuildersData = await fetchTopBuildersLeaderboard(data.topBuilders);
 
     return NextResponse.json(topBuildersData);

@@ -39,8 +39,8 @@ export interface BuilderData {
   };
 }
 
-export async function getCSVData(subdomain: string): Promise<CSVDataResult> {
-  const sponsor = subdomain || "base";
+export async function getCSVData(sponsorSlug: string): Promise<CSVDataResult> {
+  const sponsor = sponsorSlug || "base";
   const dataDir = path.join(process.cwd(), `app/data/${sponsor}`);
 
   const activationCSV = fs.readFileSync(
