@@ -1,31 +1,34 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
+import axios, { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 const fetchProfileById = unstable_cache(
   async (id: string, accountSource: string) => {
-    const profileResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.profile}?id=${id}&account_source=${accountSource}`,
-      {
-        method: "GET",
-        headers: DEFAULT_HEADERS,
-      },
-    );
-
-    if (profileResponse.status === 404) {
-      return NextResponse.json({ error: `Profile not found` }, { status: 404 });
-    }
-
-    if (!profileResponse.ok) {
-      throw new Error(
-        `Talent Protocol API error: ${profileResponse.statusText}`,
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.profile}?id=${id}&account_source=${accountSource}`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
       );
-    }
 
-    return profileResponse.json();
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+
+      if (error.response?.status === 404) {
+        return NextResponse.json(
+          { error: `Profile not found` },
+          { status: 404 },
+        );
+      }
+
+      throw new Error(`HTTP error! status: ${error.response?.status}`);
+    }
   },
   [CACHE_TAGS.TALENT_PROFILE],
   { revalidate: CACHE_60_MINUTES },

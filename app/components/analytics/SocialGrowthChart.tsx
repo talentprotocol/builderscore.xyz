@@ -1,7 +1,8 @@
 "use client";
 
-import { ENDPOINTS } from "@/app/config/api";
 import { useTheme } from "@/app/context/ThemeContext";
+import { fetchAnalyticsActiveUsers } from "@/app/services/rewards/active-users";
+import { fetchNotificationTokensData } from "@/app/services/rewards/notification-tokens";
 import {
   GoogleAnalyticsActiveUserData,
   GoogleAnalyticsApiResponse,
@@ -55,52 +56,18 @@ export default function SocialGrowthChart() {
       try {
         setLoading(true);
 
-        const warpcastResponse = await fetch(
-          ENDPOINTS.localApi.neynar.notificationTokens,
-          {
-            next: {
-              revalidate: 86400,
-            },
-          },
-        );
-
-        if (!warpcastResponse.ok) {
-          throw new Error(
-            `Failed to fetch Warpcast data: ${warpcastResponse.status} ${warpcastResponse.statusText}`,
-          );
+        let warpcastResult: NotificationTokensApiResponse;
+        try {
+          warpcastResult = await fetchNotificationTokensData();
+        } catch (err) {
+          throw new Error(`Failed to fetch notification tokens: ${err}`);
         }
 
-        const warpcastResult =
-          (await warpcastResponse.json()) as NotificationTokensApiResponse;
-
-        if (!warpcastResult.success) {
-          throw new Error(
-            warpcastResult.error || "Failed to fetch Warpcast data",
-          );
-        }
-
-        const gaResponse = await fetch(
-          ENDPOINTS.localApi.analytics.activeUsers,
-          {
-            next: {
-              revalidate: 86400,
-            },
-          },
-        );
-
-        if (!gaResponse.ok) {
-          throw new Error(
-            `Failed to fetch Google Analytics data: ${gaResponse.status} ${gaResponse.statusText}`,
-          );
-        }
-
-        const gaResult =
-          (await gaResponse.json()) as GoogleAnalyticsApiResponse;
-
-        if (!gaResult.success) {
-          throw new Error(
-            gaResult.error || "Failed to fetch Google Analytics data",
-          );
+        let gaResult: GoogleAnalyticsApiResponse;
+        try {
+          gaResult = await fetchAnalyticsActiveUsers();
+        } catch (err) {
+          throw new Error(`Failed to fetch analytics data: ${err}`);
         }
 
         setCumulativeData(warpcastResult.cumulativeData || []);

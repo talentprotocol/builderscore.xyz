@@ -2,27 +2,26 @@ import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
 import { TalentProfileApi, TalentSocialsResponse } from "@/app/types/talent";
+import axios, { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 const fetchTalentProfile = unstable_cache(
   async (fid: string) => {
-    const profileResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.profile}?id=${fid}&account_source=farcaster`,
-      {
-        method: "GET",
-        headers: DEFAULT_HEADERS,
-      },
-    );
-
-    if (!profileResponse.ok) {
-      throw new Error(
-        `Talent Protocol API error: ${profileResponse.statusText}`,
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.profile}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
       );
-    }
 
-    return profileResponse.json();
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+      throw new Error(`HTTP error! status: ${error.response?.status}`);
+    }
   },
   [CACHE_TAGS.TALENT_PROFILE],
   { revalidate: CACHE_60_MINUTES },
@@ -30,19 +29,18 @@ const fetchTalentProfile = unstable_cache(
 
 const fetchTalentSocials = unstable_cache(
   async (fid: string): Promise<TalentSocialsResponse | null> => {
-    const socialsResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.socials}?id=${fid}&account_source=farcaster`,
-      {
-        method: "GET",
-        headers: DEFAULT_HEADERS,
-      },
-    );
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.socials}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
 
-    if (!socialsResponse.ok) {
+      return response.data;
+    } catch {
       return null;
     }
-
-    return socialsResponse.json();
   },
   [CACHE_TAGS.TALENT_SOCIALS],
   { revalidate: CACHE_60_MINUTES },
@@ -50,19 +48,18 @@ const fetchTalentSocials = unstable_cache(
 
 const fetchTalentAccounts = unstable_cache(
   async (fid: string) => {
-    const accountResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.accounts}?id=${fid}&account_source=farcaster`,
-      {
-        method: "GET",
-        headers: DEFAULT_HEADERS,
-      },
-    );
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.accounts}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
 
-    if (!accountResponse.ok) {
+      return response.data;
+    } catch {
       return null;
     }
-
-    return accountResponse.json();
   },
   [CACHE_TAGS.TALENT_ACCOUNTS],
   { revalidate: CACHE_60_MINUTES },
@@ -70,19 +67,18 @@ const fetchTalentAccounts = unstable_cache(
 
 const fetchTalentCredentials = unstable_cache(
   async (fid: string) => {
-    const credentialsResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.credentials}?id=${fid}&account_source=farcaster`,
-      {
-        method: "GET",
-        headers: DEFAULT_HEADERS,
-      },
-    );
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.credentials}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
 
-    if (!credentialsResponse.ok) {
+      return response.data;
+    } catch {
       return null;
     }
-
-    return credentialsResponse.json();
   },
   [CACHE_TAGS.TALENT_CREDENTIALS],
   { revalidate: CACHE_60_MINUTES },
@@ -90,19 +86,18 @@ const fetchTalentCredentials = unstable_cache(
 
 const fetchTalentCredentialsDatapoints = unstable_cache(
   async (fid: string, slug: string) => {
-    const credentialsResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.credentialsDatapoints}?id=${fid}&account_source=farcaster&slugs=${slug}`,
-      {
-        method: "GET",
-        headers: DEFAULT_HEADERS,
-      },
-    );
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.credentialsDatapoints}?id=${fid}&account_source=farcaster&slugs=${slug}`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
 
-    if (!credentialsResponse.ok) {
+      return response.data;
+    } catch {
       return null;
     }
-
-    return credentialsResponse.json();
   },
   [CACHE_TAGS.TALENT_CREDENTIALS_DATAPOINTS],
   { revalidate: CACHE_60_MINUTES },
@@ -110,19 +105,18 @@ const fetchTalentCredentialsDatapoints = unstable_cache(
 
 const fetchTalentBuilderScore = unstable_cache(
   async (fid: string) => {
-    const builderScoreResponse = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.talent.builderScore}?id=${fid}&account_source=farcaster`,
-      {
-        method: "GET",
-        headers: DEFAULT_HEADERS,
-      },
-    );
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.builderScore}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
 
-    if (!builderScoreResponse.ok) {
+      return response.data;
+    } catch {
       return null;
     }
-
-    return builderScoreResponse.json();
   },
   [CACHE_TAGS.TALENT_BUILDER_SCORE],
   { revalidate: CACHE_60_MINUTES },

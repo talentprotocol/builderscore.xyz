@@ -5,28 +5,30 @@ import { formatDateRange, formatNumber } from "@/app/lib/utils";
 import { Grant } from "@/app/types/rewards/grants";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { ImageResponse } from "@vercel/og";
+import axios, { AxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 const fetchLeaderboardById = unstable_cache(
   async (id: string, queryString: string) => {
-    const response = await fetch(
-      `${API_BASE_URL}${ENDPOINTS.leaderboards}/${id}?${queryString}`,
-      {
-        headers: DEFAULT_HEADERS,
-      },
-    );
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.leaderboards}/${id}?${queryString}`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
 
-    if (response.status === 404) {
-      throw new Error("NOT_FOUND");
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+
+      if (error.response?.status === 404) {
+        throw new Error("NOT_FOUND");
+      }
+      throw new Error(`HTTP error! status: ${error.response?.status}`);
     }
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
   },
   [CACHE_TAGS.LEADERBOARD_BY_ID],
   { revalidate: CACHE_60_MINUTES },
@@ -34,15 +36,20 @@ const fetchLeaderboardById = unstable_cache(
 
 const fetchGrantById = unstable_cache(
   async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}${ENDPOINTS.grants}/${id}`, {
-      headers: DEFAULT_HEADERS,
-    });
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.grants}/${id}`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+
+      throw new Error(`HTTP error! status: ${error.response?.status}`);
     }
-
-    return response.json();
   },
   [CACHE_TAGS.GRANT_BY_ID],
   { revalidate: CACHE_60_MINUTES },
@@ -89,19 +96,17 @@ export async function GET(
       leaderboardData.profile.image_url ||
       `${process.env.BUILDER_REWARDS_URL}/images/default_avatar.png`;
 
-    const dmMonoLight = await fetch(
-      new URL(
-        `${process.env.BUILDER_REWARDS_URL}/fonts/DMMono-Light.ttf`,
-        import.meta.url,
-      ),
-    ).then((res) => res.arrayBuffer());
+    const dmMonoLight = await axios
+      .get(`${process.env.BUILDER_REWARDS_URL}/fonts/DMMono-Light.ttf`, {
+        responseType: "arraybuffer",
+      })
+      .then((response) => response.data);
 
-    const dmMonoMedium = await fetch(
-      new URL(
-        `${process.env.BUILDER_REWARDS_URL}/fonts/DMMono-Medium.ttf`,
-        import.meta.url,
-      ),
-    ).then((res) => res.arrayBuffer());
+    const dmMonoMedium = await axios
+      .get(`${process.env.BUILDER_REWARDS_URL}/fonts/DMMono-Medium.ttf`, {
+        responseType: "arraybuffer",
+      })
+      .then((response) => response.data);
 
     return new ImageResponse(
       (

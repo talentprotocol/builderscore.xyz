@@ -1,4 +1,5 @@
 import { ENDPOINTS } from "@/app/config/api";
+import axios from "axios";
 import { revalidateTag } from "next/cache";
 import "server-only";
 
@@ -17,6 +18,13 @@ export const CACHE_TAGS = {
   TALENT_CREDENTIALS_DATAPOINTS: "talent-credentials-datapoints",
   SEARCH: "search",
   STATS_DAILY: "stats-daily",
+  TALENT_LOOKUP: "talent-lookup",
+  CHART_METRICS: "chart-metrics",
+  SEARCH_ADVANCED: "search-advanced",
+  SEARCH_FIELDS: "search-fields",
+  SEARCH_DOCUMENTS: "search-documents",
+  NOTIFICATION_TOKENS: "notification-tokens",
+  ANALYTICS_ACTIVE_USERS: "analytics-active-users",
 };
 
 export const CACHE_60_MINUTES = 60 * 60;
@@ -35,10 +43,10 @@ export function invalidateAllCache() {
 
 export async function revalidateAllCache(): Promise<boolean> {
   try {
-    const response = await fetch(
+    await axios.get(
       `${ENDPOINTS.localApi.revalidate.all}?all=true&token=${process.env.REVALIDATION_TOKEN}`,
     );
-    return response.ok;
+    return true;
   } catch {
     return false;
   }

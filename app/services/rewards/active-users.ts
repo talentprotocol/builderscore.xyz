@@ -1,24 +1,21 @@
-import { API_BASE_URL, DEFAULT_HEADERS } from "@/app/config/api";
+import { ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
+import { GoogleAnalyticsApiResponse } from "@/app/types/rewards/googleAnalytics";
 import axios, { AxiosError } from "axios";
 
-export const fetchDailyStatsData = unstable_cache(
-  async (queryString: string) => {
+export const fetchAnalyticsActiveUsers = unstable_cache(
+  async (): Promise<GoogleAnalyticsApiResponse> => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/stats/daily?${queryString}`,
-        {
-          headers: DEFAULT_HEADERS,
-        },
+        ENDPOINTS.localApi.analytics.activeUsers,
       );
-
-      return response.data;
+      return response.data as GoogleAnalyticsApiResponse;
     } catch (err) {
       const error = err as AxiosError<Error>;
       throw new Error(`HTTP error! status: ${error.response?.status}`);
     }
   },
-  [CACHE_TAGS.STATS_DAILY],
+  [CACHE_TAGS.ANALYTICS_ACTIVE_USERS],
   { revalidate: CACHE_60_MINUTES },
 );

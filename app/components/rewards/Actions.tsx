@@ -5,6 +5,7 @@ import HowToDrawer from "@/app/components/rewards/HowToDrawer";
 import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard";
 import { Button } from "@/app/components/ui/button";
 import { useGrant } from "@/app/context/GrantContext";
+import { useUser } from "@/app/context/UserContext";
 import {
   useUserLeaderboards,
   useUserProfiles,
@@ -12,6 +13,7 @@ import {
 
 export default function Actions() {
   const { selectedGrant } = useGrant();
+  const { frameContext } = useUser();
 
   const { data: userProfileData, isFetched: isFetchedUserProfile } =
     useUserProfiles();
@@ -19,7 +21,7 @@ export default function Actions() {
 
   return (
     <div className="mt-3 grid w-full auto-cols-fr grid-flow-col gap-2 sm:gap-4">
-      {isFetchedUserProfile ? (
+      {isFetchedUserProfile || !frameContext ? (
         <>
           {userProfileData ? (
             !userProfileData.github && (

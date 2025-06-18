@@ -4,8 +4,8 @@ import { API_BASE_URL } from "@/app/config/api";
 import { CACHE_TAGS } from "@/app/lib/cache-utils";
 import { CACHE_60_MINUTES } from "@/app/lib/cache-utils";
 import { formatQuery } from "@/app/lib/format-queries";
+import { unstable_cache } from "@/app/lib/unstable-cache";
 import axios from "axios";
-import { unstable_cache } from "next/cache";
 import { RuleGroupType } from "react-querybuilder";
 
 export const searchProfiles = unstable_cache(

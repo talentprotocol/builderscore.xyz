@@ -1,3 +1,5 @@
+import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
+import { unstable_cache } from "@/app/lib/unstable-cache";
 import {
   GoogleAnalyticsActiveUserData,
   GoogleAnalyticsApiResponse,
@@ -7,8 +9,8 @@ import { NextResponse } from "next/server";
 
 const PROPERTY_ID = process.env.GA_PROPERTY_ID;
 
-export async function GET() {
-  try {
+const getActiveUsersData = unstable_cache(
+  async () => {
     const analyticsDataClient = new BetaAnalyticsDataClient({
       credentials: {
         client_email: process.env.GA_CLIENT_EMAIL,
@@ -55,12 +57,19 @@ export async function GET() {
         a.date.localeCompare(b.date),
     );
 
-    const apiResponse: GoogleAnalyticsApiResponse = {
+    return {
       success: true,
       data: formattedData,
     };
+  },
+  [CACHE_TAGS.ANALYTICS_ACTIVE_USERS],
+  { revalidate: CACHE_60_MINUTES },
+);
 
-    return NextResponse.json(apiResponse);
+export async function GET() {
+  try {
+    const result = await getActiveUsersData();
+    return NextResponse.json(result);
   } catch (error) {
     const errorResponse: GoogleAnalyticsApiResponse = {
       success: false,
