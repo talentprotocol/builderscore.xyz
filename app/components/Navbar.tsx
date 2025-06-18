@@ -41,7 +41,7 @@ export default function Navbar({
   return (
     <nav className="mb-3 flex items-center justify-between">
       <Link href={homeUrl} className="ml-1 flex items-center gap-2">
-        <Logo height={12} color={currentSponsor?.color} />
+        <Logo className="block h-3 w-auto" color={currentSponsor?.color} />
         <h1
           className={`text-foreground font-semibold whitespace-nowrap ${menu ? "text-xs" : "text-sm"}`}
         >

@@ -1,19 +1,9 @@
 import BaseSvgComponent from "@/app/components/logos/BaseSvgComponent";
 import { LogoProps } from "@/app/types/svg";
 
-export default function FarcasterLogo({
-  height,
-  width,
-  className,
-  color,
-}: LogoProps) {
+export default function FarcasterLogo({ className, color }: LogoProps) {
   return (
-    <BaseSvgComponent
-      height={height}
-      width={width}
-      className={className}
-      viewBox="0 0 1000 1000"
-    >
+    <BaseSvgComponent className={className} viewBox="0 0 1000 1000">
       <rect width="1000" height="1000" rx="200" fill={color} />
       <path
         d="M257.778 155.556H742.222V844.444H671.111V528.889H670.414C662.554 441.677 589.258 373.333 500 373.333C410.742 373.333 337.446 441.677 329.586 528.889H328.889V844.444H257.778V155.556Z"

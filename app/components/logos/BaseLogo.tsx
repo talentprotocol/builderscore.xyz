@@ -2,16 +2,12 @@ import BaseSvgComponent from "@/app/components/logos/BaseSvgComponent";
 import { LogoProps } from "@/app/types/svg";
 
 export default function BaseLogo({
-  height,
-  width,
   className,
   color,
   preserveAspectRatio = "xMidYMid meet",
 }: LogoProps) {
   return (
     <BaseSvgComponent
-      height={height}
-      width={width}
       className={className}
       viewBox="0 0 416 111"
       preserveAspectRatio={preserveAspectRatio}
