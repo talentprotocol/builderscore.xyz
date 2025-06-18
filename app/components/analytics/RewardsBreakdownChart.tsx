@@ -20,23 +20,42 @@ export default function RewardsBreakdownChart({
   );
   const totalCount = totalRow ? Number(totalRow["Count"]) : 0;
 
-  const recipientTypeData = data
-    .filter(
-      (row) =>
-        row["Category"] === "Builder Rewards (one-time)" ||
-        row["Category"] === "Builder Rewards (repeated recipient)",
-    )
-    .map((row) => ({
-      name: String(row["Category"]),
-      value: Number(row["Count"]),
-      percentage: Number(row["Percentage of Total"]),
-    }));
+  const recipientTypeData = {
+    "cell-1": {
+      name: "Builder Rewards (one-time)",
+      value: data.find(
+        (row) => row["Category"] === "Builder Rewards (one-time)",
+      )?.["Count"],
+      percentage: data.find(
+        (row) => row["Category"] === "Builder Rewards (one-time)",
+      )?.["Percentage of Total"],
+    },
+    "cell-2": {
+      name: "Builder Rewards (repeated recipient)",
+      value:
+        totalCount -
+        Number(
+          data.find(
+            (row) => row["Category"] === "Builder Rewards (one-time)",
+          )?.["Count"],
+        ),
+      percentage:
+        (totalCount -
+          Number(
+            data.find(
+              (row) => row["Category"] === "Builder Rewards (one-time)",
+            )?.["Count"],
+          )) /
+        totalCount,
+    },
+  };
 
   const specialCategoriesData = data
     .filter(
       (row) =>
-        row["Category"] === "BR + /base-builds" ||
-        row["Category"] === "BR + Buildathon Winner",
+        row["Category"] === "BR + Base-builds" ||
+        row["Category"] === "BR + Buildathon Winner" ||
+        row["Category"] === "BR + Self-XYZ",
     )
     .map((row) => ({
       name: String(row["Category"]),
@@ -80,7 +99,7 @@ export default function RewardsBreakdownChart({
             <ResponsiveContainer width="100%" height="90%">
               <PieChart>
                 <Pie
-                  data={recipientTypeData}
+                  data={Object.values(recipientTypeData)}
                   fill="#8884d8"
                   dataKey="value"
                   isAnimationActive={false}
@@ -88,7 +107,7 @@ export default function RewardsBreakdownChart({
                   cy="50%"
                   outerRadius={110}
                 >
-                  {recipientTypeData.map((entry, index) => (
+                  {Object.values(recipientTypeData).map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={
@@ -102,7 +121,8 @@ export default function RewardsBreakdownChart({
                 <Legend
                   formatter={(value, entry, index) => (
                     <span className="text-neutral-800 dark:text-white">
-                      {value} ({recipientTypeData[index]?.value} users)
+                      {value} ({Object.values(recipientTypeData)[index]?.value}{" "}
+                      users)
                     </span>
                   )}
                   wrapperStyle={{

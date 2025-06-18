@@ -22,7 +22,9 @@ export default function HowToDrawer() {
 
   const sponsorConfig = useHowToEarn(selectedSponsor!);
 
-  const allConditionsMet = sponsorConfig?.steps.every((step) => step.condition);
+  const allConditionsMet = sponsorConfig?.steps
+    .filter((step) => step.required)
+    .every((step) => step.condition);
 
   return (
     <Drawer open={openHowToEarn} onOpenChange={setOpenHowToEarn}>

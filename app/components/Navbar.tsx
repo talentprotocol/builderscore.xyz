@@ -2,10 +2,9 @@
 
 import SelectSponsor from "@/app/components/rewards/SelectSponsor";
 import { SPONSORS } from "@/app/lib/constants";
+import { cn } from "@/app/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import { cn } from "../lib/utils";
 
 export default function Navbar({
   sponsor,
@@ -37,6 +36,8 @@ export default function Navbar({
       homeUrl = "/";
   }
 
+  const isAnalyticsPage = pathname.includes("/analytics");
+
   return (
     <nav className="mb-3 flex items-center justify-between">
       <Link href={homeUrl} className="ml-1 flex items-center gap-2">
@@ -48,7 +49,7 @@ export default function Navbar({
         </h1>
       </Link>
 
-      {sponsor && <SelectSponsor />}
+      {sponsor && !isAnalyticsPage && <SelectSponsor />}
 
       {menu && (
         <ul className="flex items-center gap-4">

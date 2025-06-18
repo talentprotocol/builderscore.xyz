@@ -55,7 +55,7 @@ export const ALLOWED_SPONSORS = ["base", "celo", "talent-protocol"];
 
 export const SPONSOR_TERMS = {
   base: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
-  celo: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions-1",
+  celo: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions-celo",
   "talent-protocol":
     "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
   default:

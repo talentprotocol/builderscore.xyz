@@ -6,6 +6,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/app/components/ui/tabs";
+import { useSponsor } from "@/app/context/SponsorContext";
 import { useTopBuildersLeaderboard } from "@/app/hooks/useRewardsAnalytics";
 import { CSVRow } from "@/app/lib/csv-parser";
 import { BuilderData } from "@/app/services/rewards/analytics";
@@ -27,6 +28,8 @@ const BuildersTable = ({
   isLoading,
   isWeekly,
 }: BuildersTableProps) => {
+  const { sponsorTokenTicker } = useSponsor();
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
@@ -83,7 +86,7 @@ const BuildersTable = ({
                   {isWeekly
                     ? builder.thisWeekRewardsTotal.toFixed(3)
                     : `(${builder.allTimeRewardsCount}x) ${builder.allTimeRewardsTotal.toFixed(3)}`}{" "}
-                  ETH
+                  {sponsorTokenTicker}
                 </td>
               </tr>
             ))

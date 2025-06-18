@@ -16,6 +16,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/app/components/ui/tabs";
+import { useSponsor } from "@/app/context/SponsorContext";
 import { CSVDataResult } from "@/app/services/rewards/analytics";
 
 interface AnalyticsProps {
@@ -23,6 +24,8 @@ interface AnalyticsProps {
 }
 
 export default function Analytics({ data }: AnalyticsProps) {
+  const { selectedSponsor } = useSponsor();
+
   return (
     <div className="container mx-auto py-3">
       <Tabs defaultValue="charts" className="relative w-full">
@@ -73,7 +76,7 @@ export default function Analytics({ data }: AnalyticsProps) {
           <DataTable
             data={data.activityByType}
             title="Builder Activity By Type Data"
-            description="Weekly GitHub and Base Contract activity metrics"
+            description={`Weekly GitHub and ${selectedSponsor?.name} Contract activity metrics`}
           />
           <DataTable
             data={data.retention}
