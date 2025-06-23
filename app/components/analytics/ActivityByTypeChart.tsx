@@ -26,9 +26,9 @@ export default function ActivityByTypeChart({
   const { selectedSponsor } = useSponsor();
 
   const CHART_COLORS = {
-    githubDevs: "var(--chart-1)",
-    githubRepos: "var(--chart-2)",
-    contractDevs: "var(--chart-3)",
+    githubDevs: "var(--chart-9)",
+    githubRepos: "var(--chart-7)",
+    contractDevs: "var(--chart-5)",
     contracts: "var(--chart-4)",
   };
 

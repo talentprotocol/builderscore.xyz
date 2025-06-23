@@ -49,16 +49,16 @@ export default function WinnersProfileChart({
 
   const CHART_COLORS = {
     builderScore: [
-      "var(--chart-1)",
-      "var(--chart-2)",
-      "var(--chart-3)",
-      "var(--chart-4)",
-      "var(--chart-5)",
+      "var(--chart-9)",
+      "var(--chart-8)",
+      "var(--chart-7)",
       "var(--chart-6)",
+      "var(--chart-5)",
+      "var(--chart-4)",
     ],
     experience: {
-      github: "var(--chart-1)",
-      onchain: "var(--chart-2)",
+      github: "var(--chart-9)",
+      onchain: "var(--chart-7)",
     },
   };
 

@@ -54,8 +54,8 @@ export default function SocialGrowthChart() {
     });
   }, [warpcastData?.cumulativeData, analyticsData?.data]);
 
-  const CHART_COLOR_1 = "var(--chart-1)";
-  const CHART_COLOR_2 = "var(--chart-2)";
+  const CHART_COLOR_1 = "var(--chart-9)";
+  const CHART_COLOR_2 = "var(--chart-7)";
 
   const isLoading = isLoadingWarpcast || isLoadingAnalytics;
   const error = warpcastError || analyticsError;
