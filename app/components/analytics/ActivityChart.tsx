@@ -32,9 +32,9 @@ export default function ActivityChart({
   const { isDarkMode } = useTheme();
 
   const CHART_COLORS = {
-    activationRate: "var(--chart-1)",
-    eligibleBuilders: "var(--chart-2)",
-    activeBuilders: "var(--chart-3)",
+    activationRate: "var(--chart-9)",
+    eligibleBuilders: "var(--chart-7)",
+    activeBuilders: "var(--chart-5)",
   };
 
   const filteredDailyData = dailyData.filter(

@@ -23,9 +23,9 @@ export default function RetentionRateChart({ data }: RetentionRateChartProps) {
   const { isDarkMode } = useTheme();
 
   const CHART_COLORS = {
-    activeDevs: "var(--chart-2)",
-    inactiveDevs: "var(--chart-4)",
-    retentionRate: "var(--chart-1)",
+    activeDevs: "var(--chart-7)",
+    inactiveDevs: "var(--chart-5)",
+    retentionRate: "var(--chart-9)",
   };
 
   const chartData = data.map((row) => {

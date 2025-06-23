@@ -11,8 +11,8 @@ export default function RewardsBreakdownChart({
   data,
 }: RewardsBreakdownChartProps) {
   const CHART_COLORS = {
-    recipients: ["var(--chart-1)", "var(--chart-2)"],
-    special: ["var(--chart-3)", "var(--chart-4)", "var(--chart-5)"],
+    recipients: ["var(--chart-9)", "var(--chart-7)"],
+    special: ["var(--chart-5)", "var(--chart-4)", "var(--chart-3)"],
   };
 
   const totalRow = data.find(
