@@ -4,74 +4,55 @@ import { FrameContext } from "@/app/types/rewards/farcaster";
 import { sdk } from "@farcaster/frame-sdk";
 import { createContext, useContext, useEffect, useState } from "react";
 
+const DEV_FRAME_CONTEXT: FrameContext = {
+  user: {
+    fid: 856355,
+    username: "simao",
+    displayName: "Simão",
+  },
+  client: {
+    clientFid: 1,
+    added: true,
+  },
+};
+
 interface UserContextType {
   frameContext: FrameContext | undefined;
   isSDKLoaded: boolean;
-  simulatedFid: number | undefined;
-  setSimulatedFid: (fid: number | undefined) => void;
 }
 
 const UserContext = createContext<UserContextType>({
   frameContext: undefined,
   isSDKLoaded: false,
-  simulatedFid: undefined,
-  setSimulatedFid: () => {},
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [frameContext, setFrameContext] = useState<FrameContext>();
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-  const [simulatedFid, setSimulatedFid] = useState<number | undefined>();
 
   useEffect(() => {
     const loadSDK = async () => {
-      let context: FrameContext;
-
       if (process.env.NODE_ENV === "development") {
-        context = {
-          user: {
-            fid: simulatedFid ?? 856355,
-          },
-          client: {
-            clientFid: 1,
-            added: true,
-          },
-        };
+        setFrameContext(DEV_FRAME_CONTEXT);
         sdk.actions.ready();
       } else {
-        context = await sdk.context;
+        setFrameContext(await sdk.context);
         sdk.actions.ready();
         await sdk.actions.addFrame();
       }
-
-      if (simulatedFid) {
-        context = {
-          ...context,
-          user: {
-            ...context.user,
-            fid: simulatedFid,
-          },
-        };
-      }
-
-      setFrameContext(context);
     };
 
     if (!isSDKLoaded) {
       loadSDK();
       setIsSDKLoaded(true);
-    } else if (simulatedFid !== undefined) {
-      loadSDK();
     }
-  }, [isSDKLoaded, simulatedFid]);
+  }, [isSDKLoaded]);
 
   return (
     <UserContext.Provider
       value={{
         frameContext,
         isSDKLoaded,
-        simulatedFid,
-        setSimulatedFid,
       }}
     >
       {children}
