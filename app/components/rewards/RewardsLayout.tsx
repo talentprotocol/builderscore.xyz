@@ -1,6 +1,7 @@
 import MainLayout from "@/app/components/MainLayout";
 import QueryClientProviders from "@/app/components/QueryClientProviders";
 import { Footer } from "@/app/components/rewards/Footer";
+import RewardsNavbar from "@/app/components/rewards/RewardsNavbar";
 import RewardsStatus from "@/app/components/rewards/RewardsStatus";
 import SponsorNavbar from "@/app/components/rewards/SponsorNavbar";
 import UserStatus from "@/app/components/rewards/UserStatus";
@@ -45,7 +46,7 @@ export default async function RewardsLayout({
           <SponsorProvider initialSponsor={initialSponsor || null}>
             <GrantProvider initialGrant={grants.grants[0]}>
               <LeaderboardProvider>
-                <div className="mx-auto flex min-h-dvh max-w-3xl flex-col px-4 py-4">
+                <div className="relative mx-auto flex min-h-dvh max-w-3xl flex-col px-4 py-4">
                   {process.env.NODE_ENV === "development" && (
                     <>
                       <UserStatus />
@@ -55,6 +56,7 @@ export default async function RewardsLayout({
                   <SponsorNavbar title={title} sponsor={sponsor} />
                   <main className="flex h-full flex-col">{children}</main>
                   <Footer />
+                  <RewardsNavbar />
                 </div>
               </LeaderboardProvider>
             </GrantProvider>
