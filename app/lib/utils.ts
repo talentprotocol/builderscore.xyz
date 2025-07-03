@@ -282,20 +282,17 @@ export function getTimeRemaining(endDate: string): string {
   }
 
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffHours = Math.floor(
+    (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+  );
+  const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
 
-  if (diffDays > 30) {
-    const diffMonths = Math.floor(diffDays / 30);
-    return `${diffMonths} Month${diffMonths > 1 ? "s" : ""} Left`;
-  } else if (diffDays > 0) {
-    return `${diffDays} Day${diffDays > 1 ? "s" : ""} Left`;
+  if (diffDays > 0) {
+    return `${diffDays}d ${diffHours}h`;
+  } else if (diffHours > 0) {
+    return `${diffHours}h ${diffMinutes}m`;
   } else {
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    if (diffHours > 0) {
-      return `${diffHours} Hour${diffHours > 1 ? "s" : ""} Left`;
-    } else {
-      const diffMinutes = Math.floor(diffMs / (1000 * 60));
-      return `${diffMinutes} Minute${diffMinutes > 1 ? "s" : ""} Left`;
-    }
+    return `${diffMinutes}m`;
   }
 }
 

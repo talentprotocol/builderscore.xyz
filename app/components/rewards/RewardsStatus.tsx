@@ -29,10 +29,8 @@ export default function RewardsStatus() {
   return (
     <ClientOnly>
       <div
-        className={`mb-2 inline-flex items-center justify-between gap-2 rounded-full border px-2 py-1 ${
-          isLoading
-            ? "border-gray-500 bg-gray-500/10"
-            : "border-green-500/20 bg-green-500/10"
+        className={`mb-2 inline-flex items-center justify-between gap-2 rounded-full border border-green-500/20 bg-green-100 px-2 py-1 ${
+          isLoading ? "border-gray-500 bg-gray-500/10" : "bg-green-100"
         }`}
       >
         <div className="flex items-center gap-2">

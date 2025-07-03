@@ -1,3 +1,4 @@
+import { Progress } from "@/app/components/ui/progress";
 import { cn } from "@/app/lib/utils";
 import { ChevronRightIcon, LinkIcon } from "lucide-react";
 import Link from "next/link";
@@ -53,7 +54,12 @@ export default function ActionCard({
     <ActionCardWrapper onClick={onClick} href={href}>
       {indicator && <div className="absolute top-3 right-3">{indicator}</div>}
 
-      <div className={cn("flex w-full flex-col gap-1", progress && "gap-2")}>
+      <div
+        className={cn(
+          "flex w-full flex-col gap-1",
+          typeof progress === "number" && "gap-2",
+        )}
+      >
         <div className="flex items-center gap-2">
           <h2 className="secondary-text-style text-sm">{description}</h2>
           {onClick && <ChevronRightIcon className="mt-0.5 size-4 opacity-50" />}
@@ -68,13 +74,8 @@ export default function ActionCard({
             {title}
           </h3>
 
-          {progress && (
-            <div className="h-2 w-full rounded-full bg-neutral-200 dark:bg-neutral-800">
-              <div
-                className="h-full rounded-full bg-neutral-700"
-                style={{ width: `${progress * 100}%` }}
-              ></div>
-            </div>
+          {typeof progress === "number" && (
+            <Progress value={progress} className="h-2" />
           )}
         </div>
       </div>
