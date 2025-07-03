@@ -1,5 +1,7 @@
 "use client";
 
+import ActionCard from "@/app/components/ActionCard";
+import PulsingIndicator from "@/app/components/PulsingIndicator";
 import ToggleLeaderboard from "@/app/components/rewards/ToggleLeaderboard";
 import { useGrant } from "@/app/context/GrantContext";
 import { useLeaderboard } from "@/app/context/LeaderboardContext";
@@ -266,12 +268,45 @@ export default function Header() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {renderIntermediateGrantInfo()}
-      <div className="card-style">
-        {renderHeaderSection()}
-        {renderStatsSection()}
+    <>
+      <div className="flex flex-col gap-3">
+        {renderIntermediateGrantInfo()}
+        <div className="card-style">
+          {renderHeaderSection()}
+          {renderStatsSection()}
+        </div>
       </div>
-    </div>
+
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <ActionCard
+          titleMono
+          title="3d 14h"
+          description="Round Ends"
+          indicator={<PulsingIndicator />}
+        />
+
+        <ActionCard titleMono title="24 ETH" description="Total Rewards" />
+
+        <ActionCard
+          titleMono
+          title="67%"
+          description="Your Activity"
+          progress={0.67}
+          onClick={() => {
+            console.log("clicked");
+          }}
+        />
+
+        <ActionCard
+          titleMono
+          title="0.08 ETH"
+          description="Your Rewards"
+          progress={0.08}
+          onClick={() => {
+            console.log("clicked");
+          }}
+        />
+      </div>
+    </>
   );
 }
