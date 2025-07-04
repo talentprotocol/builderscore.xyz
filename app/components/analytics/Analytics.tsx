@@ -16,15 +16,40 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/app/components/ui/tabs";
+import { ENDPOINTS } from "@/app/config/api";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { CSVDataResult } from "@/app/services/rewards/analytics";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-interface AnalyticsProps {
-  data: CSVDataResult;
-}
-
-export default function Analytics({ data }: AnalyticsProps) {
+export default function Analytics() {
   const { selectedSponsor } = useSponsor();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["analytics", selectedSponsor?.slug],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${ENDPOINTS.localApi.analytics.csvData}?sponsor=${selectedSponsor?.slug}`,
+      );
+      return response.data;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex h-32 w-full items-center justify-center">
+        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="flex h-32 w-full items-center justify-center">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          Error loading Analytics Data.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-3">

@@ -45,6 +45,7 @@ export const ENDPOINTS = {
     analytics: {
       activeUsers: "/api/analytics/active_users",
       topBuilders: "/api/analytics/top_builders",
+      csvData: "/api/analytics/csv_data",
     },
     revalidate: {
       all: "/api/revalidate",

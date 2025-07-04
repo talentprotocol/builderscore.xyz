@@ -75,7 +75,7 @@ export default function LeaderboardWrapper() {
           onBuilderSelect={setSelectedBuilder}
         />
       ) : (
-        <div className="flex h-96 items-center justify-center">
+        <div className="flex h-32 items-center justify-center">
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
           </div>

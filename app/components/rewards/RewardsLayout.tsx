@@ -7,6 +7,7 @@ import StatusToggle from "@/app/components/rewards/StatusToggle";
 import { GrantProvider } from "@/app/context/GrantContext";
 import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
 import { SponsorProvider } from "@/app/context/SponsorContext";
+import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
 import { getQueryClient } from "@/app/lib/get-query-client";
 import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
 import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
@@ -80,7 +81,13 @@ export default async function RewardsLayout({
     <MainLayout themeClassName={themeClassName} dataSponsor={sponsor}>
       <QueryClientProviders>
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <SponsorProvider initialSponsor={initialSponsor || null}>
+          <SponsorProvider
+            initialSponsor={
+              initialSponsor ||
+              sponsors.sponsors.find((s) => s.slug === DEFAULT_SPONSOR_SLUG) ||
+              null
+            }
+          >
             <GrantProvider initialGrant={grants.grants[0]}>
               <LeaderboardProvider>
                 <div className="relative mx-auto flex min-h-dvh max-w-3xl flex-col px-4 pt-4 pb-16">

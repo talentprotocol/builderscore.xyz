@@ -1,27 +1,38 @@
+"use client";
+
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/app/components/ui/navigation-menu";
+import { useSponsor } from "@/app/context/SponsorContext";
+import { useUser } from "@/app/context/UserContext";
 import { HomeIcon, SearchIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function RewardsNavbar() {
+  const { frameContext } = useUser();
+  const { selectedSponsor } = useSponsor();
+
+  const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
+
   const navItems = [
     {
       label: "rewards",
-      href: "/",
+      href: `${prefix}/`,
       icon: <HomeIcon />,
     },
     {
       label: "search",
-      href: "/search",
+      href: `${prefix}/search`,
       icon: <SearchIcon />,
     },
     {
       label: "profile",
-      href: "/profile",
+      href: frameContext
+        ? `${prefix}/${frameContext.user.fid}`
+        : `${prefix}/login`,
       icon: <UserIcon />,
     },
   ];

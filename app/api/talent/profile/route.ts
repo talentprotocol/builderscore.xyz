@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-const fetchTalentProfile = unstable_cache(
+export const fetchTalentProfile = unstable_cache(
   async (fid: string) => {
     try {
       const response = await axios.get(
@@ -20,6 +20,11 @@ const fetchTalentProfile = unstable_cache(
       return response.data;
     } catch (err) {
       const error = err as AxiosError<Error>;
+
+      if (error.response?.status === 404) {
+        return null;
+      }
+
       throw new Error(`HTTP error! status: ${error.response?.status}`);
     }
   },

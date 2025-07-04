@@ -37,8 +37,6 @@ export default function Navbar({
       homeUrl = "/";
   }
 
-  const isAnalyticsPage = pathname.includes("/analytics");
-
   return (
     <nav className="mb-3 flex items-center justify-between">
       <Link href={homeUrl} className="flex items-center gap-2">
@@ -50,7 +48,7 @@ export default function Navbar({
         </h1>
       </Link>
 
-      {sponsor && !isAnalyticsPage && (
+      {sponsor && (
         <div className="flex items-center gap-2">
           <SelectSponsor />
           <HowToDrawer />

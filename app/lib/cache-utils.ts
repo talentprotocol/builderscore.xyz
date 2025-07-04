@@ -20,6 +20,7 @@ export const CACHE_TAGS = {
   SEARCH_DOCUMENTS: "search-documents",
   NOTIFICATION_TOKENS: "notification-tokens",
   ANALYTICS_ACTIVE_USERS: "analytics-active-users",
+  ANALYTICS_CSV_DATA: "analytics-csv-data",
 };
 
 export const CACHE_60_MINUTES = 60 * 60;
