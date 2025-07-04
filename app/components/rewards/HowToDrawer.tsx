@@ -31,13 +31,11 @@ export default function HowToDrawer() {
       <DrawerTrigger asChild>
         <Button
           size="lg"
-          className="button-style cursor-pointer text-xs sm:text-sm"
+          className="button-style h-6 cursor-pointer pr-3 pl-2 text-xs"
         >
           {allConditionsMet ? (
-            <div className="flex items-center gap-2">
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-xs font-medium text-green-500 dark:bg-green-500 dark:text-white">
-                <Check className="h-3 w-3" />
-              </div>
+            <div className="flex items-center gap-1">
+              <Check className="h-3 w-3 text-green-500" />
               <span className="hidden sm:block">Eligible to Earn</span>
               <span className="block sm:hidden">Eligible</span>
             </div>

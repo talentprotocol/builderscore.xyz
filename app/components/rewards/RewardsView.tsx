@@ -1,6 +1,5 @@
 "use client";
 
-import Actions from "@/app/components/rewards/Actions";
 import Header from "@/app/components/rewards/Header";
 import LeaderboardWrapper from "@/app/components/rewards/LeaderboardWrapper";
 import { useSponsor } from "@/app/context/SponsorContext";
@@ -19,7 +18,6 @@ export default function RewardsView({ sponsor }: { sponsor: string }) {
   return (
     <>
       <Header />
-      <Actions />
       <LeaderboardWrapper />
     </>
   );

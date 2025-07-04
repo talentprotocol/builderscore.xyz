@@ -3,7 +3,6 @@
 import Leaderboard from "@/app/components/rewards/Leaderboard";
 import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer";
-import SelectGrant from "@/app/components/rewards/SelectGrant";
 import { useGrant } from "@/app/context/GrantContext";
 import {
   useLeaderboards,
@@ -18,7 +17,7 @@ export default function LeaderboardWrapper() {
   const { selectedGrant } = useGrant();
 
   const { data: userProfileData } = useUserProfiles();
-  const { data: userLeaderboardData } = useUserLeaderboards();
+  const { data: userLeaderboardData } = useUserLeaderboards(selectedGrant);
   const {
     data: leaderboardData,
     error: leaderboardError,
@@ -30,21 +29,8 @@ export default function LeaderboardWrapper() {
   const [selectedBuilder, setSelectedBuilder] =
     useState<LeaderboardEntry | null>(null);
 
-  const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
-
   return (
-    <div className="mt-8 flex h-full flex-col">
-      <div className="mb-3 flex items-end justify-between">
-        <h2
-          className={`ml-1 text-sm font-semibold ${isIntermediateGrant ? "text-primary" : "text-neutral-800 dark:text-white"}`}
-        >
-          {isIntermediateGrant && !leaderboardError
-            ? "Provisional"
-            : "Leaderboard"}
-        </h2>
-        <SelectGrant />
-      </div>
-
+    <div className="mt-3 flex h-full flex-col">
       {userProfileData && userProfileData.profile && userLeaderboardData ? (
         <LeaderboardRow
           leaderboardData={userLeaderboardData}

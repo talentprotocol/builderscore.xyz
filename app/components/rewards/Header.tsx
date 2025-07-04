@@ -2,6 +2,7 @@
 
 import HeaderActionCards from "@/app/components/HeaderActionCards";
 import { WideTabs } from "@/app/components/WideTabs";
+import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrants, useUserLeaderboards } from "@/app/hooks/useRewards";
 import { ALL_TIME_GRANT, HOF_MAX_ETH } from "@/app/lib/constants";
@@ -14,6 +15,7 @@ import { Grant } from "@/app/types/rewards/grants";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 
 export default function Header() {
+  const { setSelectedGrant } = useGrant();
   const { data: grantsData } = useGrants();
   const { data: userLeaderboardDataThisWeek } = useUserLeaderboards(
     grantsData?.grants[0],
@@ -56,10 +58,14 @@ export default function Header() {
         totalRewards={{
           value: formatNumber(
             allTime
-              ? grantsData?.grants.reduce(
-                  (sum, grant) => sum + parseFloat(grant.rewards_pool),
-                  0,
-                ) || 0
+              ? grantsData?.grants
+                  .filter((g) =>
+                    g.end_date ? new Date(g.end_date) < new Date() : false,
+                  )
+                  .reduce(
+                    (sum, grant) => sum + parseFloat(grant.rewards_pool),
+                    0,
+                  ) || 0
               : parseFloat(grant?.rewards_pool || "0"),
             TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorTokenTicker],
           ),
@@ -95,6 +101,9 @@ export default function Header() {
               />
             ),
             active: true,
+            onClick: () => {
+              setSelectedGrant(grantsData?.grants[0] || ALL_TIME_GRANT);
+            },
           },
           {
             label: "Last Week",
@@ -105,6 +114,9 @@ export default function Header() {
                 leaderboardData={userLeaderboardDataLastWeek}
               />
             ),
+            onClick: () => {
+              setSelectedGrant(grantsData?.grants[1] || ALL_TIME_GRANT);
+            },
           },
           {
             label: "All Time",
@@ -116,6 +128,9 @@ export default function Header() {
                 allTime={true}
               />
             ),
+            onClick: () => {
+              setSelectedGrant(ALL_TIME_GRANT);
+            },
           },
         ]}
         defaultTab="this_week"
