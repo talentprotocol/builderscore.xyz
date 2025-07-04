@@ -36,7 +36,7 @@ export default function LeaderboardRowDrawer({
       <DrawerPortal>
         <VisuallyHidden asChild>
           <DialogTitle>
-            {selectedBuilder?.profile.name || "Builder"}
+            {selectedBuilder?.profile.display_name || "Builder"}
           </DialogTitle>
         </VisuallyHidden>
         <DrawerContent className="bg-white dark:bg-neutral-900">
@@ -49,14 +49,14 @@ export default function LeaderboardRowDrawer({
                       ? selectedBuilder.profile.image_url
                       : ""
                   }
-                  alt={selectedBuilder.profile.name || "Builder"}
+                  alt={selectedBuilder.profile.display_name || "Builder"}
                   width={80}
                   height={80}
                   className="mb-3 h-[80px] w-[80px] rounded-full object-cover"
                 />
                 <p className="mb-3 text-center text-lg text-neutral-800 dark:text-white">
                   <span className="font-semibold">
-                    {selectedBuilder.profile.name || "Builder"}
+                    {selectedBuilder.profile.display_name || "Builder"}
                   </span>
 
                   <br />
@@ -167,9 +167,9 @@ export default function LeaderboardRowDrawer({
                           </p>
                           <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">
                             <p className="text-neutral-800 dark:text-white">
-                              {selectedBuilder.profile.name} earned Rewards for
-                              transactions on previously deployed verified Smart
-                              Contracts.
+                              {selectedBuilder.profile.display_name} earned
+                              Rewards for transactions on previously deployed
+                              verified Smart Contracts.
                             </p>
                           </div>
                         </div>

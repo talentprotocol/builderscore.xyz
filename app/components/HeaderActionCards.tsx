@@ -1,5 +1,7 @@
 import ActionCard from "@/app/components/ActionCard";
 import PulsingIndicator from "@/app/components/PulsingIndicator";
+import Actions from "@/app/components/rewards/Actions";
+import { useUserProfiles } from "@/app/hooks/useRewards";
 import { getTimeRemaining } from "@/app/lib/utils";
 
 export default function HeaderActionCards({
@@ -28,6 +30,9 @@ export default function HeaderActionCards({
     ticker: string;
   };
 }) {
+  const { data: userProfileData, isFetched: isFetchedUserProfile } =
+    useUserProfiles();
+
   const rewardsProgress =
     parseFloat(rewards.value) > rewards.max
       ? 1
@@ -38,41 +43,51 @@ export default function HeaderActionCards({
       : parseFloat(activity.value) / activity.max;
 
   return (
-    <div className="mt-3 grid grid-cols-2 gap-2">
-      <ActionCard
-        titleMono
-        title={
-          round.ended ? totalBuilders!.toString() : getTimeRemaining(round.ends)
-        }
-        description={round.ended ? "Total Builders" : "Round Ends"}
-        indicator={!round.ended && <PulsingIndicator />}
-      />
+    <div className="flex flex-col">
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <ActionCard
+          titleMono
+          title={
+            round.ended
+              ? totalBuilders!.toString()
+              : getTimeRemaining(round.ends)
+          }
+          description={round.ended ? "Total Builders" : "Round Ends"}
+          indicator={!round.ended && <PulsingIndicator />}
+        />
 
-      <ActionCard
-        titleMono
-        title={`${totalRewards.value} ${totalRewards.ticker}`}
-        description="Total Rewards"
-      />
+        <ActionCard
+          titleMono
+          title={`${totalRewards.value} ${totalRewards.ticker}`}
+          description="Total Rewards"
+        />
 
-      <ActionCard
-        titleMono
-        title={`${((parseFloat(activity.value) / activity.max) * 100).toFixed(0)}%`}
-        description="Your Activity"
-        progress={activityProgress * 100}
-        onClick={() => {
-          console.log("clicked");
-        }}
-      />
+        {isFetchedUserProfile && userProfileData && (
+          <>
+            <ActionCard
+              titleMono
+              title={`${((parseFloat(activity.value) / activity.max) * 100).toFixed(0)}%`}
+              description="Your Activity"
+              progress={activityProgress * 100}
+              onClick={() => {
+                console.log("clicked");
+              }}
+            />
 
-      <ActionCard
-        titleMono
-        title={`${rewards.value} ${rewards.ticker}`}
-        description="Your Rewards"
-        progress={rewardsProgress * 100}
-        onClick={() => {
-          console.log("clicked");
-        }}
-      />
+            <ActionCard
+              titleMono
+              title={`${rewards.value} ${rewards.ticker}`}
+              description="Your Rewards"
+              progress={rewardsProgress * 100}
+              onClick={() => {
+                console.log("clicked");
+              }}
+            />
+          </>
+        )}
+      </div>
+
+      <Actions />
     </div>
   );
 }

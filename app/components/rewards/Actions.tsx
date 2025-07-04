@@ -1,7 +1,6 @@
 "use client";
 
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
-import HowToDrawer from "@/app/components/rewards/HowToDrawer";
 import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard";
 import { Button } from "@/app/components/ui/button";
 import { useGrant } from "@/app/context/GrantContext";
@@ -28,10 +27,9 @@ export default function Actions() {
               >
                 <Button
                   size="lg"
-                  className="button-style h-6 cursor-pointer pr-3 pl-2 text-xs"
+                  className="button-style mt-2 w-full cursor-pointer pr-3 pl-2 text-xs sm:text-sm"
                 >
-                  <span className="hidden sm:block">Connect GitHub</span>
-                  <span className="block sm:hidden">GitHub</span>
+                  Connect GitHub to Earn More
                 </Button>
               </MiniAppExternalLink>
             )
@@ -42,15 +40,12 @@ export default function Actions() {
             >
               <Button
                 size="lg"
-                className="button-style h-6 cursor-pointer pr-3 pl-2 text-xs"
+                className="button-style mt-2 w-full cursor-pointer pr-3 pl-2 text-xs sm:text-sm"
               >
-                <span className="hidden sm:block">Sign Up for Talent</span>
-                <span className="block sm:hidden">Talent Protocol</span>
+                Sign Up to Earn Rewards
               </Button>
             </MiniAppExternalLink>
           )}
-
-          <HowToDrawer />
 
           {userLeaderboardData &&
             parseFloat(userLeaderboardData.reward_amount!) > 0 &&
@@ -66,7 +61,7 @@ export default function Actions() {
       ) : (
         <Button
           size="lg"
-          className="h-6 cursor-pointer border border-neutral-300 bg-white pr-3 pl-2 text-xs text-black hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+          className="mt-2 w-full cursor-pointer border border-neutral-300 bg-white pr-3 pl-2 text-xs text-black hover:bg-neutral-100 sm:text-sm dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
         >
           <div className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
         </Button>

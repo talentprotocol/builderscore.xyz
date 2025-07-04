@@ -1,36 +1,12 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
+import { fetchTalentProfile } from "@/app/services/talent";
 import { TalentProfileApi, TalentSocialsResponse } from "@/app/types/talent";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
-
-export const fetchTalentProfile = unstable_cache(
-  async (fid: string) => {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}${ENDPOINTS.talent.profile}?id=${fid}&account_source=farcaster`,
-        {
-          headers: DEFAULT_HEADERS,
-        },
-      );
-
-      return response.data;
-    } catch (err) {
-      const error = err as AxiosError<Error>;
-
-      if (error.response?.status === 404) {
-        return null;
-      }
-
-      throw new Error(`HTTP error! status: ${error.response?.status}`);
-    }
-  },
-  [CACHE_TAGS.TALENT_PROFILE],
-  { revalidate: CACHE_60_MINUTES },
-);
 
 const fetchTalentSocials = unstable_cache(
   async (fid: string): Promise<TalentSocialsResponse | null> => {

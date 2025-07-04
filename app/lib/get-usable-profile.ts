@@ -1,11 +1,10 @@
-import { fetchTalentProfile } from "@/app/api/talent/profile/route";
-import { TalentProfileApi, TalentProfileResponse } from "@/app/types/talent";
+import { fetchTalentProfile } from "@/app/services/talent";
+import { TalentProfileSearchApi } from "@/app/types/talent";
 
 export default async function getUsableProfile(
   level_string: string,
-): Promise<TalentProfileApi | null> {
-  const talentProfileResponse: TalentProfileResponse =
-    await fetchTalentProfile(level_string);
+): Promise<TalentProfileSearchApi | null> {
+  const talentProfileResponse = await fetchTalentProfile(level_string);
 
   if (!talentProfileResponse) {
     return null;

@@ -89,8 +89,8 @@ export async function GET(
     const ticker = grantData.token_ticker;
     const dates = formatDateRange(grantData.start_date, grantData.end_date);
     const name =
-      leaderboardData.profile.name ||
       leaderboardData.profile.display_name ||
+      leaderboardData.profile.name ||
       "Builder";
     const image_url =
       leaderboardData.profile.image_url ||

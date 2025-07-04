@@ -95,7 +95,7 @@ export default function ShareableLeaderboard({
     <>
       <Button
         size="lg"
-        className="button-style w-full cursor-pointer text-xs sm:text-sm"
+        className="button-style mt-2 w-full cursor-pointer text-xs sm:text-sm"
         onClick={handleShare}
       >
         <ShareIcon />
