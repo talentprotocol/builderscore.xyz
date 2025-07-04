@@ -1,3 +1,5 @@
+import SearchProfiles from "@/app/components/rewards/SearchProfiles";
+
 export default function SearchPage() {
-  return <div>SearchPage</div>;
+  return <SearchProfiles />;
 }

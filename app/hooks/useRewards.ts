@@ -2,11 +2,15 @@ import { ENDPOINTS } from "@/app/config/api";
 import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
+import { ALL_TIME_GRANT } from "@/app/lib/constants";
+import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
 import { fetchGrants } from "@/app/services/rewards/grants";
 import { fetchLeaderboards } from "@/app/services/rewards/leaderboards";
 import { fetchLeaderboardEntry } from "@/app/services/rewards/leaderboards";
 import { fetchSponsors } from "@/app/services/rewards/sponsors";
 import { fetchUserByFid } from "@/app/services/talent";
+import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
+import { SearchDataResponse } from "@/app/types/index/search";
 import { GrantsResponse } from "@/app/types/rewards/grants";
 import { Grant } from "@/app/types/rewards/grants";
 import { LeaderboardResponse } from "@/app/types/rewards/leaderboards";
@@ -15,8 +19,6 @@ import { SponsorsResponse } from "@/app/types/rewards/sponsors";
 import { TalentProfileResponse } from "@/app/types/talent";
 import { isServer, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-import { ALL_TIME_GRANT } from "../lib/constants";
 
 export function useSponsors() {
   return useQuery<SponsorsResponse>({
@@ -203,5 +205,61 @@ export function useUserLeaderboards(grant?: Grant | null) {
       grant
     ),
     retry: false,
+  });
+}
+
+export function useInfiniteSearchProfiles(searchQuery: string) {
+  return useInfiniteQuery<SearchDataResponse>({
+    queryKey: ["infiniteSearchProfiles", searchQuery],
+    initialPageParam: 1,
+    queryFn: async ({ pageParam = 1 }) => {
+      const requestBody: AdvancedSearchRequest = {
+        query: {
+          identity: searchQuery,
+        },
+        sort: {
+          score: {
+            order: "desc",
+          },
+          id: {
+            order: "desc",
+          },
+        },
+        page: pageParam as number,
+        per_page: 20,
+      };
+
+      const queryString = Object.keys(requestBody)
+        .map(
+          (key) =>
+            `${key}=${encodeURIComponent(JSON.stringify(requestBody[key as keyof AdvancedSearchRequest]))}`,
+        )
+        .join("&");
+
+      if (isServer) {
+        const response = await fetchSearchAdvanced({
+          documents: "profiles",
+          queryString: queryString,
+        });
+        return response;
+      } else {
+        const queryString = Object.keys(requestBody)
+          .map(
+            (key) =>
+              `${key}=${encodeURIComponent(JSON.stringify(requestBody[key as keyof typeof requestBody]))}`,
+          )
+          .join("&");
+
+        const response = await axios.get(
+          `${ENDPOINTS.localApi.talent.searchAdvanced}/profiles?${queryString}`,
+        );
+        return response.data;
+      }
+    },
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.pagination) return undefined;
+      const { current_page, last_page } = lastPage.pagination;
+      return current_page < last_page ? current_page + 1 : undefined;
+    },
   });
 }

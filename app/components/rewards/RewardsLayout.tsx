@@ -8,8 +8,11 @@ import { GrantProvider } from "@/app/context/GrantContext";
 import { LeaderboardProvider } from "@/app/context/LeaderboardContext";
 import { SponsorProvider } from "@/app/context/SponsorContext";
 import { getQueryClient } from "@/app/lib/get-query-client";
+import { buildNestedQuery } from "@/app/lib/react-querybuilder-utils";
+import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
 import { fetchGrants } from "@/app/services/rewards/grants";
 import { fetchSponsors } from "@/app/services/rewards/sponsors";
+import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
 export default async function RewardsLayout({
@@ -25,6 +28,32 @@ export default async function RewardsLayout({
 }>) {
   const queryClient = getQueryClient();
 
+  const requestBody: AdvancedSearchRequest = {
+    query: {
+      customQuery: buildNestedQuery({
+        combinator: "and",
+        rules: [],
+      }),
+    },
+    sort: {
+      score: {
+        order: "desc",
+      },
+      id: {
+        order: "desc",
+      },
+    },
+    page: 1,
+    per_page: 20,
+  };
+
+  const queryString = Object.keys(requestBody)
+    .map(
+      (key) =>
+        `${key}=${encodeURIComponent(JSON.stringify(requestBody[key as keyof AdvancedSearchRequest]))}`,
+    )
+    .join("&");
+
   const [sponsors, grants] = await Promise.all([
     queryClient.fetchQuery({
       queryKey: ["sponsors"],
@@ -33,6 +62,15 @@ export default async function RewardsLayout({
     queryClient.fetchQuery({
       queryKey: ["grants", sponsor],
       queryFn: () => fetchGrants({ sponsor_slug: sponsor }),
+    }),
+    queryClient.fetchInfiniteQuery({
+      queryKey: ["infiniteSearchProfiles", ""],
+      queryFn: () =>
+        fetchSearchAdvanced({
+          documents: "profiles",
+          queryString: queryString,
+        }),
+      initialPageParam: 1,
     }),
   ]);
 
@@ -45,7 +83,7 @@ export default async function RewardsLayout({
           <SponsorProvider initialSponsor={initialSponsor || null}>
             <GrantProvider initialGrant={grants.grants[0]}>
               <LeaderboardProvider>
-                <div className="relative mx-auto flex min-h-dvh max-w-3xl flex-col px-4 py-4">
+                <div className="relative mx-auto flex min-h-dvh max-w-3xl flex-col px-4 pt-4 pb-16">
                   <SponsorNavbar title={title} sponsor={sponsor} />
                   <main className="flex h-full flex-col">{children}</main>
                   <Footer />

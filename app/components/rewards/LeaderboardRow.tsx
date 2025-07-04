@@ -59,22 +59,28 @@ export default function LeaderboardRow({
         </span>
 
         <div className="flex items-center gap-4">
-          <Image
-            src={
-              leaderboardData.profile.image_url?.startsWith("http")
-                ? leaderboardData.profile.image_url
-                : ""
-            }
-            alt={leaderboardData.profile.name || "Talent Builder"}
-            width={isHighlighted ? 48 : 36}
-            height={isHighlighted ? 48 : 36}
-            className={`h-[36px] w-[36px] rounded-full object-cover ${
-              isHighlighted && "ml-[-6px] h-[48px] w-[48px]"
-            }`}
-          />
+          {leaderboardData.profile.image_url &&
+          leaderboardData.profile.image_url.startsWith("https") ? (
+            <Image
+              src={leaderboardData.profile.image_url}
+              alt={leaderboardData.profile.display_name || "Talent Builder"}
+              width={isHighlighted ? 48 : 36}
+              height={isHighlighted ? 48 : 36}
+              className={`h-[36px] w-[36px] rounded-full object-cover ${
+                isHighlighted && "ml-[-6px] h-[48px] w-[48px]"
+              }`}
+            />
+          ) : (
+            <div className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-neutral-200 dark:bg-neutral-800">
+              <p className="text-sm text-neutral-800 dark:text-white">
+                {leaderboardData.profile.display_name?.charAt(0).toUpperCase()}
+              </p>
+            </div>
+          )}
           <div>
-            <p className="text-neutral-800 dark:text-white">
-              {leaderboardData.profile.name}
+            <p className="truncate text-neutral-800 dark:text-white">
+              {leaderboardData.profile.display_name ||
+                leaderboardData.profile.id}
 
               {process.env.NODE_ENV === "development" && (
                 <span className="ml-5 text-xs text-green-500">
