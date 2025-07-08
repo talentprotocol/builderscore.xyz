@@ -31,7 +31,7 @@ export default function HowToDrawer() {
       <DrawerTrigger asChild>
         <Button
           size="lg"
-          className="button-style h-6 cursor-pointer pr-3 pl-2 text-xs"
+          className="button-style h-6 w-1/2 cursor-pointer pl-2 text-xs sm:w-36"
         >
           {allConditionsMet ? (
             <div className="flex items-center gap-1">

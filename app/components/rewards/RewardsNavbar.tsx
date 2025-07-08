@@ -38,7 +38,7 @@ export default function RewardsNavbar() {
   ];
 
   return (
-    <div className="border-top-style fixed bottom-0 left-0 w-full bg-white dark:bg-neutral-900">
+    <div className="border-colors fixed bottom-0 left-1/2 w-full -translate-x-1/2 overflow-hidden rounded-none border-t bg-white sm:bottom-4 sm:max-w-3xl sm:rounded-lg sm:border sm:shadow-xs dark:bg-neutral-900">
       <NavigationMenu className="h-16 w-full max-w-none [&>*]:w-full">
         <NavigationMenuList className="w-full gap-0">
           {navItems.map((item) => (

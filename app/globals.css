@@ -153,6 +153,10 @@
 }
 
 /* Custom utility classes */
+.border-colors {
+  @apply border-neutral-300 dark:border-neutral-800;
+}
+
 .border-style {
   @apply border border-neutral-300 dark:border-neutral-800;
 }

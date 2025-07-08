@@ -31,7 +31,7 @@ export default function SelectSponsor() {
 
   return (
     <Select value={selectedSponsor?.slug} onValueChange={handleSponsorChange}>
-      <SelectTrigger className="button-style h-6 w-36 cursor-pointer p-2 text-xs">
+      <SelectTrigger className="button-style h-6 w-1/2 cursor-pointer p-2 text-xs sm:w-36">
         <SelectValue className="dark:text-white" placeholder="Select Sponsor" />
       </SelectTrigger>
       <SelectContent className="dropdown-menu-style">
