@@ -1,7 +1,11 @@
 import { API_BASE_URL, DEFAULT_HEADERS, ENDPOINTS } from "@/app/config/api";
 import { CACHE_60_MINUTES, CACHE_TAGS } from "@/app/lib/cache-utils";
 import { unstable_cache } from "@/app/lib/unstable-cache";
-import { TalentProfileApi, TalentProfileResponse } from "@/app/types/talent";
+import {
+  TalentProfileApi,
+  TalentProfileResponse,
+  TalentSocialsResponse,
+} from "@/app/types/talent";
 import axios, { AxiosError } from "axios";
 
 export const fetchTalentProfile = unstable_cache(
@@ -80,3 +84,98 @@ export async function fetchProfilesByIds(
   const promises = ids.map((id) => fetchProfileById(id, accountSource));
   return Promise.all(promises);
 }
+
+export const fetchTalentSocials = unstable_cache(
+  async (fid: string): Promise<TalentSocialsResponse | null> => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.socials}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+
+      return response.data;
+    } catch {
+      return null;
+    }
+  },
+  [CACHE_TAGS.TALENT_SOCIALS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
+export const fetchTalentAccounts = unstable_cache(
+  async (fid: string) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.accounts}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+
+      return response.data;
+    } catch {
+      return null;
+    }
+  },
+  [CACHE_TAGS.TALENT_ACCOUNTS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
+export const fetchTalentCredentials = unstable_cache(
+  async (fid: string) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.credentials}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+
+      return response.data;
+    } catch {
+      return null;
+    }
+  },
+  [CACHE_TAGS.TALENT_CREDENTIALS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
+export const fetchTalentCredentialsDatapoints = unstable_cache(
+  async (fid: string, slug: string) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.credentialsDatapoints}?id=${fid}&account_source=farcaster&slugs=${slug}`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+
+      return response.data;
+    } catch {
+      return null;
+    }
+  },
+  [CACHE_TAGS.TALENT_CREDENTIALS_DATAPOINTS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
+export const fetchTalentBuilderScore = unstable_cache(
+  async (fid: string) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.builderScore}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+
+      return response.data;
+    } catch {
+      return null;
+    }
+  },
+  [CACHE_TAGS.TALENT_BUILDER_SCORE],
+  { revalidate: CACHE_60_MINUTES },
+);

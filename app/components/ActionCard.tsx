@@ -62,9 +62,11 @@ export default function ActionCard({
       >
         <div className="flex items-center gap-2">
           <h2 className="secondary-text-style text-sm">{description}</h2>
-          {onClick && <ChevronRightIcon className="mt-0.5 size-4 opacity-50" />}
+          {onClick && (
+            <ChevronRightIcon className="mt-[1px] size-4 opacity-50" />
+          )}
 
-          {href && <LinkIcon className="mt-0.5 size-4 opacity-50" />}
+          {href && <LinkIcon className="mt-[1px] size-4 opacity-50" />}
         </div>
 
         <div className="flex flex-col gap-1">

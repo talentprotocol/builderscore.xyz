@@ -79,9 +79,6 @@ export default function HeaderActionCards({
               title={`${rewards.value} ${rewards.ticker}`}
               description="Your Rewards"
               progress={rewardsProgress * 100}
-              onClick={() => {
-                console.log("clicked");
-              }}
             />
           </>
         )}

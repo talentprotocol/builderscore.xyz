@@ -53,7 +53,7 @@ export default function SearchProfiles() {
     searchResults?.pages?.flatMap((page) => page.profiles) || [];
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="mt-3 flex flex-col gap-3">
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <SearchIcon className="h-4 w-4 text-neutral-400" />

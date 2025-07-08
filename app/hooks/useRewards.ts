@@ -155,7 +155,7 @@ export function useLeaderboards() {
   });
 }
 
-export function useUserLeaderboards(grant?: Grant | null) {
+export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
   const { selectedSponsor } = useSponsor();
   const { frameContext } = useUser();
 
@@ -167,7 +167,7 @@ export function useUserLeaderboards(grant?: Grant | null) {
   return useQuery<LeaderboardEntry>({
     queryKey: [
       "userLeaderboards",
-      userProfileData?.profile?.id,
+      userId || userProfileData?.profile?.id,
       grant?.id,
       selectedSponsor?.slug,
       grant?.id === ALL_TIME_GRANT.id,
@@ -175,14 +175,14 @@ export function useUserLeaderboards(grant?: Grant | null) {
     queryFn: async () => {
       if (isServer) {
         const entry = await fetchLeaderboardEntry(
-          userProfileData!.profile!.id.toString(),
+          userId || userProfileData!.profile!.id.toString(),
           grant?.id === ALL_TIME_GRANT.id ? undefined : grant?.id?.toString(),
           selectedSponsor?.slug,
         );
         return entry;
       } else {
         const queryParams = new URLSearchParams({
-          user_id: userProfileData!.profile!.id.toString(),
+          user_id: userId || userProfileData!.profile!.id.toString(),
           ...(grant?.id === ALL_TIME_GRANT.id
             ? {}
             : { grant_id: grant?.id?.toString() }),
