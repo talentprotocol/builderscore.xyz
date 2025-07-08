@@ -12,6 +12,8 @@ export const CACHE_TAGS = {
   TALENT_CREDENTIALS: "talent-credentials",
   TALENT_DATA_ISSUERS_CREDENTIALS: "talent-data-issuers-credentials",
   TALENT_CREDENTIALS_DATAPOINTS: "talent-credentials-datapoints",
+  TALENT_PROJECTS: "talent-projects",
+  TALENT_CONTRIBUTED_PROJECTS: "talent-contributed-projects",
   SEARCH: "search",
   STATS_DAILY: "stats-daily",
   TALENT_LOOKUP: "talent-lookup",

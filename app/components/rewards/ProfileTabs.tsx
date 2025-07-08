@@ -1,5 +1,6 @@
 import { WideTabs } from "@/app/components/WideTabs";
 import CredentialsList from "@/app/components/rewards/CredentialsList";
+import ProjectsList from "@/app/components/rewards/ProjectsList";
 
 export default function ProfileTabs({ profileId }: { profileId: string }) {
   return (
@@ -13,7 +14,7 @@ export default function ProfileTabs({ profileId }: { profileId: string }) {
         {
           label: "Projects",
           value: "projects",
-          content: 456,
+          content: <ProjectsList profileId={profileId} />,
         },
       ]}
       defaultTab="score"

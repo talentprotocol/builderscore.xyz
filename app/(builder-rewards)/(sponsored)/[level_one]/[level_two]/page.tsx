@@ -3,7 +3,11 @@ import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { getQueryClient } from "@/app/lib/get-query-client";
 import getUsableProfile from "@/app/lib/get-usable-profile";
 import { fetchLeaderboardEntry } from "@/app/services/rewards/leaderboards";
-import { fetchTalentCredentials } from "@/app/services/talent";
+import {
+  fetchTalentContributedProjects,
+  fetchTalentCredentials,
+  fetchTalentProjects,
+} from "@/app/services/talent";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
@@ -38,6 +42,14 @@ export default async function Page({
     queryClient.fetchQuery({
       queryKey: ["talentCredentials", usableProfile.id],
       queryFn: () => fetchTalentCredentials(usableProfile.id),
+    }),
+    queryClient.fetchQuery({
+      queryKey: ["talentProjects", usableProfile.id],
+      queryFn: () => fetchTalentProjects(usableProfile.id),
+    }),
+    queryClient.fetchQuery({
+      queryKey: ["talentContributedProjects", usableProfile.id],
+      queryFn: () => fetchTalentContributedProjects(usableProfile.id),
     }),
   ]);
 

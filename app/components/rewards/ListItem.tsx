@@ -20,8 +20,8 @@ export default function ListItem({
       className={`flex items-center justify-between bg-white px-3 py-2 dark:bg-neutral-900 ${first && "rounded-t-lg"} ${last && "rounded-b-lg"} ${!first && "border-t border-neutral-300 dark:border-neutral-800"} ${className}`}
       onClick={onClick}
     >
-      <div className="flex items-center gap-4">{left}</div>
-      <div className="flex items-center gap-4">{right}</div>
+      <div className="flex w-1/2 items-center gap-4">{left}</div>
+      <div className="flex w-1/2 items-center justify-end gap-4">{right}</div>
     </div>
   );
 }

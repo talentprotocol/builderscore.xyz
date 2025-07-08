@@ -198,3 +198,41 @@ export const fetchTalentBuilderScore = unstable_cache(
   [CACHE_TAGS.TALENT_BUILDER_SCORE],
   { revalidate: CACHE_60_MINUTES },
 );
+
+export const fetchTalentProjects = unstable_cache(
+  async (fid: string) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.projects}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+
+      return response.data;
+    } catch {
+      return null;
+    }
+  },
+  [CACHE_TAGS.TALENT_PROJECTS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
+export const fetchTalentContributedProjects = unstable_cache(
+  async (fid: string) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.contributedProjects}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+
+      return response.data;
+    } catch {
+      return null;
+    }
+  },
+  [CACHE_TAGS.TALENT_CONTRIBUTED_PROJECTS],
+  { revalidate: CACHE_60_MINUTES },
+);

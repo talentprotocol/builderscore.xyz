@@ -118,3 +118,13 @@ export interface TalentCredential {
   uom: string;
   updated_at: string;
 }
+
+export interface TalentProjectsResponse {
+  projects: TalentProject[];
+}
+
+export interface TalentProject {
+  name: string;
+  slug: string;
+  project_url: string;
+}

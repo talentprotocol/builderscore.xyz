@@ -18,6 +18,8 @@ export const ENDPOINTS = {
     credentialsDatapoints: "/data_points",
     searchProfiles: "/search/advanced/profiles",
     statsDaily: "/stats/daily",
+    projects: "/projects",
+    contributedProjects: "/contributed_projects",
   },
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",
