@@ -96,3 +96,25 @@ export type TalentProfileResponse = {
 export interface TalentSocialsResponse {
   socials: TalentSocial[];
 }
+
+export interface TalentCredentialsResponse {
+  credentials: TalentCredential[];
+}
+
+export interface TalentCredential {
+  account_source: string;
+  calculating_score: boolean;
+  category: string;
+  data_issuer_name: string;
+  data_issuer_slug: string;
+  description: string;
+  external_url: string;
+  immutable: boolean;
+  last_calculated_at: string;
+  max_score: number;
+  name: string;
+  points: number;
+  slug: string;
+  uom: string;
+  updated_at: string;
+}

@@ -123,6 +123,25 @@ export const fetchTalentAccounts = unstable_cache(
   { revalidate: CACHE_60_MINUTES },
 );
 
+export const fetchTalentDataIssuersCredentials = unstable_cache(
+  async (fid: string) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}${ENDPOINTS.talent.dataIssuersCredentials}?id=${fid}&account_source=farcaster`,
+        {
+          headers: DEFAULT_HEADERS,
+        },
+      );
+
+      return response.data;
+    } catch {
+      return null;
+    }
+  },
+  [CACHE_TAGS.TALENT_DATA_ISSUERS_CREDENTIALS],
+  { revalidate: CACHE_60_MINUTES },
+);
+
 export const fetchTalentCredentials = unstable_cache(
   async (fid: string) => {
     try {

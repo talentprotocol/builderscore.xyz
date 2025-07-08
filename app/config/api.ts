@@ -14,6 +14,7 @@ export const ENDPOINTS = {
     builderScore: "/score",
     accounts: "/accounts",
     credentials: "/credentials",
+    dataIssuersCredentials: "/data_issuers_meta",
     credentialsDatapoints: "/data_points",
     searchProfiles: "/search/advanced/profiles",
     statsDaily: "/stats/daily",

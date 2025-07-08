@@ -2,7 +2,7 @@
 
 import ActionCard from "@/app/components/ActionCard";
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
-import TableItem from "@/app/components/rewards/TableItem";
+import ListItem from "@/app/components/rewards/ListItem";
 import {
   Drawer,
   DrawerContent,
@@ -83,7 +83,7 @@ export default function RewardsEarned({
 
               <div className="card-style flex flex-col">
                 {transactionHistory.map((transaction, index) => (
-                  <TableItem
+                  <ListItem
                     key={transaction.date}
                     left={
                       <div className="flex flex-col">

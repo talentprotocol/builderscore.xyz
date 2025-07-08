@@ -10,6 +10,7 @@ export const CACHE_TAGS = {
   TALENT_BUILDER_SCORE: "talent-builder-score",
   TALENT_ACCOUNTS: "talent-accounts",
   TALENT_CREDENTIALS: "talent-credentials",
+  TALENT_DATA_ISSUERS_CREDENTIALS: "talent-data-issuers-credentials",
   TALENT_CREDENTIALS_DATAPOINTS: "talent-credentials-datapoints",
   SEARCH: "search",
   STATS_DAILY: "stats-daily",

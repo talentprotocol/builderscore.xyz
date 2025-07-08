@@ -1,18 +1,15 @@
 "use client";
 
-import ActionCard from "@/app/components/ActionCard";
+import ProfileActionCards from "@/app/components/rewards/ProfileActionCards";
+import ProfileHeader from "@/app/components/rewards/ProfileHeader";
+import ProfileTabs from "@/app/components/rewards/ProfileTabs";
 import RewardsEarned from "@/app/components/rewards/RewardsEarned";
 import { Button } from "@/app/components/ui/button";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUserLeaderboards } from "@/app/hooks/useRewards";
-import { ALL_TIME_GRANT, SPONSORS } from "@/app/lib/constants";
-import {
-  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
-  cn,
-  formatNumber,
-} from "@/app/lib/utils";
+import { ALL_TIME_GRANT } from "@/app/lib/constants";
+import { cn } from "@/app/lib/utils";
 import { TalentProfileSearchApi } from "@/app/types/talent";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -39,53 +36,25 @@ export default function ProfileView({
         className,
       )}
     >
-      <div className="flex w-full flex-col gap-3">
-        <div className="flex w-full items-center justify-between">
-          <div className="flex max-w-5/6 flex-col gap-0.5">
-            <p className="font-semibold text-neutral-800 dark:text-white">
-              {profile.display_name || "Builder"}
-            </p>
-
-            <p className="secondary-text-style text-sm">XX Total Followers</p>
-          </div>
-
-          <Image
-            src={profile.image_url?.startsWith("http") ? profile.image_url : ""}
-            alt={profile.display_name || "Builder"}
-            width={60}
-            height={60}
-            className="h-[60px] w-[60px] rounded-full object-cover"
-          />
-        </div>
-
-        <p className="secondary-text-style text-sm">{profile.bio}</p>
-      </div>
-
-      <div className="mt-3 grid w-full grid-cols-2 gap-2">
-        <ActionCard
-          titleMono
-          title={profile.builder_score?.points?.toString() || "-"}
-          description="Builder Score"
-        />
-
-        <ActionCard
-          titleMono
-          title={`${formatNumber(
-            parseFloat(rewardsData?.reward_amount || "0"),
-            INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
-              SPONSORS[selectedSponsor?.slug as keyof typeof SPONSORS].ticker
-            ],
-          )} ${SPONSORS[selectedSponsor?.slug as keyof typeof SPONSORS].ticker}`}
-          description="Rewards Earned"
-          onClick={detailed ? () => setOpenRewardsEarned(true) : undefined}
-        />
-      </div>
+      <ProfileHeader profile={profile} />
+      <ProfileActionCards
+        profile={profile}
+        rewardsAmount={parseFloat(rewardsData?.reward_amount || "0")}
+        detailed={detailed || false}
+        setOpenRewardsEarned={setOpenRewardsEarned}
+      />
 
       <RewardsEarned
         open={openRewardsEarned}
         setOpen={setOpenRewardsEarned}
         profileId={profile.id}
       />
+
+      {detailed && (
+        <div className="w-full">
+          <ProfileTabs profileId={profile.id} />
+        </div>
+      )}
 
       {!detailed && (
         <Link href={`${prefix}/${profile.id}`} className="w-full">
