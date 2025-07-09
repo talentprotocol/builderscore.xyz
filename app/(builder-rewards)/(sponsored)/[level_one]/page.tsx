@@ -1,11 +1,8 @@
 import ProfileView from "@/app/components/rewards/ProfileView";
 import RewardsView from "@/app/components/rewards/RewardsView";
-import { ALL_TIME_GRANT, SPONSORS } from "@/app/lib/constants";
-import { getQueryClient } from "@/app/lib/get-query-client";
+import { SPONSORS } from "@/app/lib/constants";
 import getUsableProfile from "@/app/lib/get-usable-profile";
 import getUsableSponsor from "@/app/lib/get-usable-sponsor";
-import { fetchLeaderboardEntry } from "@/app/services/rewards/leaderboards";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 
 export default async function Page({
@@ -23,25 +20,7 @@ export default async function Page({
       return notFound();
     }
 
-    const queryClient = getQueryClient();
-
-    await queryClient.prefetchQuery({
-      queryKey: [
-        "userLeaderboards",
-        usableProfile.id,
-        ALL_TIME_GRANT.id,
-        level_one,
-        true,
-      ],
-      queryFn: () =>
-        fetchLeaderboardEntry(usableProfile.id, undefined, level_one) || null,
-    });
-
-    return (
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProfileView profile={usableProfile} className="mt-3" detailed />
-      </HydrationBoundary>
-    );
+    return <ProfileView profile={usableProfile} sponsorSlug={usableSponsor} />;
   }
 
   return <RewardsView sponsor={usableSponsor} />;

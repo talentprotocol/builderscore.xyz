@@ -2,26 +2,20 @@
 
 import CredentialsListDrawer from "@/app/components/rewards/CredentialsListDrawer";
 import ListItem from "@/app/components/rewards/ListItem";
-import { getQueryClient } from "@/app/lib/get-query-client";
-import {
-  TalentCredential,
-  TalentCredentialsResponse,
-} from "@/app/types/talent";
-import { useState } from "react";
+import { DataIssuersLogos } from "@/app/lib/data-issuers-logos";
+import { TalentCredential } from "@/app/types/talent";
+import { cloneElement, useState } from "react";
 
-export default function CredentialsList({ profileId }: { profileId: string }) {
+export default function CredentialsList({
+  credentials,
+}: {
+  credentials?: TalentCredential[];
+}) {
   const [open, setOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
 
-  const queryClient = getQueryClient();
-
-  const credentials = queryClient.getQueryData([
-    "talentCredentials",
-    profileId,
-  ]) as TalentCredentialsResponse;
-
   const groupedCredentials =
-    credentials?.credentials?.reduce(
+    credentials?.reduce(
       (acc, credential) => {
         const group = credential.data_issuer_slug;
         if (!acc[group]) {
@@ -62,9 +56,18 @@ export default function CredentialsList({ profileId }: { profileId: string }) {
           <ListItem
             key={group}
             left={
-              <p className="text-sm text-neutral-800 dark:text-white">
-                {credentials[0].data_issuer_name}
-              </p>
+              <div className="flex items-center gap-2">
+                {cloneElement(
+                  DataIssuersLogos[group as keyof typeof DataIssuersLogos],
+                  {
+                    className: "block h-4 w-4",
+                    color: "#000",
+                  },
+                )}
+                <p className="text-sm text-neutral-800 dark:text-white">
+                  {credentials[0].data_issuer_name}
+                </p>
+              </div>
             }
             right={
               <p className="text-sm text-neutral-800 dark:text-white">

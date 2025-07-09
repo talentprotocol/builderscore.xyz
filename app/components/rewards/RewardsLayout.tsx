@@ -90,7 +90,7 @@ export default async function RewardsLayout({
           >
             <GrantProvider initialGrant={grants.grants[0]}>
               <LeaderboardProvider>
-                <div className="relative mx-auto flex min-h-dvh max-w-3xl flex-col px-4 pt-4 pb-16">
+                <div className="relative mx-auto flex min-h-dvh max-w-3xl flex-col px-4 pt-4 pb-16 sm:pb-20">
                   <SponsorNavbar title={title} sponsor={sponsor} />
                   <main className="flex h-full flex-col">{children}</main>
                   <Footer />

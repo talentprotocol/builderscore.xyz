@@ -1,71 +1,63 @@
-"use client";
-
-import ProfileActionCards from "@/app/components/rewards/ProfileActionCards";
-import ProfileHeader from "@/app/components/rewards/ProfileHeader";
-import ProfileTabs from "@/app/components/rewards/ProfileTabs";
-import RewardsEarned from "@/app/components/rewards/RewardsEarned";
-import { Button } from "@/app/components/ui/button";
-import { useSponsor } from "@/app/context/SponsorContext";
-import { useUserLeaderboards } from "@/app/hooks/useRewards";
+import ProfileWrapper from "@/app/components/rewards/ProfileWrapper";
 import { ALL_TIME_GRANT } from "@/app/lib/constants";
-import { cn } from "@/app/lib/utils";
+import { getQueryClient } from "@/app/lib/get-query-client";
+import { fetchLeaderboardEntry } from "@/app/services/rewards/leaderboards";
+import {
+  fetchTalentContributedProjects,
+  fetchTalentCredentials,
+  fetchTalentProjects,
+} from "@/app/services/talent";
 import { TalentProfileSearchApi } from "@/app/types/talent";
-import Link from "next/link";
-import { useState } from "react";
+import { HydrationBoundary } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
 
-export default function ProfileView({
+export default async function ProfileView({
   profile,
-  className,
-  detailed,
+  sponsorSlug,
 }: {
   profile: TalentProfileSearchApi;
-  className?: string;
-  detailed?: boolean;
+  sponsorSlug?: string;
 }) {
-  const { data: rewardsData } = useUserLeaderboards(ALL_TIME_GRANT, profile.id);
-  const { selectedSponsor } = useSponsor();
+  const queryClient = getQueryClient();
 
-  const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
-
-  const [openRewardsEarned, setOpenRewardsEarned] = useState(false);
+  const [leaderboardEntry, credentials, projects, contributedProjects] =
+    await Promise.all([
+      queryClient.fetchQuery({
+        queryKey: [
+          "userLeaderboards",
+          profile.id,
+          ALL_TIME_GRANT.id,
+          sponsorSlug,
+          true,
+        ],
+        queryFn: () =>
+          fetchLeaderboardEntry(profile.id, undefined, sponsorSlug) || null,
+      }),
+      queryClient.fetchQuery({
+        queryKey: ["talentCredentials", profile.id],
+        queryFn: () => fetchTalentCredentials(profile.id),
+      }),
+      queryClient.fetchQuery({
+        queryKey: ["talentProjects", profile.id],
+        queryFn: () => fetchTalentProjects(profile.id),
+      }),
+      queryClient.fetchQuery({
+        queryKey: ["talentContributedProjects", profile.id],
+        queryFn: () => fetchTalentContributedProjects(profile.id),
+      }),
+    ]);
 
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center gap-2",
-        className,
-      )}
-    >
-      <ProfileHeader profile={profile} />
-      <ProfileActionCards
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ProfileWrapper
         profile={profile}
-        rewardsAmount={parseFloat(rewardsData?.reward_amount || "0")}
-        detailed={detailed || false}
-        setOpenRewardsEarned={setOpenRewardsEarned}
+        rewards={leaderboardEntry || undefined}
+        credentials={credentials?.credentials || undefined}
+        projects={projects?.projects || undefined}
+        contributedProjects={contributedProjects?.projects || undefined}
+        className="mt-3"
+        detailed
       />
-
-      <RewardsEarned
-        open={openRewardsEarned}
-        setOpen={setOpenRewardsEarned}
-        profileId={profile.id}
-      />
-
-      {detailed && (
-        <div className="w-full">
-          <ProfileTabs profileId={profile.id} />
-        </div>
-      )}
-
-      {!detailed && (
-        <Link href={`${prefix}/${profile.id}`} className="w-full">
-          <Button
-            size="lg"
-            className="mb-3 w-full cursor-pointer border border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
-          >
-            View Talent Profile
-          </Button>
-        </Link>
-      )}
-    </div>
+    </HydrationBoundary>
   );
 }

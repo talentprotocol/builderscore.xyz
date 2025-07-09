@@ -1,6 +1,6 @@
 "use client";
 
-import ProfileView from "@/app/components/rewards/ProfileView";
+import ProfileWrapper from "@/app/components/rewards/ProfileWrapper";
 import {
   Drawer,
   DrawerContent,
@@ -24,7 +24,7 @@ export default function SearchProfileItemDrawer({
           <DialogTitle>{selectedBuilder.name || "Builder"}</DialogTitle>
         </VisuallyHidden>
         <DrawerContent className="bg-white dark:bg-neutral-900">
-          <ProfileView profile={selectedBuilder} className="p-4" />
+          <ProfileWrapper profile={selectedBuilder} className="p-4" />
         </DrawerContent>
       </DrawerPortal>
     </Drawer>

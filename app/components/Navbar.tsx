@@ -39,9 +39,12 @@ export default function Navbar({
 
   return (
     <nav className="mb-1 flex-col items-center sm:mb-2 sm:flex sm:flex-row sm:justify-between">
-      <div className="mb-3 sm:mb-0">
+      <div className="mb-2 sm:mb-0">
         <Link href={homeUrl} className="flex items-center gap-2">
-          <Logo className="block h-3 w-auto" color={currentSponsor?.color} />
+          <Logo
+            className="ml-0.5 block h-3 w-auto"
+            color={currentSponsor?.color}
+          />
           <h1
             className={`text-foreground font-semibold whitespace-nowrap ${menu ? "text-xs" : "text-sm"}`}
           >

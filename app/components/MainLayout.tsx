@@ -4,6 +4,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Inter } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
+import { cn } from "../lib/utils";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -19,7 +21,11 @@ export default function MainLayout({
   dataSponsor: string;
 }) {
   return (
-    <html lang="en" className={themeClassName} data-sponsor={dataSponsor}>
+    <html
+      lang="en"
+      className={cn(themeClassName, "scrollbar-hide")}
+      data-sponsor={dataSponsor}
+    >
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider>
           <NuqsAdapter>

@@ -22,7 +22,7 @@ export default function ProfileHeader({
           alt={profile.display_name || "Builder"}
           width={60}
           height={60}
-          className="h-[60px] w-[60px] rounded-full object-cover"
+          className="border-primary h-[60px] w-[60px] rounded-full border object-cover"
         />
       </div>
 

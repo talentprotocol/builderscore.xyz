@@ -1,25 +1,15 @@
-import { getQueryClient } from "@/app/lib/get-query-client";
-import { TalentProjectsResponse } from "@/app/types/talent";
+import { TalentProject } from "@/app/types/talent";
 
 import ListItem from "./ListItem";
 
-export default function ProjectsList({ profileId }: { profileId: string }) {
-  const queryClient = getQueryClient();
-
-  const projects = queryClient.getQueryData([
-    "talentProjects",
-    profileId,
-  ]) as TalentProjectsResponse;
-
-  const contributedProjects = queryClient.getQueryData([
-    "talentContributedProjects",
-    profileId,
-  ]) as TalentProjectsResponse;
-
-  const allProjects = [
-    ...(projects?.projects || []),
-    ...(contributedProjects?.projects || []),
-  ];
+export default function ProjectsList({
+  projects,
+  contributedProjects,
+}: {
+  projects?: TalentProject[];
+  contributedProjects?: TalentProject[];
+}) {
+  const allProjects = [...(projects || []), ...(contributedProjects || [])];
 
   return (
     <div className="card-style mt-3 flex flex-col">
