@@ -1,20 +1,32 @@
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { formatNumber } from "@/app/lib/utils";
+import { TalentProfileSearchApi, TalentSocial } from "@/app/types/talent";
 import Image from "next/image";
 
 export default function ProfileHeader({
   profile,
+  socials,
 }: {
   profile: TalentProfileSearchApi;
+  socials?: TalentSocial[];
 }) {
+  const totalFollowers = socials?.reduce((acc, social) => {
+    if (social.followers_count) {
+      return acc + social.followers_count;
+    }
+    return acc;
+  }, 0);
+
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex w-full items-center justify-between">
-        <div className="flex max-w-5/6 flex-col gap-0.5">
-          <p className="font-semibold text-neutral-800 dark:text-white">
+        <div className="flex max-w-5/6 flex-col gap-0">
+          <p className="text-lg font-semibold text-neutral-800 dark:text-white">
             {profile.display_name || "Builder"}
           </p>
 
-          <p className="secondary-text-style text-sm">XX Total Followers</p>
+          <p className="secondary-text-style text-sm">
+            {formatNumber(totalFollowers || 0)} followers
+          </p>
         </div>
 
         <Image

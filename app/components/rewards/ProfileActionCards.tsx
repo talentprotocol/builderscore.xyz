@@ -19,7 +19,7 @@ export default function ProfileActionCards({
   const { selectedSponsor } = useSponsor();
 
   return (
-    <div className="mt-3 grid w-full grid-cols-2 gap-2">
+    <div className="mt-2 grid w-full grid-cols-2 gap-2">
       <ActionCard
         titleMono
         title={profile.builder_score?.points?.toString() || "-"}

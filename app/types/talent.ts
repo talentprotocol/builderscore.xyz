@@ -3,19 +3,19 @@ export type TalentBuilderScore = {
   last_calculated_at: string;
 };
 
-interface TalentSocial {
-  follower_count: string;
-  following_count: string;
-  location: string;
-  owner: string;
-  bio: string;
+export interface TalentSocial {
+  followers_count: number | null;
+  following_count: number | null;
+  location: string | null;
+  bio: string | null;
   display_name: string;
-  image_url: string;
-  name: string;
-  owned_since: string;
+  profile_image_url: string | null;
   profile_url: string;
+  social_name: string;
+  social_slug: string;
   source: string;
   handle: string;
+  owned_since: string | null;
 }
 
 export type TalentProfile = {

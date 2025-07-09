@@ -12,6 +12,7 @@ import {
   TalentCredential,
   TalentProfileSearchApi,
   TalentProject,
+  TalentSocial,
 } from "@/app/types/talent";
 import Link from "next/link";
 import { useState } from "react";
@@ -24,6 +25,7 @@ export default function ProfileWrapper({
   credentials,
   projects,
   contributedProjects,
+  socials,
 }: {
   profile: TalentProfileSearchApi;
   className?: string;
@@ -32,6 +34,7 @@ export default function ProfileWrapper({
   credentials?: TalentCredential[];
   projects?: TalentProject[];
   contributedProjects?: TalentProject[];
+  socials?: TalentSocial[];
 }) {
   const { selectedSponsor } = useSponsor();
 
@@ -46,7 +49,7 @@ export default function ProfileWrapper({
         className,
       )}
     >
-      <ProfileHeader profile={profile} />
+      <ProfileHeader profile={profile} socials={socials} />
       <ProfileActionCards
         profile={profile}
         rewardsAmount={parseFloat(rewards?.reward_amount || "0")}
@@ -61,7 +64,7 @@ export default function ProfileWrapper({
       />
 
       {detailed && (
-        <div className="w-full">
+        <div className="mt-1 w-full">
           <ProfileTabs
             credentials={credentials}
             projects={projects}
