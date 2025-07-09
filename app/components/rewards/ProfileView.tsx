@@ -3,9 +3,9 @@ import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { getQueryClient } from "@/app/lib/get-query-client";
 import { fetchLeaderboardEntry } from "@/app/services/rewards/leaderboards";
 import {
+  fetchTalentAccounts,
   fetchTalentContributedProjects,
   fetchTalentCredentials,
-  fetchTalentProjects,
   fetchTalentSocials,
 } from "@/app/services/talent";
 import { TalentProfileSearchApi } from "@/app/types/talent";
@@ -24,9 +24,9 @@ export default async function ProfileView({
   const [
     leaderboardEntry,
     credentials,
-    projects,
     contributedProjects,
     socials,
+    accounts,
   ] = await Promise.all([
     queryClient.fetchQuery({
       queryKey: [
@@ -44,16 +44,16 @@ export default async function ProfileView({
       queryFn: () => fetchTalentCredentials(profile.id),
     }),
     queryClient.fetchQuery({
-      queryKey: ["talentProjects", profile.id],
-      queryFn: () => fetchTalentProjects(profile.id),
-    }),
-    queryClient.fetchQuery({
       queryKey: ["talentContributedProjects", profile.id],
       queryFn: () => fetchTalentContributedProjects(profile.id),
     }),
     queryClient.fetchQuery({
       queryKey: ["talentSocials", profile.id],
       queryFn: () => fetchTalentSocials(profile.id),
+    }),
+    queryClient.fetchQuery({
+      queryKey: ["talentAccounts", profile.id],
+      queryFn: () => fetchTalentAccounts(profile.id),
     }),
   ]);
 
@@ -63,9 +63,9 @@ export default async function ProfileView({
         profile={profile}
         rewards={leaderboardEntry || undefined}
         credentials={credentials?.credentials || undefined}
-        projects={projects?.projects || undefined}
         contributedProjects={contributedProjects?.projects || undefined}
         socials={socials?.socials || undefined}
+        accounts={accounts?.accounts || undefined}
         className="mt-3"
         detailed
       />

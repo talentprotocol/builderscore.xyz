@@ -27,6 +27,8 @@ export default function CredentialsListDrawer({
 }) {
   const { selectedSponsor } = useSponsor();
 
+  console.log(credentials);
+
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerPortal>
@@ -65,8 +67,19 @@ export default function CredentialsListDrawer({
                 <ListItem
                   key={credential.slug}
                   left={
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col">
                       <div className="flex items-center gap-2">
+                        {credential.points_calculation_logic?.data_points &&
+                          credential.points_calculation_logic?.data_points[0]
+                            .readable_value !== null && (
+                            <p className="text-sm">
+                              {
+                                credential.points_calculation_logic
+                                  ?.data_points[0].readable_value
+                              }
+                            </p>
+                          )}
+
                         <p className="text-sm font-semibold">
                           {credential.name}
                         </p>
@@ -75,9 +88,6 @@ export default function CredentialsListDrawer({
                           {credential.points} / {credential.max_score} points
                         </p>
                       </div>
-                      <p className="secondary-text-style text-sm text-neutral-800 dark:text-white">
-                        {credential.description}
-                      </p>
                     </div>
                   }
                   className={cn(

@@ -26,7 +26,7 @@ export function WideTabs({
           <TabsTrigger
             key={tab.value}
             value={tab.value}
-            className="data-[state=active]:border-b-primary mb-[-1.5px] rounded-none border-0 text-xs data-[state=active]:mb-[-2.5px] data-[state=active]:border-b-1 data-[state=active]:shadow-none"
+            className="dark:data-[state=active]:border-b-primary data-[state=active]:border-b-primary mb-[-1.5px] rounded-none border-0 text-xs data-[state=active]:mb-[-2.5px] data-[state=active]:border-b-1 data-[state=active]:shadow-none dark:text-white dark:data-[state=active]:bg-transparent"
             onClick={tab.onClick}
           >
             {tab.label}

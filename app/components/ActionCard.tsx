@@ -56,8 +56,8 @@ export default function ActionCard({
 
       <div
         className={cn(
-          "flex w-full flex-col gap-1",
-          typeof progress === "number" && "gap-2",
+          "flex w-full flex-col",
+          typeof progress === "number" && "gap-1",
         )}
       >
         <div className="flex items-center gap-2">

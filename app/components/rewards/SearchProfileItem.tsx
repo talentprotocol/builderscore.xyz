@@ -1,5 +1,6 @@
 "use client";
 
+import { isEmptyOrInvisible } from "@/app/lib/utils";
 import { TalentProfileSearchApi } from "@/app/types/talent";
 import Image from "next/image";
 
@@ -21,7 +22,7 @@ export default function SearchProfileItem({
   return (
     <div
       onClick={onClick}
-      className={`flex cursor-pointer items-center justify-between bg-white px-3 py-2 pr-5 dark:bg-neutral-900 ${first && "rounded-t-lg"} ${last && "rounded-b-lg"} ${!first && "border-t border-neutral-300 dark:border-neutral-800"} ${className}`}
+      className={`flex cursor-pointer items-center justify-between bg-white px-3 py-2 dark:bg-neutral-900 ${first && "rounded-t-lg"} ${last && "rounded-b-lg"} ${!first && "border-t border-neutral-300 dark:border-neutral-800"} ${className}`}
     >
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-4">
@@ -41,8 +42,10 @@ export default function SearchProfileItem({
             </div>
           )}
           <div>
-            <p className="truncate text-neutral-800 dark:text-white">
-              {profile.display_name || profile.id}
+            <p className="max-w-64 truncate text-sm text-neutral-800 dark:text-white">
+              {isEmptyOrInvisible(profile.display_name || "")
+                ? profile.id.slice(0, 6) + "..." + profile.id.slice(-4)
+                : profile.display_name}
 
               {process.env.NODE_ENV === "development" && (
                 <span className="ml-5 text-xs text-green-500">
@@ -54,9 +57,12 @@ export default function SearchProfileItem({
         </div>
       </div>
 
-      <div className="bg-white pl-2 dark:bg-neutral-900">
-        <p className="text-neutral-800 dark:text-white">
+      <div className="flex flex-col items-end bg-white pl-2 text-right">
+        <p className="font-mono text-sm text-neutral-800 dark:text-white">
           <span className="font-mono">{profile.builder_score?.points}</span>
+        </p>
+        <p className="secondary-text-style text-xs text-neutral-800 dark:text-white">
+          <span className="secondary-text-style text-xs">Builder Score</span>
         </p>
       </div>
     </div>

@@ -81,6 +81,10 @@
 }
 
 @theme inline {
+  /* Font families - referencing the CSS variables from MainLayout.tsx */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -138,7 +142,7 @@
   }
   body,
   html {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
 

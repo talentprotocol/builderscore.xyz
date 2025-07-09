@@ -6,9 +6,12 @@ import ProfileTabs from "@/app/components/rewards/ProfileTabs";
 import RewardsEarned from "@/app/components/rewards/RewardsEarned";
 import { Button } from "@/app/components/ui/button";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { useUserLeaderboards } from "@/app/hooks/useRewards";
+import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import {
+  TalentAccount,
   TalentCredential,
   TalentProfileSearchApi,
   TalentProject,
@@ -23,20 +26,27 @@ export default function ProfileWrapper({
   detailed,
   rewards,
   credentials,
-  projects,
   contributedProjects,
   socials,
+  accounts,
 }: {
   profile: TalentProfileSearchApi;
   className?: string;
   detailed?: boolean;
   rewards?: LeaderboardEntry;
   credentials?: TalentCredential[];
-  projects?: TalentProject[];
   contributedProjects?: TalentProject[];
   socials?: TalentSocial[];
+  accounts?: TalentAccount[];
 }) {
   const { selectedSponsor } = useSponsor();
+
+  const { data: rewardsClient } = useUserLeaderboards(
+    ALL_TIME_GRANT,
+    profile.id,
+  );
+
+  const rewardsToUse = rewardsClient || rewards;
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
 
@@ -49,10 +59,10 @@ export default function ProfileWrapper({
         className,
       )}
     >
-      <ProfileHeader profile={profile} socials={socials} />
+      <ProfileHeader profile={profile} socials={socials} accounts={accounts} />
       <ProfileActionCards
         profile={profile}
-        rewardsAmount={parseFloat(rewards?.reward_amount || "0")}
+        rewardsAmount={parseFloat(rewardsToUse?.reward_amount || "0")}
         detailed={detailed || false}
         setOpenRewardsEarned={setOpenRewardsEarned}
       />
@@ -64,10 +74,9 @@ export default function ProfileWrapper({
       />
 
       {detailed && (
-        <div className="mt-1 w-full">
+        <div className="w-full">
           <ProfileTabs
             credentials={credentials}
-            projects={projects}
             contributedProjects={contributedProjects}
           />
         </div>

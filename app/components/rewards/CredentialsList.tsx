@@ -87,7 +87,7 @@ export default function CredentialsList({
                 </div>
 
                 <div className="flex flex-col">
-                  <p className="text-sm text-neutral-800 dark:text-white">
+                  <p className="text-sm font-semibold text-neutral-800 dark:text-white">
                     {credentials[0].data_issuer_name}
                   </p>
                   <p className="secondary-text-style text-xs">

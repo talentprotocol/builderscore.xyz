@@ -18,6 +18,14 @@ export interface TalentSocial {
   owned_since: string | null;
 }
 
+export interface TalentAccount {
+  identifier: string;
+  source: string;
+  owned_since: string;
+  connected_at: string;
+  username: string | null;
+}
+
 export type TalentProfile = {
   id: string;
   bio: string | null;
@@ -114,6 +122,21 @@ export interface TalentCredential {
   max_score: number;
   name: string;
   points: number;
+  points_calculation_logic?: {
+    points: number;
+    max_points: number;
+    data_points: Array<{
+      id: number;
+      name: string;
+      value: string;
+      is_maximum: boolean;
+      multiplier: number;
+      readable_value: string;
+      multiplication_result: string;
+    }>;
+    points_description: string;
+    points_number_calculated: number;
+  };
   slug: string;
   uom: string;
   updated_at: string;

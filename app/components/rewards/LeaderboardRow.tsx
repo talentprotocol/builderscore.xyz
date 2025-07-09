@@ -4,6 +4,7 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatNumber,
+  isEmptyOrInvisible,
 } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import Image from "next/image";
@@ -30,7 +31,7 @@ export default function LeaderboardRow({
       onClick={() => onBuilderSelect?.(leaderboardData)}
       className={`flex cursor-pointer items-center justify-between bg-white px-3 py-2 pr-5 dark:bg-neutral-900 ${isHighlighted && "border-primary rounded-lg border"} ${first && "rounded-t-lg"} ${last && "rounded-b-lg"} ${!first && "border-t border-neutral-300 dark:border-neutral-800"} ${className}`}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1">
         <p className="secondary-text-style min-w-6 font-mono text-xs">
           #
           {leaderboardData.leaderboard_position
@@ -39,7 +40,7 @@ export default function LeaderboardRow({
         </p>
 
         <span
-          className={`min-w-8 text-xs ${
+          className={`min-w-10 text-xs ${
             leaderboardData.ranking_change === null
               ? "secondary-text-style"
               : leaderboardData.ranking_change !== 0
@@ -78,9 +79,12 @@ export default function LeaderboardRow({
             </div>
           )}
           <div>
-            <p className="truncate text-neutral-800 dark:text-white">
-              {leaderboardData.profile.display_name ||
-                leaderboardData.profile.id}
+            <p className="max-w-32 truncate text-sm text-neutral-800 dark:text-white">
+              {isEmptyOrInvisible(leaderboardData.profile.display_name || "")
+                ? leaderboardData.profile.id.slice(0, 6) +
+                  "..." +
+                  leaderboardData.profile.id.slice(-4)
+                : leaderboardData.profile.display_name}
 
               {process.env.NODE_ENV === "development" && (
                 <span className="ml-5 text-xs text-green-500">
@@ -93,7 +97,7 @@ export default function LeaderboardRow({
       </div>
 
       <div className="bg-white pl-2 dark:bg-neutral-900">
-        <p className="text-neutral-800 dark:text-white">
+        <p className="text-sm text-neutral-800 dark:text-white">
           <span className="font-mono">
             {formatNumber(
               parseFloat(leaderboardData.reward_amount || "0"),

@@ -1,7 +1,6 @@
 "use client";
 
 import ActionCard from "@/app/components/ActionCard";
-import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import ListItem from "@/app/components/rewards/ListItem";
 import {
   Drawer,
@@ -18,7 +17,6 @@ import {
   formatDate,
   formatNumber,
 } from "@/app/lib/utils";
-import { LinkIcon } from "lucide-react";
 
 export default function RewardsEarned({
   open,
@@ -84,6 +82,7 @@ export default function RewardsEarned({
               <div className="card-style flex flex-col">
                 {transactionHistory.map((transaction, index) => (
                   <ListItem
+                    href={`https://basescan.org/tx/${transaction.address}`}
                     key={transaction.date}
                     left={
                       <div className="flex flex-col">
@@ -100,33 +99,29 @@ export default function RewardsEarned({
                       </div>
                     }
                     right={
-                      <MiniAppExternalLink
-                        href={`https://basescan.org/tx/${transaction.address}`}
-                      >
-                        <div className="flex flex-col items-end">
-                          <p className="flex items-center text-sm font-semibold text-neutral-800 dark:text-white">
-                            {formatNumber(
-                              transaction.amount,
-                              INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
-                                SPONSORS[
-                                  selectedSponsor?.slug as keyof typeof SPONSORS
-                                ].ticker
-                              ],
-                            )}{" "}
-                            {
+                      <div className="flex flex-col items-end">
+                        <p className="flex items-center text-sm font-semibold text-neutral-800 dark:text-white">
+                          {formatNumber(
+                            transaction.amount,
+                            INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
                               SPONSORS[
                                 selectedSponsor?.slug as keyof typeof SPONSORS
                               ].ticker
-                            }
-                            <LinkIcon className="mt-[1px] ml-1 size-3 opacity-50" />
-                          </p>
-                          <p className="text-sm text-neutral-800 dark:text-white">
-                            {transaction.address.slice(0, 6)}...
-                            {transaction.address.slice(-4)}
-                          </p>
-                        </div>
-                      </MiniAppExternalLink>
+                            ],
+                          )}{" "}
+                          {
+                            SPONSORS[
+                              selectedSponsor?.slug as keyof typeof SPONSORS
+                            ].ticker
+                          }
+                        </p>
+                        <p className="secondary-text-style text-sm">
+                          {transaction.address.slice(0, 6)}...
+                          {transaction.address.slice(-4)}
+                        </p>
+                      </div>
                     }
+                    className="w-full py-2"
                     first={index === 0}
                     last={index === transactionHistory.length - 1}
                   />

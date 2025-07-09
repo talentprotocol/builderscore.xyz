@@ -77,6 +77,13 @@ export function formatCompactNumber(x: number, forceDecimals?: number): string {
   return isNegative ? `-${formatted}` : formatted;
 }
 
+export const isEmptyOrInvisible = (str: string) => {
+  if (!str) return true;
+  // Remove zero-width characters: ZWSP, ZWNJ, ZWJ, BOM
+  const cleaned = str.replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
+  return cleaned === "";
+};
+
 export function formatDate(
   date: string,
   options?: {

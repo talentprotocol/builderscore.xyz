@@ -1,6 +1,5 @@
 "use client";
 
-import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import { Button } from "@/app/components/ui/button";
 import {
   Drawer,
@@ -17,6 +16,7 @@ import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LeaderboardRowDrawer({
   selectedBuilder,
@@ -30,6 +30,8 @@ export default function LeaderboardRowDrawer({
   onClose: () => void;
 }) {
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
+
+  const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
 
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
@@ -178,8 +180,9 @@ export default function LeaderboardRowDrawer({
               </div>
 
               <DrawerFooter className="pt-0">
-                <MiniAppExternalLink
-                  href={`https://app.talentprotocol.com/builderscore/${selectedBuilder.profile.id}`}
+                <Link
+                  href={`${prefix}/${selectedBuilder.profile.id}`}
+                  className="w-full"
                 >
                   <Button
                     size="lg"
@@ -187,7 +190,7 @@ export default function LeaderboardRowDrawer({
                   >
                     View Talent Profile
                   </Button>
-                </MiniAppExternalLink>
+                </Link>
               </DrawerFooter>
             </>
           )}

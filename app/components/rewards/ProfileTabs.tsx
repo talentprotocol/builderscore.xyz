@@ -5,11 +5,9 @@ import { TalentCredential, TalentProject } from "@/app/types/talent";
 
 export default function ProfileTabs({
   credentials,
-  projects,
   contributedProjects,
 }: {
   credentials?: TalentCredential[];
-  projects?: TalentProject[];
   contributedProjects?: TalentProject[];
 }) {
   return (
@@ -23,12 +21,7 @@ export default function ProfileTabs({
         {
           label: "Projects",
           value: "projects",
-          content: (
-            <ProjectsList
-              projects={projects}
-              contributedProjects={contributedProjects}
-            />
-          ),
+          content: <ProjectsList contributedProjects={contributedProjects} />,
         },
       ]}
       defaultTab="score"
