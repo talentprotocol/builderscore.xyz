@@ -56,7 +56,7 @@ export default function MiniAppBanner({ className }: { className?: string }) {
         </button>
         <FarcasterLogo className="block h-9 w-auto" color="#855DCD" />
         <div>
-          <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+          <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
             Add {selectedSponsor?.name} Builder Rewards App
           </p>
           <p className="text-sm text-neutral-500">

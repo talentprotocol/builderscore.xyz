@@ -1,4 +1,5 @@
 import Basename from "@/app/components/logos/Basename";
+import Efp from "@/app/components/logos/Efp";
 import Ens from "@/app/components/logos/Ens";
 import Farcaster from "@/app/components/logos/FarcasterLogo";
 import Lens from "@/app/components/logos/Lens";
@@ -13,4 +14,5 @@ export const SocialLogos = {
   linkedin: <FaLinkedin />,
   twitter: <FaXTwitter />,
   ens: <Ens />,
+  efp: <Efp />,
 };

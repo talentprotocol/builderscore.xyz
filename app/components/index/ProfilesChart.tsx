@@ -38,7 +38,7 @@ export default function ProfilesChart({
 
       {(title || description) && (
         <div className="flex flex-col gap-1 p-2">
-          {title && <p className="text-xs font-semibold">{title}</p>}
+          {title && <p className="text-xs font-medium">{title}</p>}
           {description && (
             <p className="max-w-xl text-xs text-neutral-500">{description}</p>
           )}

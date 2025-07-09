@@ -10,7 +10,7 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import { SocialLogos } from "@/app/lib/social-logos";
 import { TalentAccount, TalentSocial } from "@/app/types/talent";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { Wallet } from "lucide-react";
+import { Globe, Wallet } from "lucide-react";
 import { cloneElement } from "react";
 
 export default function SocialsListDrawer({
@@ -47,27 +47,40 @@ export default function SocialsListDrawer({
                     left={
                       <div className="flex items-center gap-3">
                         <div className="flex items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-800">
-                          {cloneElement(
-                            SocialLogos[
-                              social.social_slug as keyof typeof SocialLogos
-                            ],
-                            {
-                              className: "block h-5 w-5",
-                              color:
+                          {SocialLogos[
+                            social.social_slug as keyof typeof SocialLogos
+                          ] ? (
+                            cloneElement(
+                              SocialLogos[
+                                social.social_slug as keyof typeof SocialLogos
+                              ],
+                              {
+                                className: "block h-5 w-5",
+                                color:
+                                  selectedSponsor?.slug === "talent-protocol"
+                                    ? "#fff"
+                                    : "#000",
+                                altcolor:
+                                  selectedSponsor?.slug === "talent-protocol"
+                                    ? "#000"
+                                    : "#fff",
+                              },
+                            )
+                          ) : (
+                            <Globe
+                              className="block h-5 w-5"
+                              color={
                                 selectedSponsor?.slug === "talent-protocol"
                                   ? "#fff"
-                                  : "#000",
-                              altcolor:
-                                selectedSponsor?.slug === "talent-protocol"
-                                  ? "#000"
-                                  : "#fff",
-                            },
+                                  : "#000"
+                              }
+                            />
                           )}
                         </div>
 
                         <div className="flex flex-col">
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-semibold">
+                            <p className="text-sm font-medium">
                               {social.handle}
                             </p>
 
@@ -119,7 +132,7 @@ export default function SocialsListDrawer({
 
                             <div className="flex flex-col">
                               <div className="flex items-center gap-2">
-                                <p className="text-sm font-semibold">
+                                <p className="text-sm font-medium">
                                   {account.identifier.slice(0, 6)}...
                                   {account.identifier.slice(-4)}
                                 </p>

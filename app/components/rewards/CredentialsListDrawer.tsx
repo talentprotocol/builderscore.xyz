@@ -27,8 +27,6 @@ export default function CredentialsListDrawer({
 }) {
   const { selectedSponsor } = useSponsor();
 
-  console.log(credentials);
-
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerPortal>
@@ -80,9 +78,7 @@ export default function CredentialsListDrawer({
                             </p>
                           )}
 
-                        <p className="text-sm font-semibold">
-                          {credential.name}
-                        </p>
+                        <p className="text-sm font-medium">{credential.name}</p>
 
                         <p className="secondary-text-style text-xs">
                           {credential.points} / {credential.max_score} points

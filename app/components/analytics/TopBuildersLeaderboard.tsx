@@ -121,7 +121,7 @@ export default function TopBuildersLeaderboard({
         onValueChange={(value) => setActiveTab(value as "weekly" | "allTime")}
       >
         <div className="sm:mb-4">
-          <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
+          <div className="mb-1 font-medium text-neutral-900 dark:text-white">
             Top Builders Leaderboard
           </div>
           <div className="text-xs text-neutral-500 dark:text-neutral-400">

@@ -128,7 +128,7 @@ export default function WinnersProfileChart({
       <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
         <div className="relative w-full">
           <div className="mb-4">
-            <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
+            <div className="mb-1 font-medium text-neutral-900 dark:text-white">
               Winners Profile: Builder Score
             </div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -185,7 +185,7 @@ export default function WinnersProfileChart({
       <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
         <div className="relative w-full">
           <div className="mb-4">
-            <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
+            <div className="mb-1 font-medium text-neutral-900 dark:text-white">
               Winners Profile: Years of Experience
             </div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400">

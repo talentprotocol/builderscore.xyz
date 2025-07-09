@@ -46,7 +46,7 @@ export default function Navbar({
             color={currentSponsor?.color}
           />
           <h1
-            className={`text-foreground font-semibold whitespace-nowrap ${menu ? "text-xs" : "text-sm"}`}
+            className={`text-foreground font-medium whitespace-nowrap ${menu ? "text-xs" : "text-sm"}`}
           >
             {title}
           </h1>

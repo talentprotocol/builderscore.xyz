@@ -57,7 +57,7 @@ export default function LeaderboardRowDrawer({
                   className="mb-3 h-[80px] w-[80px] rounded-full object-cover"
                 />
                 <p className="mb-3 text-center text-lg text-neutral-800 dark:text-white">
-                  <span className="font-semibold">
+                  <span className="font-medium">
                     {selectedBuilder.profile.display_name || "Builder"}
                   </span>
 
@@ -74,7 +74,7 @@ export default function LeaderboardRowDrawer({
                       <p className="secondary-text-style text-xs">
                         Builder Score
                       </p>
-                      <p className="font-mono text-2xl font-semibold">
+                      <p className="font-mono text-2xl font-medium">
                         {"builder_score" in selectedBuilder.profile
                           ? selectedBuilder.profile.builder_score?.points
                           : "-"}
@@ -85,7 +85,7 @@ export default function LeaderboardRowDrawer({
                       <p className="secondary-text-style text-xs">
                         Rewards Earned
                       </p>
-                      <p className="font-mono text-2xl font-semibold">
+                      <p className="font-mono text-2xl font-medium">
                         {selectedBuilder.reward_amount ? (
                           <>
                             <span>
@@ -111,7 +111,7 @@ export default function LeaderboardRowDrawer({
                         <p className="secondary-text-style text-sm">
                           {weekly && weekly ? "Weekly" : "All Time"} Rank
                         </p>
-                        <p className="font-mono text-lg font-semibold">
+                        <p className="font-mono text-lg font-medium">
                           <span className={`mr-2 font-mono`}>
                             #
                             {selectedBuilder.leaderboard_position

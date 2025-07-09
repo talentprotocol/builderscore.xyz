@@ -1,5 +1,6 @@
 "use client";
 
+import CreateAccountDrawer from "@/app/components/rewards/CreateAccountDrawer";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -10,8 +11,11 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
 import { HomeIcon, SearchIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function RewardsNavbar() {
+  const [open, setOpen] = useState(false);
+
   const { frameContext } = useUser();
   const { selectedSponsor } = useSponsor();
 
@@ -34,6 +38,12 @@ export default function RewardsNavbar() {
         ? `${prefix}/${frameContext.user.fid}`
         : `${prefix}/login`,
       icon: <UserIcon />,
+      onClick: (event: React.MouseEvent<HTMLAnchorElement>) => {
+        if (!frameContext) {
+          event.preventDefault();
+          setOpen(true);
+        }
+      },
     },
   ];
 
@@ -46,6 +56,7 @@ export default function RewardsNavbar() {
               <NavigationMenuLink asChild className="rounded-none">
                 <Link
                   href={item.href}
+                  onClick={item.onClick}
                   className="flex h-16 w-full items-center justify-center text-xl"
                 >
                   {item.icon}
@@ -55,6 +66,8 @@ export default function RewardsNavbar() {
           ))}
         </NavigationMenuList>
       </NavigationMenu>
+
+      {!frameContext && <CreateAccountDrawer open={open} setOpen={setOpen} />}
     </div>
   );
 }

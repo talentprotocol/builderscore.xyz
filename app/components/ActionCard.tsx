@@ -70,9 +70,7 @@ export default function ActionCard({
         </div>
 
         <div className="flex flex-col gap-1">
-          <h3
-            className={cn("text-2xl font-semibold", titleMono && "font-mono")}
-          >
+          <h3 className={cn("text-2xl font-medium", titleMono && "font-mono")}>
             {title}
           </h3>
 

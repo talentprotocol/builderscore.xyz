@@ -7,6 +7,7 @@ import RewardsEarned from "@/app/components/rewards/RewardsEarned";
 import { Button } from "@/app/components/ui/button";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUserLeaderboards } from "@/app/hooks/useRewards";
+import { useTalentSocials } from "@/app/hooks/useTalent";
 import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
@@ -46,7 +47,10 @@ export default function ProfileWrapper({
     profile.id,
   );
 
+  const { data: socialsClient } = useTalentSocials(profile.id);
+
   const rewardsToUse = rewardsClient || rewards;
+  const socialsToUse = socialsClient?.socials || socials;
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
 
@@ -59,7 +63,12 @@ export default function ProfileWrapper({
         className,
       )}
     >
-      <ProfileHeader profile={profile} socials={socials} accounts={accounts} />
+      <ProfileHeader
+        profile={profile}
+        socials={socialsToUse}
+        accounts={accounts}
+        detailed={detailed}
+      />
       <ProfileActionCards
         profile={profile}
         rewardsAmount={parseFloat(rewardsToUse?.reward_amount || "0")}

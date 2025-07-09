@@ -1,6 +1,6 @@
 import SocialsListDrawer from "@/app/components/rewards/SocialsListDrawer";
 import { Button } from "@/app/components/ui/button";
-import { formatNumber } from "@/app/lib/utils";
+import { cn, formatNumber } from "@/app/lib/utils";
 import {
   TalentAccount,
   TalentProfileSearchApi,
@@ -14,10 +14,12 @@ export default function ProfileHeader({
   profile,
   socials,
   accounts,
+  detailed,
 }: {
   profile: TalentProfileSearchApi;
   socials?: TalentSocial[];
   accounts?: TalentAccount[];
+  detailed?: boolean;
 }) {
   const [openSocials, setOpenSocials] = useState(false);
 
@@ -35,13 +37,13 @@ export default function ProfileHeader({
           <Button
             variant="invisible"
             size="invisible"
-            className="cursor-pointer"
-            onClick={() => setOpenSocials(true)}
+            className={cn(detailed && "cursor-pointer")}
+            onClick={() => detailed && setOpenSocials(true)}
           >
-            <p className="text-lg font-semibold text-neutral-800 dark:text-white">
+            <p className="text-lg font-medium text-neutral-800 dark:text-white">
               {profile.display_name || "Builder"}
             </p>
-            <ChevronDownIcon className="size-4 opacity-50" />
+            {detailed && <ChevronDownIcon className="size-4 opacity-50" />}
           </Button>
 
           <p className="secondary-text-style text-sm">

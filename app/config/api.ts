@@ -19,7 +19,7 @@ export const ENDPOINTS = {
     searchProfiles: "/search/advanced/profiles",
     statsDaily: "/stats/daily",
     projects: "/projects",
-    contributedProjects: "/contributed_projects",
+    contributedProjects: "/projects/contributed_projects",
   },
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",
@@ -41,6 +41,7 @@ export const ENDPOINTS = {
       searchAdvanced: "/api/search/advanced",
       statsDailyMetrics: "/api/stats/daily/metrics",
       statsDaily: "/api/stats/daily",
+      socials: "/api/talent/socials",
     },
     neynar: {
       notificationTokens: "/api/neynar/notification_tokens",

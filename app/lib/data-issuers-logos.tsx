@@ -27,7 +27,7 @@ import Scroll from "@/app/components/logos/Scroll";
 import Self from "@/app/components/logos/Self";
 import StackScore from "@/app/components/logos/StackScore";
 import Taikai from "@/app/components/logos/Taikai";
-import TalentProtocol from "@/app/components/logos/TalentProtocolLogo";
+import TalentProtocol from "@/app/components/logos/TalentProtocolIcon";
 import WorldId from "@/app/components/logos/WorldId";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";

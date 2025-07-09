@@ -1,6 +1,6 @@
 import BaseLogo from "@/app/components/logos/BaseLogo";
 import CeloLogo from "@/app/components/logos/CeloLogo";
-import TalentProtocolLogo from "@/app/components/logos/TalentProtocolLogo";
+import TalentProtocolIcon from "@/app/components/logos/TalentProtocolIcon";
 import { Grant } from "@/app/types/rewards/grants";
 import { SponsorInfo } from "@/app/types/rewards/sponsors";
 import { Metadata } from "next";
@@ -162,7 +162,7 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     name: "Talent Protocol",
     themeClassName: "dark",
     ticker: "$TALENT",
-    logo: TalentProtocolLogo,
+    logo: TalentProtocolIcon,
     color: "#FFFFFF",
   },
   celo: {

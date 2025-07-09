@@ -86,7 +86,7 @@ export default function RewardsEarned({
                     key={transaction.date}
                     left={
                       <div className="flex flex-col">
-                        <p className="text-sm font-semibold text-neutral-800 dark:text-white">
+                        <p className="text-sm font-medium text-neutral-800 dark:text-white">
                           {formatDate(transaction.date, {
                             month: "short",
                             day: "numeric",
@@ -100,7 +100,7 @@ export default function RewardsEarned({
                     }
                     right={
                       <div className="flex flex-col items-end">
-                        <p className="flex items-center text-sm font-semibold text-neutral-800 dark:text-white">
+                        <p className="flex items-center text-sm font-medium text-neutral-800 dark:text-white">
                           {formatNumber(
                             transaction.amount,
                             INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[

@@ -33,12 +33,6 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
         required: true,
       },
       {
-        text: "Get your Human Checkmark",
-        url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
-        condition: !loadingUser && humanCheckmark,
-        required: true,
-      },
-      {
         text: "Increase your Builder Score to 40+",
         url: "https://app.talentprotocol.com/profile",
         condition:

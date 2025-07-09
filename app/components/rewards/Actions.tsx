@@ -35,7 +35,7 @@ export default function Actions() {
             )
           ) : (
             <MiniAppExternalLink
-              href="https://app.talentprotocol.com"
+              href="https://login.talentprotocol.com/join"
               target="_blank"
             >
               <Button

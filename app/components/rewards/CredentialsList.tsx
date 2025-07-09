@@ -62,53 +62,54 @@ export default function CredentialsList({
 
   return (
     <div className="card-style mt-3 flex flex-col">
-      {sortedGroupedCredentials.map(
-        ({ group, credentials, totalPoints, earnedPoints }, index) => (
-          <ListItem
-            className={cn(earnedPoints === 0 && "opacity-50", "w-full")}
-            key={group}
-            left={
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-800">
-                  {cloneElement(
-                    DataIssuersLogos[group as keyof typeof DataIssuersLogos],
-                    {
-                      className: "block h-5 w-5",
-                      color:
-                        selectedSponsor?.slug === "talent-protocol"
-                          ? "#fff"
-                          : "#000",
-                      altcolor:
-                        selectedSponsor?.slug === "talent-protocol"
-                          ? "#000"
-                          : "#fff",
-                    },
-                  )}
-                </div>
+      {sortedGroupedCredentials &&
+        sortedGroupedCredentials.map(
+          ({ group, credentials, totalPoints, earnedPoints }, index) => (
+            <ListItem
+              className={cn(earnedPoints === 0 && "opacity-50", "w-full")}
+              key={group}
+              left={
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-800">
+                    {cloneElement(
+                      DataIssuersLogos[group as keyof typeof DataIssuersLogos],
+                      {
+                        className: "block h-5 w-5",
+                        color:
+                          selectedSponsor?.slug === "talent-protocol"
+                            ? "#fff"
+                            : "#000",
+                        altcolor:
+                          selectedSponsor?.slug === "talent-protocol"
+                            ? "#000"
+                            : "#fff",
+                      },
+                    )}
+                  </div>
 
-                <div className="flex flex-col">
-                  <p className="text-sm font-semibold text-neutral-800 dark:text-white">
-                    {credentials[0].data_issuer_name}
-                  </p>
-                  <p className="secondary-text-style text-xs">
-                    {credentials.reduce(
-                      (acc, credential) => acc + credential.points,
-                      0,
-                    )}{" "}
-                    / {totalPoints} points
-                  </p>
+                  <div className="flex flex-col">
+                    <p className="text-sm font-medium text-neutral-800 dark:text-white">
+                      {credentials[0].data_issuer_name}
+                    </p>
+                    <p className="secondary-text-style text-xs">
+                      {credentials.reduce(
+                        (acc, credential) => acc + credential.points,
+                        0,
+                      )}{" "}
+                      / {totalPoints} points
+                    </p>
+                  </div>
                 </div>
-              </div>
-            }
-            first={index === 0}
-            last={index === Object.keys(sortedGroupedCredentials).length - 1}
-            onClick={() => {
-              setOpen(true);
-              setActiveGroup(group);
-            }}
-          />
-        ),
-      )}
+              }
+              first={index === 0}
+              last={index === Object.keys(sortedGroupedCredentials).length - 1}
+              onClick={() => {
+                setOpen(true);
+                setActiveGroup(group);
+              }}
+            />
+          ),
+        )}
 
       <CredentialsListDrawer
         dataIssuerName={

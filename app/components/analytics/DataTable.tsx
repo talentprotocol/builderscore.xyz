@@ -26,7 +26,7 @@ export default function DataTable({
   return (
     <div className="col-span-4 rounded-lg border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-neutral-800">
       <div className="p-4">
-        <div className="mb-1 text-lg font-semibold text-neutral-900 dark:text-white">
+        <div className="mb-1 text-lg font-medium text-neutral-900 dark:text-white">
           {title}
         </div>
         <div className="mb-4 text-sm text-neutral-500 dark:text-neutral-400">
