@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/app/components/Spinner";
 import CredentialsListDrawer from "@/app/components/rewards/CredentialsListDrawer";
 import ListItem from "@/app/components/rewards/ListItem";
 import { useSponsor } from "@/app/context/SponsorContext";
@@ -62,7 +63,7 @@ export default function CredentialsList({
 
   return (
     <div className="card-style mt-3 flex flex-col">
-      {sortedGroupedCredentials &&
+      {sortedGroupedCredentials.length > 0 ? (
         sortedGroupedCredentials.map(
           ({ group, credentials, totalPoints, earnedPoints }, index) => (
             <ListItem
@@ -109,7 +110,10 @@ export default function CredentialsList({
               }}
             />
           ),
-        )}
+        )
+      ) : (
+        <Spinner className="flex h-16 w-full items-center justify-center" />
+      )}
 
       <CredentialsListDrawer
         dataIssuerName={

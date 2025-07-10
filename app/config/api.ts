@@ -42,6 +42,9 @@ export const ENDPOINTS = {
       statsDailyMetrics: "/api/stats/daily/metrics",
       statsDaily: "/api/stats/daily",
       socials: "/api/talent/socials",
+      credentials: "/api/talent/credentials",
+      contributedProjects: "/api/talent/projects/contributed",
+      accounts: "/api/talent/accounts",
     },
     neynar: {
       notificationTokens: "/api/neynar/notification_tokens",

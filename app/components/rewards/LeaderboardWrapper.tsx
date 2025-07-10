@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/app/components/Spinner";
 import Leaderboard from "@/app/components/rewards/Leaderboard";
 import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer";
@@ -77,7 +78,7 @@ export default function LeaderboardWrapper() {
       ) : (
         <div className="flex h-32 items-center justify-center">
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+            <Spinner />
           </div>
         </div>
       )}

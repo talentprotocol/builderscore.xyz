@@ -1,6 +1,7 @@
 "use client";
 
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
+import Spinner from "@/app/components/Spinner";
 import { Button } from "@/app/components/ui/button";
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { ENDPOINTS } from "@/app/config/api";
@@ -106,7 +107,7 @@ export default function ShareableLeaderboard({
           <div className="relative w-full">
             {imageLoading && (
               <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-800">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+                <Spinner />
               </div>
             )}
             <Image

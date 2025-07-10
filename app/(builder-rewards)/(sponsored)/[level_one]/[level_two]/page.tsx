@@ -1,6 +1,5 @@
 import ProfileView from "@/app/components/rewards/ProfileView";
 import getUsableProfile from "@/app/lib/get-usable-profile";
-import getUsableSponsor from "@/app/lib/get-usable-sponsor";
 import { notFound } from "next/navigation";
 
 export default async function Page({
@@ -8,8 +7,7 @@ export default async function Page({
 }: {
   params: Promise<{ level_one: string; level_two: string }>;
 }) {
-  const { level_one, level_two } = await params;
-  const usableSponsor = getUsableSponsor(level_one);
+  const { level_two } = await params;
 
   const usableProfile = await getUsableProfile(level_two);
 
@@ -17,5 +15,5 @@ export default async function Page({
     return notFound();
   }
 
-  return <ProfileView profile={usableProfile} sponsorSlug={usableSponsor} />;
+  return <ProfileView profile={usableProfile} />;
 }

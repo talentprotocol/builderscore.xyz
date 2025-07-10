@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/app/components/Spinner";
 import SearchProfileItem from "@/app/components/rewards/SearchProfileItem";
 import SearchProfileItemDrawer from "@/app/components/rewards/SearchProfileItemDrawer";
 import { Input } from "@/app/components/ui/input";
@@ -100,7 +101,7 @@ export default function SearchProfiles() {
 
         {(isFetchingNextPage || isLoading) && (
           <div className="flex items-center justify-center p-4">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+            <Spinner />
           </div>
         )}
       </div>

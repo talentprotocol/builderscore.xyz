@@ -26,6 +26,10 @@ export interface TalentAccount {
   username: string | null;
 }
 
+export interface TalentAccountsResponse {
+  accounts: TalentAccount[];
+}
+
 export type TalentProfile = {
   id: string;
   bio: string | null;
@@ -147,6 +151,16 @@ export interface TalentProjectsResponse {
 }
 
 export interface TalentProject {
+  name: string;
+  slug: string;
+  project_url: string;
+}
+
+export interface TalentContributedProjectsResponse {
+  projects: TalentProject[];
+}
+
+export interface TalentContributedProject {
   name: string;
   slug: string;
   project_url: string;

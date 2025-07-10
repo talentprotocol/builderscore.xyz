@@ -1,3 +1,4 @@
+import Spinner from "@/app/components/Spinner";
 import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import {
   LeaderboardEntry,
@@ -49,7 +50,7 @@ export default function Leaderboard({
       ))}
       {isLoadingMore && (
         <div className="flex items-center justify-center p-4">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+          <Spinner />
         </div>
       )}
     </div>

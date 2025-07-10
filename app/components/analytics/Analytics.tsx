@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/app/components/Spinner";
 import ActivityByTypeChart from "@/app/components/analytics/ActivityByTypeChart";
 import ActivityChart from "@/app/components/analytics/ActivityChart";
 import DataTable from "@/app/components/analytics/DataTable";
@@ -36,7 +37,7 @@ export default function Analytics() {
   if (isLoading) {
     return (
       <div className="flex h-32 w-full items-center justify-center">
-        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+        <Spinner />
       </div>
     );
   }

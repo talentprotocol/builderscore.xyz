@@ -1,3 +1,4 @@
+import Spinner from "@/app/components/Spinner";
 import ShowToolsButton from "@/app/components/index/ShowToolsButton";
 import {
   Table,
@@ -120,7 +121,7 @@ export default function ProfilesTable<TData>({
       </div>
       {isLoading && (
         <div className="absolute inset-0 flex w-full items-center justify-center bg-white/70 dark:bg-neutral-900/70">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+          <Spinner />
         </div>
       )}
     </div>

@@ -20,7 +20,7 @@ export default async function Page({
       return notFound();
     }
 
-    return <ProfileView profile={usableProfile} sponsorSlug={usableSponsor} />;
+    return <ProfileView profile={usableProfile} />;
   }
 
   return <RewardsView sponsor={usableSponsor} />;

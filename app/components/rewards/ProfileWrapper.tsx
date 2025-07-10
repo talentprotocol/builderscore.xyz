@@ -7,17 +7,16 @@ import RewardsEarned from "@/app/components/rewards/RewardsEarned";
 import { Button } from "@/app/components/ui/button";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUserLeaderboards } from "@/app/hooks/useRewards";
-import { useTalentSocials } from "@/app/hooks/useTalent";
+import {
+  useTalentAccounts,
+  useTalentContributedProjects,
+  useTalentCredentials,
+  useTalentSocials,
+} from "@/app/hooks/useTalent";
 import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
-import {
-  TalentAccount,
-  TalentCredential,
-  TalentProfileSearchApi,
-  TalentProject,
-  TalentSocial,
-} from "@/app/types/talent";
+import { TalentProfileSearchApi } from "@/app/types/talent";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -26,19 +25,11 @@ export default function ProfileWrapper({
   className,
   detailed,
   rewards,
-  credentials,
-  contributedProjects,
-  socials,
-  accounts,
 }: {
   profile: TalentProfileSearchApi;
   className?: string;
   detailed?: boolean;
   rewards?: LeaderboardEntry;
-  credentials?: TalentCredential[];
-  contributedProjects?: TalentProject[];
-  socials?: TalentSocial[];
-  accounts?: TalentAccount[];
 }) {
   const { selectedSponsor } = useSponsor();
 
@@ -47,10 +38,14 @@ export default function ProfileWrapper({
     profile.id,
   );
 
-  const { data: socialsClient } = useTalentSocials(profile.id);
+  const { data: socials } = useTalentSocials(profile.id);
+  const { data: accounts } = useTalentAccounts(profile.id);
+  const { data: credentials } = useTalentCredentials(profile.id);
+  const { data: contributedProjects } = useTalentContributedProjects(
+    profile.id,
+  );
 
   const rewardsToUse = rewardsClient || rewards;
-  const socialsToUse = socialsClient?.socials || socials;
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
 
@@ -65,8 +60,8 @@ export default function ProfileWrapper({
     >
       <ProfileHeader
         profile={profile}
-        socials={socialsToUse}
-        accounts={accounts}
+        socials={socials?.socials}
+        accounts={accounts?.accounts}
         detailed={detailed}
       />
       <ProfileActionCards
@@ -85,8 +80,8 @@ export default function ProfileWrapper({
       {detailed && (
         <div className="w-full">
           <ProfileTabs
-            credentials={credentials}
-            contributedProjects={contributedProjects}
+            credentials={credentials?.credentials}
+            contributedProjects={contributedProjects?.projects}
           />
         </div>
       )}

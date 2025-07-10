@@ -1,3 +1,4 @@
+import Spinner from "@/app/components/Spinner";
 import ListItem from "@/app/components/rewards/ListItem";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { TalentProject } from "@/app/types/talent";
@@ -13,7 +14,7 @@ export default function ProjectsList({
 
   return (
     <div className="card-style mt-3 flex flex-col">
-      {contributedProjects &&
+      {contributedProjects ? (
         contributedProjects.map((project, index) => (
           <ListItem
             key={project.slug}
@@ -63,7 +64,10 @@ export default function ProjectsList({
             first={index === 0}
             last={index === contributedProjects!.length - 1}
           />
-        ))}
+        ))
+      ) : (
+        <Spinner className="flex h-16 w-full items-center justify-center" />
+      )}
     </div>
   );
 }
