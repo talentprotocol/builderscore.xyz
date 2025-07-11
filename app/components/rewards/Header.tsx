@@ -249,7 +249,7 @@ export default function Header() {
       : "Avg. Builder Score";
 
     const scoreValue =
-      shouldShowUserLeaderboard && userLeaderboardData
+      shouldShowUserLeaderboard && userLeaderboardData && userLeaderboardData.profile
         ? `${
             "builder_score" in userLeaderboardData.profile
               ? userLeaderboardData.profile.builder_score?.points || "-"
