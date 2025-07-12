@@ -174,3 +174,9 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     color: "#000000",
   },
 };
+
+export const SPONSOR_SCORING = {
+  base: ["github", "onchain", "farcaster"],
+  "talent-protocol": ["github", "onchain", "builder_score"],
+  celo: ["github", "onchain", "builder_score"],
+};

@@ -93,7 +93,6 @@ export function useLeaderboards() {
   const { selectedGrant, isAllTimeSelected } = useGrant();
   const { selectedSponsor } = useSponsor();
 
-  const { isLoading: loadingUserProfile } = useUserProfiles();
   const { isLoading: loadingSponsors } = useSponsors();
   const { isLoading: loadingGrants } = useGrants();
 
@@ -146,12 +145,7 @@ export function useLeaderboards() {
       const { current_page, last_page } = lastPage.pagination;
       return current_page < last_page ? current_page + 1 : undefined;
     },
-    enabled: !!(
-      selectedGrant &&
-      !loadingSponsors &&
-      !loadingUserProfile &&
-      !loadingGrants
-    ),
+    enabled: !!(selectedGrant && !loadingSponsors && !loadingGrants),
   });
 }
 

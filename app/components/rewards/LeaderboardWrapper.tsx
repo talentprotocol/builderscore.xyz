@@ -50,6 +50,10 @@ export default function LeaderboardWrapper() {
               reward_amount: null,
               reward_transaction_hash: null,
               summary: null,
+              distributed_at: null,
+              hall_of_fame: false,
+              metrics: [],
+              recipient_wallet: null,
             }}
             isHighlighted={true}
             className="mb-2"

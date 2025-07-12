@@ -1,3 +1,4 @@
+import Spinner from "@/app/components/Spinner";
 import ListItem from "@/app/components/rewards/ListItem";
 import {
   Drawer,
@@ -12,8 +13,6 @@ import { TalentAccount, TalentSocial } from "@/app/types/talent";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Globe, Wallet } from "lucide-react";
 import { cloneElement } from "react";
-
-import Spinner from "../Spinner";
 
 export default function SocialsListDrawer({
   socials,

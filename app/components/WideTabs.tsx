@@ -9,6 +9,8 @@ import {
 export function WideTabs({
   tabs,
   defaultTab,
+  activationMode,
+  value,
 }: {
   tabs: {
     label: string;
@@ -18,9 +20,16 @@ export function WideTabs({
     active?: boolean;
   }[];
   defaultTab: string;
+  activationMode?: "automatic" | "manual";
+  value?: string;
 }) {
   return (
-    <Tabs defaultValue={defaultTab} className="gap-0">
+    <Tabs
+      defaultValue={defaultTab}
+      className="gap-0"
+      activationMode={activationMode}
+      value={value}
+    >
       <TabsList className="border-bottom-style h-10 w-full rounded-none bg-transparent p-0">
         {tabs.map((tab) => (
           <TabsTrigger

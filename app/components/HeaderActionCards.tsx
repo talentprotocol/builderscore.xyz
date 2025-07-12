@@ -5,12 +5,15 @@ import { useUserProfiles } from "@/app/hooks/useRewards";
 import { getTimeRemaining } from "@/app/lib/utils";
 
 export default function HeaderActionCards({
+  allTime,
   round,
   totalBuilders,
   totalRewards,
   activity,
   rewards,
+  setOpen,
 }: {
+  allTime?: boolean;
   round: {
     ended: boolean;
     ends: string;
@@ -21,7 +24,7 @@ export default function HeaderActionCards({
     ticker: string;
   };
   activity: {
-    value: string;
+    value: number;
     max: number;
   };
   rewards: {
@@ -29,6 +32,7 @@ export default function HeaderActionCards({
     max: number;
     ticker: string;
   };
+  setOpen: (open: boolean) => void;
 }) {
   const { data: userProfileData, isFetched: isFetchedUserProfile } =
     useUserProfiles();
@@ -37,10 +41,9 @@ export default function HeaderActionCards({
     parseFloat(rewards.value) > rewards.max
       ? 1
       : parseFloat(rewards.value) / rewards.max;
+
   const activityProgress =
-    parseFloat(activity.value) > activity.max
-      ? 1
-      : parseFloat(activity.value) / activity.max;
+    activity.value > activity.max ? 1 : activity.value / activity.max;
 
   return (
     <div className="flex flex-col">
@@ -64,15 +67,23 @@ export default function HeaderActionCards({
 
         {isFetchedUserProfile && userProfileData && (
           <>
-            <ActionCard
-              titleMono
-              title={`${((parseFloat(activity.value) / activity.max) * 100).toFixed(0)}%`}
-              description="Your Activity"
-              progress={activityProgress * 100}
-              onClick={() => {
-                console.log("clicked");
-              }}
-            />
+            {allTime ? (
+              <ActionCard
+                titleMono
+                title={userProfileData.builderScore?.points.toString() || "0"}
+                description="Builder Score"
+              />
+            ) : (
+              <ActionCard
+                titleMono
+                title={`${((activity.value / activity.max) * 100).toFixed(0)}%`}
+                description="Your Activity"
+                progress={activityProgress * 100}
+                onClick={() => {
+                  setOpen(true);
+                }}
+              />
+            )}
 
             <ActionCard
               titleMono
