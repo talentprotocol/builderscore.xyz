@@ -162,6 +162,7 @@ export function useLeaderboardsEarnings(uuid: string) {
         per_page: 20,
         page: pageParam as number,
         id: uuid,
+        sponsor_slug: selectedSponsor?.slug,
       };
 
       if (isServer) {

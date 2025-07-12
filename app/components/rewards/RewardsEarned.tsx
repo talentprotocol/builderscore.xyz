@@ -15,13 +15,18 @@ import {
   useLeaderboardsEarnings,
   useUserLeaderboards,
 } from "@/app/hooks/useRewards";
-import { ALL_TIME_GRANT, SPONSORS } from "@/app/lib/constants";
+import {
+  ALL_TIME_GRANT,
+  SPONSORS,
+  SPONSOR_SCANNER_BASE_URL,
+} from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatDate,
   formatNumber,
 } from "@/app/lib/utils";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { useCallback, useEffect } from "react";
 
 // TODO: - Improve API to return data for the selected sponsor;
 //       - Fix total rewards earned to not include ongoing grants.
@@ -47,44 +52,29 @@ export default function RewardsEarned({
 
   console.log(leaderboardEarnings);
 
-  const getScannerUrl = (txHash: string) => {
-    const sponsorSlug = selectedSponsor?.slug;
-    switch (sponsorSlug) {
-      case "base":
-        return `https://basescan.org/tx/${txHash}`;
-      case "celo":
-        return `https://celoscan.io/tx/${txHash}`;
-      default:
-        return `https://basescan.org/tx/${txHash}`;
+  // Flatten all pages into a single array of users
+  const allEarnings =
+    leaderboardEarnings?.pages.flatMap((page) => page.users) || [];
+
+  const handleScroll = useCallback(() => {
+    if (isFetchingNextPage || !hasNextPage) return;
+
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const isNearBottom = documentHeight - (scrollTop + windowHeight) < 100;
+
+    if (isNearBottom) {
+      fetchNextPage();
     }
-  };
+  }, [isFetchingNextPage, hasNextPage, fetchNextPage]);
 
-  const getFilteredEarnings = () => {
-    if (!leaderboardEarnings) return [];
-
-    const allEarnings = leaderboardEarnings.pages
-      .flatMap((page) => page.users)
-      .filter((earning) => earning.distributed_at !== null)
-      .filter(
-        (earning) => new Date(earning.distributed_at!) > new Date("2025-03-01"),
-      );
-    const sponsorSlug = selectedSponsor?.slug;
-
-    return allEarnings.filter((earning) => {
-      const rewardAmount = parseFloat(earning.reward_amount || "0");
-
-      switch (sponsorSlug) {
-        case "base":
-          return rewardAmount < 1; // Show only earnings below 0 for base
-        case "celo":
-          return rewardAmount >= 1; // Show only earnings above 0 for celo
-        default:
-          return false; // Show no earnings for other sponsors
-      }
-    });
-  };
-
-  const filteredEarnings = getFilteredEarnings();
+  useEffect(() => {
+    if (open) {
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [handleScroll, open]);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -116,13 +106,15 @@ export default function RewardsEarned({
                 </p>
 
                 <div className="card-style flex flex-col">
-                  {filteredEarnings.length > 0 ? (
+                  {allEarnings.length > 0 ? (
                     <>
-                      {filteredEarnings.map((earning, index) => (
+                      {allEarnings.map((earning, index) => (
                         <ListItem
                           href={
                             earning.reward_transaction_hash
-                              ? getScannerUrl(earning.reward_transaction_hash)
+                              ? SPONSOR_SCANNER_BASE_URL[
+                                  selectedSponsor?.slug as keyof typeof SPONSOR_SCANNER_BASE_URL
+                                ] + earning.reward_transaction_hash
                               : undefined
                           }
                           key={earning.id}
@@ -173,24 +165,14 @@ export default function RewardsEarned({
                           }
                           className="w-full py-2"
                           first={index === 0}
-                          last={index === filteredEarnings.length - 1}
+                          last={index === allEarnings.length - 1}
                         />
                       ))}
 
-                      {/* Load more button or infinite scroll trigger */}
-                      {hasNextPage && (
-                        <div className="flex justify-center py-4">
-                          <button
-                            onClick={() => fetchNextPage()}
-                            disabled={isFetchingNextPage}
-                            className="secondary-text-style text-sm hover:text-neutral-800 disabled:opacity-50 dark:hover:text-white"
-                          >
-                            {isFetchingNextPage ? (
-                              <Spinner className="flex h-16 w-full items-center justify-center" />
-                            ) : (
-                              "Load more"
-                            )}
-                          </button>
+                      {/* Show loading spinner when fetching more */}
+                      {isFetchingNextPage && (
+                        <div className="flex items-center justify-center p-4">
+                          <Spinner />
                         </div>
                       )}
                     </>

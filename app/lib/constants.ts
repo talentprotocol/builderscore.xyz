@@ -184,3 +184,9 @@ export const SPONSOR_SCORING = {
 export const SPONSOR_HOF_MAX_REWARDS = {
   base: 1,
 };
+
+export const SPONSOR_SCANNER_BASE_URL = {
+  base: "https://basescan.org/tx/",
+  celo: "https://celoscan.io/tx/",
+  "talent-protocol": "https://basescan.org/tx/",
+};
