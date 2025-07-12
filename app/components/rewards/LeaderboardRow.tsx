@@ -1,5 +1,6 @@
 "use client";
 
+import { Progress } from "@/app/components/ui/progress";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { SPONSOR_HOF_MAX_REWARDS } from "@/app/lib/constants";
 import {
@@ -18,6 +19,7 @@ export default function LeaderboardRow({
   last = false,
   className = "",
   onBuilderSelect,
+  isAllTime,
 }: {
   leaderboardData: LeaderboardEntry;
   isHighlighted?: boolean;
@@ -25,6 +27,7 @@ export default function LeaderboardRow({
   last?: boolean;
   className?: string;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
+  isAllTime?: boolean;
 }) {
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
 
@@ -76,7 +79,7 @@ export default function LeaderboardRow({
               alt={leaderboardData.profile.display_name || "Talent Builder"}
               width={isHighlighted ? 48 : 36}
               height={isHighlighted ? 48 : 36}
-              className={`h-[36px] w-[36px] rounded-full object-cover ${
+              className={`h-[36px] w-[36px] rounded-full object-cover ${isHof && "border-2 border-yellow-500"} ${
                 isHighlighted && "ml-[-6px] h-[48px] w-[48px]"
               }`}
             />
@@ -119,6 +122,19 @@ export default function LeaderboardRow({
             {sponsorTokenTicker}
           </span>
         </p>
+
+        {isAllTime && (
+          <Progress
+            value={
+              (parseFloat(leaderboardData.reward_amount || "0") /
+                SPONSOR_HOF_MAX_REWARDS[
+                  selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+                ]) *
+              100
+            }
+            className="mt-1 h-1 w-full"
+          />
+        )}
       </div>
     </div>
   );

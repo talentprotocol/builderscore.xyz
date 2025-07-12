@@ -12,12 +12,14 @@ export default function Leaderboard({
   hasMore,
   isLoadingMore,
   onBuilderSelect,
+  isAllTime,
 }: {
   leaderboardData: LeaderboardResponse;
   onLoadMore: () => void;
   hasMore: boolean;
   isLoadingMore: boolean;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
+  isAllTime?: boolean;
 }) {
   const handleScroll = useCallback(() => {
     if (isLoadingMore || !hasMore) return;
@@ -46,6 +48,7 @@ export default function Leaderboard({
           first={index === 0}
           last={index === leaderboardData.users.length - 1}
           onBuilderSelect={onBuilderSelect}
+          isAllTime={isAllTime}
         />
       ))}
       {isLoadingMore && (

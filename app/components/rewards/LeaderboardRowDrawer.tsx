@@ -63,7 +63,7 @@ export default function LeaderboardRowDrawer({
                   alt={selectedBuilder.profile.display_name || "Builder"}
                   width={80}
                   height={80}
-                  className="mb-3 h-[80px] w-[80px] rounded-full object-cover"
+                  className={`mb-3 h-[80px] w-[80px] rounded-full object-cover ${isHof && "border-4 border-yellow-500"}`}
                 />
 
                 <p className="mb-3 text-center text-lg text-neutral-800 dark:text-white">
@@ -87,7 +87,7 @@ export default function LeaderboardRowDrawer({
                           {selectedSponsor?.name} Hall of Fame
                         </p>
 
-                        <p className="secondary-text-style text-center text-xs">
+                        <p className="secondary-text-style max-w-xl text-center text-xs">
                           {selectedSponsor?.name}&apos;s{" "}
                           {
                             SPONSOR_HOF_MAX_REWARDS[

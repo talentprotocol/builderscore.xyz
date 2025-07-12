@@ -45,6 +45,8 @@ export default function RewardsEarned({
     isFetchingNextPage,
   } = useLeaderboardsEarnings(profileId);
 
+  console.log(leaderboardEarnings);
+
   const getScannerUrl = (txHash: string) => {
     const sponsorSlug = selectedSponsor?.slug;
     switch (sponsorSlug) {
@@ -126,17 +128,25 @@ export default function RewardsEarned({
                           key={earning.id}
                           left={
                             <div className="flex flex-col">
-                              <p className="text-sm font-medium text-neutral-800 dark:text-white">
-                                {earning.distributed_at
-                                  ? formatDate(earning.distributed_at, {
-                                      month: "short",
-                                      day: "numeric",
-                                      year: "numeric",
-                                    })
-                                  : "Pending"}
-                              </p>
-                              <p className="text-sm text-neutral-800 dark:text-white">
-                                Rank #{earning.leaderboard_position || "N/A"}
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm font-medium text-neutral-800 dark:text-white">
+                                  {earning.distributed_at
+                                    ? formatDate(earning.distributed_at, {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                      })
+                                    : "Pending"}
+                                </p>
+                                <p className="secondary-text-style text-xs">
+                                  Rank #{earning.leaderboard_position || "N/A"}
+                                </p>
+                              </div>
+
+                              <p className="secondary-text-style text-sm">
+                                Sent to: {earning.recipient_wallet?.slice(0, 6)}
+                                ...
+                                {earning.recipient_wallet?.slice(-4)}
                               </p>
                             </div>
                           }
@@ -153,6 +163,7 @@ export default function RewardsEarned({
                               </p>
                               {earning.reward_transaction_hash && (
                                 <p className="secondary-text-style text-sm">
+                                  Tx:{" "}
                                   {earning.reward_transaction_hash.slice(0, 6)}
                                   ...
                                   {earning.reward_transaction_hash.slice(-4)}
@@ -175,10 +186,7 @@ export default function RewardsEarned({
                             className="secondary-text-style text-sm hover:text-neutral-800 disabled:opacity-50 dark:hover:text-white"
                           >
                             {isFetchingNextPage ? (
-                              <div className="flex items-center gap-2">
-                                <Spinner />
-                                Loading more...
-                              </div>
+                              <Spinner className="flex h-16 w-full items-center justify-center" />
                             ) : (
                               "Load more"
                             )}
@@ -195,7 +203,7 @@ export default function RewardsEarned({
                   ) : (
                     <div className="flex h-32 items-center justify-center">
                       <div className="flex items-center gap-2">
-                        <Spinner />
+                        <Spinner className="flex h-16 w-full items-center justify-center" />
                       </div>
                     </div>
                   )}

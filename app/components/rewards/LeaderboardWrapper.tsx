@@ -10,6 +10,7 @@ import {
   useUserLeaderboards,
   useUserProfiles,
 } from "@/app/hooks/useRewards";
+import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { formatDate } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { useState } from "react";
@@ -30,6 +31,8 @@ export default function LeaderboardWrapper() {
   const [selectedBuilder, setSelectedBuilder] =
     useState<LeaderboardEntry | null>(null);
 
+  const isAllTime = selectedGrant?.id === ALL_TIME_GRANT.id;
+
   return (
     <div className="mt-3 flex h-full flex-col">
       {userProfileData && userProfileData.profile && userLeaderboardData ? (
@@ -38,6 +41,7 @@ export default function LeaderboardWrapper() {
           isHighlighted={true}
           className="mb-2"
           onBuilderSelect={setSelectedBuilder}
+          isAllTime={isAllTime}
         />
       ) : (
         userProfileData?.profile && (
@@ -58,6 +62,7 @@ export default function LeaderboardWrapper() {
             isHighlighted={true}
             className="mb-2"
             onBuilderSelect={setSelectedBuilder}
+            isAllTime={isAllTime}
           />
         )
       )}
@@ -78,6 +83,7 @@ export default function LeaderboardWrapper() {
           hasMore={hasNextPage}
           isLoadingMore={isFetchingNextPage}
           onBuilderSelect={setSelectedBuilder}
+          isAllTime={isAllTime}
         />
       ) : (
         <div className="flex h-32 items-center justify-center">
