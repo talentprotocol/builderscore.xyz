@@ -149,6 +149,53 @@ export function useLeaderboards() {
   });
 }
 
+export function useLeaderboardsEarnings(uuid: string) {
+  const { selectedSponsor } = useSponsor();
+
+  const { isLoading: loadingSponsors } = useSponsors();
+
+  return useInfiniteQuery<LeaderboardResponse>({
+    queryKey: ["leaderboardsEarnings", selectedSponsor?.slug, uuid],
+    initialPageParam: 1,
+    queryFn: async ({ pageParam = 1 }) => {
+      const requestParams = {
+        per_page: 20,
+        page: pageParam as number,
+        id: uuid,
+      };
+
+      if (isServer) {
+        const response = await fetchLeaderboards(requestParams);
+        return response;
+      } else {
+        const queryParams = new URLSearchParams();
+        Object.entries(requestParams).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            queryParams.append(key, value.toString());
+          }
+        });
+        const response = await axios.get(
+          `${ENDPOINTS.localApi.talent.leaderboards}?${queryParams.toString()}`,
+        );
+        if (
+          response.data &&
+          response.data.users.length === 0 &&
+          pageParam === 1
+        ) {
+          throw new Error("No earnings found.");
+        }
+        return response.data;
+      }
+    },
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.pagination) return undefined;
+      const { current_page, last_page } = lastPage.pagination;
+      return current_page < last_page ? current_page + 1 : undefined;
+    },
+    enabled: !!(uuid && !loadingSponsors),
+  });
+}
+
 export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
   const { selectedSponsor } = useSponsor();
   const { frameContext } = useUser();

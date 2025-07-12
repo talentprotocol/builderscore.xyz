@@ -11,12 +11,14 @@ export async function GET(request: NextRequest) {
     const sponsor_slug = searchParams.get("sponsor_slug");
     const per_page = searchParams.get("per_page");
     const page = searchParams.get("page");
+    const id = searchParams.get("id");
 
     const params = {
       ...(grant_id && { grant_id }),
       ...(sponsor_slug && { sponsor_slug }),
       ...(per_page && { per_page: parseInt(per_page) }),
       ...(page && { page: parseInt(page) }),
+      ...(id && { id }),
     };
 
     const data: LeaderboardResponse = await fetchLeaderboards(params);

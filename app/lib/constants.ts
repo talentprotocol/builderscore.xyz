@@ -180,3 +180,7 @@ export const SPONSOR_SCORING = {
   "talent-protocol": ["github", "onchain", "builder_score"],
   celo: ["github", "onchain", "builder_score"],
 };
+
+export const SPONSOR_HOF_MAX_REWARDS = {
+  base: 1,
+};

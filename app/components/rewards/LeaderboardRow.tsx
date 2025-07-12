@@ -1,12 +1,14 @@
 "use client";
 
 import { useSponsor } from "@/app/context/SponsorContext";
+import { SPONSOR_HOF_MAX_REWARDS } from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatNumber,
   isEmptyOrInvisible,
 } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
+import { CrownIcon } from "lucide-react";
 import Image from "next/image";
 
 export default function LeaderboardRow({
@@ -24,7 +26,14 @@ export default function LeaderboardRow({
   className?: string;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
 }) {
-  const { sponsorTokenTicker } = useSponsor();
+  const { sponsorTokenTicker, selectedSponsor } = useSponsor();
+
+  const isHof =
+    leaderboardData.reward_amount &&
+    parseFloat(leaderboardData.reward_amount) >=
+      SPONSOR_HOF_MAX_REWARDS[
+        selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+      ];
 
   return (
     <div
@@ -33,7 +42,7 @@ export default function LeaderboardRow({
     >
       <div className="flex items-center gap-1">
         <p className="secondary-text-style min-w-6 font-mono text-xs">
-          #
+          {isHof && <CrownIcon className="size-3 text-yellow-500" />} #
           {leaderboardData.leaderboard_position
             ? leaderboardData.leaderboard_position
             : "-"}

@@ -8,6 +8,7 @@ import {
   DrawerPortal,
 } from "@/app/components/ui/drawer";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { SPONSOR_HOF_MAX_REWARDS } from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatNumber,
@@ -15,6 +16,7 @@ import {
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { CrownIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -32,6 +34,13 @@ export default function LeaderboardRowDrawer({
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
+
+  const isHof =
+    selectedBuilder?.reward_amount &&
+    parseFloat(selectedBuilder.reward_amount) >=
+      SPONSOR_HOF_MAX_REWARDS[
+        selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+      ];
 
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
@@ -56,6 +65,7 @@ export default function LeaderboardRowDrawer({
                   height={80}
                   className="mb-3 h-[80px] w-[80px] rounded-full object-cover"
                 />
+
                 <p className="mb-3 text-center text-lg text-neutral-800 dark:text-white">
                   <span className="font-medium">
                     {selectedBuilder.profile.display_name || "Builder"}
@@ -67,6 +77,33 @@ export default function LeaderboardRowDrawer({
                     {context}
                   </span>
                 </p>
+
+                {isHof && (
+                  <div className="card-style mb-2 w-full">
+                    <div className="flex justify-around p-4">
+                      <div className="flex flex-col items-center justify-between">
+                        <p className="mb-1 flex items-center text-sm">
+                          <CrownIcon className="mr-2 size-4 text-yellow-500" />{" "}
+                          {selectedSponsor?.name} Hall of Fame
+                        </p>
+
+                        <p className="secondary-text-style text-center text-xs">
+                          {selectedSponsor?.name}&apos;s{" "}
+                          {
+                            SPONSOR_HOF_MAX_REWARDS[
+                              selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+                            ]
+                          }{" "}
+                          {sponsorTokenTicker} rewards cap ensures fair
+                          distribution of rewards across the entire builder
+                          community. Hall of Fame builders continue to be
+                          recognized on the leaderboard for their outstanding
+                          contributions.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="card-style w-full">
                   <div className="flex justify-around p-4">
