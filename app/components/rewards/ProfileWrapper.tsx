@@ -57,9 +57,6 @@ export default function ProfileWrapper({
     frameContext?.user?.fid &&
     farcasterAccount?.identifier === frameContext?.user?.fid.toString();
 
-  console.log("rewardsClient", rewardsClient);
-  console.log("rewards", rewards);
-
   const rewardsToUse = rewardsClient || rewards;
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";

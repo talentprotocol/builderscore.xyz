@@ -205,8 +205,7 @@ export default function LeaderboardRowDrawer({
                           </div>
                         </div>
                       )
-                    : selectedSponsor?.slug === "base" &&
-                      selectedBuilder.reward_amount &&
+                    : selectedBuilder.reward_amount &&
                       parseFloat(selectedBuilder.reward_amount) > 0 && (
                         <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
                           <div className="flex flex-col">

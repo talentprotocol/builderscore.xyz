@@ -267,6 +267,8 @@ export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
   const { isLoading: loadingGrants } = useGrants();
   const { isLoading: loadingSponsors } = useSponsors();
 
+  console.log("userId", userId);
+
   return useQuery<LeaderboardEntry>({
     queryKey: [
       "userLeaderboards",
@@ -282,6 +284,7 @@ export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
           grant?.id === ALL_TIME_GRANT.id ? undefined : grant?.id?.toString(),
           selectedSponsor?.slug,
         );
+        console.log("entry from server", entry);
         return entry;
       } else {
         const queryParams = new URLSearchParams({
@@ -296,6 +299,7 @@ export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
         const response = await axios.get(
           `${ENDPOINTS.localApi.talent.leaderboardEntry}?${queryParams}`,
         );
+        console.log("response from client", response);
         return response.data;
       }
     },
