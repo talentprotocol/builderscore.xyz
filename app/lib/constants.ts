@@ -1,6 +1,7 @@
 import BaseLogo from "@/app/components/logos/BaseLogo";
 import CeloLogo from "@/app/components/logos/CeloLogo";
 import TalentProtocolIcon from "@/app/components/logos/TalentProtocolIcon";
+import { BaseSummerBanner } from "@/app/components/rewards/BaseSummerBanner";
 import { Grant } from "@/app/types/rewards/grants";
 import { SponsorInfo } from "@/app/types/rewards/sponsors";
 import { Metadata } from "next";
@@ -225,4 +226,17 @@ export const SPONSOR_SCANNER_BASE_URL = {
 
 export const SPONSOR_REWARDS_START_DATE = {
   "base-summer": "2025-07-21",
+};
+
+export const SPONSOR_BANNERS = {
+  "base-summer": BaseSummerBanner,
+};
+
+export const SPONSOR_FARCASTER_MINI_APP_URLS = {
+  "base-summer":
+    "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
+  base: "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
+  "talent-protocol":
+    "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
+  celo: "https://farcaster.xyz/miniapps/XhQmVJM8RIeD/celo-builder-rewards",
 };

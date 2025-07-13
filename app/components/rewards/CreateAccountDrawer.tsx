@@ -10,6 +10,8 @@ import {
   DrawerPortal,
   DrawerTitle,
 } from "@/app/components/ui/drawer";
+import { useSponsor } from "@/app/context/SponsorContext";
+import { SPONSOR_FARCASTER_MINI_APP_URLS } from "@/app/lib/constants";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export default function CreateAccountDrawer({
@@ -19,6 +21,8 @@ export default function CreateAccountDrawer({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
+  const { selectedSponsor } = useSponsor();
+
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerPortal>
@@ -30,21 +34,25 @@ export default function CreateAccountDrawer({
             <TalentProtocolLogo className="size-5 w-auto" color="#070707" />
 
             <p className="mt-3 text-neutral-600 dark:text-neutral-500">
-              Please create a Talent Protocol Profile and connect your Farcaster
-              wallet to view your rewards.
+              Open this app on Farcaster to access all features and check your
+              rewards.
             </p>
           </div>
 
           <DrawerFooter className="pt-0">
             <MiniAppExternalLink
-              href={`https://login.talentprotocol.com/join`}
+              href={
+                SPONSOR_FARCASTER_MINI_APP_URLS[
+                  selectedSponsor?.slug as keyof typeof SPONSOR_FARCASTER_MINI_APP_URLS
+                ]
+              }
               className="w-full"
             >
               <Button
                 size="lg"
                 className="mb-3 w-full cursor-pointer border border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
               >
-                Create Talent Profile
+                Open Mini App
               </Button>
             </MiniAppExternalLink>
           </DrawerFooter>

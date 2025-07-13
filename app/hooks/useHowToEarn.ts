@@ -25,7 +25,7 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
 
   const baseConfig = {
     description:
-      "Talent Protocol distributes weekly rewards to builders that own verified contracts on Base and contribute to public crypto repositories on GitHub. Follow the steps below to be eligible:",
+      "Talent Protocol distributes weekly rewards to builders that own verified contracts on Base and contribute to public crypto repositories on GitHub.",
     steps: [
       {
         text: `Own a Basename ${basename ? `(${basename})` : ""}`,

@@ -9,6 +9,7 @@ import { useGrants, useUserLeaderboards } from "@/app/hooks/useRewards";
 import {
   ALL_TIME_GRANT,
   HOF_MAX_ETH,
+  SPONSOR_BANNERS,
   SPONSOR_MIN_REWARDS,
 } from "@/app/lib/constants";
 import {
@@ -176,7 +177,14 @@ export default function Header() {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col">
+      {(() => {
+        const BannerComponent =
+          SPONSOR_BANNERS[
+            selectedSponsor?.slug as keyof typeof SPONSOR_BANNERS
+          ];
+        return BannerComponent ? <BannerComponent /> : null;
+      })()}
       <WideTabs
         value={activeTab}
         activationMode="manual"
