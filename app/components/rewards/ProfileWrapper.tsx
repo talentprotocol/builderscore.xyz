@@ -6,6 +6,7 @@ import ProfileTabs from "@/app/components/rewards/ProfileTabs";
 import RewardsEarned from "@/app/components/rewards/RewardsEarned";
 import { Button } from "@/app/components/ui/button";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { useUser } from "@/app/context/UserContext";
 import { useUserLeaderboards } from "@/app/hooks/useRewards";
 import {
   useTalentAccounts,
@@ -17,6 +18,7 @@ import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { TalentProfileSearchApi } from "@/app/types/talent";
+import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -32,6 +34,7 @@ export default function ProfileWrapper({
   rewards?: LeaderboardEntry;
 }) {
   const { selectedSponsor } = useSponsor();
+  const { frameContext } = useUser();
 
   const { data: rewardsClient } = useUserLeaderboards(
     ALL_TIME_GRANT,
@@ -44,6 +47,15 @@ export default function ProfileWrapper({
   const { data: contributedProjects } = useTalentContributedProjects(
     profile.id,
   );
+
+  const farcasterAccount = accounts?.accounts?.find(
+    (account) => account.source === "farcaster",
+  );
+
+  const ownProfile =
+    farcasterAccount?.identifier &&
+    frameContext?.user?.fid &&
+    farcasterAccount?.identifier === frameContext?.user?.fid.toString();
 
   const rewardsToUse = rewardsClient || rewards;
 
@@ -70,6 +82,21 @@ export default function ProfileWrapper({
         detailed={detailed || false}
         setOpenRewardsEarned={setOpenRewardsEarned}
       />
+
+      {ownProfile && (
+        <Link
+          className="w-full"
+          href={"https://app.talentprotocol.com/settings"}
+        >
+          <Button
+            size="lg"
+            className="button-style w-full cursor-pointer text-xs sm:text-sm"
+          >
+            Edit Profile on Talent Protocol
+            <ExternalLinkIcon className="size-4 opacity-50" />
+          </Button>
+        </Link>
+      )}
 
       <RewardsEarned
         open={openRewardsEarned}

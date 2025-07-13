@@ -28,8 +28,6 @@ import {
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useCallback, useEffect } from "react";
 
-// TODO: - Improve API to return data for the selected sponsor;
-//       - Fix total rewards earned to not include ongoing grants.
 export default function RewardsEarned({
   open,
   setOpen,
@@ -50,9 +48,6 @@ export default function RewardsEarned({
     isFetchingNextPage,
   } = useLeaderboardsEarnings(profileId);
 
-  console.log(leaderboardEarnings);
-
-  // Flatten all pages into a single array of users
   const allEarnings =
     leaderboardEarnings?.pages.flatMap((page) => page.users) || [];
 
@@ -121,24 +116,27 @@ export default function RewardsEarned({
                           left={
                             <div className="flex flex-col">
                               <div className="flex items-center gap-2">
-                                <p className="text-sm font-medium text-neutral-800 dark:text-white">
-                                  {earning.distributed_at
-                                    ? formatDate(earning.distributed_at, {
-                                        month: "short",
-                                        day: "numeric",
-                                        year: "numeric",
-                                      })
-                                    : "Pending"}
-                                </p>
+                                {earning.distributed_at && (
+                                  <p className="text-sm font-medium text-neutral-800 dark:text-white">
+                                    {formatDate(earning.distributed_at, {
+                                      month: "short",
+                                      day: "numeric",
+                                      year: "numeric",
+                                    })}
+                                  </p>
+                                )}
                                 <p className="secondary-text-style text-xs">
                                   Rank #{earning.leaderboard_position || "N/A"}
                                 </p>
                               </div>
 
                               <p className="secondary-text-style text-sm">
-                                Sent to: {earning.recipient_wallet?.slice(0, 6)}
-                                ...
-                                {earning.recipient_wallet?.slice(-4)}
+                                Sent to:{" "}
+                                {earning.recipient_wallet &&
+                                  `${earning.recipient_wallet?.slice(
+                                    0,
+                                    6,
+                                  )}...${earning.recipient_wallet?.slice(-4)}`}
                               </p>
                             </div>
                           }

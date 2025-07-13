@@ -44,6 +44,7 @@ export default function LeaderboardWrapper() {
           className="mb-2"
           onBuilderSelect={setSelectedBuilder}
           isAllTime={isAllTime}
+          isHofAllTime={userLeaderboardData.hall_of_fame}
         />
       ) : (
         userProfileData?.profile && (

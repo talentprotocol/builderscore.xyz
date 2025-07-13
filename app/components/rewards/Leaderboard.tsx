@@ -41,8 +41,6 @@ export default function Leaderboard({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  console.log(hallOfFameData);
-
   return (
     <div className="card-style">
       {hallOfFameData &&
