@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/app/components/Spinner";
 import { Button } from "@/app/components/ui/button";
 import {
   Drawer,
@@ -18,7 +19,8 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { CrownIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LeaderboardRowDrawer({
   selectedBuilder,
@@ -32,8 +34,26 @@ export default function LeaderboardRowDrawer({
   onClose: () => void;
 }) {
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
+  const router = useRouter();
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
+
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleViewProfile = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (selectedBuilder?.profile.id) {
+      setIsNavigating(true);
+      const targetUrl = `${prefix}/${selectedBuilder.profile.id}`;
+      router.push(targetUrl);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      setIsNavigating(false);
+    };
+  }, []);
 
   const isHof =
     selectedBuilder?.reward_amount &&
@@ -225,17 +245,14 @@ export default function LeaderboardRowDrawer({
               </div>
 
               <DrawerFooter className="pt-0">
-                <Link
-                  href={`${prefix}/${selectedBuilder.profile.id}`}
-                  className="w-full"
+                <Button
+                  size="lg"
+                  className="mb-3 w-full cursor-pointer border border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+                  onClick={handleViewProfile}
+                  disabled={isNavigating}
                 >
-                  <Button
-                    size="lg"
-                    className="mb-3 w-full cursor-pointer border border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
-                  >
-                    View Talent Profile
-                  </Button>
-                </Link>
+                  View Profile {isNavigating && <Spinner />}
+                </Button>
               </DrawerFooter>
             </>
           )}

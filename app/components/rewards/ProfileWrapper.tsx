@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/app/components/Spinner";
 import ProfileActionCards from "@/app/components/rewards/ProfileActionCards";
 import ProfileHeader from "@/app/components/rewards/ProfileHeader";
 import ProfileTabs from "@/app/components/rewards/ProfileTabs";
@@ -20,7 +21,8 @@ import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { TalentProfileSearchApi } from "@/app/types/talent";
 import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function ProfileWrapper({
   profile,
@@ -35,6 +37,7 @@ export default function ProfileWrapper({
 }) {
   const { selectedSponsor } = useSponsor();
   const { frameContext } = useUser();
+  const router = useRouter();
 
   const { data: rewardsClient } = useUserLeaderboards(
     ALL_TIME_GRANT,
@@ -62,6 +65,20 @@ export default function ProfileWrapper({
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
 
   const [openRewardsEarned, setOpenRewardsEarned] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleViewProfile = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsNavigating(true);
+    const targetUrl = `${prefix}/${profile.id}`;
+    router.push(targetUrl);
+  };
+
+  useEffect(() => {
+    return () => {
+      setIsNavigating(false);
+    };
+  }, []);
 
   return (
     <div
@@ -114,14 +131,14 @@ export default function ProfileWrapper({
       )}
 
       {!detailed && (
-        <Link href={`${prefix}/${profile.id}`} className="w-full">
-          <Button
-            size="lg"
-            className="mb-3 w-full cursor-pointer border border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
-          >
-            View Talent Profile
-          </Button>
-        </Link>
+        <Button
+          size="lg"
+          className="mb-3 w-full cursor-pointer border border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+          onClick={handleViewProfile}
+          disabled={isNavigating}
+        >
+          View Profile {isNavigating && <Spinner />}
+        </Button>
       )}
     </div>
   );

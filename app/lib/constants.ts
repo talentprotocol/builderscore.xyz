@@ -225,7 +225,7 @@ export const SPONSOR_SCANNER_BASE_URL = {
 };
 
 export const SPONSOR_REWARDS_START_DATE = {
-  "base-summer": "2025-07-21",
+  "base-summer": "2025-07-22",
 };
 
 export const SPONSOR_BANNERS = {

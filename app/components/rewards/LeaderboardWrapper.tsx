@@ -102,7 +102,7 @@ export default function LeaderboardWrapper() {
         <div className="flex h-32 items-center justify-center">
           {grantsData?.grants.length === 0 ? (
             <div className="flex items-center gap-2">
-              <p className="text-sm text-neutral-600 dark:text-neutral-500">
+              <p className="text-center text-sm text-neutral-600 dark:text-neutral-500">
                 {selectedSponsor?.name} Builder Rewards will start on{" "}
                 {formatDate(
                   SPONSOR_REWARDS_START_DATE[
