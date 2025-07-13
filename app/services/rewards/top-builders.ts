@@ -26,8 +26,8 @@ export async function fetchTopBuildersLeaderboard(
           ...builder,
           profileData: {
             name:
-              profileData.profile.name ||
               profileData.profile.display_name ||
+              profileData.profile.name ||
               builder.shortProfileId,
             imageUrl: profileData.profile.image_url || "/default-avatar.png",
           },

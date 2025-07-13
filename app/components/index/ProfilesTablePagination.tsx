@@ -34,7 +34,7 @@ export default function ProfilesTablePagination({
             <p
               className={cn(
                 "text-xs",
-                totalProfiles === 1 ? "font-semibold" : "",
+                totalProfiles === 1 ? "font-medium" : "",
               )}
             >
               {formatNumber(totalProfiles)} Builder

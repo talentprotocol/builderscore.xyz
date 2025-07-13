@@ -115,7 +115,7 @@ export default function Chart({
                   {formatLegendLabel(entry.name)}
                 </span>
               </p>
-              <p className="text-xs font-semibold">
+              <p className="text-xs font-medium">
                 {formatCompactNumber(entry.value)}
               </p>
             </div>

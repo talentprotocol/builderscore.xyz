@@ -14,9 +14,12 @@ export const ENDPOINTS = {
     builderScore: "/score",
     accounts: "/accounts",
     credentials: "/credentials",
+    dataIssuersCredentials: "/data_issuers_meta",
     credentialsDatapoints: "/data_points",
     searchProfiles: "/search/advanced/profiles",
     statsDaily: "/stats/daily",
+    projects: "/projects",
+    contributedProjects: "/projects/contributed_projects",
   },
   neynar: {
     notificationTokens: "/v2/farcaster/frame/notification_tokens",
@@ -38,6 +41,10 @@ export const ENDPOINTS = {
       searchAdvanced: "/api/search/advanced",
       statsDailyMetrics: "/api/stats/daily/metrics",
       statsDaily: "/api/stats/daily",
+      socials: "/api/talent/socials",
+      credentials: "/api/talent/credentials",
+      contributedProjects: "/api/talent/projects/contributed",
+      accounts: "/api/talent/accounts",
     },
     neynar: {
       notificationTokens: "/api/neynar/notification_tokens",
@@ -45,6 +52,7 @@ export const ENDPOINTS = {
     analytics: {
       activeUsers: "/api/analytics/active_users",
       topBuilders: "/api/analytics/top_builders",
+      csvData: "/api/analytics/csv_data",
     },
     revalidate: {
       all: "/api/revalidate",

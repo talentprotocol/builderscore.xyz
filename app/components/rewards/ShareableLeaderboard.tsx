@@ -1,12 +1,13 @@
 "use client";
 
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
+import Spinner from "@/app/components/Spinner";
 import { Button } from "@/app/components/ui/button";
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { ENDPOINTS } from "@/app/config/api";
 import { useGrant } from "@/app/context/GrantContext";
 import { useUser } from "@/app/context/UserContext";
-import { useUserLeaderboards } from "@/app/hooks/useRewardsAnalytics";
+import { useUserLeaderboards } from "@/app/hooks/useRewards";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   formatNumber,
@@ -95,7 +96,7 @@ export default function ShareableLeaderboard({
     <>
       <Button
         size="lg"
-        className="button-style w-full cursor-pointer text-xs sm:text-sm"
+        className="button-style mt-2 w-full cursor-pointer text-xs sm:text-sm"
         onClick={handleShare}
       >
         <ShareIcon />
@@ -106,7 +107,7 @@ export default function ShareableLeaderboard({
           <div className="relative w-full">
             {imageLoading && (
               <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-800">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+                <Spinner />
               </div>
             )}
             <Image

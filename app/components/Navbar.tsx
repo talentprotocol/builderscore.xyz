@@ -1,5 +1,6 @@
 "use client";
 
+import HowToDrawer from "@/app/components/rewards/HowToDrawer";
 import SelectSponsor from "@/app/components/rewards/SelectSponsor";
 import { SPONSORS } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
@@ -36,46 +37,54 @@ export default function Navbar({
       homeUrl = "/";
   }
 
-  const isAnalyticsPage = pathname.includes("/analytics");
-
   return (
-    <nav className="mb-3 flex items-center justify-between">
-      <Link href={homeUrl} className="ml-1 flex items-center gap-2">
-        <Logo className="block h-3 w-auto" color={currentSponsor?.color} />
-        <h1
-          className={`text-foreground font-semibold whitespace-nowrap ${menu ? "text-xs" : "text-sm"}`}
-        >
-          {title}
-        </h1>
-      </Link>
+    <nav className="mb-1 flex-col items-center sm:mb-2 sm:flex sm:flex-row sm:justify-between">
+      <div className="mb-2 sm:mb-0">
+        <Link href={homeUrl} className="flex items-center gap-2">
+          <Logo
+            className="ml-0.5 block h-3 w-auto"
+            color={currentSponsor?.color}
+          />
+          <h1
+            className={`text-foreground font-medium whitespace-nowrap ${menu ? "text-xs" : "text-sm"}`}
+          >
+            {title}
+          </h1>
+        </Link>
 
-      {sponsor && !isAnalyticsPage && <SelectSponsor />}
+        {menu && (
+          <ul className="flex items-center gap-4">
+            <li>
+              <Link
+                href="/dashboard/base"
+                className={cn(
+                  "text-xs text-neutral-500",
+                  pathname === "/dashboard/base" && "text-white",
+                )}
+              >
+                Base Index
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/"
+                className={cn(
+                  "text-xs text-neutral-500",
+                  pathname === "/" && "text-white",
+                )}
+              >
+                Builder Rewards
+              </Link>
+            </li>
+          </ul>
+        )}
+      </div>
 
-      {menu && (
-        <ul className="flex items-center gap-4">
-          <li>
-            <Link
-              href="/dashboard/base"
-              className={cn(
-                "text-xs text-neutral-500",
-                pathname === "/dashboard/base" && "text-white",
-              )}
-            >
-              Base Index
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/"
-              className={cn(
-                "text-xs text-neutral-500",
-                pathname === "/" && "text-white",
-              )}
-            >
-              Builder Rewards
-            </Link>
-          </li>
-        </ul>
+      {sponsor && (
+        <div className="flex items-center gap-2">
+          <SelectSponsor />
+          <HowToDrawer />
+        </div>
       )}
     </nav>
   );

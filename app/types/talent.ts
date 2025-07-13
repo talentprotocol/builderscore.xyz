@@ -3,19 +3,31 @@ export type TalentBuilderScore = {
   last_calculated_at: string;
 };
 
-interface TalentSocial {
-  follower_count: string;
-  following_count: string;
-  location: string;
-  owner: string;
-  bio: string;
+export interface TalentSocial {
+  followers_count: number | null;
+  following_count: number | null;
+  location: string | null;
+  bio: string | null;
   display_name: string;
-  image_url: string;
-  name: string;
-  owned_since: string;
+  profile_image_url: string | null;
   profile_url: string;
+  social_name: string;
+  social_slug: string;
   source: string;
   handle: string;
+  owned_since: string | null;
+}
+
+export interface TalentAccount {
+  identifier: string;
+  source: string;
+  owned_since: string;
+  connected_at: string;
+  username: string | null;
+}
+
+export interface TalentAccountsResponse {
+  accounts: TalentAccount[];
 }
 
 export type TalentProfile = {
@@ -95,4 +107,61 @@ export type TalentProfileResponse = {
 
 export interface TalentSocialsResponse {
   socials: TalentSocial[];
+}
+
+export interface TalentCredentialsResponse {
+  credentials: TalentCredential[];
+}
+
+export interface TalentCredential {
+  account_source: string;
+  calculating_score: boolean;
+  category: string;
+  data_issuer_name: string;
+  data_issuer_slug: string;
+  description: string;
+  external_url: string;
+  immutable: boolean;
+  last_calculated_at: string;
+  max_score: number;
+  name: string;
+  points: number;
+  points_calculation_logic?: {
+    points: number;
+    max_points: number;
+    data_points: Array<{
+      id: number;
+      name: string;
+      value: string;
+      is_maximum: boolean;
+      multiplier: number;
+      readable_value: string;
+      multiplication_result: string;
+    }>;
+    points_description: string;
+    points_number_calculated: number;
+  };
+  slug: string;
+  uom: string;
+  updated_at: string;
+}
+
+export interface TalentProjectsResponse {
+  projects: TalentProject[];
+}
+
+export interface TalentProject {
+  name: string;
+  slug: string;
+  project_url: string;
+}
+
+export interface TalentContributedProjectsResponse {
+  projects: TalentProject[];
+}
+
+export interface TalentContributedProject {
+  name: string;
+  slug: string;
+  project_url: string;
 }

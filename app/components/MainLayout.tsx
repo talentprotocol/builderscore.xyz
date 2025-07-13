@@ -1,11 +1,17 @@
 import { ThemeProvider } from "@/app/context/ThemeContext";
 import { UserProvider } from "@/app/context/UserContext";
+import { cn } from "@/app/lib/utils";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-const inter = Inter({
-  variable: "--font-inter",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -19,8 +25,14 @@ export default function MainLayout({
   dataSponsor: string;
 }) {
   return (
-    <html lang="en" className={themeClassName} data-sponsor={dataSponsor}>
-      <body className={`${inter.variable} antialiased`}>
+    <html
+      lang="en"
+      className={cn(themeClassName, "scrollbar-hide")}
+      data-sponsor={dataSponsor}
+    >
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <ThemeProvider>
           <NuqsAdapter>
             <UserProvider>{children}</UserProvider>

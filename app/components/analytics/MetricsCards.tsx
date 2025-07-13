@@ -103,7 +103,7 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
           {card.icon}
         </div>
       </div>
-      <div className="mb-1 text-xl font-semibold text-neutral-900 sm:text-2xl dark:text-white">
+      <div className="mb-1 text-xl font-medium text-neutral-900 sm:text-2xl dark:text-white">
         {card.value}
       </div>
       <div className="text-xs text-neutral-400 dark:text-neutral-500">

@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const data: LeaderboardEntry = await fetchLeaderboardEntry(
+    const data: LeaderboardEntry | null = await fetchLeaderboardEntry(
       user_id,
       grant_id || undefined,
       sponsor_slug || undefined,

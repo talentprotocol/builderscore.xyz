@@ -1,277 +1,251 @@
 "use client";
 
-import ToggleLeaderboard from "@/app/components/rewards/ToggleLeaderboard";
+import HeaderActionCards from "@/app/components/HeaderActionCards";
+import { WideTabs } from "@/app/components/WideTabs";
+import ActivityDrawer from "@/app/components/rewards/ActivityDrawer";
 import { useGrant } from "@/app/context/GrantContext";
-import { useLeaderboard } from "@/app/context/LeaderboardContext";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useGrants } from "@/app/hooks/useRewards";
-import { useUserLeaderboards } from "@/app/hooks/useRewardsAnalytics";
-import { ALL_TIME_GRANT } from "@/app/lib/constants";
+import { useGrants, useUserLeaderboards } from "@/app/hooks/useRewards";
+import {
+  ALL_TIME_GRANT,
+  HOF_MAX_ETH,
+  SPONSOR_BANNERS,
+  SPONSOR_MIN_REWARDS,
+} from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
-  formatDate,
   formatNumber,
-  getTimeRemaining,
 } from "@/app/lib/utils";
+import { Grant } from "@/app/types/rewards/grants";
+import {
+  LeaderboardEntry,
+  LeaderboardMetric,
+} from "@/app/types/rewards/leaderboards";
+import { useEffect, useState } from "react";
 
 export default function Header() {
-  const { selectedGrant } = useGrant();
-  const { data: grantsData } = useGrants();
-  const { showUserLeaderboard } = useLeaderboard();
-  const { data: userLeaderboardData } = useUserLeaderboards();
   const { selectedSponsor, sponsorTokenTicker } = useSponsor();
-  const grantsToUse =
-    selectedGrant && selectedGrant.id !== ALL_TIME_GRANT.id
-      ? [selectedGrant]
-      : grantsData?.grants || [];
-
-  const rewardsByTicker = grantsToUse.reduce(
-    (acc, grant) => {
-      const amount = parseFloat(grant.rewards_pool);
-      const ticker = grant.token_ticker || "Tokens";
-      acc[ticker] = (acc[ticker] || 0) + (isNaN(amount) ? 0 : amount);
-      return acc;
-    },
-    {} as Record<string, number>,
+  const { setSelectedGrant } = useGrant();
+  const { data: grantsData } = useGrants();
+  const { data: userLeaderboardDataThisWeek } = useUserLeaderboards(
+    grantsData?.grants[0],
   );
+  const { data: userLeaderboardDataLastWeek } = useUserLeaderboards(
+    grantsData?.grants[1],
+  );
+  const { data: userLeaderboardDataAllTime } =
+    useUserLeaderboards(ALL_TIME_GRANT);
 
-  const getDisplayAmount = (ticker: string, amount: number) => {
-    let displayAmount = amount;
+  const [open, setOpen] = useState(false);
 
-    switch (selectedSponsor?.slug) {
-      case "base":
-        displayAmount = Math.max(amount, 2);
-        break;
-      case "celo":
-        displayAmount = Math.max(amount, 10000);
-        break;
-      default:
-        displayAmount = amount;
-        break;
-    }
-
-    return displayAmount;
+  const tabValues = {
+    this_week: {
+      name: "This Week",
+      value: "this_week",
+    },
+    last_week: {
+      name: "Last Week",
+      value: "last_week",
+    },
+    all_time: {
+      name: "All Time",
+      value: "all_time",
+    },
   };
 
-  const totalRewardedBuilders = grantsToUse.reduce(
-    (sum, grant) => sum + grant.rewarded_builders,
-    0,
-  );
+  const [activeTab, setActiveTab] = useState<string>(tabValues.this_week.value);
 
-  const { weightedScore, totalBuilders } = grantsToUse.reduce(
-    (acc, grant) => {
-      return {
-        weightedScore:
-          acc.weightedScore + grant.avg_builder_score * grant.rewarded_builders,
-        totalBuilders: acc.totalBuilders + grant.rewarded_builders,
-      };
-    },
-    { weightedScore: 0, totalBuilders: 0 },
-  );
+  useEffect(() => {
+    if (selectedSponsor && grantsData?.grants[0]) {
+      setActiveTab(tabValues.this_week.value);
+      setSelectedGrant(grantsData.grants[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSponsor, grantsData?.grants[0]]);
 
-  const weightedAvgBuilderScore = totalBuilders
-    ? Math.round(weightedScore / totalBuilders)
-    : 0;
+  const GrantActionCards = ({
+    grant,
+    leaderboardData,
+    activity,
+    allTime,
+  }: {
+    grant?: Grant;
+    leaderboardData?: LeaderboardEntry;
+    activity?: LeaderboardMetric[];
+    allTime?: boolean;
+  }) => {
+    const rewardedBuilders = allTime
+      ? grantsData?.grants.reduce(
+          (sum, grant) => sum + grant.rewarded_builders,
+          0,
+        )
+      : grant?.rewarded_builders;
 
-  const isIntermediateGrant = selectedGrant?.track_type === "intermediate";
-  const shouldShowUserLeaderboard = showUserLeaderboard && userLeaderboardData;
+    const activityTotal = activity?.filter(
+      (metric) => metric.category === "total",
+    )[0];
 
-  function renderIntermediateGrantInfo() {
-    if (!isIntermediateGrant || selectedGrant?.id === ALL_TIME_GRANT.id)
-      return null;
-
-    return (
-      <div className="border-primary text-primary rounded-md border px-3 py-1 text-xs">
-        <span className="font-semibold">
-          {getTimeRemaining(selectedGrant.end_date)}
-        </span>{" "}
-        to Earn Rewards - Ends {formatDate(selectedGrant.end_date)}
-      </div>
-    );
-  }
-
-  function renderHeaderSection() {
-    return (
-      <div className="relative flex flex-col items-center justify-between p-4">
-        {renderToggleLeaderboard()}
-        {renderHeaderTitle()}
-        {renderRewardsAmount()}
-      </div>
-    );
-  }
-
-  function renderToggleLeaderboard() {
-    if (!userLeaderboardData) return null;
+    const ended =
+      allTime ||
+      (grant?.end_date ? new Date(grant.end_date) < new Date() : false);
 
     return (
-      <div className="absolute top-2 left-2">
-        <ToggleLeaderboard />
-      </div>
+      <>
+        <HeaderActionCards
+          setOpen={setOpen}
+          allTime={allTime}
+          round={{
+            ended: ended,
+            ends: grant?.end_date || "",
+          }}
+          totalBuilders={rewardedBuilders || 0}
+          totalRewards={{
+            value: formatNumber(
+              grant
+                ? allTime
+                  ? grantsData?.grants
+                      .filter((g) =>
+                        g.end_date ? new Date(g.end_date) < new Date() : false,
+                      )
+                      .reduce(
+                        (sum, grant) => sum + parseFloat(grant.rewards_pool),
+                        0,
+                      ) || 0
+                  : parseFloat(grant?.rewards_pool || "0")
+                : SPONSOR_MIN_REWARDS[
+                    selectedSponsor?.slug as keyof typeof SPONSOR_MIN_REWARDS
+                  ],
+              TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorTokenTicker],
+            ),
+            ticker: sponsorTokenTicker,
+          }}
+          activity={{
+            value: activityTotal?.raw_value || 0,
+            max: 100,
+          }}
+          rewards={{
+            value: formatNumber(
+              parseFloat(leaderboardData?.reward_amount || "0"),
+              INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+                sponsorTokenTicker
+              ],
+            ),
+            max: HOF_MAX_ETH,
+            ticker: sponsorTokenTicker,
+          }}
+        />
+
+        <ActivityDrawer
+          activity={activity || []}
+          open={open}
+          setOpen={setOpen}
+        />
+      </>
     );
-  }
+  };
 
-  function renderHeaderTitle() {
-    const titleText = shouldShowUserLeaderboard
-      ? "Rewards Earned"
-      : selectedGrant
-        ? "Rewards Pool"
-        : "Total Rewards Pool";
+  const getFirstTabLabel = () => {
+    const grant = grantsData?.grants[0];
+    if (!grant) return "Upcoming";
 
-    return (
-      <h2 className="secondary-text-style text-sm">
-        {process.env.NODE_ENV === "development" && userLeaderboardData && (
-          <span className="mr-4 text-xs text-green-500">
-            ID: {userLeaderboardData.id}
-          </span>
-        )}
+    const isEnded = grant.end_date
+      ? new Date(grant.end_date) < new Date()
+      : false;
 
-        {titleText}
-
-        {process.env.NODE_ENV === "development" && (
-          <span className="ml-4 text-xs text-green-500">
-            Tracking: {selectedGrant?.track_type}
-          </span>
-        )}
-      </h2>
-    );
-  }
-
-  function renderRewardsAmount() {
-    return (
-      <div className="mt-2 flex flex-col items-center gap-2">
-        {shouldShowUserLeaderboard
-          ? renderUserRewards()
-          : Object.entries(rewardsByTicker).length > 0
-            ? renderPoolRewards()
-            : renderDefaultRewards()}
-      </div>
-    );
-  }
-
-  function renderUserRewards() {
-    if (!userLeaderboardData) return null;
-
-    return (
-      <div className="flex items-end gap-2 font-mono">
-        <span className="text-4xl font-semibold">
-          {userLeaderboardData.reward_amount
-            ? formatNumber(
-                parseFloat(userLeaderboardData.reward_amount),
-                INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
-                  sponsorTokenTicker
-                ],
-              )
-            : "0"}
-        </span>
-        <span className="secondary-text-style mb-[1px]">
-          {sponsorTokenTicker}
-        </span>
-      </div>
-    );
-  }
-
-  function renderPoolRewards() {
-    return Object.entries(rewardsByTicker).map(([ticker, amount]) => (
-      <div key={ticker} className="flex items-end gap-2 font-mono">
-        <span className="text-4xl font-semibold">
-          {formatNumber(
-            getDisplayAmount(ticker, amount),
-            TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[ticker],
-          )}
-        </span>
-        <span className="secondary-text-style mb-[1px]">{ticker}</span>
-      </div>
-    ));
-  }
-
-  function renderDefaultRewards() {
-    let displayAmount = 0;
-    switch (selectedSponsor?.slug) {
-      case "base":
-        displayAmount = 2;
-        break;
-      case "celo":
-        displayAmount = 10000;
-        break;
-      default:
-        displayAmount = 0;
-        break;
+    if (isEnded) {
+      return "Latest";
     }
 
-    return (
-      <div className="flex items-end gap-2 font-mono">
-        <span className="text-4xl font-semibold">
-          {formatNumber(
-            displayAmount,
-            TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorTokenTicker],
-          )}
-        </span>
-        <span className="secondary-text-style mb-[1px]">
-          {sponsorTokenTicker}
-        </span>
-      </div>
-    );
-  }
+    return "This Week";
+  };
 
-  function renderStatsSection() {
-    return (
-      <div className="flex justify-evenly border-t border-neutral-300 p-4 dark:border-neutral-800">
-        {renderBuilderStats()}
-        {renderScoreStats()}
-      </div>
-    );
-  }
+  const getSecondTabLabel = () => {
+    const grant1 = grantsData?.grants[1];
 
-  function renderBuilderStats() {
-    const titleText = shouldShowUserLeaderboard
-      ? "Your Rank"
-      : isIntermediateGrant
-        ? "Builders"
-        : "Builders Rewarded";
+    if (grant1?.end_date) {
+      const endedDate = new Date(grant1.end_date);
+      const twoWeeksAgo = new Date();
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
-    const valueText =
-      shouldShowUserLeaderboard && userLeaderboardData
-        ? `#${userLeaderboardData.leaderboard_position || "-"}`
-        : totalRewardedBuilders;
+      if (endedDate < twoWeeksAgo) {
+        return "Previous";
+      }
+    }
 
-    return (
-      <div className="flex flex-col items-center justify-between">
-        <p className="secondary-text-style text-sm">{titleText}</p>
-        <p className="font-mono text-2xl font-semibold">{valueText}</p>
-      </div>
-    );
-  }
-
-  function renderScoreStats() {
-    const titleText = shouldShowUserLeaderboard
-      ? "Builder Score"
-      : "Avg. Builder Score";
-
-    const scoreValue =
-      shouldShowUserLeaderboard && userLeaderboardData
-        ? `${
-            "builder_score" in userLeaderboardData.profile
-              ? userLeaderboardData.profile.builder_score?.points || "-"
-              : "-"
-          }`
-        : weightedAvgBuilderScore;
-
-    return (
-      <div className="flex flex-col items-center justify-between">
-        <p className="secondary-text-style text-sm">{titleText}</p>
-        <p className="font-mono text-2xl font-semibold">{scoreValue}</p>
-      </div>
-    );
-  }
+    return "Last Week";
+  };
 
   return (
-    <div className="flex flex-col gap-3">
-      {renderIntermediateGrantInfo()}
-      <div className="card-style">
-        {renderHeaderSection()}
-        {renderStatsSection()}
-      </div>
+    <div className="flex flex-col">
+      {(() => {
+        const BannerComponent =
+          SPONSOR_BANNERS[
+            selectedSponsor?.slug as keyof typeof SPONSOR_BANNERS
+          ];
+        return BannerComponent ? <BannerComponent /> : null;
+      })()}
+      <WideTabs
+        value={activeTab}
+        activationMode="manual"
+        tabs={[
+          {
+            label: getFirstTabLabel(),
+            value: "this_week",
+            content: (
+              <GrantActionCards
+                grant={grantsData?.grants[0]}
+                activity={userLeaderboardDataThisWeek?.metrics}
+                leaderboardData={userLeaderboardDataThisWeek}
+              />
+            ),
+            active: true,
+            onClick: () => {
+              setActiveTab(tabValues.this_week.value);
+              setSelectedGrant(grantsData?.grants[0] || null);
+            },
+          },
+          ...(grantsData?.grants[1]
+            ? [
+                {
+                  label: getSecondTabLabel(),
+                  value: "last_week",
+                  content: (
+                    <GrantActionCards
+                      grant={grantsData?.grants[1]}
+                      activity={userLeaderboardDataLastWeek?.metrics}
+                      leaderboardData={userLeaderboardDataLastWeek}
+                    />
+                  ),
+                  onClick: () => {
+                    setActiveTab(tabValues.last_week.value);
+                    setSelectedGrant(grantsData?.grants[1] || null);
+                  },
+                },
+              ]
+            : []),
+          ...(grantsData?.grants[2]
+            ? [
+                {
+                  label: "All Time",
+                  value: "all_time",
+                  content: (
+                    <GrantActionCards
+                      grant={ALL_TIME_GRANT}
+                      leaderboardData={userLeaderboardDataAllTime}
+                      allTime={true}
+                    />
+                  ),
+                  onClick: () => {
+                    setActiveTab(tabValues.all_time.value);
+                    setSelectedGrant(ALL_TIME_GRANT);
+                  },
+                },
+              ]
+            : []),
+        ]}
+        defaultTab="this_week"
+      />
     </div>
   );
 }

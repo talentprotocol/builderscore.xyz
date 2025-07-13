@@ -66,7 +66,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         </div>
 
         <div className="flex flex-col gap-1">
-          <h1 className="text-lg font-semibold">{dashboard.title}</h1>
+          <h1 className="text-lg font-medium">{dashboard.title}</h1>
 
           <p className="max-w-3xl text-sm text-neutral-500">
             {dashboard.description}

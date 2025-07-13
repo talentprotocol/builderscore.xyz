@@ -43,7 +43,7 @@ export const fetchLeaderboardEntry = unstable_cache(
     userId: string,
     grantId?: string,
     sponsorSlug?: string,
-  ): Promise<LeaderboardEntry> => {
+  ): Promise<LeaderboardEntry | null> => {
     const searchParams = new URLSearchParams();
     if (grantId) {
       searchParams.append("grant_id", grantId);
@@ -65,7 +65,7 @@ export const fetchLeaderboardEntry = unstable_cache(
       const error = err as AxiosError<Error>;
 
       if (error.response?.status === 404) {
-        throw new Error("NOT_FOUND");
+        return null;
       }
 
       throw new Error(`HTTP error! status: ${error.response?.status}`);

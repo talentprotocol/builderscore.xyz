@@ -1,3 +1,4 @@
+import Spinner from "@/app/components/Spinner";
 import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import {
   LeaderboardEntry,
@@ -6,17 +7,21 @@ import {
 import { useCallback, useEffect } from "react";
 
 export default function Leaderboard({
+  hallOfFameData,
   leaderboardData,
   onLoadMore,
   hasMore,
   isLoadingMore,
   onBuilderSelect,
+  isAllTime,
 }: {
+  hallOfFameData?: LeaderboardEntry[];
   leaderboardData: LeaderboardResponse;
   onLoadMore: () => void;
   hasMore: boolean;
   isLoadingMore: boolean;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
+  isAllTime?: boolean;
 }) {
   const handleScroll = useCallback(() => {
     if (isLoadingMore || !hasMore) return;
@@ -38,18 +43,35 @@ export default function Leaderboard({
 
   return (
     <div className="card-style">
+      {hallOfFameData &&
+        !isAllTime &&
+        hallOfFameData.map((user, index) => (
+          <LeaderboardRow
+            key={`${user.id}-${user.profile.id}-${index}`}
+            leaderboardData={user}
+            first={index === 0}
+            last={index === hallOfFameData.length - 1}
+            onBuilderSelect={onBuilderSelect}
+            isAllTime={isAllTime}
+            isHofAllTime={true}
+          />
+        ))}
       {leaderboardData.users.map((user, index) => (
         <LeaderboardRow
           key={`${user.id}-${user.profile.id}-${index}`}
           leaderboardData={user}
-          first={index === 0}
+          first={
+            (!hallOfFameData || hallOfFameData?.length === 0 || isAllTime) &&
+            index === 0
+          }
           last={index === leaderboardData.users.length - 1}
           onBuilderSelect={onBuilderSelect}
+          isAllTime={isAllTime}
         />
       ))}
       {isLoadingMore && (
         <div className="flex items-center justify-center p-4">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
+          <Spinner />
         </div>
       )}
     </div>

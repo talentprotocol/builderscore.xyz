@@ -81,6 +81,10 @@
 }
 
 @theme inline {
+  /* Font families - referencing the CSS variables from MainLayout.tsx */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -138,7 +142,7 @@
   }
   body,
   html {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
 
@@ -153,8 +157,20 @@
 }
 
 /* Custom utility classes */
+.border-colors {
+  @apply border-neutral-300 dark:border-neutral-800;
+}
+
 .border-style {
   @apply border border-neutral-300 dark:border-neutral-800;
+}
+
+.border-top-style {
+  @apply border-t border-neutral-300 dark:border-neutral-800;
+}
+
+.border-bottom-style {
+  @apply border-b border-neutral-300 dark:border-neutral-800;
 }
 
 .card-style {

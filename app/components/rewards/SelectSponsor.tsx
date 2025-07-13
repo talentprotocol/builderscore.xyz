@@ -7,14 +7,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
+import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useHistoryListener } from "@/app/hooks/useHistoryListener";
 import { useSponsors } from "@/app/hooks/useRewards";
 import { ALLOWED_SPONSORS } from "@/app/lib/constants";
 import { Sponsor } from "@/app/types/rewards/sponsors";
 
 export default function SelectSponsor() {
   const { selectedSponsor, setSelectedSponsorFromSlug } = useSponsor();
+  const { setSelectedGrant } = useGrant();
 
   const { data: sponsorsData } = useSponsors();
 
@@ -24,25 +25,16 @@ export default function SelectSponsor() {
 
   const handleSponsorChange = (newSponsor: string) => {
     setSelectedSponsorFromSlug(newSponsor);
+    setSelectedGrant(null);
     const currentPath = window.location.pathname;
     const pathSegments = currentPath.split("/");
     pathSegments[1] = newSponsor;
     window.history.pushState(null, "", pathSegments.join("/"));
   };
 
-  useHistoryListener((url) => {
-    const pathname = url.startsWith("http") ? new URL(url).pathname : url;
-    const pathSegments = pathname.split("/");
-    const sponsorSlug = pathSegments[1] || "";
-
-    if (sponsorSlug && sponsorSlug !== selectedSponsor?.slug) {
-      setSelectedSponsorFromSlug(sponsorSlug);
-    }
-  });
-
   return (
     <Select value={selectedSponsor?.slug} onValueChange={handleSponsorChange}>
-      <SelectTrigger className="button-style h-6 w-36 cursor-pointer p-2 text-xs">
+      <SelectTrigger className="button-style h-6 w-1/2 cursor-pointer p-2 text-xs sm:w-36">
         <SelectValue className="dark:text-white" placeholder="Select Sponsor" />
       </SelectTrigger>
       <SelectContent className="dropdown-menu-style">

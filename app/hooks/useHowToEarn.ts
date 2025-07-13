@@ -1,7 +1,8 @@
 import { useUserProfiles } from "@/app/hooks/useRewards";
-import { AVAILABLE_SPONSORS, Sponsor } from "@/app/types/rewards/sponsors";
+import { ALLOWED_SPONSORS } from "@/app/lib/constants";
+import { Sponsor } from "@/app/types/rewards/sponsors";
 
-export type SponsorSlug = (typeof AVAILABLE_SPONSORS)[number];
+export type SponsorSlug = (typeof ALLOWED_SPONSORS)[number];
 
 type HowToEarnConfig = {
   description: string;
@@ -24,18 +25,12 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
 
   const baseConfig = {
     description:
-      "Talent Protocol distributes weekly rewards to builders that own verified contracts on Base and contribute to public crypto repositories on GitHub. Follow the steps below to be eligible:",
+      "Talent Protocol distributes weekly rewards to builders that own verified contracts on Base and contribute to public crypto repositories on GitHub.",
     steps: [
       {
         text: `Own a Basename ${basename ? `(${basename})` : ""}`,
         url: "https://www.base.org/names",
         condition: !loadingUser && basename,
-        required: true,
-      },
-      {
-        text: "Get your Human Checkmark",
-        url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
-        condition: !loadingUser && humanCheckmark,
         required: true,
       },
       {
@@ -76,6 +71,9 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
   let config: HowToEarnConfig;
 
   switch (sponsor.slug) {
+    case "base-summer":
+      config = baseConfig;
+      break;
     case "base":
       config = baseConfig;
       break;

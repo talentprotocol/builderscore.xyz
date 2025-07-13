@@ -1,6 +1,7 @@
 import BaseLogo from "@/app/components/logos/BaseLogo";
 import CeloLogo from "@/app/components/logos/CeloLogo";
-import TalentProtocolLogo from "@/app/components/logos/TalentProtocolLogo";
+import TalentProtocolIcon from "@/app/components/logos/TalentProtocolIcon";
+import { BaseSummerBanner } from "@/app/components/rewards/BaseSummerBanner";
 import { Grant } from "@/app/types/rewards/grants";
 import { SponsorInfo } from "@/app/types/rewards/sponsors";
 import { Metadata } from "next";
@@ -49,11 +50,27 @@ export const ALL_TIME_GRANT = {
   },
 } as Grant;
 
-export const DEFAULT_SPONSOR_SLUG = "base";
+export const HOF_MAX_ETH = 1;
 
-export const ALLOWED_SPONSORS = ["base", "celo", "talent-protocol"];
+export const DEFAULT_SPONSOR_SLUG = "base-summer";
+
+export const ALLOWED_SPONSORS = [
+  "base-summer",
+  "base",
+  "celo",
+  "talent-protocol",
+];
+
+export const SUBDOMAIN_TO_SPONSOR = {
+  "base-summer": "base-summer",
+  base: "base-summer",
+  celo: "celo",
+  "talent-protocol": "talent-protocol",
+};
 
 export const SPONSOR_TERMS = {
+  "base-summer":
+    "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
   base: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
   celo: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions-celo",
   "talent-protocol":
@@ -147,6 +164,14 @@ export const celoMetadata: Metadata = {
 };
 
 export const SPONSORS: Record<string, SponsorInfo> = {
+  "base-summer": {
+    slug: "base",
+    name: "Base",
+    themeClassName: "light",
+    ticker: "ETH",
+    logo: BaseLogo,
+    color: "#0052FF",
+  },
   base: {
     slug: "base",
     name: "Base",
@@ -160,7 +185,7 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     name: "Talent Protocol",
     themeClassName: "dark",
     ticker: "$TALENT",
-    logo: TalentProtocolLogo,
+    logo: TalentProtocolIcon,
     color: "#FFFFFF",
   },
   celo: {
@@ -171,4 +196,47 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     logo: CeloLogo,
     color: "#000000",
   },
+};
+
+export const SPONSOR_SCORING = {
+  "base-summer": ["github", "onchain", "farcaster"],
+  base: ["github", "onchain", "farcaster"],
+  "talent-protocol": ["github", "onchain", "builder_score"],
+  celo: ["github", "onchain", "builder_score"],
+};
+
+export const SPONSOR_HOF_MAX_REWARDS = {
+  "base-summer": 1,
+  base: 1,
+};
+
+export const SPONSOR_MIN_REWARDS = {
+  "base-summer": 2,
+  base: 2,
+  "talent-protocol": 20000,
+  celo: 10000,
+};
+
+export const SPONSOR_SCANNER_BASE_URL = {
+  "base-summer": "https://basescan.org/tx/",
+  base: "https://basescan.org/tx/",
+  celo: "https://celoscan.io/tx/",
+  "talent-protocol": "https://basescan.org/tx/",
+};
+
+export const SPONSOR_REWARDS_START_DATE = {
+  "base-summer": "2025-07-22",
+};
+
+export const SPONSOR_BANNERS = {
+  "base-summer": BaseSummerBanner,
+};
+
+export const SPONSOR_FARCASTER_MINI_APP_URLS = {
+  "base-summer":
+    "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
+  base: "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
+  "talent-protocol":
+    "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
+  celo: "https://farcaster.xyz/miniapps/XhQmVJM8RIeD/celo-builder-rewards",
 };

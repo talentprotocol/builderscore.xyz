@@ -1,5 +1,5 @@
 import RewardsLayout from "@/app/components/rewards/RewardsLayout";
-import { DEFAULT_SPONSOR_SLUG } from "@/app/lib/constants";
+import getUsableSponsor from "@/app/lib/get-usable-sponsor";
 import { getMetadata } from "@/app/lib/metadata";
 import { getSponsorThemeClassName } from "@/app/lib/theme";
 import { Metadata } from "next";
@@ -9,10 +9,12 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ sponsor: string }>;
+  params: Promise<{ level_one: string }>;
 }): Promise<Metadata> {
-  const { sponsor } = await params;
-  const metadata = getMetadata(sponsor || DEFAULT_SPONSOR_SLUG);
+  const { level_one } = await params;
+  const usableSponsor = getUsableSponsor(level_one);
+
+  const metadata = getMetadata(usableSponsor);
 
   return metadata;
 }
@@ -22,15 +24,16 @@ export default async function SponsoredRewardsLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ sponsor: string }>;
+  params: Promise<{ level_one: string }>;
 }>) {
-  const { sponsor } = await params;
+  const { level_one } = await params;
+  const usableSponsor = getUsableSponsor(level_one);
 
   return (
     <RewardsLayout
-      themeClassName={getSponsorThemeClassName(sponsor || DEFAULT_SPONSOR_SLUG)}
+      themeClassName={getSponsorThemeClassName(usableSponsor)}
       title="Builder Rewards"
-      sponsor={sponsor}
+      sponsor={usableSponsor}
     >
       {children}
     </RewardsLayout>

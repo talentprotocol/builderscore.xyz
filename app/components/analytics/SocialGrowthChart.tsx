@@ -140,7 +140,7 @@ export default function SocialGrowthChart() {
   if (isLoading) {
     return (
       <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
-        <div className="font-semibold text-neutral-900 dark:text-white">
+        <div className="font-medium text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
         <div className="flex justify-center py-4 text-xs text-neutral-900 dark:text-white">
@@ -153,7 +153,7 @@ export default function SocialGrowthChart() {
   if (error) {
     return (
       <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
-        <div className="font-semibold text-neutral-900 dark:text-white">
+        <div className="font-medium text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
         <div className="mt-4 flex justify-center text-xs text-red-500">
@@ -167,7 +167,7 @@ export default function SocialGrowthChart() {
   if (combinedData.length === 0) {
     return (
       <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
-        <div className="font-semibold text-neutral-900 dark:text-white">
+        <div className="font-medium text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
         <div className="mt-4 flex justify-center text-xs text-neutral-500 dark:text-neutral-400">
@@ -180,7 +180,7 @@ export default function SocialGrowthChart() {
   return (
     <div className="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-800">
       <div className="mb-4">
-        <div className="mb-1 font-semibold text-neutral-900 dark:text-white">
+        <div className="mb-1 font-medium text-neutral-900 dark:text-white">
           App Growth & Usage
         </div>
         <div className="text-xs text-neutral-500 dark:text-neutral-400">
