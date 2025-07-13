@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
+import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useSponsors } from "@/app/hooks/useRewards";
 import { ALLOWED_SPONSORS } from "@/app/lib/constants";
@@ -14,6 +15,7 @@ import { Sponsor } from "@/app/types/rewards/sponsors";
 
 export default function SelectSponsor() {
   const { selectedSponsor, setSelectedSponsorFromSlug } = useSponsor();
+  const { setSelectedGrant } = useGrant();
 
   const { data: sponsorsData } = useSponsors();
 
@@ -23,6 +25,7 @@ export default function SelectSponsor() {
 
   const handleSponsorChange = (newSponsor: string) => {
     setSelectedSponsorFromSlug(newSponsor);
+    setSelectedGrant(null);
     const currentPath = window.location.pathname;
     const pathSegments = currentPath.split("/");
     pathSegments[1] = newSponsor;

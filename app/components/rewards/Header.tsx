@@ -6,7 +6,11 @@ import ActivityDrawer from "@/app/components/rewards/ActivityDrawer";
 import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrants, useUserLeaderboards } from "@/app/hooks/useRewards";
-import { ALL_TIME_GRANT, HOF_MAX_ETH } from "@/app/lib/constants";
+import {
+  ALL_TIME_GRANT,
+  HOF_MAX_ETH,
+  SPONSOR_MIN_REWARDS,
+} from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
   TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
@@ -97,16 +101,20 @@ export default function Header() {
           totalBuilders={rewardedBuilders || 0}
           totalRewards={{
             value: formatNumber(
-              allTime
-                ? grantsData?.grants
-                    .filter((g) =>
-                      g.end_date ? new Date(g.end_date) < new Date() : false,
-                    )
-                    .reduce(
-                      (sum, grant) => sum + parseFloat(grant.rewards_pool),
-                      0,
-                    ) || 0
-                : parseFloat(grant?.rewards_pool || "0"),
+              grant
+                ? allTime
+                  ? grantsData?.grants
+                      .filter((g) =>
+                        g.end_date ? new Date(g.end_date) < new Date() : false,
+                      )
+                      .reduce(
+                        (sum, grant) => sum + parseFloat(grant.rewards_pool),
+                        0,
+                      ) || 0
+                  : parseFloat(grant?.rewards_pool || "0")
+                : SPONSOR_MIN_REWARDS[
+                    selectedSponsor?.slug as keyof typeof SPONSOR_MIN_REWARDS
+                  ],
               TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[sponsorTokenTicker],
             ),
             ticker: sponsorTokenTicker,
@@ -136,6 +144,37 @@ export default function Header() {
     );
   };
 
+  const getFirstTabLabel = () => {
+    const grant = grantsData?.grants[0];
+    if (!grant) return "Upcoming";
+
+    const isEnded = grant.end_date
+      ? new Date(grant.end_date) < new Date()
+      : false;
+
+    if (isEnded) {
+      return "Latest";
+    }
+
+    return "This Week";
+  };
+
+  const getSecondTabLabel = () => {
+    const grant1 = grantsData?.grants[1];
+
+    if (grant1?.end_date) {
+      const endedDate = new Date(grant1.end_date);
+      const twoWeeksAgo = new Date();
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+      if (endedDate < twoWeeksAgo) {
+        return "Previous";
+      }
+    }
+
+    return "Last Week";
+  };
+
   return (
     <div className="flex flex-col gap-3">
       <WideTabs
@@ -143,7 +182,7 @@ export default function Header() {
         activationMode="manual"
         tabs={[
           {
-            label: "This Week",
+            label: getFirstTabLabel(),
             value: "this_week",
             content: (
               <GrantActionCards
@@ -155,39 +194,47 @@ export default function Header() {
             active: true,
             onClick: () => {
               setActiveTab(tabValues.this_week.value);
-              setSelectedGrant(grantsData?.grants[0] || ALL_TIME_GRANT);
+              setSelectedGrant(grantsData?.grants[0] || null);
             },
           },
-          {
-            label: "Last Week",
-            value: "last_week",
-            content: (
-              <GrantActionCards
-                grant={grantsData?.grants[1]}
-                activity={userLeaderboardDataLastWeek?.metrics}
-                leaderboardData={userLeaderboardDataLastWeek}
-              />
-            ),
-            onClick: () => {
-              setActiveTab(tabValues.last_week.value);
-              setSelectedGrant(grantsData?.grants[1] || ALL_TIME_GRANT);
-            },
-          },
-          {
-            label: "All Time",
-            value: "all_time",
-            content: (
-              <GrantActionCards
-                grant={ALL_TIME_GRANT}
-                leaderboardData={userLeaderboardDataAllTime}
-                allTime={true}
-              />
-            ),
-            onClick: () => {
-              setActiveTab(tabValues.all_time.value);
-              setSelectedGrant(ALL_TIME_GRANT);
-            },
-          },
+          ...(grantsData?.grants[1]
+            ? [
+                {
+                  label: getSecondTabLabel(),
+                  value: "last_week",
+                  content: (
+                    <GrantActionCards
+                      grant={grantsData?.grants[1]}
+                      activity={userLeaderboardDataLastWeek?.metrics}
+                      leaderboardData={userLeaderboardDataLastWeek}
+                    />
+                  ),
+                  onClick: () => {
+                    setActiveTab(tabValues.last_week.value);
+                    setSelectedGrant(grantsData?.grants[1] || null);
+                  },
+                },
+              ]
+            : []),
+          ...(grantsData?.grants[2]
+            ? [
+                {
+                  label: "All Time",
+                  value: "all_time",
+                  content: (
+                    <GrantActionCards
+                      grant={ALL_TIME_GRANT}
+                      leaderboardData={userLeaderboardDataAllTime}
+                      allTime={true}
+                    />
+                  ),
+                  onClick: () => {
+                    setActiveTab(tabValues.all_time.value);
+                    setSelectedGrant(ALL_TIME_GRANT);
+                  },
+                },
+              ]
+            : []),
         ]}
         defaultTab="this_week"
       />

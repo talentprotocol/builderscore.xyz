@@ -5,7 +5,6 @@ import LeaderboardWrapper from "@/app/components/rewards/LeaderboardWrapper";
 import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrants } from "@/app/hooks/useRewards";
-import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { useEffect } from "react";
 
 export default function RewardsView({ sponsor }: { sponsor: string }) {
@@ -21,7 +20,7 @@ export default function RewardsView({ sponsor }: { sponsor: string }) {
   }, [sponsor]);
 
   useEffect(() => {
-    setSelectedGrant(grantsData?.grants[0] || ALL_TIME_GRANT);
+    setSelectedGrant(grantsData?.grants[0] || null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

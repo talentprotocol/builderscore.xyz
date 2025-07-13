@@ -48,22 +48,34 @@ export default function HeaderActionCards({
   return (
     <div className="flex flex-col">
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <ActionCard
-          titleMono
-          title={
-            round.ended
-              ? totalBuilders!.toString()
-              : getTimeRemaining(round.ends)
-          }
-          description={round.ended ? "Total Builders" : "Round Ends"}
-          indicator={!round.ended && <PulsingIndicator />}
-        />
+        {round.ends && (
+          <ActionCard
+            titleMono
+            title={
+              round.ended
+                ? totalBuilders!.toString()
+                : getTimeRemaining(round.ends)
+            }
+            description={round.ended ? "Total Builders" : "Round Ends"}
+            indicator={!round.ended && <PulsingIndicator />}
+          />
+        )}
 
-        <ActionCard
-          titleMono
-          title={`${totalRewards.value} ${totalRewards.ticker}`}
-          description="Total Rewards"
-        />
+        {!round.ends ? (
+          <div className="col-span-2">
+            <ActionCard
+              titleMono
+              title={`${totalRewards.value} ${totalRewards.ticker}`}
+              description="Total Rewards"
+            />
+          </div>
+        ) : (
+          <ActionCard
+            titleMono
+            title={`${totalRewards.value} ${totalRewards.ticker}`}
+            description="Total Rewards"
+          />
+        )}
 
         {isFetchedUserProfile && userProfileData && (
           <>

@@ -209,9 +209,20 @@ export const SPONSOR_HOF_MAX_REWARDS = {
   base: 1,
 };
 
+export const SPONSOR_MIN_REWARDS = {
+  "base-summer": 2,
+  base: 2,
+  "talent-protocol": 20000,
+  celo: 10000,
+};
+
 export const SPONSOR_SCANNER_BASE_URL = {
   "base-summer": "https://basescan.org/tx/",
   base: "https://basescan.org/tx/",
   celo: "https://celoscan.io/tx/",
   "talent-protocol": "https://basescan.org/tx/",
+};
+
+export const SPONSOR_REWARDS_START_DATE = {
+  "base-summer": "2025-07-21",
 };

@@ -5,20 +5,27 @@ import Leaderboard from "@/app/components/rewards/Leaderboard";
 import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer";
 import { useGrant } from "@/app/context/GrantContext";
+import { useSponsor } from "@/app/context/SponsorContext";
 import {
+  useGrants,
   useHallOfFameLeaderboards,
   useLeaderboards,
   useUserLeaderboards,
   useUserProfiles,
 } from "@/app/hooks/useRewards";
-import { ALL_TIME_GRANT } from "@/app/lib/constants";
+import {
+  ALL_TIME_GRANT,
+  SPONSOR_REWARDS_START_DATE,
+} from "@/app/lib/constants";
 import { formatDate } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { useState } from "react";
 
 export default function LeaderboardWrapper() {
+  const { selectedSponsor } = useSponsor();
   const { selectedGrant } = useGrant();
 
+  const { data: grantsData } = useGrants();
   const { data: userProfileData } = useUserProfiles();
   const { data: userLeaderboardData } = useUserLeaderboards(selectedGrant);
   const {
@@ -93,9 +100,23 @@ export default function LeaderboardWrapper() {
         />
       ) : (
         <div className="flex h-32 items-center justify-center">
-          <div className="flex items-center gap-2">
-            <Spinner />
-          </div>
+          {grantsData?.grants.length === 0 ? (
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-neutral-600 dark:text-neutral-500">
+                {selectedSponsor?.name} Builder Rewards will start on{" "}
+                {formatDate(
+                  SPONSOR_REWARDS_START_DATE[
+                    selectedSponsor?.slug as keyof typeof SPONSOR_REWARDS_START_DATE
+                  ],
+                )}
+                .
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Spinner />
+            </div>
+          )}
         </div>
       )}
 

@@ -22,7 +22,7 @@ export default function SelectGrant() {
 
   useEffect(() => {
     if (grantsData) {
-      setSelectedGrant(grantsData.grants[0] || ALL_TIME_GRANT);
+      setSelectedGrant(grantsData.grants[0] || null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grantsData]);
