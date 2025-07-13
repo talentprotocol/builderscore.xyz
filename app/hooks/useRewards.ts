@@ -260,6 +260,7 @@ export function useLeaderboardsEarnings(uuid: string) {
 
 export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
   const { selectedSponsor } = useSponsor();
+  const { frameContext } = useUser();
 
   const { data: userProfileData, isLoading: loadingUserProfile } =
     useUserProfiles();
@@ -298,13 +299,18 @@ export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
         return response.data;
       }
     },
-    enabled: !!(
-      !loadingUserProfile &&
-      !loadingGrants &&
-      !loadingSponsors &&
-      userProfileData?.profile &&
-      grant
-    ),
+    enabled: userId
+      ? // When userId is provided, we don't need current user context
+        !!(grant && !loadingGrants && !loadingSponsors)
+      : // When userId is NOT provided, we need current user context
+        !!(
+          frameContext &&
+          !loadingUserProfile &&
+          !loadingGrants &&
+          !loadingSponsors &&
+          userProfileData?.profile &&
+          grant
+        ),
     retry: false,
   });
 }
