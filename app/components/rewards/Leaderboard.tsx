@@ -7,6 +7,7 @@ import {
 import { useCallback, useEffect } from "react";
 
 export default function Leaderboard({
+  hallOfFameData,
   leaderboardData,
   onLoadMore,
   hasMore,
@@ -14,6 +15,7 @@ export default function Leaderboard({
   onBuilderSelect,
   isAllTime,
 }: {
+  hallOfFameData?: LeaderboardEntry[];
   leaderboardData: LeaderboardResponse;
   onLoadMore: () => void;
   hasMore: boolean;
@@ -39,13 +41,31 @@ export default function Leaderboard({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  console.log(hallOfFameData);
+
   return (
     <div className="card-style">
+      {hallOfFameData &&
+        !isAllTime &&
+        hallOfFameData.map((user, index) => (
+          <LeaderboardRow
+            key={`${user.id}-${user.profile.id}-${index}`}
+            leaderboardData={user}
+            first={index === 0}
+            last={index === hallOfFameData.length - 1}
+            onBuilderSelect={onBuilderSelect}
+            isAllTime={isAllTime}
+            isHofAllTime={true}
+          />
+        ))}
       {leaderboardData.users.map((user, index) => (
         <LeaderboardRow
           key={`${user.id}-${user.profile.id}-${index}`}
           leaderboardData={user}
-          first={index === 0}
+          first={
+            (!hallOfFameData || hallOfFameData?.length === 0 || isAllTime) &&
+            index === 0
+          }
           last={index === leaderboardData.users.length - 1}
           onBuilderSelect={onBuilderSelect}
           isAllTime={isAllTime}

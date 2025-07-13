@@ -149,6 +149,67 @@ export function useLeaderboards() {
   });
 }
 
+export function useHallOfFameLeaderboards() {
+  const { selectedGrant, isAllTimeSelected } = useGrant();
+  const { selectedSponsor } = useSponsor();
+
+  const { isLoading: loadingSponsors } = useSponsors();
+  const { isLoading: loadingGrants } = useGrants();
+
+  return useInfiniteQuery<LeaderboardResponse>({
+    queryKey: [
+      "hallOfFameLeaderboards",
+      selectedSponsor?.slug,
+      selectedGrant?.id,
+      isAllTimeSelected(),
+    ],
+    initialPageParam: 1,
+    queryFn: async ({ pageParam = 1 }) => {
+      const requestParams = {
+        per_page: 20,
+        page: pageParam as number,
+        sponsor_slug:
+          selectedSponsor?.slug === "global"
+            ? undefined
+            : selectedSponsor?.slug,
+        grant_id: isAllTimeSelected()
+          ? undefined
+          : selectedGrant?.id?.toString(),
+        hall_of_fame: true,
+      };
+
+      if (isServer) {
+        const response = await fetchLeaderboards(requestParams);
+        return response;
+      } else {
+        const queryParams = new URLSearchParams();
+        Object.entries(requestParams).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            queryParams.append(key, value.toString());
+          }
+        });
+        const response = await axios.get(
+          `${ENDPOINTS.localApi.talent.leaderboards}?${queryParams.toString()}`,
+        );
+        if (
+          response.data &&
+          response.data.users.length === 0 &&
+          pageParam === 1
+        ) {
+          throw new Error("Rewards Calculation hasn't started yet.");
+        }
+        return response.data;
+      }
+    },
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.pagination) return undefined;
+      const { current_page, last_page } = lastPage.pagination;
+      return current_page < last_page ? current_page + 1 : undefined;
+    },
+    enabled: !!(selectedGrant && !loadingSponsors && !loadingGrants),
+  });
+}
+
 export function useLeaderboardsEarnings(uuid: string) {
   const { selectedSponsor } = useSponsor();
 

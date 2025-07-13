@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     const per_page = searchParams.get("per_page");
     const page = searchParams.get("page");
     const id = searchParams.get("id");
+    const hall_of_fame = searchParams.get("hall_of_fame");
 
     const params = {
       ...(grant_id && { grant_id }),
@@ -19,6 +20,7 @@ export async function GET(request: NextRequest) {
       ...(per_page && { per_page: parseInt(per_page) }),
       ...(page && { page: parseInt(page) }),
       ...(id && { id }),
+      ...(hall_of_fame && { hall_of_fame: hall_of_fame === "true" }),
     };
 
     const data: LeaderboardResponse = await fetchLeaderboards(params);

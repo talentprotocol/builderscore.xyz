@@ -6,6 +6,7 @@ import LeaderboardRow from "@/app/components/rewards/LeaderboardRow";
 import LeaderboardRowDrawer from "@/app/components/rewards/LeaderboardRowDrawer";
 import { useGrant } from "@/app/context/GrantContext";
 import {
+  useHallOfFameLeaderboards,
   useLeaderboards,
   useUserLeaderboards,
   useUserProfiles,
@@ -27,6 +28,7 @@ export default function LeaderboardWrapper() {
     hasNextPage,
     isFetchingNextPage,
   } = useLeaderboards();
+  const { data: hallOfFameLeaderboardData } = useHallOfFameLeaderboards();
 
   const [selectedBuilder, setSelectedBuilder] =
     useState<LeaderboardEntry | null>(null);
@@ -84,6 +86,9 @@ export default function LeaderboardWrapper() {
           isLoadingMore={isFetchingNextPage}
           onBuilderSelect={setSelectedBuilder}
           isAllTime={isAllTime}
+          hallOfFameData={hallOfFameLeaderboardData?.pages.flatMap(
+            (page) => page.users,
+          )}
         />
       ) : (
         <div className="flex h-32 items-center justify-center">

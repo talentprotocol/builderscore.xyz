@@ -20,6 +20,7 @@ export default function LeaderboardRow({
   className = "",
   onBuilderSelect,
   isAllTime,
+  isHofAllTime,
 }: {
   leaderboardData: LeaderboardEntry;
   isHighlighted?: boolean;
@@ -28,6 +29,7 @@ export default function LeaderboardRow({
   className?: string;
   onBuilderSelect?: (builder: LeaderboardEntry) => void;
   isAllTime?: boolean;
+  isHofAllTime?: boolean;
 }) {
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
 
@@ -38,6 +40,8 @@ export default function LeaderboardRow({
         selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
       ];
 
+  const isHofToUse = isHof || isHofAllTime;
+
   return (
     <div
       onClick={() => onBuilderSelect?.(leaderboardData)}
@@ -45,28 +49,37 @@ export default function LeaderboardRow({
     >
       <div className="flex items-center gap-1">
         <p className="secondary-text-style min-w-6 font-mono text-xs">
-          {isHof && <CrownIcon className="size-3 text-yellow-500" />} #
-          {leaderboardData.leaderboard_position
-            ? leaderboardData.leaderboard_position
-            : "-"}
+          {isHofToUse && <CrownIcon className="size-3 text-yellow-500" />}
+          {((!isAllTime && !isHofAllTime) || isAllTime) && (
+            <>
+              #
+              {leaderboardData.leaderboard_position
+                ? leaderboardData.leaderboard_position
+                : "-"}
+            </>
+          )}
         </p>
 
         <span
           className={`min-w-10 text-xs ${
-            leaderboardData.ranking_change === null
-              ? "secondary-text-style"
-              : leaderboardData.ranking_change !== 0
-                ? leaderboardData.ranking_change < 0
-                  ? "text-red-500"
-                  : "text-green-500"
-                : "text-neutral-500"
+            (!isAllTime && !isHofAllTime) || isAllTime
+              ? leaderboardData.ranking_change === null
+                ? "secondary-text-style"
+                : leaderboardData.ranking_change !== 0
+                  ? leaderboardData.ranking_change < 0
+                    ? "text-red-500"
+                    : "text-green-500"
+                  : "text-neutral-500"
+              : "text-neutral-500"
           }`}
         >
-          {leaderboardData.ranking_change !== null
-            ? leaderboardData.ranking_change !== 0
-              ? leaderboardData.ranking_change < 0
-                ? `↓ ${Math.abs(leaderboardData.ranking_change)}`
-                : `↑ ${Math.abs(leaderboardData.ranking_change)}`
+          {(!isAllTime && !isHofAllTime) || isAllTime
+            ? leaderboardData.ranking_change !== null
+              ? leaderboardData.ranking_change !== 0
+                ? leaderboardData.ranking_change < 0
+                  ? `↓ ${Math.abs(leaderboardData.ranking_change)}`
+                  : `↑ ${Math.abs(leaderboardData.ranking_change)}`
+                : "-"
               : "-"
             : "-"}
         </span>
@@ -79,7 +92,7 @@ export default function LeaderboardRow({
               alt={leaderboardData.profile.display_name || "Talent Builder"}
               width={isHighlighted ? 48 : 36}
               height={isHighlighted ? 48 : 36}
-              className={`h-[36px] w-[36px] rounded-full object-cover ${isHof && "border-2 border-yellow-500"} ${
+              className={`h-[36px] w-[36px] rounded-full object-cover ${isHofToUse && "border-2 border-yellow-500"} ${
                 isHighlighted && "ml-[-6px] h-[48px] w-[48px]"
               }`}
             />
@@ -111,30 +124,47 @@ export default function LeaderboardRow({
       <div className="bg-white pl-2 dark:bg-neutral-900">
         <p className="text-sm text-neutral-800 dark:text-white">
           <span className="font-mono">
-            {formatNumber(
-              parseFloat(leaderboardData.reward_amount || "0"),
-              INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
-                sponsorTokenTicker
-              ],
-            )}
+            {isHofToUse
+              ? ">" +
+                formatNumber(
+                  parseFloat(
+                    String(
+                      SPONSOR_HOF_MAX_REWARDS[
+                        selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+                      ] || "0",
+                    ),
+                  ),
+                  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+                    sponsorTokenTicker
+                  ],
+                )
+              : formatNumber(
+                  parseFloat(leaderboardData.reward_amount || "0"),
+                  INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS[
+                    sponsorTokenTicker
+                  ],
+                )}
           </span>
           <span className="ml-2 text-xs text-neutral-600 dark:text-neutral-500">
             {sponsorTokenTicker}
           </span>
         </p>
 
-        {isAllTime && (
-          <Progress
-            value={
-              (parseFloat(leaderboardData.reward_amount || "0") /
-                SPONSOR_HOF_MAX_REWARDS[
-                  selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
-                ]) *
-              100
-            }
-            className="mt-1 h-1 w-full"
-          />
-        )}
+        {isAllTime &&
+          SPONSOR_HOF_MAX_REWARDS[
+            selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+          ] && (
+            <Progress
+              value={
+                (parseFloat(leaderboardData.reward_amount || "0") /
+                  SPONSOR_HOF_MAX_REWARDS[
+                    selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+                  ]) *
+                100
+              }
+              className="mt-1 h-1 w-full"
+            />
+          )}
       </div>
     </div>
   );
