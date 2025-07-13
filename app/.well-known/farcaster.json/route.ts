@@ -55,6 +55,9 @@ export async function GET() {
   let json;
 
   switch (subdomain) {
+    case "base-summer":
+      json = baseJson;
+      break;
     case "base":
       json = baseJson;
       break;

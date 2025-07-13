@@ -30,6 +30,9 @@ export default function MiniAppBanner({ className }: { className?: string }) {
   let appUrl;
 
   switch (selectedSponsor?.slug) {
+    case "base-summer":
+      appUrl = "https://warpcast.com/miniapps/003OFAiGOJCy/builder-rewards";
+      break;
     case "base":
       appUrl = "https://warpcast.com/miniapps/003OFAiGOJCy/builder-rewards";
       break;

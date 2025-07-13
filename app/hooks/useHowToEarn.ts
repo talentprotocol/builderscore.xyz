@@ -1,7 +1,8 @@
 import { useUserProfiles } from "@/app/hooks/useRewards";
-import { AVAILABLE_SPONSORS, Sponsor } from "@/app/types/rewards/sponsors";
+import { ALLOWED_SPONSORS } from "@/app/lib/constants";
+import { Sponsor } from "@/app/types/rewards/sponsors";
 
-export type SponsorSlug = (typeof AVAILABLE_SPONSORS)[number];
+export type SponsorSlug = (typeof ALLOWED_SPONSORS)[number];
 
 type HowToEarnConfig = {
   description: string;
@@ -70,6 +71,9 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
   let config: HowToEarnConfig;
 
   switch (sponsor.slug) {
+    case "base-summer":
+      config = baseConfig;
+      break;
     case "base":
       config = baseConfig;
       break;

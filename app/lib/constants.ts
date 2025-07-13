@@ -51,11 +51,25 @@ export const ALL_TIME_GRANT = {
 
 export const HOF_MAX_ETH = 1;
 
-export const DEFAULT_SPONSOR_SLUG = "base";
+export const DEFAULT_SPONSOR_SLUG = "base-summer";
 
-export const ALLOWED_SPONSORS = ["base", "celo", "talent-protocol"];
+export const ALLOWED_SPONSORS = [
+  "base-summer",
+  "base",
+  "celo",
+  "talent-protocol",
+];
+
+export const SUBDOMAIN_TO_SPONSOR = {
+  "base-summer": "base-summer",
+  base: "base-summer",
+  celo: "celo",
+  "talent-protocol": "talent-protocol",
+};
 
 export const SPONSOR_TERMS = {
+  "base-summer":
+    "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
   base: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
   celo: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions-celo",
   "talent-protocol":
@@ -149,6 +163,14 @@ export const celoMetadata: Metadata = {
 };
 
 export const SPONSORS: Record<string, SponsorInfo> = {
+  "base-summer": {
+    slug: "base",
+    name: "Base",
+    themeClassName: "light",
+    ticker: "ETH",
+    logo: BaseLogo,
+    color: "#0052FF",
+  },
   base: {
     slug: "base",
     name: "Base",
@@ -176,16 +198,19 @@ export const SPONSORS: Record<string, SponsorInfo> = {
 };
 
 export const SPONSOR_SCORING = {
+  "base-summer": ["github", "onchain", "farcaster"],
   base: ["github", "onchain", "farcaster"],
   "talent-protocol": ["github", "onchain", "builder_score"],
   celo: ["github", "onchain", "builder_score"],
 };
 
 export const SPONSOR_HOF_MAX_REWARDS = {
+  "base-summer": 1,
   base: 1,
 };
 
 export const SPONSOR_SCANNER_BASE_URL = {
+  "base-summer": "https://basescan.org/tx/",
   base: "https://basescan.org/tx/",
   celo: "https://celoscan.io/tx/",
   "talent-protocol": "https://basescan.org/tx/",

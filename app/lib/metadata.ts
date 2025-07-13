@@ -4,6 +4,9 @@ export const getMetadata = (sponsorSlug: string) => {
   let metadata;
 
   switch (sponsorSlug) {
+    case "base-summer":
+      metadata = baseMetadata;
+      break;
     case "base":
       metadata = baseMetadata;
       break;

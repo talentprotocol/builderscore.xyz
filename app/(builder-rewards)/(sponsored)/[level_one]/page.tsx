@@ -1,6 +1,7 @@
 import ProfileView from "@/app/components/rewards/ProfileView";
 import RewardsView from "@/app/components/rewards/RewardsView";
 import { SPONSORS } from "@/app/lib/constants";
+import { SUBDOMAIN_TO_SPONSOR } from "@/app/lib/constants";
 import getUsableProfile from "@/app/lib/get-usable-profile";
 import getUsableSponsor from "@/app/lib/get-usable-sponsor";
 import { notFound } from "next/navigation";
@@ -13,6 +14,9 @@ export default async function Page({
   const { level_one } = await params;
   const usableSponsor = getUsableSponsor(level_one);
 
+  const sponsorSlug =
+    SUBDOMAIN_TO_SPONSOR[usableSponsor as keyof typeof SUBDOMAIN_TO_SPONSOR];
+
   if (!SPONSORS[level_one as keyof typeof SPONSORS]) {
     const usableProfile = await getUsableProfile(level_one);
 
@@ -23,5 +27,5 @@ export default async function Page({
     return <ProfileView profile={usableProfile} />;
   }
 
-  return <RewardsView sponsor={usableSponsor} />;
+  return <RewardsView sponsor={sponsorSlug} />;
 }
