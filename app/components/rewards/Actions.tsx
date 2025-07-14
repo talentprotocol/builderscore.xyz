@@ -4,12 +4,15 @@ import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard";
 import { Button } from "@/app/components/ui/button";
 import { useGrant } from "@/app/context/GrantContext";
+import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
 import { useUserLeaderboards, useUserProfiles } from "@/app/hooks/useRewards";
+import { SPONSOR_FARCASTER_MINI_APP_URLS } from "@/app/lib/constants";
 
 export default function Actions() {
   const { selectedGrant } = useGrant();
   const { frameContext } = useUser();
+  const { selectedSponsor } = useSponsor();
 
   const { data: userProfileData, isFetched: isFetchedUserProfile } =
     useUserProfiles();
@@ -35,14 +38,20 @@ export default function Actions() {
             )
           ) : (
             <MiniAppExternalLink
-              href="https://login.talentprotocol.com/join"
+              href={
+                frameContext
+                  ? SPONSOR_FARCASTER_MINI_APP_URLS[
+                      selectedSponsor?.slug as keyof typeof SPONSOR_FARCASTER_MINI_APP_URLS
+                    ]
+                  : "https://login.talentprotocol.com/join"
+              }
               target="_blank"
             >
               <Button
                 size="lg"
                 className="button-style mt-2 w-full cursor-pointer pr-3 pl-2 text-xs sm:text-sm"
               >
-                Sign Up to Earn Rewards
+                {frameContext ? "Open Mini App" : "Sign Up to Earn Rewards"}
               </Button>
             </MiniAppExternalLink>
           )}
