@@ -65,25 +65,25 @@ export default function CredentialsListDrawer({
                 <ListItem
                   key={credential.slug}
                   left={
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-2">
-                        {credential.points_calculation_logic?.data_points &&
-                          credential.points_calculation_logic?.data_points[0]
-                            .readable_value !== null && (
-                            <p className="text-sm">
-                              {
-                                credential.points_calculation_logic
-                                  ?.data_points[0].readable_value
-                              }
-                            </p>
-                          )}
-
+                    <div className="flex w-full flex-col">
+                      <div className="flex items-start justify-between gap-2">
                         <p className="text-sm font-medium">{credential.name}</p>
 
-                        <p className="secondary-text-style text-xs">
+                        <p className="secondary-text-style mt-0.5 flex-shrink-0 text-xs">
                           {credential.points} / {credential.max_score} points
                         </p>
                       </div>
+
+                      {credential.points_calculation_logic?.data_points &&
+                        credential.points_calculation_logic?.data_points[0]
+                          .readable_value !== null && (
+                          <p className="text-sm">
+                            {
+                              credential.points_calculation_logic
+                                ?.data_points[0].readable_value
+                            }
+                          </p>
+                        )}
                     </div>
                   }
                   className={cn(
