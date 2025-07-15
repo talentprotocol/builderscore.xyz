@@ -23,7 +23,7 @@ export function useTalentCredentials(fid: string) {
         return response;
       } else {
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.credentials}?id=${fid}`,
+          `${ENDPOINTS.localApi.talent.credentials}?fid=${fid}`,
         );
         return response.data;
       }
@@ -40,7 +40,7 @@ export function useTalentContributedProjects(fid: string) {
         return response;
       } else {
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.contributedProjects}?id=${fid}`,
+          `${ENDPOINTS.localApi.talent.contributedProjects}?fid=${fid}`,
         );
         return response.data;
       }
@@ -57,7 +57,7 @@ export function useTalentSocials(fid: string) {
         return response;
       } else {
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.socials}?id=${fid}`,
+          `${ENDPOINTS.localApi.talent.socials}?fid=${fid}`,
         );
         return response.data;
       }
@@ -74,7 +74,7 @@ export function useTalentAccounts(fid: string) {
         return response;
       } else {
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.accounts}?id=${fid}`,
+          `${ENDPOINTS.localApi.talent.accounts}?fid=${fid}`,
         );
         return response.data;
       }

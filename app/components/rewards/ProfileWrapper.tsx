@@ -26,11 +26,13 @@ import { useEffect, useState } from "react";
 
 export default function ProfileWrapper({
   profile,
+  fid,
   className,
   detailed,
   rewards,
 }: {
   profile: TalentProfileSearchApi;
+  fid: string;
   className?: string;
   detailed?: boolean;
   rewards?: LeaderboardEntry;
@@ -39,16 +41,17 @@ export default function ProfileWrapper({
   const { frameContext } = useUser();
   const router = useRouter();
 
+
   const { data: rewardsClient } = useUserLeaderboards(
     ALL_TIME_GRANT,
     profile.id,
   );
 
-  const { data: socials } = useTalentSocials(profile.id);
-  const { data: accounts } = useTalentAccounts(profile.id);
-  const { data: credentials } = useTalentCredentials(profile.id);
+  const { data: socials } = useTalentSocials(fid);
+  const { data: accounts } = useTalentAccounts(fid);
+  const { data: credentials } = useTalentCredentials(fid);
   const { data: contributedProjects } = useTalentContributedProjects(
-    profile.id,
+    fid,
   );
 
   const farcasterAccount = accounts?.accounts?.find(
