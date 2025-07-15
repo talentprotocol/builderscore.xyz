@@ -47,7 +47,7 @@ export default function Leaderboard({
         !isAllTime &&
         hallOfFameData.map((user, index) => (
           <LeaderboardRow
-            key={`${user.id}-${user.profile.id}-${index}`}
+            key={`hall-of-fame-leaderboard-row-${user.id}-${user.profile.id}-${index}`}
             leaderboardData={user}
             first={index === 0}
             last={index === hallOfFameData.length - 1}
@@ -58,7 +58,7 @@ export default function Leaderboard({
         ))}
       {leaderboardData.users.map((user, index) => (
         <LeaderboardRow
-          key={`${user.id}-${user.profile?.id}-${index}`}
+          key={`leaderboard-row-${user.id}-${user.profile.id}-${index}`}
           leaderboardData={user}
           first={
             (!hallOfFameData || hallOfFameData?.length === 0 || isAllTime) &&
