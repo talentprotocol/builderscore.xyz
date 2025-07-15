@@ -21,7 +21,7 @@ export async function GET() {
       name: "Base Builder Rewards",
       homeUrl: "https://www.builderscore.xyz",
       iconUrl: "https://www.builderscore.xyz/images/icon.png",
-      imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
+      imageUrl: "https://www.builderscore.xyz/images/frame-image?v=1.png",
       buttonTitle: "Earn Base Builder Rewards",
       splashImageUrl: "https://www.builderscore.xyz/images/icon.png",
       splashBackgroundColor: "#0D0740",
