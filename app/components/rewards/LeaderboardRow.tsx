@@ -42,6 +42,10 @@ export default function LeaderboardRow({
 
   const isHofToUse = isHof || isHofAllTime;
 
+  if (!leaderboardData.profile) {
+    console.log("No profile found for", leaderboardData);
+  }
+
   return (
     <div
       onClick={() => onBuilderSelect?.(leaderboardData)}
@@ -85,11 +89,11 @@ export default function LeaderboardRow({
         </span>
 
         <div className="flex items-center gap-4">
-          {leaderboardData.profile.image_url &&
-          leaderboardData.profile.image_url.startsWith("https") ? (
+          {leaderboardData.profile?.image_url &&
+          leaderboardData.profile?.image_url.startsWith("https") ? (
             <Image
-              src={leaderboardData.profile.image_url}
-              alt={leaderboardData.profile.display_name || "Talent Builder"}
+              src={leaderboardData.profile?.image_url}
+              alt={leaderboardData.profile?.display_name || "Talent Builder"}
               width={isHighlighted ? 48 : 36}
               height={isHighlighted ? 48 : 36}
               className={`h-[36px] w-[36px] rounded-full object-cover ${isHofToUse && "border-2 border-yellow-500"} ${
@@ -99,16 +103,16 @@ export default function LeaderboardRow({
           ) : (
             <div className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-neutral-200 dark:bg-neutral-800">
               <p className="text-sm text-neutral-800 dark:text-white">
-                {leaderboardData.profile.display_name?.charAt(0).toUpperCase()}
+                {leaderboardData.profile?.display_name?.charAt(0).toUpperCase()}
               </p>
             </div>
           )}
           <div>
             <p className="max-w-32 truncate text-sm text-neutral-800 dark:text-white">
-              {isEmptyOrInvisible(leaderboardData.profile.display_name || "")
-                ? leaderboardData.profile.id.slice(0, 6) +
+              {isEmptyOrInvisible(leaderboardData.profile?.display_name || "")
+                ? leaderboardData.profile?.id.slice(0, 6) +
                   "..." +
-                  leaderboardData.profile.id.slice(-4)
+                  leaderboardData.profile?.id.slice(-4)
                 : leaderboardData.profile.display_name}
 
               {process.env.NODE_ENV === "development" && (

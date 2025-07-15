@@ -24,7 +24,7 @@ export default function SearchProfileItemDrawer({
           <DialogTitle>{selectedBuilder.name || "Builder"}</DialogTitle>
         </VisuallyHidden>
         <DrawerContent className="bg-white dark:bg-neutral-900">
-          <ProfileWrapper profile={selectedBuilder} className="p-4" />
+          <ProfileWrapper profile={selectedBuilder} fid={selectedBuilder.id} className="p-4" />
         </DrawerContent>
       </DrawerPortal>
     </Drawer>

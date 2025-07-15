@@ -58,7 +58,7 @@ export default function Leaderboard({
         ))}
       {leaderboardData.users.map((user, index) => (
         <LeaderboardRow
-          key={`${user.id}-${user.profile.id}-${index}`}
+          key={`${user.id}-${user.profile?.id}-${index}`}
           leaderboardData={user}
           first={
             (!hallOfFameData || hallOfFameData?.length === 0 || isAllTime) &&

@@ -15,5 +15,5 @@ export default async function Page({
     return notFound();
   }
 
-  return <ProfileView profile={usableProfile} />;
+  return <ProfileView profile={usableProfile} fid={level_two} />;
 }

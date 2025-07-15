@@ -6,14 +6,16 @@ import { dehydrate } from "@tanstack/react-query";
 
 export default async function ProfileView({
   profile,
+  fid,
 }: {
   profile: TalentProfileSearchApi;
+  fid: string;
 }) {
   const queryClient = getQueryClient();
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProfileWrapper profile={profile} className="mt-3" detailed />
+      <ProfileWrapper profile={profile} fid={fid} className="mt-3" detailed />
     </HydrationBoundary>
   );
 }
