@@ -1,6 +1,6 @@
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import { cn } from "@/app/lib/utils";
 import { ChevronRightIcon, ExternalLinkIcon } from "lucide-react";
-import Link from "next/link";
 
 interface ListItemProps {
   left?: React.ReactNode;
@@ -32,10 +32,8 @@ export default function ListItem({
 
   if (href) {
     return (
-      <Link
+      <MiniAppExternalLink
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
         className={commonClassName}
         onClick={onClick}
       >
@@ -67,7 +65,7 @@ export default function ListItem({
         {href && (
           <ExternalLinkIcon className="mt-[1px] ml-3 size-4 opacity-50" />
         )}
-      </Link>
+      </MiniAppExternalLink>
     );
   }
 

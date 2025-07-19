@@ -9,7 +9,7 @@ import { useState } from "react";
 export default function StatusToggle() {
   const [showStatus, setShowStatus] = useState(false);
   return (
-    <div className="absolute top-3 right-3 flex flex-col">
+    <div className="absolute top-3 right-3 z-50 flex flex-col items-end">
       <Button
         variant="outline"
         className="mb-3 h-8 w-8 rounded-full border-green-500/20 bg-green-100 hover:bg-green-200"

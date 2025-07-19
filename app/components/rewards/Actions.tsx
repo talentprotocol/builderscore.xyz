@@ -6,8 +6,13 @@ import { Button } from "@/app/components/ui/button";
 import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
-import { useUserLeaderboards, useUserProfiles } from "@/app/hooks/useRewards";
+import { useUserLeaderboards } from "@/app/hooks/useRewards";
+import {
+  useCurrentTalentProfile,
+  useTalentAccounts,
+} from "@/app/hooks/useTalent";
 import { SPONSOR_FARCASTER_MINI_APP_URLS } from "@/app/lib/constants";
+import { TalentAccount } from "@/app/types/talent";
 
 export default function Actions() {
   const { selectedGrant } = useGrant();
@@ -15,15 +20,22 @@ export default function Actions() {
   const { selectedSponsor } = useSponsor();
 
   const { data: userProfileData, isFetched: isFetchedUserProfile } =
-    useUserProfiles();
+    useCurrentTalentProfile();
+  const { data: accountsData } = useTalentAccounts(
+    userProfileData?.profile.id || "",
+  );
   const { data: userLeaderboardData } = useUserLeaderboards();
+
+  const hasGithubAccount = accountsData?.accounts.find(
+    (account: TalentAccount) => account.source === "github",
+  );
 
   return (
     <div className="grid auto-cols-fr grid-flow-col gap-2 sm:gap-4">
       {isFetchedUserProfile || !frameContext ? (
         <>
           {userProfileData ? (
-            !userProfileData.github && (
+            !hasGithubAccount && (
               <MiniAppExternalLink
                 href="https://app.talentprotocol.com/accounts"
                 target="_blank"

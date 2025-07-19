@@ -50,8 +50,6 @@ export const ALL_TIME_GRANT = {
   },
 } as Grant;
 
-export const HOF_MAX_ETH = 1;
-
 export const DEFAULT_SPONSOR_SLUG = "base-summer";
 
 export const ALLOWED_SPONSORS = [
@@ -239,4 +237,15 @@ export const SPONSOR_FARCASTER_MINI_APP_URLS = {
   "talent-protocol":
     "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
   celo: "https://farcaster.xyz/miniapps/XhQmVJM8RIeD/celo-builder-rewards",
+};
+
+export const SPONSOR_REWARDS_PERIOD = {
+  celo: "month",
+};
+
+export const SPONSOR_TOTAL_REWARDED = {
+  "base-summer": 100,
+  base: 100,
+  "talent-protocol": 100,
+  celo: 100,
 };

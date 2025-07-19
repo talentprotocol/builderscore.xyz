@@ -1,23 +1,23 @@
-import { fetchTalentCredentials } from "@/app/services/talent";
-import { TalentCredentialsResponse } from "@/app/types/talent";
+import { fetchTalentProfileByFarcasterUsername } from "@/app/services/talent";
+import { TalentProfileResponse } from "@/app/types/talent";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const uuid = searchParams.get("uuid");
+  const username = searchParams.get("username");
 
-  if (!uuid) {
+  if (!username) {
     return NextResponse.json(
-      { error: "Talent UUID is required" },
+      { error: "Farcaster username is required" },
       { status: 400 },
     );
   }
 
   try {
-    const data: TalentCredentialsResponse | null =
-      await fetchTalentCredentials(uuid);
+    const data: TalentProfileResponse | null =
+      await fetchTalentProfileByFarcasterUsername(username);
 
     if (!data) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });
@@ -25,8 +25,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { error: `Failed to fetch credentials: ${error}` },
+      { error: `Failed to fetch profile: ${error}` },
       { status: 500 },
     );
   }

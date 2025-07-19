@@ -1,7 +1,23 @@
-export type TalentBuilderScore = {
+import { AdvancedPagination } from "@/app/types/api";
+
+//
+// Talent Scores
+
+export interface TalentIndividualScore {
   points: number;
   last_calculated_at: string;
-};
+}
+
+export interface TalentScore extends TalentIndividualScore {
+  slug: string;
+}
+
+export interface TalentScoreResponse {
+  score: TalentScore;
+}
+
+//
+// Talent Socials
 
 export interface TalentSocial {
   followers_count: number | null;
@@ -18,6 +34,13 @@ export interface TalentSocial {
   owned_since: string | null;
 }
 
+export interface TalentSocialsResponse {
+  socials: TalentSocial[];
+}
+
+//
+// Talent Accounts
+
 export interface TalentAccount {
   identifier: string;
   source: string;
@@ -30,88 +53,8 @@ export interface TalentAccountsResponse {
   accounts: TalentAccount[];
 }
 
-export type TalentProfile = {
-  id: string;
-  bio: string | null;
-  created_at: string;
-  display_name: string | null;
-  human_checkmark: boolean;
-  image_url: string | null;
-  location: string | null;
-  name: string | null;
-  onchain: boolean;
-  calculating_score: boolean;
-  tags: string[];
-  builder_score: {
-    points: number;
-    last_calculated_at: string;
-  } | null;
-};
-
-export type TalentProfileApi = {
-  id: string;
-  account: string | null;
-  bio: string | null;
-  display_name: string | null;
-  ens: string;
-  human_checkmark: boolean;
-  image_url: string | null;
-  location: string | null;
-  name: string | null;
-  onchain_id: number;
-  onchain_since: string;
-  refreshing_socials: boolean;
-  socials_refreshed_at: string;
-  tags: string[];
-  user: {
-    admin: boolean;
-    builder_plus: boolean;
-    created_at: string;
-    email: string | null;
-    email_confirmed: boolean;
-    human_checkmark: boolean;
-    id: string;
-    main_wallet: string;
-    merged: boolean;
-    onchain_id: number;
-    rank_position: number;
-  };
-};
-
-export type TalentProfileSearchApi = {
-  id: string;
-  bio: string | null;
-  created_at: string;
-  display_name: string | null;
-  human_checkmark: boolean;
-  image_url: string | null;
-  location: string | null;
-  name: string | null;
-  onchain: boolean;
-  calculating_score: boolean;
-  tags: string[];
-  builder_score?: {
-    points: number;
-    last_calculated_at: string;
-  };
-};
-
-export type TalentProfileResponse = {
-  profile: TalentProfileApi;
-  github: boolean;
-  basename: string | null;
-  builderScore: TalentBuilderScore | null;
-  selfXyz: boolean;
-  celoTransaction: boolean;
-};
-
-export interface TalentSocialsResponse {
-  socials: TalentSocial[];
-}
-
-export interface TalentCredentialsResponse {
-  credentials: TalentCredential[];
-}
+//
+// Talent Credentials
 
 export interface TalentCredential {
   account_source: string;
@@ -129,15 +72,7 @@ export interface TalentCredential {
   points_calculation_logic?: {
     points: number;
     max_points: number;
-    data_points: Array<{
-      id: number;
-      name: string;
-      value: string;
-      is_maximum: boolean;
-      multiplier: number;
-      readable_value: string;
-      multiplication_result: string;
-    }>;
+    data_points: TalentDataPoint[];
     points_description: string;
     points_number_calculated: number;
   };
@@ -146,11 +81,45 @@ export interface TalentCredential {
   updated_at: string;
 }
 
+export interface TalentCredentialsResponse {
+  credentials: TalentCredential[];
+}
+
+//
+// Talent Data Points
+
+export interface TalentDataPoint {
+  id: number;
+  name: string;
+  value: string;
+  is_maximum: boolean;
+  multiplier: number;
+  readable_value: string;
+  multiplication_result: string;
+  credential_slug: string;
+}
+
+export interface TalentDataPointsResponse {
+  data_points: TalentDataPoint[];
+}
+
+//
+// Talent Projects
+
+export interface TalentProject {
+  name: string;
+  slug: string;
+  project_url: string;
+}
+
 export interface TalentProjectsResponse {
   projects: TalentProject[];
 }
 
-export interface TalentProject {
+//
+// Talent Contributed Projects
+
+export interface TalentContributedProject {
   name: string;
   slug: string;
   project_url: string;
@@ -160,8 +129,45 @@ export interface TalentContributedProjectsResponse {
   projects: TalentProject[];
 }
 
-export interface TalentContributedProject {
-  name: string;
-  slug: string;
-  project_url: string;
+//
+// Talent Profiles
+
+export interface TalentBasicProfile {
+  id: string;
+  bio: string | null;
+  display_name: string | null;
+  image_url: string | null;
+  location: string | null;
+  name: string | null;
+  human_checkmark: boolean;
+  tags: string[];
+}
+
+export interface TalentProfile extends TalentBasicProfile {
+  main_wallet_address: string | null;
+  farcaster_primary_wallet_address: string | null;
+  onchain_since: string;
+  ens: string;
+}
+
+export interface TalentSearchProfile extends TalentBasicProfile {
+  created_at: string;
+  calculating_score: boolean;
+  verified_nationality: boolean;
+  builder_score: TalentIndividualScore;
+  scores: TalentScore[];
+}
+
+export interface TalentProfileResponse {
+  profile: TalentProfile;
+}
+
+export interface TalentUsableProfile {
+  profile: TalentProfile;
+  builder_score: TalentIndividualScore;
+}
+
+export interface TalentSearchProfileResponse {
+  profiles: TalentSearchProfile[];
+  pagination: AdvancedPagination;
 }

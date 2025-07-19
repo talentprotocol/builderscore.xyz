@@ -78,7 +78,12 @@ export default function RewardsEarned({
           <ScrollArea className="scrollbar-hide max-w-full overflow-y-scroll">
             <DrawerHeader className="text-left">
               <DrawerTitle className="text-neutral-800 dark:text-white">
-                Transaction History
+                Transaction History{" "}
+                {selectedSponsor && (
+                  <span className="secondary-text-style font-normal">
+                    - {selectedSponsor.name}
+                  </span>
+                )}
               </DrawerTitle>
             </DrawerHeader>
 
@@ -167,7 +172,6 @@ export default function RewardsEarned({
                         />
                       ))}
 
-                      {/* Show loading spinner when fetching more */}
                       {isFetchingNextPage && (
                         <div className="flex items-center justify-center p-4">
                           <Spinner />
@@ -183,20 +187,18 @@ export default function RewardsEarned({
                   ) : (
                     <div className="flex h-32 items-center justify-center">
                       <div className="flex items-center gap-2">
-                        <Spinner className="flex h-16 w-full items-center justify-center" />
+                        {leaderboardEarningsError ? (
+                          <p className="secondary-text-style text-sm">
+                            {leaderboardEarningsError.message}
+                          </p>
+                        ) : (
+                          <Spinner className="flex h-16 w-full items-center justify-center" />
+                        )}
                       </div>
                     </div>
                   )}
                 </div>
               </div>
-
-              {leaderboardEarningsError && (
-                <div className="mt-4 flex items-center justify-center">
-                  <p className="secondary-text-style text-sm">
-                    {leaderboardEarningsError.message}
-                  </p>
-                </div>
-              )}
             </div>
           </ScrollArea>
         </DrawerContent>

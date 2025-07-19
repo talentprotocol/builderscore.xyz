@@ -1,5 +1,6 @@
 import ProfileView from "@/app/components/rewards/ProfileView";
 import getUsableProfile from "@/app/lib/get-usable-profile";
+import { fetchTalentBuilderScore } from "@/app/services/talent";
 import { notFound } from "next/navigation";
 
 export default async function Page({
@@ -15,5 +16,12 @@ export default async function Page({
     return notFound();
   }
 
-  return <ProfileView profile={usableProfile} fid={level_two} />;
+  const builderScore = await fetchTalentBuilderScore(usableProfile.profile.id);
+
+  return (
+    <ProfileView
+      profile={usableProfile.profile}
+      builderScore={builderScore!.score}
+    />
+  );
 }

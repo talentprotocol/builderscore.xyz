@@ -7,11 +7,12 @@ import {
   useGrants,
   useLeaderboards,
   useSponsors,
-  useUserProfiles,
 } from "@/app/hooks/useRewards";
+import { useCurrentTalentProfile } from "@/app/hooks/useTalent";
 
 export default function RewardsStatus() {
-  const { isLoading: loadingUser } = useUserProfiles();
+  const { isLoading: loadingUser, isFetched: isFetchedUser } =
+    useCurrentTalentProfile();
   const { isLoading: loadingSponsors } = useSponsors();
   const { selectedSponsor } = useSponsor();
   const { selectedGrant } = useGrant();
@@ -49,7 +50,7 @@ export default function RewardsStatus() {
               isLoading ? "text-neutral-500" : "text-green-500"
             }`}
           >
-            User: {!loadingUser ? "Ready" : "Loading..."}
+            User: {isFetchedUser ? "Ready" : "Loading..."}
           </span>
           <span
             className={`text-xs ${

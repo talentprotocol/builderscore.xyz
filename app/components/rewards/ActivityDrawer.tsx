@@ -92,7 +92,7 @@ export default function ActivityDrawer({
           <ScrollArea className="scrollbar-hide max-w-full overflow-y-scroll">
             <div className="p-4">
               <p className="secondary-text-style ml-1 pb-2 text-sm text-neutral-800 dark:text-white">
-                Scoring
+                Activity Scoring
               </p>
               <div className="card-style flex flex-col">
                 {scoringActivity && scoringActivity.length > 0 ? (
@@ -144,13 +144,17 @@ export default function ActivityDrawer({
                   ))
                 ) : (
                   <p className="secondary-text-style p-4 text-sm">
-                    No Scoring activity found.
+                    No Activity found for the current period.
+                    <br />
+                    <br />
+                    Builder Rewards tracks open source contributions on GitHub,
+                    verified smart contracts and other sources of activity.
                   </p>
                 )}
               </div>
 
               <p className="secondary-text-style ml-1 pt-4 pb-2 text-sm text-neutral-800 dark:text-white">
-                Bonus
+                Booster Points
               </p>
               <div className="card-style flex flex-col">
                 {bonusActivity && bonusActivity.length > 0 ? (
@@ -207,7 +211,11 @@ export default function ActivityDrawer({
                   ))
                 ) : (
                   <p className="secondary-text-style p-4 text-sm">
-                    No Bonus activity found.
+                    No Booster Points earned.
+                    <br />
+                    <br />
+                    Check the &quot;How to Earn&quot; section for more
+                    information.
                   </p>
                 )}
               </div>

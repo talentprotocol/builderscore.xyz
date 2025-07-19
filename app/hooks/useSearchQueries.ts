@@ -5,7 +5,7 @@ import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
 import { fetchSearchAdvancedMetadataFields } from "@/app/services/index/search-fields";
 import { AdvancedSearchDocument } from "@/app/types/advancedSearchDocuments";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
-import { SearchDataResponse } from "@/app/types/index/search";
+import { TalentSearchProfileResponse } from "@/app/types/talent";
 import { isServer, useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { RuleGroupType } from "react-querybuilder";
@@ -86,12 +86,12 @@ export function useSearchProfiles(props: {
           documents: selectedDocument,
           queryString,
         });
-        return data as SearchDataResponse;
+        return data as TalentSearchProfileResponse;
       } else {
         const res = await axios.get(
           `${ENDPOINTS.localApi.talent.searchAdvanced}/${selectedDocument}?${queryString}`,
         );
-        return res.data as SearchDataResponse;
+        return res.data as TalentSearchProfileResponse;
       }
     },
   });

@@ -6,15 +6,18 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const fid = searchParams.get("fid");
+  const uuid = searchParams.get("uuid");
 
-  if (!fid) {
-    return NextResponse.json({ error: "Fid is required" }, { status: 400 });
+  if (!uuid) {
+    return NextResponse.json(
+      { error: "Talent UUID is required" },
+      { status: 400 },
+    );
   }
 
   try {
     const data: TalentContributedProjectsResponse | null =
-      await fetchTalentContributedProjects(fid);
+      await fetchTalentContributedProjects(uuid);
 
     if (!data) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });

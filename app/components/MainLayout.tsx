@@ -1,3 +1,4 @@
+import { NavigationProvider } from "@/app/context/NavigationContext";
 import { ThemeProvider } from "@/app/context/ThemeContext";
 import { UserProvider } from "@/app/context/UserContext";
 import { cn } from "@/app/lib/utils";
@@ -35,7 +36,9 @@ export default function MainLayout({
       >
         <ThemeProvider>
           <NuqsAdapter>
-            <UserProvider>{children}</UserProvider>
+            <UserProvider>
+              <NavigationProvider>{children}</NavigationProvider>
+            </UserProvider>
           </NuqsAdapter>
         </ThemeProvider>
       </body>

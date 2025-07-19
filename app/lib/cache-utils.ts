@@ -16,7 +16,6 @@ export const CACHE_TAGS = {
   TALENT_CONTRIBUTED_PROJECTS: "talent-contributed-projects",
   SEARCH: "search",
   STATS_DAILY: "stats-daily",
-  TALENT_LOOKUP: "talent-lookup",
   CHART_METRICS: "chart-metrics",
   SEARCH_ADVANCED: "search-advanced",
   SEARCH_FIELDS: "search-fields",

@@ -34,9 +34,7 @@ export default function RewardsNavbar() {
     },
     {
       label: "profile",
-      href: frameContext
-        ? `${prefix}/${frameContext.user.fid}`
-        : `${prefix}/login`,
+      href: frameContext && `${prefix}/${frameContext.user.username}`,
       icon: <UserIcon />,
       onClick: (event: React.MouseEvent<HTMLAnchorElement>) => {
         if (!frameContext) {
@@ -48,14 +46,14 @@ export default function RewardsNavbar() {
   ];
 
   return (
-    <div className="border-colors fixed bottom-0 left-1/2 w-full -translate-x-1/2 overflow-hidden rounded-none border-t bg-white sm:bottom-4 sm:max-w-3xl sm:rounded-lg sm:border sm:shadow-xs dark:bg-neutral-900">
+    <div className="border-colors pb-safe fixed bottom-0 left-1/2 w-full -translate-x-1/2 overflow-hidden rounded-none border-t bg-white sm:bottom-4 sm:max-w-3xl sm:rounded-lg sm:border sm:shadow-xs dark:bg-neutral-900">
       <NavigationMenu className="h-16 w-full max-w-none [&>*]:w-full">
         <NavigationMenuList className="w-full gap-0">
           {navItems.map((item) => (
             <NavigationMenuItem key={item.label} className="h-16 w-full flex-1">
               <NavigationMenuLink asChild className="rounded-none">
                 <Link
-                  href={item.href}
+                  href={item?.href || ""}
                   onClick={item.onClick}
                   className="flex h-16 w-full items-center justify-center text-xl"
                 >

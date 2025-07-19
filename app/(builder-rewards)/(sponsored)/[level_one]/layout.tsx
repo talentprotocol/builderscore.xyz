@@ -12,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ level_one: string }>;
 }): Promise<Metadata> {
   const { level_one } = await params;
-  const usableSponsor = getUsableSponsor(level_one);
+  const usableSponsor = await getUsableSponsor(level_one);
 
   const metadata = getMetadata(usableSponsor);
 
@@ -27,7 +27,7 @@ export default async function SponsoredRewardsLayout({
   params: Promise<{ level_one: string }>;
 }>) {
   const { level_one } = await params;
-  const usableSponsor = getUsableSponsor(level_one);
+  const usableSponsor = await getUsableSponsor(level_one);
 
   return (
     <RewardsLayout

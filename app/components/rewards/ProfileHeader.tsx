@@ -1,13 +1,15 @@
 import SocialsListDrawer from "@/app/components/rewards/SocialsListDrawer";
 import { Button } from "@/app/components/ui/button";
+import { useNavigationSource } from "@/app/context/NavigationContext";
 import { cn, formatNumber } from "@/app/lib/utils";
 import {
   TalentAccount,
-  TalentProfileSearchApi,
+  TalentBasicProfile,
   TalentSocial,
 } from "@/app/types/talent";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronLeftIcon, EllipsisIcon } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ProfileHeader({
@@ -16,12 +18,14 @@ export default function ProfileHeader({
   accounts,
   detailed,
 }: {
-  profile: TalentProfileSearchApi;
+  profile: TalentBasicProfile;
   socials?: TalentSocial[];
   accounts?: TalentAccount[];
   detailed?: boolean;
 }) {
   const [openSocials, setOpenSocials] = useState(false);
+  const router = useRouter();
+  const { isInternalNavigation } = useNavigationSource();
 
   const totalFollowers = socials?.reduce((acc, social) => {
     if (social.followers_count) {
@@ -30,25 +34,40 @@ export default function ProfileHeader({
     return acc;
   }, 0);
 
+  const showBackButton = detailed && isInternalNavigation;
+
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex w-full items-center justify-between">
-        <div className="flex max-w-5/6 flex-col gap-0">
-          <Button
-            variant="invisible"
-            size="invisible"
-            className={cn(detailed && "cursor-pointer")}
-            onClick={() => detailed && setOpenSocials(true)}
-          >
-            <p className="text-lg font-medium text-neutral-800 dark:text-white">
-              {profile.display_name || "Builder"}
-            </p>
-            {detailed && <ChevronDownIcon className="size-4 opacity-50" />}
-          </Button>
+        <div className="flex w-full">
+          {showBackButton && (
+            <Button
+              variant="invisible"
+              size="invisible"
+              onClick={() => router.back()}
+              className="mt-1.5 h-fit w-8 cursor-pointer"
+            >
+              <ChevronLeftIcon className="size-4 opacity-50" />
+            </Button>
+          )}
 
-          <p className="secondary-text-style text-sm">
-            {formatNumber(totalFollowers || 0)} followers
-          </p>
+          <div className="flex max-w-5/6 flex-col gap-0">
+            <Button
+              variant="invisible"
+              size="invisible"
+              className={cn(detailed && "cursor-pointer", "w-fit")}
+              onClick={() => detailed && setOpenSocials(true)}
+            >
+              <p className="text-lg font-medium text-neutral-800 dark:text-white">
+                {profile.display_name || "Builder"}
+              </p>
+              {detailed && <EllipsisIcon className="size-4 opacity-50" />}
+            </Button>
+
+            <p className="secondary-text-style text-sm">
+              {formatNumber(totalFollowers || 0)} followers
+            </p>
+          </div>
         </div>
 
         <Image

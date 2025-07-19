@@ -9,6 +9,7 @@ import {
 import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { SocialLogos } from "@/app/lib/social-logos";
+import { formatNumber } from "@/app/lib/utils";
 import { TalentAccount, TalentSocial } from "@/app/types/talent";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Globe, Wallet } from "lucide-react";
@@ -82,13 +83,17 @@ export default function SocialsListDrawer({
 
                           <div className="flex flex-col">
                             <div className="flex items-center gap-2">
-                              <p className="text-sm font-medium">
-                                {social.handle}
-                              </p>
+                              {social.handle && (
+                                <p className="text-sm font-medium">
+                                  {social.handle}
+                                </p>
+                              )}
 
                               {social.followers_count !== null && (
                                 <p className="secondary-text-style text-xs">
-                                  {social.followers_count} followers
+                                  {formatNumber(social.followers_count)}{" "}
+                                  follower
+                                  {social.followers_count === 1 ? "" : "s"}
                                 </p>
                               )}
                             </div>

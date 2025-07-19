@@ -8,9 +8,12 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrants, useUserLeaderboards } from "@/app/hooks/useRewards";
 import {
   ALL_TIME_GRANT,
-  HOF_MAX_ETH,
   SPONSOR_BANNERS,
+  SPONSOR_HOF_MAX_REWARDS,
   SPONSOR_MIN_REWARDS,
+  SPONSOR_REWARDS_PERIOD,
+  SPONSOR_SCORING,
+  SPONSOR_TOTAL_REWARDED,
 } from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
@@ -39,13 +42,18 @@ export default function Header() {
 
   const [open, setOpen] = useState(false);
 
+  const sponsorRewardsPeriod =
+    SPONSOR_REWARDS_PERIOD[
+      selectedSponsor?.slug as keyof typeof SPONSOR_REWARDS_PERIOD
+    ];
+
   const tabValues = {
     this_week: {
-      name: "This Week",
+      name: `This ${sponsorRewardsPeriod ? sponsorRewardsPeriod.charAt(0).toUpperCase() + sponsorRewardsPeriod.slice(1) : "Week"}`,
       value: "this_week",
     },
     last_week: {
-      name: "Last Week",
+      name: `Last ${sponsorRewardsPeriod ? sponsorRewardsPeriod.charAt(0).toUpperCase() + sponsorRewardsPeriod.slice(1) : "Week"}`,
       value: "last_week",
     },
     all_time: {
@@ -80,11 +88,30 @@ export default function Header() {
           (sum, grant) => sum + grant.rewarded_builders,
           0,
         )
-      : grant?.rewarded_builders;
+      : SPONSOR_TOTAL_REWARDED[
+          selectedSponsor?.slug as keyof typeof SPONSOR_TOTAL_REWARDED
+        ] || 100;
 
-    const activityTotal = activity?.filter(
-      (metric) => metric.category === "total",
-    )[0];
+    const scoringActivity = activity
+      ?.filter((metric) => metric.metric_name === "score")
+      .filter(
+        (metric) => metric.category !== "total" && metric.category !== "bonus",
+      )
+      .filter((metric) =>
+        SPONSOR_SCORING[
+          selectedSponsor?.slug as keyof typeof SPONSOR_SCORING
+        ]?.includes(metric.category),
+      )
+      .sort((a, b) => b.raw_value - a.raw_value);
+
+    const scoringActivityTotal = scoringActivity?.reduce(
+      (sum, metric) => sum + metric.raw_value,
+      0,
+    );
+
+    const scoringActivityMax = scoringActivity?.length
+      ? scoringActivity.length * 100
+      : 0;
 
     const ended =
       allTime ||
@@ -121,8 +148,8 @@ export default function Header() {
             ticker: sponsorTokenTicker,
           }}
           activity={{
-            value: activityTotal?.raw_value || 0,
-            max: 100,
+            value: scoringActivityTotal || 0,
+            max: scoringActivityMax || 100,
           }}
           rewards={{
             value: formatNumber(
@@ -131,7 +158,9 @@ export default function Header() {
                 sponsorTokenTicker
               ],
             ),
-            max: HOF_MAX_ETH,
+            max: SPONSOR_HOF_MAX_REWARDS[
+              selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+            ],
             ticker: sponsorTokenTicker,
           }}
         />
@@ -157,7 +186,7 @@ export default function Header() {
       return "Latest";
     }
 
-    return "This Week";
+    return tabValues.this_week.name;
   };
 
   const getSecondTabLabel = () => {
@@ -169,11 +198,11 @@ export default function Header() {
       twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
       if (endedDate < twoWeeksAgo) {
-        return "Previous";
+        return `Previous ${sponsorRewardsPeriod ? sponsorRewardsPeriod.charAt(0).toUpperCase() + sponsorRewardsPeriod.slice(1) : "Week"}`;
       }
     }
 
-    return "Last Week";
+    return tabValues.last_week.name;
   };
 
   return (
@@ -191,7 +220,7 @@ export default function Header() {
         tabs={[
           {
             label: getFirstTabLabel(),
-            value: "this_week",
+            value: tabValues.this_week.value,
             content: (
               <GrantActionCards
                 grant={grantsData?.grants[0]}
@@ -209,7 +238,7 @@ export default function Header() {
             ? [
                 {
                   label: getSecondTabLabel(),
-                  value: "last_week",
+                  value: tabValues.last_week.value,
                   content: (
                     <GrantActionCards
                       grant={grantsData?.grants[1]}
@@ -227,8 +256,8 @@ export default function Header() {
           ...(grantsData?.grants[2]
             ? [
                 {
-                  label: "All Time",
-                  value: "all_time",
+                  label: tabValues.all_time.name,
+                  value: tabValues.all_time.value,
                   content: (
                     <GrantActionCards
                       grant={ALL_TIME_GRANT}
@@ -244,7 +273,7 @@ export default function Header() {
               ]
             : []),
         ]}
-        defaultTab="this_week"
+        defaultTab={tabValues.this_week.value}
       />
     </div>
   );

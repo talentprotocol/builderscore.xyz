@@ -30,7 +30,8 @@ export const ENDPOINTS = {
     },
     talent: {
       profile: "/api/talent/profile",
-      lookup: "/api/talent/lookup",
+      profileByFid: "/api/talent/profile/fid",
+      profileByFarcasterUsername: "/api/talent/profile/farcaster_username",
       grants: "/api/grants",
       leaderboards: "/api/leaderboards",
       leaderboardEntry: "/api/leaderboards/entry",
@@ -45,6 +46,8 @@ export const ENDPOINTS = {
       credentials: "/api/talent/credentials",
       contributedProjects: "/api/talent/projects/contributed",
       accounts: "/api/talent/accounts",
+      builderScore: "/api/talent/builder_score",
+      credentialsDatapoints: "/api/talent/credentials/datapoints",
     },
     neynar: {
       notificationTokens: "/api/neynar/notification_tokens",

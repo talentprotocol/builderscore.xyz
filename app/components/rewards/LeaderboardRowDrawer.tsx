@@ -9,6 +9,10 @@ import {
   DrawerPortal,
 } from "@/app/components/ui/drawer";
 import { useSponsor } from "@/app/context/SponsorContext";
+import {
+  useTalentAccounts,
+  useTalentBuilderScore,
+} from "@/app/hooks/useTalent";
 import { SPONSOR_HOF_MAX_REWARDS } from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
@@ -33,6 +37,13 @@ export default function LeaderboardRowDrawer({
   context?: string;
   onClose: () => void;
 }) {
+  const { data: builderScore } = useTalentBuilderScore(
+    selectedBuilder?.profile.id || "",
+  );
+  const { data: accounts } = useTalentAccounts(
+    selectedBuilder?.profile.id || "",
+  );
+
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
   const router = useRouter();
 
@@ -40,11 +51,18 @@ export default function LeaderboardRowDrawer({
 
   const [isNavigating, setIsNavigating] = useState(false);
 
+  const farcasterAccount = accounts?.accounts?.find(
+    (account) => account.source === "farcaster",
+  );
+
+  const profileUrlId =
+    farcasterAccount?.username || selectedBuilder?.profile.id;
+
   const handleViewProfile = (e: React.MouseEvent) => {
     e.preventDefault();
     if (selectedBuilder?.profile.id) {
       setIsNavigating(true);
-      const targetUrl = `${prefix}/${selectedBuilder.profile.id}`;
+      const targetUrl = `${prefix}/${profileUrlId}`;
       router.push(targetUrl);
     }
   };
@@ -75,7 +93,7 @@ export default function LeaderboardRowDrawer({
         <DrawerContent className="bg-white dark:bg-neutral-900">
           {selectedBuilder && selectedBuilder.profile && (
             <>
-              <div className="flex flex-col items-center justify-center p-4 pb-2">
+              <div className="flex min-h-0 flex-1 flex-col items-center justify-start p-4 pb-2">
                 <Image
                   src={
                     selectedBuilder.profile.image_url?.startsWith("http")
@@ -134,9 +152,7 @@ export default function LeaderboardRowDrawer({
                         Builder Score
                       </p>
                       <p className="font-mono text-2xl font-medium">
-                        {"builder_score" in selectedBuilder.profile
-                          ? selectedBuilder.profile.builder_score?.points
-                          : "-"}
+                        {builderScore?.score?.points || "-"}
                       </p>
                     </div>
 
@@ -210,38 +226,37 @@ export default function LeaderboardRowDrawer({
                 </div>
 
                 {!isHofToUse &&
-                  (selectedBuilder.summary !== null
-                    ? selectedBuilder.summary && (
-                        <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
-                          <div className="flex flex-col">
-                            <p className="secondary-text-style mb-1 text-sm">
-                              Summary
-                            </p>
-                            <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">
-                              <p className="text-neutral-800 dark:text-white">
-                                {selectedBuilder.summary}
-                              </p>
-                            </div>
-                          </div>
+                  (selectedBuilder.summary !== null &&
+                  selectedBuilder.summary ? (
+                    <div className="mt-2 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+                      <div className="flex min-h-0 flex-1 flex-col">
+                        <p className="secondary-text-style mb-1 text-sm">
+                          Summary
+                        </p>
+                        <div className="scrollbar-hide flex min-h-0 flex-1 flex-col overflow-auto">
+                          <p className="text-sm text-neutral-800 dark:text-white">
+                            {selectedBuilder.summary}
+                          </p>
                         </div>
-                      )
-                    : selectedBuilder.reward_amount &&
-                      parseFloat(selectedBuilder.reward_amount) > 0 && (
-                        <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
-                          <div className="flex flex-col">
-                            <p className="secondary-text-style mb-1 text-sm">
-                              Summary
-                            </p>
-                            <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">
-                              <p className="text-neutral-800 dark:text-white">
-                                {selectedBuilder.profile.display_name} earned
-                                Rewards for transactions on previously deployed
-                                verified Smart Contracts.
-                              </p>
-                            </div>
-                          </div>
+                      </div>
+                    </div>
+                  ) : selectedBuilder.reward_amount &&
+                    parseFloat(selectedBuilder.reward_amount) > 0 ? (
+                    <div className="mt-2 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+                      <div className="flex min-h-0 flex-1 flex-col">
+                        <p className="secondary-text-style mb-1 text-sm">
+                          Summary
+                        </p>
+                        <div className="scrollbar-hide flex min-h-0 flex-1 flex-col overflow-auto">
+                          <p className="text-sm text-neutral-800 dark:text-white">
+                            {selectedBuilder.profile.display_name} earned
+                            Rewards for transactions on previously deployed
+                            verified Smart Contracts.
+                          </p>
                         </div>
-                      ))}
+                      </div>
+                    </div>
+                  ) : null)}
               </div>
 
               <DrawerFooter className="pt-0">

@@ -1,5 +1,6 @@
 "use client";
 
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import Spinner from "@/app/components/Spinner";
 import ProfileActionCards from "@/app/components/rewards/ProfileActionCards";
 import ProfileHeader from "@/app/components/rewards/ProfileHeader";
@@ -18,21 +19,20 @@ import {
 import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { TalentBasicProfile, TalentIndividualScore } from "@/app/types/talent";
 import { ExternalLinkIcon } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ProfileWrapper({
   profile,
-  fid,
+  builderScore,
   className,
   detailed,
   rewards,
 }: {
-  profile: TalentProfileSearchApi;
-  fid: string;
+  profile: TalentBasicProfile;
+  builderScore: TalentIndividualScore;
   className?: string;
   detailed?: boolean;
   rewards?: LeaderboardEntry;
@@ -41,17 +41,16 @@ export default function ProfileWrapper({
   const { frameContext } = useUser();
   const router = useRouter();
 
-
   const { data: rewardsClient } = useUserLeaderboards(
     ALL_TIME_GRANT,
     profile.id,
   );
 
-  const { data: socials } = useTalentSocials(fid);
-  const { data: accounts } = useTalentAccounts(fid);
-  const { data: credentials } = useTalentCredentials(fid);
+  const { data: socials } = useTalentSocials(profile.id);
+  const { data: accounts } = useTalentAccounts(profile.id);
+  const { data: credentials } = useTalentCredentials(profile.id);
   const { data: contributedProjects } = useTalentContributedProjects(
-    fid,
+    profile.id,
   );
 
   const farcasterAccount = accounts?.accounts?.find(
@@ -70,10 +69,12 @@ export default function ProfileWrapper({
   const [openRewardsEarned, setOpenRewardsEarned] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
+  const profileUrlId = farcasterAccount?.username || profile.id;
+
   const handleViewProfile = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsNavigating(true);
-    const targetUrl = `${prefix}/${profile.id}`;
+    const targetUrl = `${prefix}/${profileUrlId}`;
     router.push(targetUrl);
   };
 
@@ -97,14 +98,14 @@ export default function ProfileWrapper({
         detailed={detailed}
       />
       <ProfileActionCards
-        profile={profile}
+        builderScore={builderScore}
         rewardsAmount={parseFloat(rewardsToUse?.reward_amount || "0")}
         detailed={detailed || false}
         setOpenRewardsEarned={setOpenRewardsEarned}
       />
 
       {ownProfile && (
-        <Link
+        <MiniAppExternalLink
           className="w-full"
           href={"https://app.talentprotocol.com/settings"}
         >
@@ -115,7 +116,7 @@ export default function ProfileWrapper({
             Edit Profile on Talent Protocol
             <ExternalLinkIcon className="size-4 opacity-50" />
           </Button>
-        </Link>
+        </MiniAppExternalLink>
       )}
 
       <RewardsEarned

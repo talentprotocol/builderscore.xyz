@@ -1,5 +1,5 @@
-import { fetchTalentCredentials } from "@/app/services/talent";
-import { TalentCredentialsResponse } from "@/app/types/talent";
+import { fetchTalentCredentialsDatapoints } from "@/app/services/talent";
+import { TalentDataPointsResponse } from "@/app/types/talent";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -7,17 +7,18 @@ export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const uuid = searchParams.get("uuid");
+  const slug = searchParams.get("slug");
 
-  if (!uuid) {
+  if (!uuid || !slug) {
     return NextResponse.json(
-      { error: "Talent UUID is required" },
+      { error: "Talent UUID and credentialslug are required" },
       { status: 400 },
     );
   }
 
   try {
-    const data: TalentCredentialsResponse | null =
-      await fetchTalentCredentials(uuid);
+    const data: TalentDataPointsResponse | null =
+      await fetchTalentCredentialsDatapoints(uuid, slug);
 
     if (!data) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });

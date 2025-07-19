@@ -1,46 +1,111 @@
 import { ENDPOINTS } from "@/app/config/api";
 import {
   fetchTalentAccounts,
+  fetchTalentBuilderScore,
   fetchTalentContributedProjects,
   fetchTalentCredentials,
+  fetchTalentCredentialsDatapoints,
+  fetchTalentProfile,
+  fetchTalentProfileByFid,
   fetchTalentSocials,
 } from "@/app/services/talent";
 import {
   TalentAccountsResponse,
   TalentContributedProjectsResponse,
   TalentCredentialsResponse,
+  TalentDataPointsResponse,
+  TalentProfileResponse,
+  TalentScoreResponse,
   TalentSocialsResponse,
 } from "@/app/types/talent";
 import { isServer, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export function useTalentCredentials(fid: string) {
+import { useUser } from "../context/UserContext";
+
+export function useTalentProfile(uuid: string) {
+  return useQuery<TalentProfileResponse>({
+    queryKey: ["talentProfile", uuid],
+    queryFn: async () => {
+      if (isServer) {
+        const response = await fetchTalentProfile(uuid);
+        return response;
+      } else {
+        const response = await axios.get(
+          `${ENDPOINTS.localApi.talent.profile}?uuid=${uuid}`,
+        );
+        return response.data;
+      }
+    },
+  });
+}
+
+export function useCurrentTalentProfile() {
+  const { frameContext, isSDKLoaded } = useUser();
+
+  return useQuery<TalentProfileResponse>({
+    queryKey: ["talentProfile", frameContext?.user?.fid],
+    queryFn: async () => {
+      if (isServer) {
+        const response = await fetchTalentProfileByFid(frameContext!.user.fid);
+        return response;
+      } else {
+        const response = await axios.get(
+          `${ENDPOINTS.localApi.talent.profileByFid}?fid=${frameContext!.user.fid}`,
+        );
+        return response.data;
+      }
+    },
+    enabled: !!(frameContext?.user?.fid && isSDKLoaded),
+  });
+}
+
+export function useTalentCredentials(uuid: string) {
   return useQuery<TalentCredentialsResponse>({
-    queryKey: ["talentCredentials", fid],
+    queryKey: ["talentCredentials", uuid],
     queryFn: async () => {
       if (isServer) {
-        const response = await fetchTalentCredentials(fid);
+        const response = await fetchTalentCredentials(uuid);
         return response;
       } else {
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.credentials}?fid=${fid}`,
+          `${ENDPOINTS.localApi.talent.credentials}?uuid=${uuid}`,
         );
         return response.data;
       }
     },
+    enabled: !!uuid,
   });
 }
 
-export function useTalentContributedProjects(fid: string) {
+export function useTalentCredentialDatapoints(uuid: string, slug: string) {
+  return useQuery<TalentDataPointsResponse>({
+    queryKey: ["talentCredentialDatapoints", uuid, slug],
+    queryFn: async () => {
+      if (isServer) {
+        const response = await fetchTalentCredentialsDatapoints(uuid, slug);
+        return response;
+      } else {
+        const response = await axios.get(
+          `${ENDPOINTS.localApi.talent.credentialsDatapoints}?uuid=${uuid}&slug=${slug}`,
+        );
+        return response.data;
+      }
+    },
+    enabled: !!uuid,
+  });
+}
+
+export function useTalentContributedProjects(uuid: string) {
   return useQuery<TalentContributedProjectsResponse>({
-    queryKey: ["talentContributedProjects", fid],
+    queryKey: ["talentContributedProjects", uuid],
     queryFn: async () => {
       if (isServer) {
-        const response = await fetchTalentContributedProjects(fid);
+        const response = await fetchTalentContributedProjects(uuid);
         return response;
       } else {
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.contributedProjects}?fid=${fid}`,
+          `${ENDPOINTS.localApi.talent.contributedProjects}?uuid=${uuid}`,
         );
         return response.data;
       }
@@ -48,36 +113,56 @@ export function useTalentContributedProjects(fid: string) {
   });
 }
 
-export function useTalentSocials(fid: string) {
+export function useTalentSocials(uuid: string) {
   return useQuery<TalentSocialsResponse>({
-    queryKey: ["talentSocials", fid],
+    queryKey: ["talentSocials", uuid],
     queryFn: async () => {
       if (isServer) {
-        const response = await fetchTalentSocials(fid);
+        const response = await fetchTalentSocials(uuid);
         return response;
       } else {
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.socials}?fid=${fid}`,
+          `${ENDPOINTS.localApi.talent.socials}?uuid=${uuid}`,
         );
         return response.data;
       }
     },
+    enabled: !!uuid,
   });
 }
 
-export function useTalentAccounts(fid: string) {
+export function useTalentAccounts(uuid: string) {
   return useQuery<TalentAccountsResponse>({
-    queryKey: ["talentAccounts", fid],
+    queryKey: ["talentAccounts", uuid],
     queryFn: async () => {
       if (isServer) {
-        const response = await fetchTalentAccounts(fid);
+        const response = await fetchTalentAccounts(uuid);
         return response;
       } else {
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.accounts}?fid=${fid}`,
+          `${ENDPOINTS.localApi.talent.accounts}?uuid=${uuid}`,
         );
         return response.data;
       }
     },
+    enabled: !!uuid,
+  });
+}
+
+export function useTalentBuilderScore(uuid: string) {
+  return useQuery<TalentScoreResponse>({
+    queryKey: ["talentBuilderScore", uuid],
+    queryFn: async () => {
+      if (isServer) {
+        const response = await fetchTalentBuilderScore(uuid);
+        return response;
+      } else {
+        const response = await axios.get(
+          `${ENDPOINTS.localApi.talent.builderScore}?uuid=${uuid}`,
+        );
+        return response.data;
+      }
+    },
+    enabled: !!uuid,
   });
 }

@@ -1,7 +1,10 @@
 import ActionCard from "@/app/components/ActionCard";
 import PulsingIndicator from "@/app/components/PulsingIndicator";
 import Actions from "@/app/components/rewards/Actions";
-import { useUserProfiles } from "@/app/hooks/useRewards";
+import {
+  useCurrentTalentProfile,
+  useTalentBuilderScore,
+} from "@/app/hooks/useTalent";
 import { getTimeRemaining } from "@/app/lib/utils";
 
 export default function HeaderActionCards({
@@ -35,7 +38,10 @@ export default function HeaderActionCards({
   setOpen: (open: boolean) => void;
 }) {
   const { data: userProfileData, isFetched: isFetchedUserProfile } =
-    useUserProfiles();
+    useCurrentTalentProfile();
+  const { data: builderScoreData } = useTalentBuilderScore(
+    userProfileData?.profile.id || "",
+  );
 
   const rewardsProgress =
     parseFloat(rewards.value) > rewards.max
@@ -82,7 +88,7 @@ export default function HeaderActionCards({
             {allTime ? (
               <ActionCard
                 titleMono
-                title={userProfileData.builderScore?.points.toString() || "0"}
+                title={builderScoreData?.score.points.toString() || "0"}
                 description="Builder Score"
               />
             ) : (
@@ -101,7 +107,7 @@ export default function HeaderActionCards({
               titleMono
               title={`${rewards.value} ${rewards.ticker}`}
               description="Your Rewards"
-              progress={rewardsProgress * 100}
+              progress={rewards.max && rewardsProgress * 100}
             />
           </>
         )}
