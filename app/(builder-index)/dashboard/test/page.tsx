@@ -12,7 +12,7 @@ import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
 import { fetchSearchAdvancedMetadataFields } from "@/app/services/index/search-fields";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
 import { ProfilesComponentConfig } from "@/app/types/index/profiles-component";
-import { SearchDataResponse } from "@/app/types/index/search";
+import { TalentSearchProfileResponse } from "@/app/types/talent";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
@@ -124,7 +124,7 @@ export default function Page() {
             queryString,
           });
 
-          return data as SearchDataResponse;
+          return data as TalentSearchProfileResponse;
         },
       }),
     ),

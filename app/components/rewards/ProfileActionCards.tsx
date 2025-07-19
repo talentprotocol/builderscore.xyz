@@ -3,15 +3,15 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import { SPONSORS } from "@/app/lib/constants";
 import { INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS } from "@/app/lib/utils";
 import { formatNumber } from "@/app/lib/utils";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { TalentIndividualScore } from "@/app/types/talent";
 
 export default function ProfileActionCards({
-  profile,
+  builderScore,
   rewardsAmount,
   detailed,
   setOpenRewardsEarned,
 }: {
-  profile: TalentProfileSearchApi;
+  builderScore: TalentIndividualScore;
   rewardsAmount: number;
   detailed: boolean;
   setOpenRewardsEarned: (open: boolean) => void;
@@ -22,7 +22,7 @@ export default function ProfileActionCards({
     <div className="mt-2 grid w-full grid-cols-2 gap-2">
       <ActionCard
         titleMono
-        title={profile.builder_score?.points?.toString() || "-"}
+        title={builderScore.points?.toString() || "-"}
         description="Builder Score"
       />
 

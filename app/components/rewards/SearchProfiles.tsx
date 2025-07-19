@@ -5,7 +5,7 @@ import SearchProfileItem from "@/app/components/rewards/SearchProfileItem";
 import SearchProfileItemDrawer from "@/app/components/rewards/SearchProfileItemDrawer";
 import { Input } from "@/app/components/ui/input";
 import { useInfiniteSearchProfiles } from "@/app/hooks/useRewards";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { TalentSearchProfile } from "@/app/types/talent";
 import { SearchIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -13,7 +13,7 @@ export default function SearchProfiles() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [selectedBuilder, setSelectedBuilder] =
-    useState<TalentProfileSearchApi | null>(null);
+    useState<TalentSearchProfile | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {

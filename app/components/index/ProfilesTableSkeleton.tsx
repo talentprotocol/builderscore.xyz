@@ -2,7 +2,7 @@
 
 import ProfilesTable from "@/app/components/index/ProfilesTable";
 import { getProfilesTableColumns } from "@/app/components/index/ProfilesTableColumns";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { TalentSearchProfile } from "@/app/types/talent";
 import {
   SortingState,
   getCoreRowModel,
@@ -16,7 +16,7 @@ export default function ProfilesTableSkeleton({
   perPage,
   columnOrder,
 }: {
-  originalProfiles: TalentProfileSearchApi[];
+  originalProfiles: TalentSearchProfile[];
   originalSorting: SortingState;
   page: number;
   perPage: number;

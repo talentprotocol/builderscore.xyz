@@ -1,6 +1,6 @@
 import { CSVRow } from "@/app/lib/csv-parser";
 import { BuilderData } from "@/app/services/rewards/analytics";
-import { fetchProfileById } from "@/app/services/talent";
+import { fetchTalentProfile } from "@/app/services/talent";
 
 export async function fetchTopBuildersLeaderboard(
   data: CSVRow[],
@@ -20,8 +20,8 @@ export async function fetchTopBuildersLeaderboard(
     );
 
     const profilePromises = topBuilders.map(async (builder) => {
-      const profileData = await fetchProfileById(builder.profileId);
-      if (profileData.profile) {
+      const profileData = await fetchTalentProfile(builder.profileId);
+      if (profileData?.profile) {
         return {
           ...builder,
           profileData: {

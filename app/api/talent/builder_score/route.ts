@@ -1,5 +1,5 @@
-import { fetchTalentCredentials } from "@/app/services/talent";
-import { TalentCredentialsResponse } from "@/app/types/talent";
+import { fetchTalentBuilderScore } from "@/app/services/talent";
+import { TalentScoreResponse } from "@/app/types/talent";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -16,8 +16,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const data: TalentCredentialsResponse | null =
-      await fetchTalentCredentials(uuid);
+    const data: TalentScoreResponse | null =
+      await fetchTalentBuilderScore(uuid);
 
     if (!data) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });
@@ -25,8 +25,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { error: `Failed to fetch credentials: ${error}` },
+      { error: `Failed to fetch builder score: ${error}` },
       { status: 500 },
     );
   }

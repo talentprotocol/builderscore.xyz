@@ -2,21 +2,20 @@ import { ENDPOINTS } from "@/app/config/api";
 import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
+import { useCurrentTalentProfile } from "@/app/hooks/useTalent";
 import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { fetchSearchAdvanced } from "@/app/services/index/search-advanced";
 import { fetchGrants } from "@/app/services/rewards/grants";
 import { fetchLeaderboards } from "@/app/services/rewards/leaderboards";
 import { fetchLeaderboardEntry } from "@/app/services/rewards/leaderboards";
 import { fetchSponsors } from "@/app/services/rewards/sponsors";
-import { fetchUserByFid } from "@/app/services/talent";
 import { AdvancedSearchRequest } from "@/app/types/advancedSearchRequest";
-import { SearchDataResponse } from "@/app/types/index/search";
 import { GrantsResponse } from "@/app/types/rewards/grants";
 import { Grant } from "@/app/types/rewards/grants";
 import { LeaderboardResponse } from "@/app/types/rewards/leaderboards";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { SponsorsResponse } from "@/app/types/rewards/sponsors";
-import { TalentProfileResponse } from "@/app/types/talent";
+import { TalentSearchProfileResponse } from "@/app/types/talent";
 import { isServer, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -61,31 +60,6 @@ export function useGrants() {
       }
     },
     enabled: !!selectedSponsor && !loadingSponsors,
-  });
-}
-
-export function useUserProfiles() {
-  const { frameContext, isSDKLoaded } = useUser();
-
-  return useQuery<TalentProfileResponse>({
-    queryKey: ["userProfiles", frameContext?.user?.fid],
-    queryFn: async () => {
-      if (!frameContext?.user?.fid) {
-        throw new Error("No FID available");
-      }
-
-      if (isServer) {
-        const response = await fetchUserByFid(frameContext.user.fid);
-        return response;
-      } else {
-        const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.profile}?fid=${frameContext.user.fid}`,
-        );
-        return response.data;
-      }
-    },
-    enabled: !!(frameContext?.user?.fid && isSDKLoaded),
-    retry: false,
   });
 }
 
@@ -263,7 +237,7 @@ export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
   const { frameContext } = useUser();
 
   const { data: userProfileData, isLoading: loadingUserProfile } =
-    useUserProfiles();
+    useCurrentTalentProfile();
   const { isLoading: loadingGrants } = useGrants();
   const { isLoading: loadingSponsors } = useSponsors();
 
@@ -316,7 +290,7 @@ export function useUserLeaderboards(grant?: Grant | null, userId?: string) {
 }
 
 export function useInfiniteSearchProfiles(searchQuery: string) {
-  return useInfiniteQuery<SearchDataResponse>({
+  return useInfiniteQuery<TalentSearchProfileResponse>({
     queryKey: ["infiniteSearchProfiles", searchQuery],
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {

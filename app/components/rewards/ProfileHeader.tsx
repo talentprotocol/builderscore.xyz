@@ -3,7 +3,7 @@ import { Button } from "@/app/components/ui/button";
 import { cn, formatNumber } from "@/app/lib/utils";
 import {
   TalentAccount,
-  TalentProfileSearchApi,
+  TalentBasicProfile,
   TalentSocial,
 } from "@/app/types/talent";
 import { ChevronLeftIcon, EllipsisIcon } from "lucide-react";
@@ -17,7 +17,7 @@ export default function ProfileHeader({
   accounts,
   detailed,
 }: {
-  profile: TalentProfileSearchApi;
+  profile: TalentBasicProfile;
   socials?: TalentSocial[];
   accounts?: TalentAccount[];
   detailed?: boolean;

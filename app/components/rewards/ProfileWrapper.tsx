@@ -19,20 +19,20 @@ import {
 import { ALL_TIME_GRANT } from "@/app/lib/constants";
 import { cn } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { TalentBasicProfile, TalentIndividualScore } from "@/app/types/talent";
 import { ExternalLinkIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ProfileWrapper({
   profile,
-  fid,
+  builderScore,
   className,
   detailed,
   rewards,
 }: {
-  profile: TalentProfileSearchApi;
-  fid: string;
+  profile: TalentBasicProfile;
+  builderScore: TalentIndividualScore;
   className?: string;
   detailed?: boolean;
   rewards?: LeaderboardEntry;
@@ -46,10 +46,12 @@ export default function ProfileWrapper({
     profile.id,
   );
 
-  const { data: socials } = useTalentSocials(fid);
-  const { data: accounts } = useTalentAccounts(fid);
-  const { data: credentials } = useTalentCredentials(fid);
-  const { data: contributedProjects } = useTalentContributedProjects(fid);
+  const { data: socials } = useTalentSocials(profile.id);
+  const { data: accounts } = useTalentAccounts(profile.id);
+  const { data: credentials } = useTalentCredentials(profile.id);
+  const { data: contributedProjects } = useTalentContributedProjects(
+    profile.id,
+  );
 
   const farcasterAccount = accounts?.accounts?.find(
     (account) => account.source === "farcaster",
@@ -94,7 +96,7 @@ export default function ProfileWrapper({
         detailed={detailed}
       />
       <ProfileActionCards
-        profile={profile}
+        builderScore={builderScore}
         rewardsAmount={parseFloat(rewardsToUse?.reward_amount || "0")}
         detailed={detailed || false}
         setOpenRewardsEarned={setOpenRewardsEarned}

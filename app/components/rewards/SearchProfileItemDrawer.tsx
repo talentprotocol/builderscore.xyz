@@ -6,7 +6,7 @@ import {
   DrawerContent,
   DrawerPortal,
 } from "@/app/components/ui/drawer";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { TalentBasicProfile, TalentSearchProfile } from "@/app/types/talent";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
@@ -14,7 +14,7 @@ export default function SearchProfileItemDrawer({
   selectedBuilder,
   onClose,
 }: {
-  selectedBuilder: TalentProfileSearchApi;
+  selectedBuilder: TalentSearchProfile;
   onClose: () => void;
 }) {
   return (
@@ -24,7 +24,11 @@ export default function SearchProfileItemDrawer({
           <DialogTitle>{selectedBuilder.name || "Builder"}</DialogTitle>
         </VisuallyHidden>
         <DrawerContent className="bg-white dark:bg-neutral-900">
-          <ProfileWrapper profile={selectedBuilder} fid={selectedBuilder.id} className="p-4" />
+          <ProfileWrapper
+            profile={selectedBuilder as TalentBasicProfile}
+            builderScore={selectedBuilder.builder_score}
+            className="p-4"
+          />
         </DrawerContent>
       </DrawerPortal>
     </Drawer>

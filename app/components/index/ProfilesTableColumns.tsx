@@ -2,7 +2,7 @@
 
 import { DataTableColumnHeader } from "@/app/components/data-table/data-table-column-header";
 import { Badge } from "@/app/components/ui/badge";
-import type { TalentProfileSearchApi } from "@/app/types/talent";
+import type { TalentSearchProfile } from "@/app/types/talent";
 import type { ColumnDef } from "@tanstack/react-table";
 import { BadgeCheck, Hash, Star, User } from "lucide-react";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import Image from "next/image";
 export function getProfilesTableColumns(
   page: number = 1,
   perPage: number = 10,
-): ColumnDef<TalentProfileSearchApi>[] {
+): ColumnDef<TalentSearchProfile>[] {
   return [
     {
       id: "row_number",

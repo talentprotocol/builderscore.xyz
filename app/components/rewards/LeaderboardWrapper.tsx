@@ -11,8 +11,8 @@ import {
   useHallOfFameLeaderboards,
   useLeaderboards,
   useUserLeaderboards,
-  useUserProfiles,
 } from "@/app/hooks/useRewards";
+import { useCurrentTalentProfile } from "@/app/hooks/useTalent";
 import {
   ALL_TIME_GRANT,
   SPONSOR_REWARDS_START_DATE,
@@ -26,7 +26,7 @@ export default function LeaderboardWrapper() {
   const { selectedGrant } = useGrant();
 
   const { data: grantsData } = useGrants();
-  const { data: userProfileData } = useUserProfiles();
+  const { data: userProfileData } = useCurrentTalentProfile();
   const { data: userLeaderboardData } = useUserLeaderboards(selectedGrant);
   const {
     data: leaderboardData,

@@ -1,11 +1,11 @@
 "use client";
 
 import { isEmptyOrInvisible } from "@/app/lib/utils";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { TalentSearchProfile } from "@/app/types/talent";
 import Image from "next/image";
 
 interface SearchProfileItemProps {
-  profile: TalentProfileSearchApi;
+  profile: TalentSearchProfile;
   className?: string;
   onClick?: () => void;
   first?: boolean;

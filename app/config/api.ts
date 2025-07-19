@@ -11,6 +11,7 @@ export const ENDPOINTS = {
   talent: {
     socials: "/socials",
     profile: "/profile",
+    profileByFid: "/profile/fid",
     builderScore: "/score",
     accounts: "/accounts",
     credentials: "/credentials",
@@ -30,7 +31,7 @@ export const ENDPOINTS = {
     },
     talent: {
       profile: "/api/talent/profile",
-      lookup: "/api/talent/lookup",
+      profileByFid: "/api/talent/profile/fid",
       grants: "/api/grants",
       leaderboards: "/api/leaderboards",
       leaderboardEntry: "/api/leaderboards/entry",
@@ -45,6 +46,8 @@ export const ENDPOINTS = {
       credentials: "/api/talent/credentials",
       contributedProjects: "/api/talent/projects/contributed",
       accounts: "/api/talent/accounts",
+      builderScore: "/api/talent/builder_score",
+      credentialsDatapoints: "/api/talent/credentials/datapoints",
     },
     neynar: {
       notificationTokens: "/api/neynar/notification_tokens",

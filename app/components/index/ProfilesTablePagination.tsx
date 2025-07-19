@@ -9,7 +9,7 @@ import {
 } from "@/app/components/ui/select";
 import { PER_PAGE_OPTIONS } from "@/app/lib/constants";
 import { cn, formatNumber } from "@/app/lib/utils";
-import { TalentProfileSearchApi } from "@/app/types/talent";
+import { TalentSearchProfile } from "@/app/types/talent";
 import { Table } from "@tanstack/react-table";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
@@ -19,7 +19,7 @@ export default function ProfilesTablePagination({
   showPagination,
   showTotal,
 }: {
-  table: Table<TalentProfileSearchApi>;
+  table: Table<TalentSearchProfile>;
   totalProfiles: number;
   showPagination: boolean;
   showTotal: boolean;

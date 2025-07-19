@@ -9,8 +9,7 @@ import {
   DrawerPortal,
 } from "@/app/components/ui/drawer";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useUser } from "@/app/context/UserContext";
-import { useUserProfiles } from "@/app/hooks/useRewards";
+import { useTalentBuilderScore } from "@/app/hooks/useTalent";
 import { SPONSOR_HOF_MAX_REWARDS } from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
@@ -35,8 +34,9 @@ export default function LeaderboardRowDrawer({
   context?: string;
   onClose: () => void;
 }) {
-  const { frameContext } = useUser();
-  const { data: userProfileData } = useUserProfiles();
+  const { data: builderScore } = useTalentBuilderScore(
+    selectedBuilder?.profile.id || "",
+  );
 
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
   const router = useRouter();
@@ -139,10 +139,7 @@ export default function LeaderboardRowDrawer({
                         Builder Score
                       </p>
                       <p className="font-mono text-2xl font-medium">
-                        {selectedBuilder.profile.builder_score?.points ||
-                          (frameContext
-                            ? userProfileData?.builderScore?.points
-                            : "-")}
+                        {builderScore?.score?.points || "-"}
                       </p>
                     </div>
 

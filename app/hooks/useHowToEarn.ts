@@ -1,6 +1,17 @@
-import { useUserProfiles } from "@/app/hooks/useRewards";
+import {
+  useCurrentTalentProfile,
+  useTalentAccounts,
+  useTalentBuilderScore,
+  useTalentCredentialDatapoints,
+  useTalentSocials,
+} from "@/app/hooks/useTalent";
 import { ALLOWED_SPONSORS } from "@/app/lib/constants";
 import { Sponsor } from "@/app/types/rewards/sponsors";
+import {
+  TalentAccount,
+  TalentDataPoint,
+  TalentSocial,
+} from "@/app/types/talent";
 
 export type SponsorSlug = (typeof ALLOWED_SPONSORS)[number];
 
@@ -15,13 +26,39 @@ type HowToEarnConfig = {
 };
 
 export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
-  const { data: userProfileData, isLoading: loadingUser } = useUserProfiles();
+  const { data: userProfileData, isLoading: loadingUser } =
+    useCurrentTalentProfile();
+  const { data: builderScoreData } = useTalentBuilderScore(
+    userProfileData?.profile.id || "",
+  );
+  const { data: socialsData } = useTalentSocials(
+    userProfileData?.profile.id || "",
+  );
+  const { data: accountsData } = useTalentAccounts(
+    userProfileData?.profile.id || "",
+  );
+  const { data: celoCredentialData } = useTalentCredentialDatapoints(
+    userProfileData?.profile.id || "",
+    "celo",
+  );
 
-  const basename = userProfileData?.basename;
+  const basenameSocial = socialsData?.socials.find(
+    (social: TalentSocial) => social.source === "basename",
+  );
+
+  const selfXyzAccount = accountsData?.accounts.find(
+    (account: TalentAccount) => account.source === "self",
+  );
+
+  const celoCredential = celoCredentialData?.data_points.find(
+    (datapoint: TalentDataPoint) => datapoint.credential_slug === "celo",
+  );
+
+  const basename = basenameSocial?.handle;
   const humanCheckmark = userProfileData?.profile.human_checkmark;
-  const builderScore = userProfileData?.builderScore;
-  const selfXyzAccount = userProfileData?.selfXyz;
-  const celoTransaction = userProfileData?.celoTransaction;
+  const builderScore = builderScoreData?.score;
+  const hasSelfXyzAccount = selfXyzAccount?.identifier !== null;
+  const hasCeloTransaction = celoCredential?.value !== null;
 
   const baseConfig = {
     description:
@@ -36,8 +73,7 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
       {
         text: "Increase your Builder Score to 40+",
         url: "https://app.talentprotocol.com/profile",
-        condition:
-          !loadingUser && builderScore?.points && builderScore?.points >= 40,
+        condition: !loadingUser && builderScore && builderScore.points >= 40,
         required: true,
       },
     ],
@@ -56,13 +92,13 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
       {
         text: "Have 1+ outgoing transactions on Celo",
         url: "https://app.talentprotocol.com",
-        condition: !loadingUser && celoTransaction,
+        condition: !loadingUser && hasCeloTransaction,
         required: true,
       },
       {
         text: "Earn more by verifying your humanity with Self.xyz (optional)",
         url: "https://app.talentprotocol.com/accounts",
-        condition: !loadingUser && selfXyzAccount,
+        condition: !loadingUser && hasSelfXyzAccount,
         required: false,
       },
     ],

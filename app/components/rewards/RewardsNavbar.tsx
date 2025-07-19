@@ -34,9 +34,7 @@ export default function RewardsNavbar() {
     },
     {
       label: "profile",
-      href: frameContext
-        ? `${prefix}/${frameContext.user.fid}`
-        : `${prefix}/login`,
+      href: frameContext && `${prefix}/${frameContext.user.fid}`,
       icon: <UserIcon />,
       onClick: (event: React.MouseEvent<HTMLAnchorElement>) => {
         if (!frameContext) {
@@ -55,7 +53,7 @@ export default function RewardsNavbar() {
             <NavigationMenuItem key={item.label} className="h-16 w-full flex-1">
               <NavigationMenuLink asChild className="rounded-none">
                 <Link
-                  href={item.href}
+                  href={item?.href || ""}
                   onClick={item.onClick}
                   className="flex h-16 w-full items-center justify-center text-xl"
                 >
