@@ -39,7 +39,7 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
   );
   const { data: celoCredentialData } = useTalentCredentialDatapoints(
     userProfileData?.profile.id || "",
-    "celo",
+    "celo_out_transactions",
   );
 
   const basenameSocial = socialsData?.socials.find(
@@ -50,15 +50,14 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
     (account: TalentAccount) => account.source === "self",
   );
 
-  const celoCredential = celoCredentialData?.data_points.find(
-    (datapoint: TalentDataPoint) => datapoint.credential_slug === "celo",
+  const celoOutTransactionsCredential = celoCredentialData?.data_points.find(
+    (datapoint: TalentDataPoint) =>
+      datapoint.credential_slug === "celo_out_transactions",
   );
 
   const basename = basenameSocial?.handle;
   const humanCheckmark = userProfileData?.profile.human_checkmark;
   const builderScore = builderScoreData?.score;
-  const hasSelfXyzAccount = selfXyzAccount?.identifier !== null;
-  const hasCeloTransaction = celoCredential?.value !== null;
 
   const baseConfig = {
     description:
@@ -86,19 +85,19 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
       {
         text: "Get your Human Checkmark",
         url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
-        condition: !loadingUser && humanCheckmark,
+        condition: !loadingUser && !!humanCheckmark,
         required: true,
       },
       {
         text: "Have 1+ outgoing transactions on Celo",
         url: "https://app.talentprotocol.com",
-        condition: !loadingUser && hasCeloTransaction,
+        condition: !loadingUser && !!celoOutTransactionsCredential,
         required: true,
       },
       {
         text: "Earn more by verifying your humanity with Self.xyz (optional)",
         url: "https://app.talentprotocol.com/accounts",
-        condition: !loadingUser && hasSelfXyzAccount,
+        condition: !loadingUser && !!selfXyzAccount,
         required: false,
       },
     ],

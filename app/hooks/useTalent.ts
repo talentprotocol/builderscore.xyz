@@ -74,6 +74,7 @@ export function useTalentCredentials(uuid: string) {
         return response.data;
       }
     },
+    enabled: !!uuid,
   });
 }
 
@@ -91,6 +92,7 @@ export function useTalentCredentialDatapoints(uuid: string, slug: string) {
         return response.data;
       }
     },
+    enabled: !!uuid,
   });
 }
 
@@ -125,6 +127,7 @@ export function useTalentSocials(uuid: string) {
         return response.data;
       }
     },
+    enabled: !!uuid,
   });
 }
 
@@ -142,6 +145,7 @@ export function useTalentAccounts(uuid: string) {
         return response.data;
       }
     },
+    enabled: !!uuid,
   });
 }
 
@@ -159,5 +163,6 @@ export function useTalentBuilderScore(uuid: string) {
         return response.data;
       }
     },
+    enabled: !!uuid,
   });
 }

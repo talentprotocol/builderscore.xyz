@@ -17,7 +17,7 @@ export default async function Page({
   params: Promise<{ level_one: string }>;
 }) {
   const { level_one } = await params;
-  const usableSponsor = getUsableSponsor(level_one);
+  const usableSponsor = await getUsableSponsor(level_one);
 
   if (!SPONSORS[level_one as keyof typeof SPONSORS]) {
     let usableProfile: TalentProfileResponse | null;
