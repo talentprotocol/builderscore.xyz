@@ -12,6 +12,7 @@ import {
   SPONSOR_BANNERS,
   SPONSOR_MIN_REWARDS,
   SPONSOR_REWARDS_PERIOD,
+  SPONSOR_SCORING,
   SPONSOR_TOTAL_REWARDED,
 } from "@/app/lib/constants";
 import {
@@ -91,9 +92,26 @@ export default function Header() {
           selectedSponsor?.slug as keyof typeof SPONSOR_TOTAL_REWARDED
         ] || 100;
 
-    const activityTotal = activity?.filter(
-      (metric) => metric.category === "total",
-    )[0];
+    const scoringActivity = activity
+      ?.filter((metric) => metric.metric_name === "score")
+      .filter(
+        (metric) => metric.category !== "total" && metric.category !== "bonus",
+      )
+      .filter((metric) =>
+        SPONSOR_SCORING[
+          selectedSponsor?.slug as keyof typeof SPONSOR_SCORING
+        ]?.includes(metric.category),
+      )
+      .sort((a, b) => b.raw_value - a.raw_value);
+
+    const scoringActivityTotal = scoringActivity?.reduce(
+      (sum, metric) => sum + metric.raw_value,
+      0,
+    );
+
+    const scoringActivityMax = scoringActivity?.length
+      ? scoringActivity.length * 100
+      : 0;
 
     const ended =
       allTime ||
@@ -130,8 +148,8 @@ export default function Header() {
             ticker: sponsorTokenTicker,
           }}
           activity={{
-            value: activityTotal?.raw_value || 0,
-            max: 100,
+            value: scoringActivityTotal || 0,
+            max: scoringActivityMax || 100,
           }}
           rewards={{
             value: formatNumber(
