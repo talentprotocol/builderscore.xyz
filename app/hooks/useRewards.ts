@@ -244,7 +244,7 @@ export function useLeaderboardsEarnings(uuid: string) {
           response.data.users.length === 0 &&
           pageParam === 1
         ) {
-          throw new Error("No earnings found.");
+          throw new Error("No transactions found.");
         }
         return response.data;
       }

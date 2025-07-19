@@ -6,7 +6,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const DEV_FRAME_CONTEXT: FrameContext = {
   user: {
-    fid: 746,
+    fid: 856355,
     username: "simao",
     displayName: "Simão",
   },
