@@ -213,38 +213,37 @@ export default function LeaderboardRowDrawer({
                 </div>
 
                 {!isHofToUse &&
-                  (selectedBuilder.summary !== null
-                    ? selectedBuilder.summary && (
-                        <div className="mt-3 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
-                          <div className="flex min-h-0 flex-1 flex-col">
-                            <p className="secondary-text-style mb-1 text-sm">
-                              Summary
-                            </p>
-                            <div className="scrollbar-hide flex min-h-0 flex-1 flex-col overflow-auto">
-                              <p className="text-sm text-neutral-800 dark:text-white">
-                                {selectedBuilder.summary}
-                              </p>
-                            </div>
-                          </div>
+                  (selectedBuilder.summary !== null &&
+                  selectedBuilder.summary ? (
+                    <div className="mt-2 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+                      <div className="flex min-h-0 flex-1 flex-col">
+                        <p className="secondary-text-style mb-1 text-sm">
+                          Summary
+                        </p>
+                        <div className="scrollbar-hide flex min-h-0 flex-1 flex-col overflow-auto">
+                          <p className="text-sm text-neutral-800 dark:text-white">
+                            {selectedBuilder.summary}
+                          </p>
                         </div>
-                      )
-                    : selectedBuilder.reward_amount &&
-                      parseFloat(selectedBuilder.reward_amount) > 0 && (
-                        <div className="mt-3 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
-                          <div className="flex min-h-0 flex-1 flex-col">
-                            <p className="secondary-text-style mb-1 text-sm">
-                              Summary
-                            </p>
-                            <div className="scrollbar-hide flex min-h-0 flex-1 flex-col overflow-auto">
-                              <p className="text-sm text-neutral-800 dark:text-white">
-                                {selectedBuilder.profile.display_name} earned
-                                Rewards for transactions on previously deployed
-                                verified Smart Contracts.
-                              </p>
-                            </div>
-                          </div>
+                      </div>
+                    </div>
+                  ) : selectedBuilder.reward_amount &&
+                    parseFloat(selectedBuilder.reward_amount) > 0 ? (
+                    <div className="mt-2 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+                      <div className="flex min-h-0 flex-1 flex-col">
+                        <p className="secondary-text-style mb-1 text-sm">
+                          Summary
+                        </p>
+                        <div className="scrollbar-hide flex min-h-0 flex-1 flex-col overflow-auto">
+                          <p className="text-sm text-neutral-800 dark:text-white">
+                            {selectedBuilder.profile.display_name} earned
+                            Rewards for transactions on previously deployed
+                            verified Smart Contracts.
+                          </p>
                         </div>
-                      ))}
+                      </div>
+                    </div>
+                  ) : null)}
               </div>
 
               <DrawerFooter className="pt-0">
