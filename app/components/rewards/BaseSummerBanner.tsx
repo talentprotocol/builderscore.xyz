@@ -1,10 +1,14 @@
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import BaseSummerIcon from "@/app/components/logos/BaseSummerIcon";
 import BaseSummerLogo from "@/app/components/logos/BaseSummerLogo";
 import Image from "next/image";
 
 export function BaseSummerBanner() {
   return (
-    <div className="border-style relative mt-2 mb-2 flex justify-center overflow-hidden rounded-lg">
+    <MiniAppExternalLink
+      href="https://mirror.xyz/talentprotocol.eth/Kl9C__jWHSdvBWM2C19lqEEBcl40lwtM8EmrVqyqhLE"
+      className="border-style relative mt-2 mb-2 flex justify-center overflow-hidden rounded-lg"
+    >
       <div className="flex h-28 w-full justify-center border-b-8 border-[#FCCF10] bg-[#FDFBF0] bg-cover bg-center p-2">
         <Image
           src="/images/rewards/base-summer/banner-texture.png"
@@ -26,6 +30,6 @@ export function BaseSummerBanner() {
           />
         </div>
       </div>
-    </div>
+    </MiniAppExternalLink>
   );
 }

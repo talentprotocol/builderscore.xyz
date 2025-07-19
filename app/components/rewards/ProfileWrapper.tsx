@@ -1,5 +1,6 @@
 "use client";
 
+import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import Spinner from "@/app/components/Spinner";
 import ProfileActionCards from "@/app/components/rewards/ProfileActionCards";
 import ProfileHeader from "@/app/components/rewards/ProfileHeader";
@@ -20,7 +21,6 @@ import { cn } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { TalentProfileSearchApi } from "@/app/types/talent";
 import { ExternalLinkIcon } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -41,7 +41,6 @@ export default function ProfileWrapper({
   const { frameContext } = useUser();
   const router = useRouter();
 
-
   const { data: rewardsClient } = useUserLeaderboards(
     ALL_TIME_GRANT,
     profile.id,
@@ -50,9 +49,7 @@ export default function ProfileWrapper({
   const { data: socials } = useTalentSocials(fid);
   const { data: accounts } = useTalentAccounts(fid);
   const { data: credentials } = useTalentCredentials(fid);
-  const { data: contributedProjects } = useTalentContributedProjects(
-    fid,
-  );
+  const { data: contributedProjects } = useTalentContributedProjects(fid);
 
   const farcasterAccount = accounts?.accounts?.find(
     (account) => account.source === "farcaster",
@@ -104,7 +101,7 @@ export default function ProfileWrapper({
       />
 
       {ownProfile && (
-        <Link
+        <MiniAppExternalLink
           className="w-full"
           href={"https://app.talentprotocol.com/settings"}
         >
@@ -115,7 +112,7 @@ export default function ProfileWrapper({
             Edit Profile on Talent Protocol
             <ExternalLinkIcon className="size-4 opacity-50" />
           </Button>
-        </Link>
+        </MiniAppExternalLink>
       )}
 
       <RewardsEarned
