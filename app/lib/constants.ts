@@ -50,8 +50,6 @@ export const ALL_TIME_GRANT = {
   },
 } as Grant;
 
-export const HOF_MAX_ETH = 1;
-
 export const DEFAULT_SPONSOR_SLUG = "base-summer";
 
 export const ALLOWED_SPONSORS = [

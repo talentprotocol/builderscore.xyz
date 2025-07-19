@@ -8,8 +8,8 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import { useGrants, useUserLeaderboards } from "@/app/hooks/useRewards";
 import {
   ALL_TIME_GRANT,
-  HOF_MAX_ETH,
   SPONSOR_BANNERS,
+  SPONSOR_HOF_MAX_REWARDS,
   SPONSOR_MIN_REWARDS,
   SPONSOR_REWARDS_PERIOD,
   SPONSOR_SCORING,
@@ -158,7 +158,9 @@ export default function Header() {
                 sponsorTokenTicker
               ],
             ),
-            max: HOF_MAX_ETH,
+            max: SPONSOR_HOF_MAX_REWARDS[
+              selectedSponsor?.slug as keyof typeof SPONSOR_HOF_MAX_REWARDS
+            ],
             ticker: sponsorTokenTicker,
           }}
         />

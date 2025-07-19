@@ -34,6 +34,7 @@ export default function HeaderActionCards({
   };
   setOpen: (open: boolean) => void;
 }) {
+  console.log(rewards);
   const { data: userProfileData, isFetched: isFetchedUserProfile } =
     useUserProfiles();
 
@@ -101,7 +102,7 @@ export default function HeaderActionCards({
               titleMono
               title={`${rewards.value} ${rewards.ticker}`}
               description="Your Rewards"
-              progress={rewardsProgress * 100}
+              progress={rewards.max && rewardsProgress * 100}
             />
           </>
         )}
