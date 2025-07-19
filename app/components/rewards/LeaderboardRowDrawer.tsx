@@ -9,7 +9,10 @@ import {
   DrawerPortal,
 } from "@/app/components/ui/drawer";
 import { useSponsor } from "@/app/context/SponsorContext";
-import { useTalentBuilderScore } from "@/app/hooks/useTalent";
+import {
+  useTalentAccounts,
+  useTalentBuilderScore,
+} from "@/app/hooks/useTalent";
 import { SPONSOR_HOF_MAX_REWARDS } from "@/app/lib/constants";
 import {
   INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS,
@@ -37,6 +40,9 @@ export default function LeaderboardRowDrawer({
   const { data: builderScore } = useTalentBuilderScore(
     selectedBuilder?.profile.id || "",
   );
+  const { data: accounts } = useTalentAccounts(
+    selectedBuilder?.profile.id || "",
+  );
 
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
   const router = useRouter();
@@ -45,11 +51,18 @@ export default function LeaderboardRowDrawer({
 
   const [isNavigating, setIsNavigating] = useState(false);
 
+  const farcasterAccount = accounts?.accounts?.find(
+    (account) => account.source === "farcaster",
+  );
+
+  const profileUrlId =
+    farcasterAccount?.username || selectedBuilder?.profile.id;
+
   const handleViewProfile = (e: React.MouseEvent) => {
     e.preventDefault();
     if (selectedBuilder?.profile.id) {
       setIsNavigating(true);
-      const targetUrl = `${prefix}/${selectedBuilder.profile.id}`;
+      const targetUrl = `${prefix}/${profileUrlId}`;
       router.push(targetUrl);
     }
   };

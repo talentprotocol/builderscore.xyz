@@ -11,7 +11,6 @@ export const ENDPOINTS = {
   talent: {
     socials: "/socials",
     profile: "/profile",
-    profileByFid: "/profile/fid",
     builderScore: "/score",
     accounts: "/accounts",
     credentials: "/credentials",
@@ -32,6 +31,7 @@ export const ENDPOINTS = {
     talent: {
       profile: "/api/talent/profile",
       profileByFid: "/api/talent/profile/fid",
+      profileByFarcasterUsername: "/api/talent/profile/farcaster_username",
       grants: "/api/grants",
       leaderboards: "/api/leaderboards",
       leaderboardEntry: "/api/leaderboards/entry",

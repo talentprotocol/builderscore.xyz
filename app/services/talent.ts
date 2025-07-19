@@ -65,6 +65,32 @@ export const fetchTalentProfileByFid = (fid: number) =>
     { revalidate: CACHE_60_MINUTES },
   )();
 
+export const fetchTalentProfileByFarcasterUsername = (username: string) =>
+  unstable_cache(
+    async (): Promise<TalentProfileResponse | null> => {
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}${ENDPOINTS.talent.profile}?id=${username}&account_source=farcaster`,
+          {
+            headers: DEFAULT_HEADERS,
+          },
+        );
+
+        return response.data;
+      } catch (err) {
+        const error = err as AxiosError<Error>;
+
+        if (error.response?.status === 404) {
+          return null;
+        }
+
+        throw new Error(`HTTP error! status: ${error.response?.status}`);
+      }
+    },
+    [CACHE_TAGS.TALENT_PROFILE, username],
+    { revalidate: CACHE_60_MINUTES },
+  )();
+
 export const fetchTalentSocials = (uuid: string) =>
   unstable_cache(
     async (): Promise<TalentSocialsResponse | null> => {

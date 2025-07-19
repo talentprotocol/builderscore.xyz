@@ -69,10 +69,12 @@ export default function ProfileWrapper({
   const [openRewardsEarned, setOpenRewardsEarned] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
+  const profileUrlId = farcasterAccount?.username || profile.id;
+
   const handleViewProfile = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsNavigating(true);
-    const targetUrl = `${prefix}/${profile.id}`;
+    const targetUrl = `${prefix}/${profileUrlId}`;
     router.push(targetUrl);
   };
 

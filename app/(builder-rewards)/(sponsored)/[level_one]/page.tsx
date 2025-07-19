@@ -1,15 +1,10 @@
 import ProfileView from "@/app/components/rewards/ProfileView";
 import RewardsView from "@/app/components/rewards/RewardsView";
 import { SPONSORS } from "@/app/lib/constants";
+import getUsableProfile from "@/app/lib/get-usable-profile";
 import getUsableSponsor from "@/app/lib/get-usable-sponsor";
-import {
-  fetchTalentBuilderScore,
-  fetchTalentProfile,
-  fetchTalentProfileByFid,
-} from "@/app/services/talent";
-import { TalentProfileResponse } from "@/app/types/talent";
+import { fetchTalentBuilderScore } from "@/app/services/talent";
 import { notFound } from "next/navigation";
-import { validate } from "uuid";
 
 export default async function Page({
   params,
@@ -20,13 +15,7 @@ export default async function Page({
   const usableSponsor = await getUsableSponsor(level_one);
 
   if (!SPONSORS[level_one as keyof typeof SPONSORS]) {
-    let usableProfile: TalentProfileResponse | null;
-
-    if (validate(level_one)) {
-      usableProfile = await fetchTalentProfile(level_one);
-    } else {
-      usableProfile = await fetchTalentProfileByFid(parseInt(level_one));
-    }
+    const usableProfile = await getUsableProfile(level_one);
 
     if (!usableProfile) {
       return notFound();

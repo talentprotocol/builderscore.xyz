@@ -34,7 +34,7 @@ export default function RewardsNavbar() {
     },
     {
       label: "profile",
-      href: frameContext && `${prefix}/${frameContext.user.fid}`,
+      href: frameContext && `${prefix}/${frameContext.user.username}`,
       icon: <UserIcon />,
       onClick: (event: React.MouseEvent<HTMLAnchorElement>) => {
         if (!frameContext) {

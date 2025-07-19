@@ -1,5 +1,6 @@
 import SocialsListDrawer from "@/app/components/rewards/SocialsListDrawer";
 import { Button } from "@/app/components/ui/button";
+import { useNavigationSource } from "@/app/context/NavigationContext";
 import { cn, formatNumber } from "@/app/lib/utils";
 import {
   TalentAccount,
@@ -24,6 +25,7 @@ export default function ProfileHeader({
 }) {
   const [openSocials, setOpenSocials] = useState(false);
   const router = useRouter();
+  const { isInternalNavigation } = useNavigationSource();
 
   const totalFollowers = socials?.reduce((acc, social) => {
     if (social.followers_count) {
@@ -32,11 +34,13 @@ export default function ProfileHeader({
     return acc;
   }, 0);
 
+  const showBackButton = detailed && isInternalNavigation;
+
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex w-full items-center justify-between">
         <div className="flex w-full">
-          {detailed && (
+          {showBackButton && (
             <Button
               variant="invisible"
               size="invisible"
