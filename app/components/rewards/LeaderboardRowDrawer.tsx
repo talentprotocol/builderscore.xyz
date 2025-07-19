@@ -37,15 +37,13 @@ export default function LeaderboardRowDrawer({
 }) {
   const { frameContext } = useUser();
   const { data: userProfileData } = useUserProfiles();
-  console.log(userProfileData);
+
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
   const router = useRouter();
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
 
   const [isNavigating, setIsNavigating] = useState(false);
-
-  console.log(selectedBuilder);
 
   const handleViewProfile = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -82,7 +80,7 @@ export default function LeaderboardRowDrawer({
         <DrawerContent className="bg-white dark:bg-neutral-900">
           {selectedBuilder && selectedBuilder.profile && (
             <>
-              <div className="flex flex-col items-center justify-center p-4 pb-2">
+              <div className="flex min-h-0 flex-1 flex-col items-center justify-start p-4 pb-2">
                 <Image
                   src={
                     selectedBuilder.profile.image_url?.startsWith("http")
@@ -220,13 +218,13 @@ export default function LeaderboardRowDrawer({
                 {!isHofToUse &&
                   (selectedBuilder.summary !== null
                     ? selectedBuilder.summary && (
-                        <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
-                          <div className="flex flex-col">
+                        <div className="mt-3 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+                          <div className="flex min-h-0 flex-1 flex-col">
                             <p className="secondary-text-style mb-1 text-sm">
                               Summary
                             </p>
-                            <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">
-                              <p className="text-neutral-800 dark:text-white">
+                            <div className="scrollbar-hide flex min-h-0 flex-1 flex-col overflow-auto">
+                              <p className="text-sm text-neutral-800 dark:text-white">
                                 {selectedBuilder.summary}
                               </p>
                             </div>
@@ -235,13 +233,13 @@ export default function LeaderboardRowDrawer({
                       )
                     : selectedBuilder.reward_amount &&
                       parseFloat(selectedBuilder.reward_amount) > 0 && (
-                        <div className="mt-3 w-full rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
-                          <div className="flex flex-col">
+                        <div className="mt-3 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+                          <div className="flex min-h-0 flex-1 flex-col">
                             <p className="secondary-text-style mb-1 text-sm">
                               Summary
                             </p>
-                            <div className="scrollbar-hide flex max-h-32 flex-col overflow-auto">
-                              <p className="text-neutral-800 dark:text-white">
+                            <div className="scrollbar-hide flex min-h-0 flex-1 flex-col overflow-auto">
+                              <p className="text-sm text-neutral-800 dark:text-white">
                                 {selectedBuilder.profile.display_name} earned
                                 Rewards for transactions on previously deployed
                                 verified Smart Contracts.
