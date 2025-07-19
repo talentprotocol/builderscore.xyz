@@ -34,7 +34,6 @@ export default function HeaderActionCards({
   };
   setOpen: (open: boolean) => void;
 }) {
-  console.log(rewards);
   const { data: userProfileData, isFetched: isFetchedUserProfile } =
     useUserProfiles();
 
