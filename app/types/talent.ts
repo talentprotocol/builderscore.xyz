@@ -76,6 +76,10 @@ export type TalentProfileApi = {
     onchain_id: number;
     rank_position: number;
   };
+  builder_score?: {
+    points: number;
+    last_calculated_at: string;
+  };
 };
 
 export type TalentProfileSearchApi = {
