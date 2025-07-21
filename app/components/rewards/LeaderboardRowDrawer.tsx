@@ -18,9 +18,10 @@ import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { CrownIcon } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function LeaderboardRowDrawer({
   selectedBuilder,
@@ -93,7 +94,7 @@ export default function LeaderboardRowDrawer({
           {selectedBuilder && selectedBuilder.profile && (
             <>
               <div className="flex min-h-0 flex-1 flex-col items-center justify-start p-4 pb-2">
-                <Image
+                <img
                   src={
                     selectedBuilder.profile.image_url?.startsWith("http")
                       ? selectedBuilder.profile.image_url

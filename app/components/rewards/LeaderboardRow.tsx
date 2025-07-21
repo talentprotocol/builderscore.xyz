@@ -10,7 +10,8 @@ import {
 } from "@/app/lib/utils";
 import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { CrownIcon } from "lucide-react";
-import Image from "next/image";
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function LeaderboardRow({
   leaderboardData,
@@ -87,7 +88,7 @@ export default function LeaderboardRow({
         <div className="flex items-center gap-4">
           {leaderboardData.profile.image_url &&
           leaderboardData.profile.image_url.startsWith("https") ? (
-            <Image
+            <img
               src={leaderboardData.profile.image_url}
               alt={leaderboardData.profile.display_name || "Talent Builder"}
               width={isHighlighted ? 48 : 36}

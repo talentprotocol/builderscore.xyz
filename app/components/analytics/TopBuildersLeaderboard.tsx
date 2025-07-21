@@ -10,8 +10,9 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import { useTopBuildersLeaderboard } from "@/app/hooks/useRewardsAnalytics";
 import { CSVRow } from "@/app/lib/csv-parser";
 import { BuilderData } from "@/app/services/rewards/analytics";
-import Image from "next/image";
 import { useState } from "react";
+
+/* eslint-disable @next/next/no-img-element */
 
 interface TopBuildersLeaderboardProps {
   data: CSVRow[];
@@ -64,7 +65,7 @@ const BuildersTable = ({
                   <div className="flex items-center">
                     {builder.profileData?.imageUrl && (
                       <div className="mr-2 h-6 w-6">
-                        <Image
+                        <img
                           src={builder.profileData.imageUrl}
                           alt={builder.profileData.name || "Builder"}
                           width={24}

@@ -8,9 +8,10 @@ import {
   TalentSocial,
 } from "@/app/types/talent";
 import { ChevronLeftIcon, EllipsisIcon } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function ProfileHeader({
   profile,
@@ -70,7 +71,7 @@ export default function ProfileHeader({
           </div>
         </div>
 
-        <Image
+        <img
           src={profile.image_url?.startsWith("http") ? profile.image_url : ""}
           alt={profile.display_name || "Builder"}
           width={60}

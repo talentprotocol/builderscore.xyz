@@ -13,12 +13,13 @@ import {
   formatNumber,
 } from "@/app/lib/utils";
 import { CopyIcon, ShareIcon } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiFarcaster } from "react-icons/si";
 
 // import { sdk } from "@farcaster/frame-sdk";
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function ShareableLeaderboard({
   id,
@@ -110,13 +111,13 @@ export default function ShareableLeaderboard({
                 <Spinner />
               </div>
             )}
-            <Image
+            <img
               src={url}
               alt="Shareable Leaderboard"
               width={1620}
               height={1080}
               className="h-full w-full rounded-lg object-contain"
-              onLoadingComplete={() => setImageLoading(false)}
+              onLoad={() => setImageLoading(false)}
             />
           </div>
 
