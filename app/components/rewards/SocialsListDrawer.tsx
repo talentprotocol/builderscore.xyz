@@ -39,72 +39,76 @@ export default function SocialsListDrawer({
               </p>
               <div className="card-style flex flex-col">
                 {socials ? (
-                  socials.map((social, index) => (
-                    <ListItem
-                      key={social.social_slug + "-" + social.handle}
-                      href={social.profile_url}
-                      left={
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-800">
-                            {SocialLogos[
-                              social.social_slug as keyof typeof SocialLogos
-                            ] ? (
-                              cloneElement(
-                                SocialLogos[
-                                  social.social_slug as keyof typeof SocialLogos
-                                ],
-                                {
-                                  className: "block h-5 w-5",
-                                  color:
+                  socials
+                    .sort((a, b) => a.social_slug.localeCompare(b.social_slug))
+                    .map((social, index) => (
+                      <ListItem
+                        key={social.social_slug + "-" + social.handle}
+                        href={social.profile_url}
+                        left={
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-800">
+                              {SocialLogos[
+                                social.social_slug as keyof typeof SocialLogos
+                              ] ? (
+                                cloneElement(
+                                  SocialLogos[
+                                    social.social_slug as keyof typeof SocialLogos
+                                  ],
+                                  {
+                                    className: "block h-5 w-5",
+                                    color:
+                                      selectedSponsor?.slug ===
+                                      "talent-protocol"
+                                        ? "#fff"
+                                        : "#000",
+                                    altcolor:
+                                      selectedSponsor?.slug ===
+                                      "talent-protocol"
+                                        ? "#000"
+                                        : "#fff",
+                                  },
+                                )
+                              ) : (
+                                <Globe
+                                  className="block h-5 w-5"
+                                  color={
                                     selectedSponsor?.slug === "talent-protocol"
                                       ? "#fff"
-                                      : "#000",
-                                  altcolor:
-                                    selectedSponsor?.slug === "talent-protocol"
-                                      ? "#000"
-                                      : "#fff",
-                                },
-                              )
-                            ) : (
-                              <Globe
-                                className="block h-5 w-5"
-                                color={
-                                  selectedSponsor?.slug === "talent-protocol"
-                                    ? "#fff"
-                                    : "#000"
-                                }
-                              />
-                            )}
-                          </div>
-
-                          <div className="flex flex-col">
-                            <div className="flex items-center gap-2">
-                              {social.handle && (
-                                <p className="text-sm font-medium">
-                                  {social.handle}
-                                </p>
-                              )}
-
-                              {social.followers_count !== null && (
-                                <p className="secondary-text-style text-xs">
-                                  {formatNumber(social.followers_count)}{" "}
-                                  follower
-                                  {social.followers_count === 1 ? "" : "s"}
-                                </p>
+                                      : "#000"
+                                  }
+                                />
                               )}
                             </div>
 
-                            <p className="secondary-text-style text-sm text-neutral-800 dark:text-white">
-                              {social.social_name}
-                            </p>
+                            <div className="flex flex-col">
+                              <div className="flex items-center gap-2">
+                                {social.handle && (
+                                  <p className="text-sm font-medium">
+                                    {social.handle}
+                                  </p>
+                                )}
+
+                                {social.followers_count !== null && (
+                                  <p className="secondary-text-style text-xs">
+                                    {formatNumber(social.followers_count)}{" "}
+                                    follower
+                                    {social.followers_count === 1 ? "" : "s"}
+                                  </p>
+                                )}
+                              </div>
+
+                              <p className="secondary-text-style text-sm text-neutral-800 dark:text-white">
+                                {social.social_name}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      }
-                      className="w-full"
-                      first={index === 0}
-                      last={index === socials.length - 1}
-                    />
-                  ))
+                        }
+                        className="w-full"
+                        first={index === 0}
+                        last={index === socials.length - 1}
+                      />
+                    ))
                 ) : (
                   <Spinner className="flex h-16 w-full items-center justify-center" />
                 )}

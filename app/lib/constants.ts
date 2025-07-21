@@ -249,3 +249,10 @@ export const SPONSOR_TOTAL_REWARDED = {
   "talent-protocol": 100,
   celo: 100,
 };
+
+export const SPONSOR_CREDENTIALS_HIGHLIGHTS = {
+  "base-summer": ["base"],
+  base: ["base"],
+  "talent-protocol": ["talent_protocol"],
+  celo: ["celo"],
+};
