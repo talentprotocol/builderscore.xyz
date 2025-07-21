@@ -31,11 +31,13 @@ export default function LeaderboardRowDrawer({
   weekly,
   context,
   onClose,
+  isAllTime,
 }: {
   selectedBuilder: LeaderboardEntry | null;
   weekly?: boolean;
   context?: string;
   onClose: () => void;
+  isAllTime?: boolean;
 }) {
   const { data: builderScore } = useTalentBuilderScore(
     selectedBuilder?.profile.id || "",
@@ -54,6 +56,8 @@ export default function LeaderboardRowDrawer({
   const farcasterAccount = accounts?.accounts?.find(
     (account) => account.source === "farcaster",
   );
+
+  console.log(isAllTime);
 
   const profileUrlId =
     farcasterAccount?.username || selectedBuilder?.profile.id;
@@ -226,6 +230,7 @@ export default function LeaderboardRowDrawer({
                 </div>
 
                 {!isHofToUse &&
+                  !isAllTime &&
                   (selectedBuilder.summary !== null &&
                   selectedBuilder.summary ? (
                     <div className="mt-2 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">

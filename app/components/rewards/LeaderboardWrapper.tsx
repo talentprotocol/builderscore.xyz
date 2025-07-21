@@ -132,6 +132,7 @@ export default function LeaderboardWrapper() {
                 formatDate(selectedGrant.end_date)
               : "All Time"
           }
+          isAllTime={isAllTime}
         />
       )}
 
