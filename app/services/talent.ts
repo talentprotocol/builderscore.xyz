@@ -211,12 +211,25 @@ export const fetchTalentProjects = (uuid: string) =>
     { revalidate: CACHE_60_MINUTES },
   )();
 
-export const fetchTalentContributedProjects = (uuid: string) =>
+export const fetchTalentContributedProjects = (
+  uuid: string,
+  params?: { per_page?: number; page?: number },
+) =>
   unstable_cache(
     async (): Promise<TalentContributedProjectsResponse | null> => {
       try {
+        const searchParams = new URLSearchParams({ id: uuid });
+
+        if (params) {
+          Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+              searchParams.append(key, value.toString());
+            }
+          });
+        }
+
         const response = await axios.get(
-          `${API_BASE_URL}${ENDPOINTS.talent.contributedProjects}?id=${uuid}`,
+          `${API_BASE_URL}${ENDPOINTS.talent.contributedProjects}?${searchParams.toString()}`,
           {
             headers: DEFAULT_HEADERS,
           },
@@ -227,6 +240,11 @@ export const fetchTalentContributedProjects = (uuid: string) =>
         return null;
       }
     },
-    [CACHE_TAGS.TALENT_CONTRIBUTED_PROJECTS, uuid],
+    [
+      CACHE_TAGS.TALENT_CONTRIBUTED_PROJECTS,
+      uuid,
+      params?.page?.toString() || "1",
+      params?.per_page?.toString() || "25",
+    ],
     { revalidate: CACHE_60_MINUTES },
   )();

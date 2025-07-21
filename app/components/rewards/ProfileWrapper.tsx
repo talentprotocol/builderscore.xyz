@@ -12,7 +12,6 @@ import { useUser } from "@/app/context/UserContext";
 import { useUserLeaderboards } from "@/app/hooks/useRewards";
 import {
   useTalentAccounts,
-  useTalentContributedProjects,
   useTalentCredentials,
   useTalentSocials,
 } from "@/app/hooks/useTalent";
@@ -49,9 +48,6 @@ export default function ProfileWrapper({
   const { data: socials } = useTalentSocials(profile.id);
   const { data: accounts } = useTalentAccounts(profile.id);
   const { data: credentials } = useTalentCredentials(profile.id);
-  const { data: contributedProjects } = useTalentContributedProjects(
-    profile.id,
-  );
 
   const farcasterAccount = accounts?.accounts?.find(
     (account) => account.source === "farcaster",
@@ -129,7 +125,7 @@ export default function ProfileWrapper({
         <div className="w-full">
           <ProfileTabs
             credentials={credentials?.credentials}
-            contributedProjects={contributedProjects?.projects}
+            profileId={profile.id}
           />
         </div>
       )}

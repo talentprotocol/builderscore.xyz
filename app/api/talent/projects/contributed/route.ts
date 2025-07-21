@@ -7,6 +7,8 @@ export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const uuid = searchParams.get("uuid");
+  const per_page = searchParams.get("per_page");
+  const page = searchParams.get("page");
 
   if (!uuid) {
     return NextResponse.json(
@@ -16,8 +18,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const params = {
+      ...(per_page && { per_page: parseInt(per_page) }),
+      ...(page && { page: parseInt(page) }),
+    };
+
     const data: TalentContributedProjectsResponse | null =
-      await fetchTalentContributedProjects(uuid);
+      await fetchTalentContributedProjects(uuid, params);
 
     if (!data) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });
