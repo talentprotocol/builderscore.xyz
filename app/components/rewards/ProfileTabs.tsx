@@ -1,14 +1,14 @@
 import { WideTabs } from "@/app/components/WideTabs";
 import CredentialsList from "@/app/components/rewards/CredentialsList";
 import ProjectsList from "@/app/components/rewards/ProjectsList";
-import { TalentCredential, TalentProject } from "@/app/types/talent";
+import { TalentCredential } from "@/app/types/talent";
 
 export default function ProfileTabs({
   credentials,
-  contributedProjects,
+  profileId,
 }: {
   credentials?: TalentCredential[];
-  contributedProjects?: TalentProject[];
+  profileId: string;
 }) {
   return (
     <WideTabs
@@ -21,7 +21,7 @@ export default function ProfileTabs({
         {
           label: "Projects",
           value: "projects",
-          content: <ProjectsList contributedProjects={contributedProjects} />,
+          content: <ProjectsList profileId={profileId} />,
         },
       ]}
       defaultTab="score"

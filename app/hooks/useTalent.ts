@@ -18,7 +18,7 @@ import {
   TalentScoreResponse,
   TalentSocialsResponse,
 } from "@/app/types/talent";
-import { isServer, useQuery } from "@tanstack/react-query";
+import { isServer, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import { useUser } from "../context/UserContext";
@@ -97,19 +97,43 @@ export function useTalentCredentialDatapoints(uuid: string, slug: string) {
 }
 
 export function useTalentContributedProjects(uuid: string) {
-  return useQuery<TalentContributedProjectsResponse>({
+  return useInfiniteQuery<TalentContributedProjectsResponse>({
     queryKey: ["talentContributedProjects", uuid],
-    queryFn: async () => {
+    initialPageParam: 1,
+    queryFn: async ({ pageParam = 1 }) => {
+      const paginationParams = {
+        per_page: 25,
+        page: pageParam as number,
+      };
+
       if (isServer) {
-        const response = await fetchTalentContributedProjects(uuid);
+        const response = await fetchTalentContributedProjects(
+          uuid,
+          paginationParams,
+        );
         return response;
       } else {
+        const queryParams = new URLSearchParams({
+          uuid,
+          ...Object.fromEntries(
+            Object.entries(paginationParams).map(([key, value]) => [
+              key,
+              value.toString(),
+            ]),
+          ),
+        });
         const response = await axios.get(
-          `${ENDPOINTS.localApi.talent.contributedProjects}?uuid=${uuid}`,
+          `${ENDPOINTS.localApi.talent.contributedProjects}?${queryParams.toString()}`,
         );
         return response.data;
       }
     },
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.pagination) return undefined;
+      const { current_page, last_page } = lastPage.pagination;
+      return current_page < last_page ? current_page + 1 : undefined;
+    },
+    enabled: !!uuid,
   });
 }
 

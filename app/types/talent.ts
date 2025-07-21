@@ -1,4 +1,4 @@
-import { AdvancedPagination } from "@/app/types/api";
+import { AdvancedPagination, Pagination } from "@/app/types/api";
 
 //
 // Talent Scores
@@ -126,7 +126,8 @@ export interface TalentContributedProject {
 }
 
 export interface TalentContributedProjectsResponse {
-  projects: TalentProject[];
+  projects: TalentContributedProject[];
+  pagination: Pagination;
 }
 
 //
