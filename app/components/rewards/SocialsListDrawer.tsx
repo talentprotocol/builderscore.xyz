@@ -1,11 +1,7 @@
 import Spinner from "@/app/components/Spinner";
+import DrawerContent from "@/app/components/rewards/DrawerContent";
 import ListItem from "@/app/components/rewards/ListItem";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerPortal,
-  DrawerTitle,
-} from "@/app/components/ui/drawer";
+import { Drawer, DrawerPortal, DrawerTitle } from "@/app/components/ui/drawer";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { SocialLogos } from "@/app/lib/social-logos";

@@ -5,7 +5,8 @@ import { Badge } from "@/app/components/ui/badge";
 import type { TalentSearchProfile } from "@/app/types/talent";
 import type { ColumnDef } from "@tanstack/react-table";
 import { BadgeCheck, Hash, Star, User } from "lucide-react";
-import Image from "next/image";
+
+/* eslint-disable @next/next/no-img-element */
 
 export function getProfilesTableColumns(
   page: number = 1,
@@ -52,7 +53,7 @@ export function getProfilesTableColumns(
         return (
           <div className="flex items-center gap-1">
             {row.original.image_url && (
-              <Image
+              <img
                 src={row.original.image_url}
                 alt={row.original.display_name || "Builder"}
                 width={12}

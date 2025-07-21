@@ -8,7 +8,9 @@ import {
   NavigationMenuList,
 } from "@/app/components/ui/navigation-menu";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { useTheme } from "@/app/context/ThemeContext";
 import { useUser } from "@/app/context/UserContext";
+import { cn } from "@/app/lib/utils";
 import { HomeIcon, SearchIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -18,6 +20,7 @@ export default function RewardsNavbar() {
 
   const { frameContext } = useUser();
   const { selectedSponsor } = useSponsor();
+  const { isMobile } = useTheme();
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
 
@@ -46,7 +49,12 @@ export default function RewardsNavbar() {
   ];
 
   return (
-    <div className="border-colors pb-safe fixed bottom-0 left-1/2 w-full -translate-x-1/2 overflow-hidden rounded-none border-t bg-white sm:bottom-4 sm:max-w-3xl sm:rounded-lg sm:border sm:shadow-xs dark:bg-neutral-900">
+    <div
+      className={cn(
+        "border-colors fixed bottom-0 left-1/2 w-full -translate-x-1/2 overflow-hidden rounded-none border-t bg-white sm:bottom-4 sm:max-w-3xl sm:rounded-lg sm:border sm:shadow-xs dark:bg-neutral-900",
+        frameContext && isMobile ? "pb-safe-mini-app" : "pb-safe",
+      )}
+    >
       <NavigationMenu className="h-16 w-full max-w-none [&>*]:w-full">
         <NavigationMenuList className="w-full gap-0">
           {navItems.map((item) => (

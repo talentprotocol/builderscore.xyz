@@ -1,13 +1,9 @@
 "use client";
 
 import Spinner from "@/app/components/Spinner";
+import DrawerContent from "@/app/components/rewards/DrawerContent";
 import { Button } from "@/app/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerPortal,
-} from "@/app/components/ui/drawer";
+import { Drawer, DrawerFooter, DrawerPortal } from "@/app/components/ui/drawer";
 import { useSponsor } from "@/app/context/SponsorContext";
 import {
   useTalentAccounts,
@@ -22,20 +18,23 @@ import { LeaderboardEntry } from "@/app/types/rewards/leaderboards";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { CrownIcon } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function LeaderboardRowDrawer({
   selectedBuilder,
   weekly,
   context,
   onClose,
+  isAllTime,
 }: {
   selectedBuilder: LeaderboardEntry | null;
   weekly?: boolean;
   context?: string;
   onClose: () => void;
+  isAllTime?: boolean;
 }) {
   const { data: builderScore } = useTalentBuilderScore(
     selectedBuilder?.profile.id || "",
@@ -45,6 +44,7 @@ export default function LeaderboardRowDrawer({
   );
 
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
+
   const router = useRouter();
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
@@ -94,7 +94,7 @@ export default function LeaderboardRowDrawer({
           {selectedBuilder && selectedBuilder.profile && (
             <>
               <div className="flex min-h-0 flex-1 flex-col items-center justify-start p-4 pb-2">
-                <Image
+                <img
                   src={
                     selectedBuilder.profile.image_url?.startsWith("http")
                       ? selectedBuilder.profile.image_url
@@ -226,6 +226,7 @@ export default function LeaderboardRowDrawer({
                 </div>
 
                 {!isHofToUse &&
+                  !isAllTime &&
                   (selectedBuilder.summary !== null &&
                   selectedBuilder.summary ? (
                     <div className="mt-2 flex min-h-0 w-full flex-1 flex-col rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">

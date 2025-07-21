@@ -2,7 +2,8 @@
 
 import { isEmptyOrInvisible } from "@/app/lib/utils";
 import { TalentSearchProfile } from "@/app/types/talent";
-import Image from "next/image";
+
+/* eslint-disable @next/next/no-img-element */
 
 interface SearchProfileItemProps {
   profile: TalentSearchProfile;
@@ -27,7 +28,7 @@ export default function SearchProfileItem({
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-4">
           {profile.image_url && profile.image_url.startsWith("https") ? (
-            <Image
+            <img
               src={profile.image_url}
               alt={profile.display_name || "Talent Builder"}
               width={36}

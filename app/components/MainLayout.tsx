@@ -4,6 +4,7 @@ import { UserProvider } from "@/app/context/UserContext";
 import { cn } from "@/app/lib/utils";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistSans = Geist({
@@ -16,7 +17,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
   themeClassName,
   dataSponsor,
@@ -25,6 +26,9 @@ export default function MainLayout({
   themeClassName: string;
   dataSponsor: string;
 }) {
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+
   return (
     <html
       lang="en"
@@ -34,7 +38,7 @@ export default function MainLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider>
+        <ThemeProvider userAgent={userAgent}>
           <NuqsAdapter>
             <UserProvider>
               <NavigationProvider>{children}</NavigationProvider>

@@ -152,6 +152,10 @@
   }
 }
 
+.pb-safe-mini-app {
+  @apply pb-3;
+}
+
 /* Hide scrollbars but keep functionality */
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
