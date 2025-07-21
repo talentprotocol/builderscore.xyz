@@ -1,11 +1,8 @@
 "use client";
 
+import DrawerContent from "@/app/components/rewards/DrawerContent";
 import ProfileWrapper from "@/app/components/rewards/ProfileWrapper";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerPortal,
-} from "@/app/components/ui/drawer";
+import { Drawer, DrawerPortal } from "@/app/components/ui/drawer";
 import { TalentBasicProfile, TalentSearchProfile } from "@/app/types/talent";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";

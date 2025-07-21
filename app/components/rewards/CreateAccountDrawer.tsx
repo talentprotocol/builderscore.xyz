@@ -2,10 +2,10 @@
 
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
 import TalentProtocolLogo from "@/app/components/logos/TalentProtocolLogo";
+import DrawerContent from "@/app/components/rewards/DrawerContent";
 import { Button } from "@/app/components/ui/button";
 import {
   Drawer,
-  DrawerContent,
   DrawerFooter,
   DrawerPortal,
   DrawerTitle,

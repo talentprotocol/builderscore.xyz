@@ -1,13 +1,9 @@
 "use client";
 
 import Spinner from "@/app/components/Spinner";
+import DrawerContent from "@/app/components/rewards/DrawerContent";
 import { Button } from "@/app/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerPortal,
-} from "@/app/components/ui/drawer";
+import { Drawer, DrawerFooter, DrawerPortal } from "@/app/components/ui/drawer";
 import { useSponsor } from "@/app/context/SponsorContext";
 import {
   useTalentAccounts,
@@ -47,6 +43,7 @@ export default function LeaderboardRowDrawer({
   );
 
   const { sponsorTokenTicker, selectedSponsor } = useSponsor();
+
   const router = useRouter();
 
   const prefix = selectedSponsor ? `/${selectedSponsor.slug}` : "";
@@ -56,8 +53,6 @@ export default function LeaderboardRowDrawer({
   const farcasterAccount = accounts?.accounts?.find(
     (account) => account.source === "farcaster",
   );
-
-  console.log(isAllTime);
 
   const profileUrlId =
     farcasterAccount?.username || selectedBuilder?.profile.id;

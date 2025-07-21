@@ -2,10 +2,10 @@
 
 import ActionCard from "@/app/components/ActionCard";
 import Spinner from "@/app/components/Spinner";
+import DrawerContent from "@/app/components/rewards/DrawerContent";
 import ListItem from "@/app/components/rewards/ListItem";
 import {
   Drawer,
-  DrawerContent,
   DrawerHeader,
   DrawerPortal,
   DrawerTitle,

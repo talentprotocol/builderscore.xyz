@@ -1,7 +1,7 @@
+import DrawerContent from "@/app/components/rewards/DrawerContent";
 import ListItem from "@/app/components/rewards/ListItem";
 import {
   Drawer,
-  DrawerContent,
   DrawerHeader,
   DrawerPortal,
   DrawerTitle,
