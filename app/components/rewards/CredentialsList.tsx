@@ -4,6 +4,7 @@ import Spinner from "@/app/components/Spinner";
 import CredentialsListDrawer from "@/app/components/rewards/CredentialsListDrawer";
 import ListItem from "@/app/components/rewards/ListItem";
 import { useSponsor } from "@/app/context/SponsorContext";
+import { SPONSOR_CREDENTIALS_HIGHLIGHTS } from "@/app/lib/constants";
 import { DataIssuersLogos } from "@/app/lib/data-issuers-logos";
 import { cn } from "@/app/lib/utils";
 import { TalentCredential } from "@/app/types/talent";
@@ -51,6 +52,17 @@ export default function CredentialsList({
 
   const sortedGroupedCredentials = groupedCredentialsWithTotalPoints.sort(
     (a, b) => {
+      const sponsorSlug =
+        selectedSponsor?.slug as keyof typeof SPONSOR_CREDENTIALS_HIGHLIGHTS;
+      const highlightedGroups =
+        SPONSOR_CREDENTIALS_HIGHLIGHTS[sponsorSlug] || [];
+
+      const aIsHighlighted = highlightedGroups.includes(a.group);
+      const bIsHighlighted = highlightedGroups.includes(b.group);
+
+      if (aIsHighlighted && !bIsHighlighted) return -1;
+      if (!aIsHighlighted && bIsHighlighted) return 1;
+
       if (a.earnedPoints > 0 && b.earnedPoints === 0) return -1;
       if (a.earnedPoints === 0 && b.earnedPoints > 0) return 1;
 
