@@ -18,7 +18,7 @@ import {
   SPONSOR_FARCASTER_MINI_APP_URLS,
   SPONSOR_TERMS,
 } from "@/app/lib/constants";
-import { Check, X } from "lucide-react";
+import { Check, Circle, X } from "lucide-react";
 import { useState } from "react";
 
 export default function HowToDrawer() {
@@ -80,10 +80,14 @@ export default function HowToDrawer() {
                         : "bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-white"
                     }`}
                   >
-                    {step.condition ? (
-                      <Check className="h-3 w-3" />
+                    {step.required ? (
+                      step.condition ? (
+                        <Check className="h-3 w-3" />
+                      ) : (
+                        <X className="h-3 w-3" />
+                      )
                     ) : (
-                      <X className="h-3 w-3" />
+                      <Circle className="h-3 w-3" />
                     )}
                   </div>
                   <MiniAppExternalLink

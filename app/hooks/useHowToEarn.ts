@@ -83,16 +83,22 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
       "Monthly rewards automatically distributed to the top 100 builders who contribute to the Celo ecosystem through verified smart contracts and public contributions on GitHub.",
     steps: [
       {
-        text: "Get your Human Checkmark",
+        text: "Connect a wallet with at least 1 outgoing TX on Celo to your Talent profile",
+        url: "https://app.talentprotocol.com/accounts",
+        condition: !loadingUser && !!celoOutTransactionsCredential,
+        required: true,
+      },
+      {
+        text: "Get your Human Checkmark (1 valid KYC on Talent profile)",
         url: "https://docs.talentprotocol.com/docs/protocol-concepts/human-checkmark",
         condition: !loadingUser && !!humanCheckmark,
         required: true,
       },
       {
-        text: "Have 1+ outgoing transactions on Celo",
-        url: "https://app.talentprotocol.com",
-        condition: !loadingUser && !!celoOutTransactionsCredential,
-        required: true,
+        text: "Connect your KarmaGAP wallet address to your Talent profile (mandatory for Proof of Ship Builders)",
+        url: "https://app.talentprotocol.com/accounts",
+        condition: false,
+        required: false,
       },
       {
         text: "Earn more by verifying your humanity with Self.xyz (optional)",
