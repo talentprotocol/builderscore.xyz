@@ -4,17 +4,7 @@ import { FrameContext } from "@/app/types/rewards/farcaster";
 import { sdk } from "@farcaster/frame-sdk";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const DEV_FRAME_CONTEXT: FrameContext = {
-  user: {
-    fid: 856355,
-    username: "simao",
-    displayName: "Simão",
-  },
-  client: {
-    clientFid: 1,
-    added: true,
-  },
-};
+
 
 interface UserContextType {
   frameContext: FrameContext | undefined;

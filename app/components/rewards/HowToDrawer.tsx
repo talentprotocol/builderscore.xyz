@@ -15,7 +15,6 @@ import { useSponsor } from "@/app/context/SponsorContext";
 import { useUser } from "@/app/context/UserContext";
 import { useHowToEarn } from "@/app/hooks/useHowToEarn";
 import {
-  BASE_LEADERBOARD_MINI_APP_URL,
   SPONSOR_FARCASTER_MINI_APP_URLS,
   SPONSOR_TERMS,
 } from "@/app/lib/constants";
