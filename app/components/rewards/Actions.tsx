@@ -1,6 +1,7 @@
 "use client";
 
 import MiniAppExternalLink from "@/app/components/MiniAppExternalLink";
+import HowToDrawer from "@/app/components/rewards/HowToDrawer";
 import ShareableLeaderboard from "@/app/components/rewards/ShareableLeaderboard";
 import { Button } from "@/app/components/ui/button";
 import { useGrant } from "@/app/context/GrantContext";
@@ -13,8 +14,11 @@ import {
 } from "@/app/hooks/useTalent";
 import { SPONSOR_FARCASTER_MINI_APP_URLS } from "@/app/lib/constants";
 import { TalentAccount } from "@/app/types/talent";
+import { useState } from "react";
 
 export default function Actions() {
+  const [openHowToDrawer, setOpenHowToDrawer] = useState(false);
+  
   const { selectedGrant } = useGrant();
   const { frameContext } = useUser();
   const { selectedSponsor } = useSponsor();
@@ -48,14 +52,12 @@ export default function Actions() {
                 </Button>
               </MiniAppExternalLink>
             )
-          ) : (
+          ) : frameContext ? (
             <MiniAppExternalLink
               href={
-                frameContext
-                  ? SPONSOR_FARCASTER_MINI_APP_URLS[
-                      selectedSponsor?.slug as keyof typeof SPONSOR_FARCASTER_MINI_APP_URLS
-                    ]
-                  : "https://login.talentprotocol.com/join"
+                SPONSOR_FARCASTER_MINI_APP_URLS[
+                  selectedSponsor?.slug as keyof typeof SPONSOR_FARCASTER_MINI_APP_URLS
+                ]
               }
               target="_blank"
             >
@@ -63,9 +65,17 @@ export default function Actions() {
                 size="lg"
                 className="button-style mt-2 w-full cursor-pointer pr-3 pl-2 text-xs sm:text-sm"
               >
-                {frameContext ? "Open Mini App" : "Sign Up to Earn Rewards"}
+                Open Mini App
               </Button>
             </MiniAppExternalLink>
+          ) : (
+            <Button
+              size="lg"
+              className="button-style mt-2 w-full cursor-pointer pr-3 pl-2 text-xs sm:text-sm"
+              onClick={() => setOpenHowToDrawer(true)}
+            >
+              Start Earning
+            </Button>
           )}
 
           {userLeaderboardData &&
@@ -87,6 +97,12 @@ export default function Actions() {
           <div className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent text-neutral-400 dark:text-neutral-500" />
         </Button>
       )}
+
+      <HowToDrawer
+        open={openHowToDrawer}
+        onOpenChange={setOpenHowToDrawer}
+        trigger={false}
+      />
     </div>
   );
 }

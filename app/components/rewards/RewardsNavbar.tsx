@@ -1,6 +1,6 @@
 "use client";
 
-import CreateAccountDrawer from "@/app/components/rewards/CreateAccountDrawer";
+import HowToDrawer from "@/app/components/rewards/HowToDrawer";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -16,7 +16,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function RewardsNavbar() {
-  const [open, setOpen] = useState(false);
+  const [openHowToDrawer, setOpenHowToDrawer] = useState(false);
 
   const { frameContext } = useUser();
   const { selectedSponsor } = useSponsor();
@@ -42,7 +42,7 @@ export default function RewardsNavbar() {
       onClick: (event: React.MouseEvent<HTMLAnchorElement>) => {
         if (!frameContext) {
           event.preventDefault();
-          setOpen(true);
+          setOpenHowToDrawer(true);
         }
       },
     },
@@ -73,7 +73,13 @@ export default function RewardsNavbar() {
         </NavigationMenuList>
       </NavigationMenu>
 
-      {!frameContext && <CreateAccountDrawer open={open} setOpen={setOpen} />}
+      {!frameContext && (
+        <HowToDrawer
+          open={openHowToDrawer}
+          onOpenChange={setOpenHowToDrawer}
+          trigger={false}
+        />
+      )}
     </div>
   );
 }
