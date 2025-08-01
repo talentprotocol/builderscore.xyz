@@ -204,7 +204,7 @@ export const SPONSOR_SCORING = {
 };
 
 export const SPONSOR_HOF_MAX_REWARDS = {
-  "base-summer": 1,
+  "base-summer": 0.5,
   base: 1,
 };
 
