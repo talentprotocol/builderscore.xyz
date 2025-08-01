@@ -79,7 +79,7 @@ export const SPONSOR_TERMS = {
 
 const baseFrame = {
   version: "next",
-  imageUrl: "https://www.builderscore.xyz/images/frame-image-1.png",
+  imageUrl: "https://www.builderscore.xyz/images/frame-image.png",
   button: {
     title: "Earn Base Builder Rewards",
     action: {
@@ -99,7 +99,7 @@ export const baseMetadata: Metadata = {
     title: "Base Builder Rewards",
     description: "Weekly Rewards for the most impactful builders.",
     images: {
-      url: "https://www.builderscore.xyz/images/frame-image-1.png",
+      url: "https://www.builderscore.xyz/images/frame-image.png",
       alt: "Base Builder Rewards",
     },
   },
@@ -108,7 +108,7 @@ export const baseMetadata: Metadata = {
     title: "Base Builder Rewards",
     description: "Weekly Rewards for the most impactful builders.",
     images: {
-      url: "https://www.builderscore.xyz/images/frame-image-1.png",
+      url: "https://www.builderscore.xyz/images/frame-image.png",
       alt: "Base Builder Rewards",
     },
     site: "@TalentProtocol",
