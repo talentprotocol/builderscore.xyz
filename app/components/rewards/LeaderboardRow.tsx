@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/app/components/ui/badge";
 import { Progress } from "@/app/components/ui/progress";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { SPONSOR_HOF_MAX_REWARDS } from "@/app/lib/constants";
@@ -42,6 +43,13 @@ export default function LeaderboardRow({
       ];
 
   const isHofToUse = isHof || isHofAllTime;
+
+  const isNewBuilder =
+    !isAllTime && // Only show in weekly/current views, not all-time
+    leaderboardData.ranking_change === 0 &&
+    leaderboardData.reward_amount &&
+    parseFloat(leaderboardData.reward_amount) > 0 &&
+    !isHofToUse; // Don't show for HOF builders
 
   return (
     <div
@@ -104,7 +112,7 @@ export default function LeaderboardRow({
               </p>
             </div>
           )}
-          <div>
+          <div className="flex items-center gap-1">
             <p className="max-w-32 truncate text-sm text-neutral-800 dark:text-white">
               {isEmptyOrInvisible(leaderboardData.profile.display_name || "")
                 ? leaderboardData.profile.id.slice(0, 6) +
@@ -118,6 +126,15 @@ export default function LeaderboardRow({
                 </span>
               )}
             </p>
+
+            {isNewBuilder && (
+              <Badge
+                variant="outline"
+                className="mr-1 px-1 py-0.5 text-[8px] uppercase"
+              >
+                New Builder
+              </Badge>
+            )}
           </div>
         </div>
       </div>
