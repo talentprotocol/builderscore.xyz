@@ -239,7 +239,7 @@ export const SPONSOR_FARCASTER_MINI_APP_URLS = {
   celo: "https://farcaster.xyz/miniapps/XhQmVJM8RIeD/celo-builder-rewards",
 };
 
-export const BASE_LEADERBOARD_MINI_APP_URL = "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-leaderboard";
+
 
 export const SPONSOR_REWARDS_PERIOD = {
   celo: "month",
