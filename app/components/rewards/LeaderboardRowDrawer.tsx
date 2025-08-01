@@ -82,6 +82,15 @@ export default function LeaderboardRowDrawer({
 
   const isHofToUse = isHof || selectedBuilder?.hall_of_fame;
 
+  // Heuristic detection: New builders likely have null ranking_change 
+  // (no previous position to compare to) and earned rewards
+  const isNewBuilder = 
+    !isAllTime && // Only show in weekly/current views, not all-time
+    selectedBuilder?.ranking_change === null && 
+    selectedBuilder?.reward_amount && 
+    parseFloat(selectedBuilder.reward_amount) > 0 &&
+    !isHofToUse; // Don't show for HOF builders
+
   return (
     <Drawer open={!!selectedBuilder} onOpenChange={onClose}>
       <DrawerPortal>
@@ -139,6 +148,23 @@ export default function LeaderboardRowDrawer({
                           community. Hall of Fame builders continue to be
                           recognized on the leaderboard for their outstanding
                           contributions.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {isNewBuilder && (
+                  <div className="card-style mb-2 w-full">
+                    <div className="flex justify-around p-4">
+                      <div className="flex flex-col items-center justify-between">
+                        <p className="mb-1 flex items-center text-sm">
+                          <span className="mr-2 text-lg font-semibold text-blue-500">New</span>
+                          Builder
+                        </p>
+
+                        <p className="secondary-text-style max-w-xl text-center text-xs">
+                          We give a temporary booster to builders who haven&apos;t received any Builder Rewards yet.
                         </p>
                       </div>
                     </div>
