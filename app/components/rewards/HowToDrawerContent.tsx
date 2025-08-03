@@ -71,7 +71,7 @@ export default function HowToDrawerContent() {
           </ul>
 
           <p className="mb-1 mt-6 text-sm text-neutral-600 dark:text-neutral-500">
-            To make sure you've met the eligibility requirements and to track your progress, log in through Farcaster or Base App. The leaderboard updates every 24 hours.
+            To make sure you&apos;ve met the eligibility requirements and to track your progress, log in through Farcaster or Base App. The leaderboard updates every 24 hours.
           </p>
         </div>
 
