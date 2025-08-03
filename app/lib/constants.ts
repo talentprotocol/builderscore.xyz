@@ -239,8 +239,6 @@ export const SPONSOR_FARCASTER_MINI_APP_URLS = {
   celo: "https://farcaster.xyz/miniapps/XhQmVJM8RIeD/celo-builder-rewards",
 };
 
-
-
 export const SPONSOR_REWARDS_PERIOD = {
   celo: "month",
 };

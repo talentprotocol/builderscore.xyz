@@ -18,7 +18,6 @@ import { useState } from "react";
 
 export default function Actions() {
   const [openHowToDrawer, setOpenHowToDrawer] = useState(false);
-  
   const { selectedGrant } = useGrant();
   const { frameContext } = useUser();
   const { selectedSponsor } = useSponsor();
