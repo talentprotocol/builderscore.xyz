@@ -53,7 +53,13 @@ export async function GET() {
   };
 
   const reownJson = {
-    accountAssociation: {},
+    accountAssociation: {
+      header:
+        "eyJmaWQiOjIwNDQyLCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4NDQ1Nzc2QzU4RDZmZkI0NWQ5YjlmNkQ2ODI0NkU5ODVFMTgzMDI2NSJ9",
+      payload: "eyJkb21haW4iOiJyZW93bi5idWlsZGVyc2NvcmUueHl6In0",
+      signature:
+        "MHhkZTE3MGExZTM2NjJhMWUxNjE4YTUyZmYxNjYxZDI1NGVmYTA1YmE2MmU2NDQxMDUzNTdiNjU4ODJlY2RkNjU4NWJiYjM1ZjljYzI0NWU3YmNhY2E0ZThiMmRlZmViYzFjMzBlZTI3M2M4YTU4M2U5ZWU4ZWJkNWRkNzNjODMyZTFi",
+    },
     frame: {
       version: "0.0.1",
       name: "WalletKit Builder Rewards",
