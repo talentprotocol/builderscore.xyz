@@ -13,9 +13,9 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Primary is #0052FF for Base */
-  --primary: #0052ff;
-  --primary-foreground: #0052ff;
+  /* Primary is #0000ff for Base */
+  --primary: #0000ff;
+  --primary-foreground: #0000ff;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -134,6 +134,11 @@
   --radius: 0rem;
   --color-neutral-300: rgba(0, 0, 0, 0.2);
   --color-yellow-500: #fcff52;
+}
+
+/* Reown colors */
+[data-sponsor="reown"] {
+  --primary: #ffb800;
 }
 
 @layer base {

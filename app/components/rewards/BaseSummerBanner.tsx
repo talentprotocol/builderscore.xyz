@@ -21,12 +21,12 @@ export function BaseSummerBanner() {
         <div className="flex h-full w-full items-center justify-between gap-4">
           <BaseSummerIcon
             className="z-20 mt-1 h-[95%] w-auto"
-            color="#0052FF"
+            color="#0000ff"
             altcolor="#FCCF10"
           />
           <BaseSummerLogo
             className="z-20 mt-1 h-[80%] w-auto"
-            color="#0052FF"
+            color="#0000ff"
           />
         </div>
       </div>

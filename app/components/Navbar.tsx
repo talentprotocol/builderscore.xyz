@@ -42,7 +42,7 @@ export default function Navbar({
       <div className="mb-2 sm:mb-0">
         <Link href={homeUrl} className="flex items-center gap-2">
           <Logo
-            className="ml-0.5 block h-3 w-auto"
+            className={`ml-0.5 block ${currentSponsor?.logoSize}`}
             color={currentSponsor?.color}
           />
           <h1

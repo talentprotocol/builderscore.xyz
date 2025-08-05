@@ -1,4 +1,4 @@
-import { baseMetadata, celoMetadata } from "./constants";
+import { baseMetadata, celoMetadata, reownMetadata } from "./constants";
 
 export const getMetadata = (sponsorSlug: string) => {
   let metadata;
@@ -12,6 +12,9 @@ export const getMetadata = (sponsorSlug: string) => {
       break;
     case "celo":
       metadata = celoMetadata;
+      break;
+    case "reown":
+      metadata = reownMetadata;
       break;
     case "talent-protocol":
       metadata = baseMetadata;

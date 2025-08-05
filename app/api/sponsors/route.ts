@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const data: SponsorsResponse = await fetchSponsors();
+    console.log("data", data);
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
