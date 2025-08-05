@@ -41,7 +41,8 @@ export default function MiniAppBanner({ className }: { className?: string }) {
         "https://warpcast.com/miniapps/XhQmVJM8RIeD/celo-builder-rewards";
       break;
     case "reown":
-      appUrl = ""; // TODO REOWN: Add app url
+      appUrl =
+        "https://farcaster.xyz/miniapps/PpdVkvn7ro-R/walletkit-builder-rewards";
       break;
     case "talent-protocol":
       appUrl = "https://warpcast.com/miniapps/003OFAiGOJCy/builder-rewards";

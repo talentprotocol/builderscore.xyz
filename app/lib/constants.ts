@@ -303,7 +303,8 @@ export const SPONSOR_FARCASTER_MINI_APP_URLS = {
   "talent-protocol":
     "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
   celo: "https://farcaster.xyz/miniapps/XhQmVJM8RIeD/celo-builder-rewards",
-  reown: "", // TODO REOWN: Add mini app url
+  reown:
+    "https://farcaster.xyz/miniapps/PpdVkvn7ro-R/walletkit-builder-rewards",
 };
 
 export const SPONSOR_REWARDS_PERIOD = {
