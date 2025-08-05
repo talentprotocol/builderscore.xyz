@@ -1,6 +1,7 @@
 import BaseLogo from "@/app/components/logos/BaseLogo";
 import CeloLogo from "@/app/components/logos/CeloLogo";
 import TalentProtocolIcon from "@/app/components/logos/TalentProtocolIcon";
+import { WalletKitLogo } from "@/app/components/logos/WalletKitLogo";
 import { BaseSummerBanner } from "@/app/components/rewards/BaseSummerBanner";
 import { Grant } from "@/app/types/rewards/grants";
 import { SponsorInfo } from "@/app/types/rewards/sponsors";
@@ -57,13 +58,17 @@ export const ALLOWED_SPONSORS = [
   "base",
   "celo",
   "talent-protocol",
+  "reown",
 ];
+
+export const SELECT_EXCLUDED_SPONSORS = ["reown"];
 
 export const SUBDOMAIN_TO_SPONSOR = {
   "base-summer": "base-summer",
   base: "base-summer",
   celo: "celo",
   "talent-protocol": "talent-protocol",
+  reown: "reown",
 };
 
 export const SPONSOR_TERMS = {
@@ -73,6 +78,7 @@ export const SPONSOR_TERMS = {
   celo: "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions-celo",
   "talent-protocol":
     "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
+  reown: "", // TODO REOWN: Add terms url
   default:
     "https://docs.talentprotocol.com/docs/legal/builder-rewards-terms-conditions",
 };
@@ -161,6 +167,48 @@ export const celoMetadata: Metadata = {
   },
 };
 
+const reownFrame = {
+  version: "next",
+  imageUrl: "https://walletkit.builderscore.xyz/images/frame-image.png",
+  button: {
+    title: "Earn WalletKit Builder Rewards",
+    action: {
+      type: "launch_frame",
+      name: "WalletKit Builder Rewards",
+      url: "https://walletkit.builderscore.xyz",
+      splashImageUrl: "https://walletkit.builderscore.xyz/images/icon.png",
+      splashBackgroundColor: "#ffb800",
+    },
+  },
+};
+
+export const reownMetadata: Metadata = {
+  title: "WalletKit Builder Rewards",
+  description: "WalletKit Rewards for the most impactful builders.",
+  openGraph: {
+    title: "WalletKit Builder Rewards",
+    description: "WalletKit Rewards for the most impactful builders.",
+    images: {
+      url: "https://walletkit.builderscore.xyz/images/frame-image.png",
+      alt: "WalletKit Builder Rewards",
+    },
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WalletKit Builder Rewards",
+    description: "WalletKit Rewards for the most impactful builders.",
+    images: {
+      url: "https://walletkit.builderscore.xyz/images/frame-image.png",
+      alt: "WalletKit Builder Rewards",
+    },
+    site: "@TalentProtocol",
+    creator: "@TalentProtocol",
+  },
+  other: {
+    "fc:frame": JSON.stringify(reownFrame),
+  },
+};
+
 export const SPONSORS: Record<string, SponsorInfo> = {
   "base-summer": {
     slug: "base",
@@ -168,7 +216,8 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     themeClassName: "light",
     ticker: "ETH",
     logo: BaseLogo,
-    color: "#0052FF",
+    color: "#0000ff",
+    logoSize: "h-3",
   },
   base: {
     slug: "base",
@@ -176,7 +225,8 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     themeClassName: "light",
     ticker: "ETH",
     logo: BaseLogo,
-    color: "#0052FF",
+    color: "#0000ff",
+    logoSize: "h-3",
   },
   "talent-protocol": {
     slug: "talent-protocol",
@@ -185,6 +235,7 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     ticker: "$TALENT",
     logo: TalentProtocolIcon,
     color: "#FFFFFF",
+    logoSize: "h-3",
   },
   celo: {
     slug: "celo",
@@ -193,6 +244,16 @@ export const SPONSORS: Record<string, SponsorInfo> = {
     ticker: "CELO",
     logo: CeloLogo,
     color: "#000000",
+    logoSize: "h-3",
+  },
+  reown: {
+    slug: "reown",
+    name: "Reown",
+    themeClassName: "light",
+    ticker: "$WCT",
+    logo: WalletKitLogo,
+    color: "#ffb800",
+    logoSize: "w-22",
   },
 };
 
@@ -201,11 +262,13 @@ export const SPONSOR_SCORING = {
   base: ["github", "onchain", "farcaster"],
   "talent-protocol": ["github", "onchain", "builder_score"],
   celo: ["github", "onchain", "builder_score"],
+  reown: ["github", "onchain", "builder_score"],
 };
 
 export const SPONSOR_HOF_MAX_REWARDS = {
   "base-summer": 1,
   base: 1,
+  // reown: 1, // TODO REOWN: Add HOF max rewards
 };
 
 export const SPONSOR_MIN_REWARDS = {
@@ -213,6 +276,7 @@ export const SPONSOR_MIN_REWARDS = {
   base: 2,
   "talent-protocol": 20000,
   celo: 10000,
+  reown: 1234, // TODO REOWN: Add min rewards
 };
 
 export const SPONSOR_SCANNER_BASE_URL = {
@@ -220,10 +284,12 @@ export const SPONSOR_SCANNER_BASE_URL = {
   base: "https://basescan.org/tx/",
   celo: "https://celoscan.io/tx/",
   "talent-protocol": "https://basescan.org/tx/",
+  reown: "https://basescan.org/tx/",
 };
 
 export const SPONSOR_REWARDS_START_DATE = {
   "base-summer": "2025-07-22",
+  reown: "2025-09-01",
 };
 
 export const SPONSOR_BANNERS = {
@@ -237,10 +303,12 @@ export const SPONSOR_FARCASTER_MINI_APP_URLS = {
   "talent-protocol":
     "https://farcaster.xyz/miniapps/003OFAiGOJCy/base-builder-rewards",
   celo: "https://farcaster.xyz/miniapps/XhQmVJM8RIeD/celo-builder-rewards",
+  reown: "", // TODO REOWN: Add mini app url
 };
 
 export const SPONSOR_REWARDS_PERIOD = {
   celo: "month",
+  // reown: "month", // TODO REOWN: Add rewards period
 };
 
 export const SPONSOR_TOTAL_REWARDED = {
@@ -248,6 +316,7 @@ export const SPONSOR_TOTAL_REWARDED = {
   base: 100,
   "talent-protocol": 100,
   celo: 100,
+  reown: 100,
 };
 
 export const SPONSOR_CREDENTIALS_HIGHLIGHTS = {
@@ -255,4 +324,5 @@ export const SPONSOR_CREDENTIALS_HIGHLIGHTS = {
   base: ["base"],
   "talent-protocol": ["talent_protocol"],
   celo: ["celo"],
+  reown: ["reown"],
 };

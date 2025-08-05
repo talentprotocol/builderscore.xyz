@@ -7,6 +7,7 @@ export interface SponsorInfo {
   themeClassName: string;
   ticker: string;
   logo: ComponentType<LogoProps>;
+  logoSize: string;
   color: string;
 }
 

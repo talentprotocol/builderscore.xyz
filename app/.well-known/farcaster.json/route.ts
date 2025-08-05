@@ -52,6 +52,22 @@ export async function GET() {
     },
   };
 
+  const reownJson = {
+    accountAssociation: {},
+    frame: {
+      version: "0.0.1",
+      name: "WalletKit Builder Rewards",
+      homeUrl: "https://walletkit.builderscore.xyz",
+      iconUrl: "https://walletkit.builderscore.xyz/images/icon.png",
+      imageUrl: "https://walletkit.builderscore.xyz/images/frame-image.png",
+      buttonTitle: "Earn WalletKit Builder Rewards",
+      splashImageUrl: "https://walletkit.builderscore.xyz/images/icon.png",
+      splashBackgroundColor: "#ffb800",
+      webhookUrl:
+        "https://api.neynar.com/f/app/95a0ed9e-3fac-4761-a711-ba6cce02f8b7/event",
+    },
+  };
+
   let json;
 
   switch (subdomain) {
@@ -63,6 +79,9 @@ export async function GET() {
       break;
     case "celo":
       json = celoJson;
+      break;
+    case "reown":
+      json = reownJson;
       break;
     case "talent-protocol":
       json = baseJson;

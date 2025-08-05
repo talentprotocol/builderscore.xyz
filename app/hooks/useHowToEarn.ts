@@ -109,6 +109,37 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
     ],
   };
 
+  const reownConfig = {
+    description:
+      "Reown distributes weekly rewards to Base builders building with WalletKit that own verified contracts on Base and contribute to public crypto repositories on GitHub.",
+    steps: [
+      {
+        text: `Own a Basename ${basename ? `(${basename})` : ""}`,
+        url: "https://www.base.org/names",
+        condition: !loadingUser && basename,
+        required: true,
+      },
+      {
+        text: "Increase your Builder Score to 40+",
+        url: "https://app.talentprotocol.com/profile",
+        condition: !loadingUser && builderScore && builderScore.points >= 40,
+        required: true,
+      },
+      {
+        text: "Connect your Reown email address to your Talent profile",
+        url: "https://app.talentprotocol.com/accounts",
+        condition: false,
+        required: false,
+      },
+      {
+        text: "Integrate any of Reown's WalletKit packages (Web, iOS, Android, Flutter, React Native or .NET) in your app",
+        url: "https://docs.reown.com/walletkit/overview",
+        condition: false,
+        required: false,
+      },
+    ],
+  };
+
   let config: HowToEarnConfig;
 
   switch (sponsor.slug) {
@@ -120,6 +151,9 @@ export function useHowToEarn(sponsor: Sponsor): HowToEarnConfig {
       break;
     case "celo":
       config = celoConfig;
+      break;
+    case "reown":
+      config = reownConfig;
       break;
     default:
       config = baseConfig;

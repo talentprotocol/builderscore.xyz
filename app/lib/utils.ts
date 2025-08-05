@@ -12,6 +12,7 @@ export const INDIVIDUAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS: Record<
   $TALENT: 0,
   ETH: 3,
   CELO: 0,
+  WCT: 0,
 };
 
 export const TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS: Record<
@@ -21,6 +22,7 @@ export const TOTAL_REWARD_AMOUNT_DISPLAY_TOKEN_DECIMALS: Record<
   $TALENT: 0,
   ETH: 0,
   CELO: 0,
+  WCT: 0,
 };
 
 export function formatNumber(x: number, decimals: number = 0): string {

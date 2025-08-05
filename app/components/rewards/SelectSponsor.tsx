@@ -10,7 +10,10 @@ import {
 import { useGrant } from "@/app/context/GrantContext";
 import { useSponsor } from "@/app/context/SponsorContext";
 import { useSponsors } from "@/app/hooks/useRewards";
-import { ALLOWED_SPONSORS } from "@/app/lib/constants";
+import {
+  ALLOWED_SPONSORS,
+  SELECT_EXCLUDED_SPONSORS,
+} from "@/app/lib/constants";
 import { Sponsor } from "@/app/types/rewards/sponsors";
 
 export default function SelectSponsor() {
@@ -19,8 +22,10 @@ export default function SelectSponsor() {
 
   const { data: sponsorsData } = useSponsors();
 
-  const sponsorsList = sponsorsData?.sponsors?.filter((sponsor) =>
-    ALLOWED_SPONSORS.includes(sponsor.slug),
+  const sponsorsList = sponsorsData?.sponsors?.filter(
+    (sponsor) =>
+      ALLOWED_SPONSORS.includes(sponsor.slug) &&
+      !SELECT_EXCLUDED_SPONSORS.includes(sponsor.slug),
   );
 
   const handleSponsorChange = (newSponsor: string) => {
