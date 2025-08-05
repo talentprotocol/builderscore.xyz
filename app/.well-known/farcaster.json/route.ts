@@ -64,10 +64,10 @@ export async function GET() {
       version: "0.0.1",
       name: "WalletKit Builder Rewards",
       homeUrl: "https://reown.builderscore.xyz",
-      iconUrl: "https://reown.builderscore.xyz/images/icon.png", // TODO REOWN: Add icon url
-      imageUrl: "https://reown.builderscore.xyz/images/frame-image.png", // TODO REOWN: Add image url
+      iconUrl: "https://reown.builderscore.xyz/images/reown/icon.png", // TODO REOWN: Add icon url
+      imageUrl: "https://reown.builderscore.xyz/images/reown/frame-image.png", // TODO REOWN: Add image url
       buttonTitle: "Earn WalletKit Builder Rewards",
-      splashImageUrl: "https://reown.builderscore.xyz/images/icon.png",
+      splashImageUrl: "https://reown.builderscore.xyz/images/reown/icon.png", // TODO REOWN: Add splash image url
       splashBackgroundColor: "#ffb800",
       webhookUrl:
         "https://api.neynar.com/f/app/95a0ed9e-3fac-4761-a711-ba6cce02f8b7/event",

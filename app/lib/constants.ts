@@ -169,14 +169,14 @@ export const celoMetadata: Metadata = {
 
 const reownFrame = {
   version: "next",
-  imageUrl: "https://reown.builderscore.xyz/images/frame-image.png", // TODO REOWN: Add image url
+  imageUrl: "https://reown.builderscore.xyz/images/reown/frame-image.png", // TODO REOWN: Add image url
   button: {
     title: "Earn WalletKit Builder Rewards",
     action: {
       type: "launch_frame",
       name: "WalletKit Builder Rewards",
       url: "https://reown.builderscore.xyz",
-      splashImageUrl: "https://reown.builderscore.xyz/images/icon.png", // TODO REOWN: Add splash image url
+      splashImageUrl: "https://reown.builderscore.xyz/images/reown/icon.png", // TODO REOWN: Add splash image url
       splashBackgroundColor: "#ffb800",
     },
   },
@@ -189,7 +189,7 @@ export const reownMetadata: Metadata = {
     title: "WalletKit Builder Rewards",
     description: "WalletKit Rewards for the most impactful builders.",
     images: {
-      url: "https://reown.builderscore.xyz/images/frame-image.png",
+      url: "https://reown.builderscore.xyz/images/reown/frame-image.png",
       alt: "WalletKit Builder Rewards",
     },
   },
@@ -198,7 +198,7 @@ export const reownMetadata: Metadata = {
     title: "WalletKit Builder Rewards",
     description: "WalletKit Rewards for the most impactful builders.",
     images: {
-      url: "https://reown.builderscore.xyz/images/frame-image.png",
+      url: "https://reown.builderscore.xyz/images/reown/frame-image.png",
       alt: "WalletKit Builder Rewards",
     },
     site: "@TalentProtocol",
