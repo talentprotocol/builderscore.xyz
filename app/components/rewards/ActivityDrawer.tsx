@@ -12,6 +12,8 @@ import { Plus } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { MdOutlineToken } from "react-icons/md";
 
+import CeloLogo from "../logos/CeloLogo";
+
 export default function ActivityDrawer({
   activity,
   open,
@@ -26,7 +28,7 @@ export default function ActivityDrawer({
   const bonusActivity = activity
     ?.filter((metric) => metric.category === "bonus")
     .filter((metric) => metric.metric_name !== "score")
-    .sort((a, b) => b.raw_value - a.raw_value);
+    .sort((a, b) => b.metric_name.localeCompare(a.metric_name));
 
   const scoringActivity = activity
     ?.filter((metric) => metric.metric_name === "score")
@@ -38,7 +40,7 @@ export default function ActivityDrawer({
         selectedSponsor?.slug as keyof typeof SPONSOR_SCORING
       ]?.includes(metric.category),
     )
-    .sort((a, b) => b.raw_value - a.raw_value);
+    .sort((a, b) => b.metric_name.localeCompare(a.metric_name));
 
   const bonusDescriptions = {
     base_builder_bonus:
@@ -54,6 +56,14 @@ export default function ActivityDrawer({
     onchain: "Verified Smart Contracts and Transactions",
     farcaster: "Farcaster Mini App Rewards",
   };
+
+  const celoScoringIcon = (
+    <CeloLogo
+      className="size-5"
+      altcolor={selectedSponsor?.slug === "talent-protocol" ? "#000" : "#fff"}
+      color={selectedSponsor?.slug === "talent-protocol" ? "#fff" : "#000"}
+    />
+  );
 
   const scoringIcons = {
     github: (
@@ -75,6 +85,9 @@ export default function ActivityDrawer({
         color={selectedSponsor?.slug === "talent-protocol" ? "#fff" : "#000"}
       />
     ),
+    proof_of_ship: celoScoringIcon,
+    celo_network: celoScoringIcon,
+    celo_yapper: celoScoringIcon,
   };
 
   return (

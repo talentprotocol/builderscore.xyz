@@ -261,7 +261,7 @@ export const SPONSOR_SCORING = {
   "base-summer": ["github", "onchain", "farcaster"],
   base: ["github", "onchain", "farcaster"],
   "talent-protocol": ["github", "onchain", "builder_score"],
-  celo: ["github", "onchain", "builder_score"],
+  celo: ["proof_of_ship", "celo_network", "github", "onchain"],
   reown: ["github", "onchain", "builder_score"],
 };
 
