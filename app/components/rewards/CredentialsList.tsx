@@ -84,19 +84,27 @@ export default function CredentialsList({
               left={
                 <div className="flex items-center gap-3">
                   <div className="flex items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-800">
-                    {cloneElement(
-                      DataIssuersLogos[group as keyof typeof DataIssuersLogos],
-                      {
-                        className: "block h-5 w-5",
-                        color:
-                          selectedSponsor?.slug === "talent-protocol"
-                            ? "#fff"
-                            : "#000",
-                        altcolor:
-                          selectedSponsor?.slug === "talent-protocol"
-                            ? "#000"
-                            : "#fff",
-                      },
+                    {DataIssuersLogos[
+                      group as keyof typeof DataIssuersLogos
+                    ] ? (
+                      cloneElement(
+                        DataIssuersLogos[
+                          group as keyof typeof DataIssuersLogos
+                        ],
+                        {
+                          className: "block h-5 w-5",
+                          color:
+                            selectedSponsor?.slug === "talent-protocol"
+                              ? "#fff"
+                              : "#000",
+                          altcolor:
+                            selectedSponsor?.slug === "talent-protocol"
+                              ? "#000"
+                              : "#fff",
+                        },
+                      )
+                    ) : (
+                      <div className="block h-5 w-5 rounded bg-neutral-300" />
                     )}
                   </div>
 
