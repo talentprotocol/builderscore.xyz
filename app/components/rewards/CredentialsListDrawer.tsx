@@ -35,6 +35,9 @@ export default function CredentialsListDrawer({
             <DrawerTitle className="flex items-center gap-2 text-neutral-800 dark:text-white">
               <div className="flex items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-800">
                 {dataIssuerSlug !== "" &&
+                DataIssuersLogos[
+                  dataIssuerSlug as keyof typeof DataIssuersLogos
+                ] ? (
                   cloneElement(
                     DataIssuersLogos[
                       dataIssuerSlug as keyof typeof DataIssuersLogos
@@ -50,7 +53,10 @@ export default function CredentialsListDrawer({
                           ? "#000"
                           : "#fff",
                     },
-                  )}
+                  )
+                ) : (
+                  <div className="block h-5 w-5 rounded bg-neutral-300" />
+                )}
               </div>
 
               <p className="text-sm text-neutral-800 dark:text-white">
